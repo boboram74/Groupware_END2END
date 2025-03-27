@@ -16,6 +16,9 @@ local.properties
 .classpath
 .project
 
+.idea
+src/main/webapp/config/config.properties
+
 # External tool builders
 .externalToolBuilders/
 

@@ -5,12 +5,13 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:component-scan base-package="com.end2end.spring" />
+	<context:property-placeholder location="/config/config.properties" />
 
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-		<property name="url" value="jdbc:oracle:thin:@221.150.27.169:40002:xe"/>
-		<property name="username" value="exam"/>
-		<property name="password" value="exam"/>
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="driverClassName" value="${spring.datasource.driverClassname}" />
+		<property name="url" value="${spring.datasource.url}" />
+		<property name="username" value="${spring.datasource.username}" />
+		<property name="password" value="${spring.datasource.password}" />
 		<property name="initialSize" value="5"/>
 	</bean>
 

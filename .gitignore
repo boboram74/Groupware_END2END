@@ -17,6 +17,8 @@ local.properties
 .project
 .smarttomcat
 .idea
+logs
+conf
 
 src/main/webapp/config/config.properties
 

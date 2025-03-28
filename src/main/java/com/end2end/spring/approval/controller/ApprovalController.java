@@ -53,7 +53,7 @@ public class ApprovalController {
     }
 
     @RequestMapping("/detail/{id}")
-    public String toDetail(Model model, @PathVariable int id) {
+    public String toDetail(Model model, @PathVariable String id) {
         // TODO: 전자 결재 상세 폼으로 이동
         return "approval/detail";
     }
@@ -61,6 +61,16 @@ public class ApprovalController {
     @RequestMapping("/insert")
     public void insert(ApprovalDTO dto, Model model) {
         // TODO: 전재 결재 입력
+    }
+
+    @RequestMapping("/update")
+    public void update(ApprovalDTO dto, Model model) {
+        // TODO: 전자 결재 수정
+    }
+
+    @RequestMapping("/delete/{id}")
+    public void deleteById(@PathVariable String id, Model model) {
+        // TODO: 해당 id의 결재를 삭제
     }
 
     @RequestMapping("/temp/insert")

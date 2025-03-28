@@ -1,23 +1,30 @@
 package com.end2end.spring.mail.controller;
 
 import com.end2end.spring.mail.dto.MailDTO;
-import com.end2end.spring.mail.dto.MailTempDTO;
+import com.end2end.spring.mail.dto.TempMailDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/mail")
 @Controller
 public class MailController {
     @RequestMapping("/list")
-    public String toList(int employeeId, Model model) {
+    public String toListByEmployee(String employeeId, Model model) {
         // TODO: 해당 사원의 모든 메일을 출력하는 list.jsp
         return "/mail/list";
     }
 
+    @RequestMapping("/list/{email}")
+    public String toListByEmail(@PathVariable String email, Model model) {
+        // TODO: 해당 이메일의 모든 메일을 출력하는 list.jsp
+        return "/mail/list";
+    }
+
     @RequestMapping("/list/search")
-    public String toSearch(int employeeId, Model model) {
-        // TODO: 해당 사원의 검색내용의 메일을 출력하는 list.jsp
+    public String toSearch(String email, Model model) {
+        // TODO: 해당 이메일의 검색내용의 메일을 출력하는 list.jsp
         return "/mail/list";
     }
 
@@ -51,12 +58,12 @@ public class MailController {
     }
 
     @RequestMapping("/temp/insert")
-    public void insertTemp(MailTempDTO dto) {
+    public void insertTemp(TempMailDTO dto) {
         // TODO: 메일을 임시 저장함
     }
 
     @RequestMapping("/temp/update")
-    public void update(MailTempDTO dto) {
+    public void update(TempMailDTO dto) {
         // TODO: 임지 저장 메일을 수정함
     }
 

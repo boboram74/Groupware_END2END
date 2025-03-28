@@ -8,10 +8,12 @@ public interface ApprovalService {
     List<ApprovalDTO> selectAll();
     List<ApprovalDTO> selectByEmployeeId(String employeeId);
     List<ApprovalDTO> search();
+    List<ApprovalDTO> search(String employeeId);
     List<ApprovalDTO> selectByState(String state);
+    List<ApprovalDTO> selectByState(String state, String employeeId);
     ApprovalDTO selectById(String id);
     void insert(ApprovalDTO dto);
     void update(ApprovalDTO dto);
     void deleteById(String id);
-    void submit();
+    void submit(boolean submit);
 }

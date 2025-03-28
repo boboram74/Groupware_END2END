@@ -9,4 +9,7 @@ public interface EmployeeService {
     EmployeeDetailDTO selectDetailById(String id);
     void login(LoginDTO dto);
     void logout();
+    void insert(EmployeeDetailDTO dto);
+    void update(EmployeeDetailDTO dto);
+    void deleteById(String id);
 }

@@ -9,4 +9,5 @@ public interface TempMailService {
     void insert(TempMailDTO tempMailDTO);
     void update(TempMailDTO tempMailDTO);
     void deleteById(int id);
+    void deleteAll(String employeeId);
 }

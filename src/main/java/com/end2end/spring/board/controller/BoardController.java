@@ -5,13 +5,14 @@ import com.end2end.spring.board.dto.BoardDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/board")
 @Controller
 public class BoardController {
-    @RequestMapping("/list")
-    public String toList(int categoryId, Model model) {
+    @RequestMapping("/list/{categoryId}")
+    public String toList(@PathVariable int categoryId, Model model) {
         // TODO: 카테고리 id를 받아 해당 카테고리의 모든 게시글을 list.jsp에 표시
         return "/board/list";
     }
@@ -22,8 +23,8 @@ public class BoardController {
         return "/board/list";
     }
 
-    @RequestMapping("/list/important")
-    public String toImportant(Model model) {
+    @RequestMapping("/list/important/{employeeId}")
+    public String toImportant(@PathVariable String employeeId, Model model) {
         // TODO: 내가 선택한 모든 중요 게시글을 list.jsp에 표시
         return "/board/list";
     }
@@ -40,8 +41,8 @@ public class BoardController {
         return "/board/write";
     }
 
-    @RequestMapping("/detail")
-    public String toDetail(int id, Model model) {
+    @RequestMapping("/detail/{id}")
+    public String toDetail(@PathVariable int id, Model model) {
         // TODO: 게시글 상세글로 이동
         return "/board/detail";
     }
@@ -69,17 +70,17 @@ public class BoardController {
 
     @RequestMapping("/category/insert")
     public void insertCategory(BoardCategoryDTO dto) {
-        // TODO: 게시판 입력을 받음
+        // TODO: 카테고리 입력을 받음
     }
 
     @RequestMapping("/category/update")
     public void updateCategory(BoardCategoryDTO dto) {
-        // TODO: 게시글 수정을 받음
+        // TODO: 카테고리 수정을 받음
     }
 
-    @RequestMapping("/category/delete")
-    public void deleteCategoryById(int id) {
-        // TODO: 게시글 번호로 삭제
+    @RequestMapping("/category/delete/{id}")
+    public void deleteCategoryById(@PathVariable int id) {
+        // TODO: 카테고리 번호로 삭제
     }
 
     @RequestMapping("/complaint/insert")

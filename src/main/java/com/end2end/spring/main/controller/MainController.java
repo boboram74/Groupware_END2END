@@ -13,7 +13,7 @@ public class MainController {
 	@GetMapping("/")
 	public String home(HttpSession session, Model model) {
 		session.getAttribute("loginId");
-		return "redirect:/main/index";
+		return "main/index";
 	}
 
 	@RequestMapping("/mypage/{employeeId}")

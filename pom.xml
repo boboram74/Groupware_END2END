@@ -122,8 +122,7 @@
 			<artifactId>swagger-annotations</artifactId>
 			<version>2.2.20</version>
 		</dependency>
-		
-		
+
 		<!-- odjbc -->
 		<dependency>
 		    <groupId>com.oracle.database.jdbc</groupId>

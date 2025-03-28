@@ -5,12 +5,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="/css/main/login.css">
   <title>Login</title>
 </head>
 
 <body>
-<form action="/member/login" method="post">
+<form action="/employee/login" method="post">
   <div class="container">
     <div class="header">
       <img src="로그인로고.PNG">

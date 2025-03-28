@@ -66,7 +66,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public void submit(boolean submit) {
+    public void submit(boolean isSubmit) {
         // TODO: 들어온 값에 따라 결재 승인/반려
     }
 }

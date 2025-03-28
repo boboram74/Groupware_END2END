@@ -9,6 +9,6 @@ public interface MailService {
     List<MailDTO> selectByEmail();
     List<MailDTO> search();
     void insert(MailDTO mailDTO);
-    void update(MailDTO mailDTO);
     void deleteById(int id);
+    void toggleTrashYN(int id, boolean isInTrashCan);
 }

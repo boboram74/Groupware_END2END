@@ -19,13 +19,18 @@ public class EmployeeController {
         // TODO: 로그아웃 처리
     }
 
-    @RequestMapping("/mypage/{id}")
-    public String toMypage(@PathVariable String id, Model model) {
-        return "/employee/mypage";
-    }
-
     @RequestMapping("/change/password")
     public void changePassword() {
         // TODO: 패스워드 변경
+    }
+
+    @RequestMapping("/{id}")
+    public void selectEmployee(@PathVariable String id) {
+        // TODO: 해당 id 사원의 데이터를 출력
+    }
+
+    @RequestMapping("/detail/{id}")
+    public void selectDetailEmployee(@PathVariable String id) {
+        // TODO: 해당 id 사원의 상세 데이터를 출력
     }
 }

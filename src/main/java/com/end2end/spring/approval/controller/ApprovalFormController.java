@@ -38,11 +38,6 @@ public class ApprovalFormController {
         // TODO: 해당 id의 문서 양식 삭제
     }
 
-    @RequestMapping("/frequency/list/{employeeId}")
-    public void frequencyList(@PathVariable String employeeId) {
-        // TODO: 해당 사원의 자주 쓰는 양식을 출력
-    }
-
     @RequestMapping("/frequency/insert")
     public void frequencyInsert(int formId) {
         // TODO: 해당 id의 문서를 로그인 중인 사용자의 자주 쓰는 양식으로 추가

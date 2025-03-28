@@ -13,4 +13,5 @@ public interface ApprovalService {
     void insert(ApprovalDTO dto);
     void update(ApprovalDTO dto);
     void deleteById(String id);
+    void submit();
 }

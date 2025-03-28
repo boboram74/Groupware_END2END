@@ -1,5 +1,6 @@
 package com.end2end.spring.approval.controller;
 
+import com.end2end.spring.approval.dto.ApprovalCategoryDTO;
 import com.end2end.spring.approval.dto.ApprovalFormDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,5 +47,25 @@ public class ApprovalFormController {
     @RequestMapping("/frequency/delete/{id}")
     public void deleteFrequencyById(@PathVariable int id) {
         // TODO: 해당 id의 문서를 로그인 중인 사용자의 자주 쓰는 양식에서 삭제
+    }
+
+    @RequestMapping("/category")
+    public void category() {
+        // TODO: 모든 문서 양식 카테고리를 출력
+    }
+
+    @RequestMapping("/category/insert")
+    public void categoryInsert(String name) {
+        // TODO: 문서 양식 카테고리를 추가
+    }
+
+    @RequestMapping("/category/update")
+    public void updateCategory(ApprovalCategoryDTO dto) {
+        // TODO: 문서 양식 카테고리 수정
+    }
+
+    @RequestMapping("/category/delete/{id}")
+    public void deleteCategoryById(@PathVariable int id) {
+        // TODO: 해당 id의 문서 양식 카테고리를 삭제
     }
 }

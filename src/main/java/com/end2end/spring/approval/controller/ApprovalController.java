@@ -87,4 +87,9 @@ public class ApprovalController {
     public void deleteTemp(Model model, @PathVariable int id) {
         // TODO: 임지 저장 전자 결재 삭제
     }
+
+    @RequestMapping("/submit")
+    public void submit(String id) {
+        //  TODO: 해당 id의 문서를 승인/반려
+    }
 }

@@ -15,13 +15,19 @@ public class MainController {
 
 	@RequestMapping("/mypage/{employeeId}")
 	public String toMyPage(@PathVariable String employeeId, Model model) {
-		// TODO: 해당 사원의 마이페이지로 이동
+		// TODO: 해당 사원의 마이페이지 출력
 		return "main/mypage";
 	}
 
 	@RequestMapping("/contact")
-	public String contact() {
-		// TODO: 연락처 페이지로 이동
+	public String toContact() {
+		// TODO: 연락처 페이지 출력
 		return "main/contact";
+	}
+
+	@RequestMapping("/worktree")
+	public String toWorktree() {
+		// TODO: 조직도 페이지 출력
+		return "main/worktree";
 	}
 }

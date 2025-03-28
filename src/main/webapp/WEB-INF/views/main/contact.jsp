@@ -1,16 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: keduit
-  Date: 2025-03-28
-  Time: 오후 4:17
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<jsp:include page="/WEB-INF/views/template/header.jsp" />
+<div>
+    HELLO END2END
+</div>
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />
 
-</body>
-</html>

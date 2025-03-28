@@ -46,8 +46,8 @@ public class MailController {
         return "/mail/write";
     }
 
-    @RequestMapping("/detail")
-    public String toDetail(int id, Model model) {
+    @RequestMapping("/{id}")
+    public String toDetail(@PathVariable int id, Model model) {
         // TODO: 해당 id의 메일 상세 조회 폼으로 이동
         return "/mail/detail";
     }
@@ -67,13 +67,13 @@ public class MailController {
         // TODO: 임지 저장 메일을 수정함
     }
 
-    @RequestMapping("/delete")
-    public void deleteById(int id) {
+    @RequestMapping("/delete/{id}")
+    public void deleteById(@PathVariable int id) {
         // TODO: 해당 id의 메일을 삭제함
     }
 
-    @RequestMapping("/trashcan")
-    public void toggleTrashCanYN(int id) {
+    @RequestMapping("/trashcan/{id}")
+    public void toggleTrashCanYN(@PathVariable int id) {
         // TODO: 해당 id의 메일의 휴지통으로 보내기/ 돌려놓기
     }
 }

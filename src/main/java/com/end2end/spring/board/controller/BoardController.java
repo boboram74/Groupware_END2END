@@ -41,7 +41,7 @@ public class BoardController {
         return "/board/write";
     }
 
-    @RequestMapping("/detail/{id}")
+    @RequestMapping("/{id}")
     public String toDetail(@PathVariable int id, Model model) {
         // TODO: 게시글 상세글로 이동
         return "/board/detail";

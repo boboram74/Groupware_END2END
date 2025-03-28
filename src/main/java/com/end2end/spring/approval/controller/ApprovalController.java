@@ -30,7 +30,7 @@ public class ApprovalController {
 
     @RequestMapping("/list/search")
     public String toListSearch(Model model) {
-        // TODO: 모든 전자 결재를 list.jsp에 출력
+        // TODO: 모든 전자 결재의 검색 결과를 list.jsp에 출력
         return "approval/list";
     }
 
@@ -52,7 +52,7 @@ public class ApprovalController {
         return "approval/write";
     }
 
-    @RequestMapping("/detail/{id}")
+    @RequestMapping("/{id}")
     public String toDetail(Model model, @PathVariable String id) {
         // TODO: 전자 결재 상세 폼으로 이동
         return "approval/detail";
@@ -88,8 +88,8 @@ public class ApprovalController {
         // TODO: 임지 저장 전자 결재 삭제
     }
 
-    @RequestMapping("/submit")
-    public void submit(String id) {
+    @RequestMapping("/submit/{id}")
+    public void submit(@PathVariable String id, String result) {
         //  TODO: 해당 id의 문서를 승인/반려
     }
 }

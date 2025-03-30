@@ -6,8 +6,17 @@
     <c:otherwise>
         <jsp:include page="/WEB-INF/views/template/header.jsp"/>
         <div>
-            HELLO END2END
+            <form>
+                <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
+                <button>submit</button>
+            </form>
         </div>
+        <script>
+            $('form').on('submit', (event) => {
+                event.preventDefault();
+                console.log($('input[name="files"]')[0].files)
+            })
+        </script>
         <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
     </c:otherwise>
 </c:choose>

@@ -20,7 +20,7 @@ public class FileController {
     }
 
     @RequestMapping("/download")
-    public void download() {
+    public void download(String path) {
         // TODO: 다운로드
     }
 

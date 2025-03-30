@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/css/template/fileInput.css" />
 <div class="file-form">
-  <input type="file" name="files" multiple />
+  <input type="file" name="files" multiple style="display: none" />
   <div>
     <div class="file-add">
       <span>파일추가</span>

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/file")
@@ -14,7 +15,7 @@ import java.util.List;
 public class FileController {
     @ResponseBody
     @RequestMapping("/upload/image/temp")
-    public String uploadTemp(MultipartFile file) {
+    public String uploadTemp(MultipartFile file) throws IOException {
         // TODO: summernote의 임시 이미지 파일 업로드
         return FileUtil.uploadTempImage(file);
     }

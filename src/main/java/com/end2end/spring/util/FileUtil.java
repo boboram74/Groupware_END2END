@@ -50,19 +50,15 @@ public class FileUtil {
         throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
     }
 
-    public static String uploadTempImage(MultipartFile file) {
-        String uploadPath = FILE_PATH + "/image/temp";
+    public static String uploadTempImage(MultipartFile file) throws IOException {
+        String uploadPath = FILE_PATH + "image/temp";
 
         File filePath = new File(uploadPath);
 
         filePath.mkdir();
 
         String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
-        try {
-            file.transferTo(new File(uploadPath + "/" + systemFileName));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        file.transferTo(new File(uploadPath + "/" + systemFileName));
 
         return uploadPath + "/" + systemFileName;
     }

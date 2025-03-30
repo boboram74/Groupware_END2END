@@ -15,46 +15,11 @@
                 <button>submit</button>
             </form>
         </div>
+        <script src="/js/template/summernote.js" type="text/javascript"></script>
         <script>
-            $('#contents').summernote({
-                callback: {
-                    onImageUpload: (files) => {
-                        for(let i = 0; i < files.length; i++) {
-                            imageUpload(files[i], this);
-                        }
-                    },
-                    onPaste : (e) => {
-                        console.log(e);
-
-                        const clipboardData = e.originalEvent.clipboardData;
-                        if (clipboardData && clipboardData.items
-                            && clipboardData.items.length) {
-                            const item = clipboardData.items[0];
-                            if (item.kind === 'file'
-                                && item.type.indexOf('image/') !== -1) {
-                                e.preventDefault();
-
-                            }
-                        }
-                    }
-                }
-            });
-
-            const imageUpload = (file, editor) => {
-                console.log(file);
-                let formData = new FormData();
-                formData.append('file', file);
-
-                $.ajax({
-                    url: 'file/upload/image/temp',
-                    data: formData,
-                    type: 'POST',
-                    contentType: false,
-                    processData: false
-                }).done((response) => {
-                    $(editor).summeronte('insertImage', response.path)
-                })
-            }
+            $(document).ready(() => {
+                $('#contents').summernote(summernoteSetting());
+            })
         </script>
         <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
     </c:otherwise>

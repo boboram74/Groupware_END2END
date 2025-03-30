@@ -10,7 +10,7 @@
         ON FILES.ID = FILE_DETAIL.ID
         WHERE ${column} =
         <choose>
-            <when test="column.equals('approval')">
+            <when test="column.equals('approvalId')">
                 #{id}
             </when>
             <otherwise>
@@ -26,7 +26,7 @@
     <insert id="insert">
         INSERT INTO FILES(files_id, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
         <choose>
-            <when test="column.equals('approval')">
+            <when test="column.equals('approvalId')">
                 #{id}
             </when>
             <otherwise>

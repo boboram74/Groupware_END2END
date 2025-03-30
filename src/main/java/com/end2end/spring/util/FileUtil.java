@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,5 +48,22 @@ public class FileUtil {
         }
 
         throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
+    }
+
+    public static String uploadTempImage(MultipartFile file) {
+        String uploadPath = FILE_PATH + "/image/temp";
+
+        File filePath = new File(uploadPath);
+
+        filePath.mkdir();
+
+        String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
+        try {
+            file.transferTo(new File(uploadPath + "/" + systemFileName));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return uploadPath + "/" + systemFileName;
     }
 }

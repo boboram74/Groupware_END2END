@@ -9,7 +9,7 @@
         <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
         <link rel="stylesheet" href="/js/summernote/summernote-lite.css">
         <div>
-            <form>
+            <form action="file/upload/test" method="post" enctype="multipart/form-data">
                 <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
                 <textarea id="contents"></textarea>
                 <button>submit</button>
@@ -39,11 +39,6 @@
                     }
                 }
             });
-
-            $('form').on('submit', (event) => {
-                event.preventDefault();
-                console.log($('input[name="files"]')[0].files)
-            })
 
             const imageUpload = (file, editor) => {
                 console.log(file);

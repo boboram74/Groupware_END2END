@@ -17,7 +17,7 @@ public class FileUtil {
 
         File filePath = new File(uploadPath);
 
-        filePath.mkdir();
+        boolean result = filePath.mkdir();
 
         List<FileDTO> list = new ArrayList<>();
         for (MultipartFile file : files) {

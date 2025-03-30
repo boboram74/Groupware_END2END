@@ -18,8 +18,6 @@ $("#drop-file").on("dragleave", (event) => {
 
 $("#drop-file").on("drop", (event) => {
     event.preventDefault();
-    console.log("drop!");
-
     const files = event.originalEvent.dataTransfer.files;
     updateFile(files);
 });
@@ -39,12 +37,21 @@ const updateFile = (newFiles) => {
         dataTransfer.items.add(newFiles[i]);
         totalFileSize += newFiles[i].size;
     }
-    $("#totalFileSize").html(parseByteToMB(totalFileSize) + "MB");
-    fileInput[0].files = dataTransfer.files;
 
-    for (let i = 0; i < dataTransfer.files.length; i++) {
-        fileList(dataTransfer.files[i]);
+    const parseTotalFileSize = parseByteToMB(totalFileSize);
+    console.log(parseTotalFileSize);
+
+    if(parseTotalFileSize * 100 < 200 * 100) {
+        $("#totalFileSize").html(parseByteToMB(totalFileSize) + "MB");
+        fileInput[0].files = dataTransfer.files;
+
+        for (let i = 0; i < dataTransfer.files.length; i++) {
+            fileList(dataTransfer.files[i]);
+        }
+    } else {
+        alert("입력 가능한 사이즈를 초과했습니다.");
     }
+
     $("#drop-file").css("border-color", "black");
 };
 
@@ -66,8 +73,6 @@ const deleteFile = (target) => {
 };
 
 const fileList = (file) => {
-    console.log(file);
-
     const deleteButton = $("<button>").html("x").addClass("delete-file");
 
     const li = $("<li>").append(

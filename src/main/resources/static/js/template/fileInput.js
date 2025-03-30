@@ -37,12 +37,21 @@ const updateFile = (newFiles) => {
         dataTransfer.items.add(newFiles[i]);
         totalFileSize += newFiles[i].size;
     }
-    $("#totalFileSize").html(parseByteToMB(totalFileSize) + "MB");
-    fileInput[0].files = dataTransfer.files;
 
-    for (let i = 0; i < dataTransfer.files.length; i++) {
-        fileList(dataTransfer.files[i]);
+    const parseTotalFileSize = parseByteToMB(totalFileSize);
+    console.log(parseTotalFileSize);
+
+    if(parseTotalFileSize * 100 < 200 * 100) {
+        $("#totalFileSize").html(parseByteToMB(totalFileSize) + "MB");
+        fileInput[0].files = dataTransfer.files;
+
+        for (let i = 0; i < dataTransfer.files.length; i++) {
+            fileList(dataTransfer.files[i]);
+        }
+    } else {
+        alert("입력 가능한 사이즈를 초과했습니다.");
     }
+
     $("#drop-file").css("border-color", "black");
 };
 

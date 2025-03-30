@@ -12,123 +12,8 @@
           crossorigin="anonymous"
   />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+  <link rel="stylesheet" href="/css/template/template.css" />
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    .container-fluid {
-      overflow: hidden;
-      display: flex;
-      height: 100vh;
-      width: 100%;
-      background-color: #eef1f6;
-      position: relative;
-      padding: 0;
-    }
-
-    .main {
-      width: 100%;
-      display: block;
-    }
-
-    .logo {
-      position: absolute;
-      left: 0;
-      width: 30px;
-      height: 30px;
-    }
-
-    .sidebar {
-      margin: 0;
-      width: 50px;
-      overflow: hidden;
-      background: #030848;
-      height: 100vh;
-      text-align: center;
-      position: fixed;
-      transition: width 0.3s ease-in-out;
-      color: white;
-      z-index: 3;
-    }
-
-    .sidebar ul {
-      padding: 0;
-      margin: 0;
-    }
-
-    .sidebar ul li {
-      list-style: none;
-      padding: 10px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-
-    .sidebar a {
-      text-decoration: none;
-      color: #fff;
-    }
-
-    .sidebar:hover {
-      width: 150px;
-    }
-
-    .boxContents {
-      margin-left: 50px;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-    }
-
-    .header {
-      background: #fff;
-      padding: 10px;
-      height: 50px;
-      width: 100%;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-
-    #headerSearch {
-      margin-right: 50px;
-    }
-
-    .bellBtn {
-      background: #fff;
-      border: none;
-    }
-
-    .profileIcon {
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
-    }
-
-    .icon {
-      display: flex;
-      padding-top: 20px;
-    }
-    .menu {
-      list-style: none;
-      padding: 10px;
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-    }
-  </style>
 </head>
 
 <body>
@@ -143,7 +28,7 @@
                fill="currentColor"
                class="bi bi-list"
                viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"></path>
           </svg>
         </li>
       </ul>

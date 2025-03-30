@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class MainController {
 	@GetMapping("/")
-	public String home() {
+	public String home(HttpSession session, Model model) {
+		session.getAttribute("loginId");
 		return "main/index";
 	}
 

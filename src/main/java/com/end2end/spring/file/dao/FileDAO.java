@@ -22,6 +22,10 @@ public class FileDAO {
         return mybatis.selectList("file.selectByParentsId", params);
     }
 
+    public FileDTO selectById(int id) {
+        return mybatis.selectOne("file.selectById", id);
+    }
+
     public int insert(String column, Object id) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
@@ -32,5 +36,9 @@ public class FileDAO {
 
     public void detailInsert(FileDTO dto) {
         mybatis.insert("file.detailInsert", dto);
+    }
+
+    public boolean deleteById(int id) {
+        return mybatis.delete("file.deleteById", id) > 1;
     }
 }

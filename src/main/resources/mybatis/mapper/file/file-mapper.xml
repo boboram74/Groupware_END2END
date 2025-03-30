@@ -19,6 +19,10 @@
         </choose>
     </select>
 
+    <select id="selectById" resultType="com.end2end.spring.file.dto.FileDTO">
+        SELECT * FROM FILE_DETAIL WHERE id = ${id}
+    </select>
+
     <insert id="insert">
         INSERT INTO FILES(files_id, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
         <choose>
@@ -38,4 +42,8 @@
     <insert id="detailInsert">
         INSERT INTO FILE_DETAIL VALUES (${id}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
     </insert>
+
+    <delete id="deleteById">
+        DELETE FROM FILE_DETAIL WHERE id = ${id}
+    </delete>
 </mapper>

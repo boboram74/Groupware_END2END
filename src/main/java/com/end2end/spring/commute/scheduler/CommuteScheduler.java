@@ -25,7 +25,7 @@ public class CommuteScheduler {
         System.out.println("퇴근 체크!! time:" + LocalDateTime.now());
     }
 
-    @Scheduled(cron="0 9 0 * * 1-5")
+    @Scheduled(cron="0 0 0 * * 1-5")
     public void workOffCheckFinal() {
         // TODO: 연장 근무를 포함한 전인원 퇴근 체크
         System.out.println("찐막 퇴근 체크!!! time:" + LocalDateTime.now());

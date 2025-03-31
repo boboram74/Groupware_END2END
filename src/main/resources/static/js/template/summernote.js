@@ -43,6 +43,17 @@ const summernoteSetting = (target) => {
 
                         }
                     }
+                },
+
+                onMediaDelete: function (target) {
+                    if (confirm('이미지를 삭제 하시겠습니까?')) {
+                        const deletedImageUrl = target
+                            .attr('src')
+                            .split('/')
+                            .pop()
+
+                        deleteImage(deletedImageUrl)
+                    }
                 }
             }
         };
@@ -65,4 +76,10 @@ function uploadImage(file, editor) {
     }).done(function(data) {
         $(editor).summernote('insertImage', data);
     });
+}
+
+function deleteImage(path) {
+    $.ajax({
+        url: 'file/delete/image/' + path
+    })
 }

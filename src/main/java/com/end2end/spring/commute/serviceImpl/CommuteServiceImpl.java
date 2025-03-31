@@ -24,12 +24,7 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Override
     public List<CommuteDTO> checkLate(String state) {
-        List<CommuteDTO> lateList = commuteDAO.selectByNotState(state);
-        List<SolderingDTO> dtoList = lateList.stream().map(SolderingDTO::of)
-                .collect(Collectors.toList());
-
-        solderingDAO.insertList(dtoList);
-
+        // TODO: 지각자 체크
         return null;
     }
 

@@ -1,8 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/hr/list.css">
+<link rel="stylesheet" href="/css/hr/list.css">
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
-
 
 <div class="hrContainer">
     <div class="hrHeader">
@@ -32,5 +31,5 @@
     </div>
 </div>
 
-
+<script src="/js/hr/list.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />

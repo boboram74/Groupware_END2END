@@ -12,9 +12,6 @@ div{
     width: 100%;
     height: 20%;
 }
-.hrHeader div{
-    height: 100%;
-}
 .hrHeader>.title{
     width: 100%;
     height: 40%;
@@ -22,40 +19,44 @@ div{
 .hrHeader>.add{
     width: 100%;
     height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 20px;
 }
 .hrHeader>.search{
     width: 100%;
     height: 30%;
     display: flex;
+    margin-left: 20px;
+    gap:10px;
 }
-.hrHeader>.search>.serchOption{
-    width: 30%;
+.hrHeader>.search>.searchOption{
+    width: 25%;
     height:100%;
 }
 .hrHeader>.search>.searchInput{
-    width: 60%;
+    width: 50%;
     height:100%;
 }
-.hrHeader>.search>.serchBtn{
-    width: 10%;
+.hrHeader>.search>.searchBtn{
+    width: 25%;
     height:100%;
-    margin-right: 0px;
+    padding: 20px;
 }
 .hrBody{
     width: 100%;
     height: 80%;
-}
-.hrBody div{
-    height: 100%;
     display: flex;
+    justify-content: center;
+    align-content: center;
     flex-direction: column;
 }
-.hrBody>.content{
-    width: 80%;
+.hrBody>.content {
+    width: 100%;
     height: 80%;
 }
 .hrBody>.pageNavi{
-    width: 20%;
+    width: 100%;
     height: 20%;
-    text-align: center;
 }

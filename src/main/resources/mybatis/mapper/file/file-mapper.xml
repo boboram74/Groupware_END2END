@@ -24,7 +24,7 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO FILES(files_id, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
+        INSERT INTO FILES(filesId, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
         <choose>
             <when test="column.equals('approvalId')">
                 #{id}

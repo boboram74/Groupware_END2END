@@ -19,4 +19,12 @@ public class CommuteDAO {
     public void insert(CommuteDTO dto) {
         mybatis.insert("commute.insert", dto);
     }
+
+    public List<CommuteDTO> selectEarlyLeave() {
+        return mybatis.selectList("commute.selectEarlyLeave");
+    }
+
+    public void insertAll(List<CommuteDTO> dtoList) {
+        mybatis.insert("commute.insertAll", dtoList);
+    }
 }

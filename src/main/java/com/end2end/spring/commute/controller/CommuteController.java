@@ -35,7 +35,7 @@ public class CommuteController {
     public String commute(HttpSession session, CommuteDTO dto) {
         // TODO: 출퇴근
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        dto.setEmployeeId("YBZ230710");
+        dto.setEmployeeId(employee.getEmployeeId());
 
         commuteService.insert(dto);
         return dto.getState();

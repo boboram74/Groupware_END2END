@@ -1,12 +1,14 @@
 package com.end2end.spring.employee.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class EmployeeDTO {
     private String employeeId;
     private int departmentId;

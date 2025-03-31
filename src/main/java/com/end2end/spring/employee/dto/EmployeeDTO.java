@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class EmployeeDTO {
-    private String employeeId;
+    private String id;
     private int departmentId;
     private int jobId;
     private String name;

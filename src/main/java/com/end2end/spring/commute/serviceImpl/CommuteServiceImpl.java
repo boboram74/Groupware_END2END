@@ -34,8 +34,13 @@ public class CommuteServiceImpl implements CommuteService {
     }
 
     @Override
-    public void insert(CommuteDTO dto) {
-        commuteDAO.insert(dto);
+    public void workOn(String employeeId) {
+        commuteDAO.workOn(employeeId);
+    }
+
+    @Override
+    public void workOff(String employeeId) {
+        commuteDAO.workOff(employeeId);
     }
 
     @Override
@@ -53,7 +58,7 @@ public class CommuteServiceImpl implements CommuteService {
 
         List<CommuteDTO> commuteDTOList = employeeDTOList.stream()
                 .map(employeeDTO ->
-                        CommuteDTO.builder().employeeId(employeeDTO.getEmployeeId()).build())
+                        CommuteDTO.builder().employeeId(employeeDTO.getId()).build())
                 .collect(Collectors.toList());
 
         commuteDAO.insertAll(commuteDTOList);

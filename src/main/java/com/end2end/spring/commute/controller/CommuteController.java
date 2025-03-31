@@ -37,7 +37,7 @@ public class CommuteController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
 
         CommuteDTO dto = CommuteDTO.builder()
-                .employeeId(employee.getEmployeeId())
+                .employeeId(employee.getId())
                 .state(state)
                 .build();
 

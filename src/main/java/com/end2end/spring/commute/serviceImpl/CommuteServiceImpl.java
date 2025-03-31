@@ -53,7 +53,7 @@ public class CommuteServiceImpl implements CommuteService {
 
         List<CommuteDTO> commuteDTOList = employeeDTOList.stream()
                 .map(employeeDTO ->
-                        CommuteDTO.builder().employeeId(employeeDTO.getEmployeeId()).build())
+                        CommuteDTO.builder().employeeId(employeeDTO.getId()).build())
                 .collect(Collectors.toList());
 
         commuteDAO.insertAll(commuteDTOList);

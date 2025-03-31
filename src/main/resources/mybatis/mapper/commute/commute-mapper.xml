@@ -16,9 +16,12 @@
     </select>
 
     <insert id="insertAll" parameterType="list">
-        <foreach collection="list" item="item" index="idx">
-            INSERT INTO COMMUTE(id, employeeId) VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{item.employeeId})
+        INSERT INTO COMMUTE(id, employeeId)
+        SELECT COMMUTE_ID_SEQ.NEXTVAL, A.* FROM (
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT #{item.employeeId} FROM DUAL
         </foreach>
+        ) A
     </insert>
 
     <insert id="insert">

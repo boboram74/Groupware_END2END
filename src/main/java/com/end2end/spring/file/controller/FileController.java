@@ -14,10 +14,14 @@ import java.util.List;
 @Controller
 public class FileController {
     @ResponseBody
-    @RequestMapping("/upload/image/temp")
-    public String uploadTemp(MultipartFile file) throws IOException {
+    @RequestMapping("/upload/image")
+    public String uploadTemp(MultipartFile file) {
         // TODO: summernote의 임시 이미지 파일 업로드
-        return FileUtil.uploadTempImage(file);
+        try {
+            return FileUtil.uploadTempImage(file);
+        } catch (IOException e) {
+            return e.getMessage();
+        }
     }
 
     @RequestMapping("/download")

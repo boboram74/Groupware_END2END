@@ -28,9 +28,7 @@ public class CommuteScheduler {
     
     @Scheduled(cron="0 0 0 * * ?")
     public void insertAllCommute() {
-        // TODO: 매일 자정에 미출근 체크
         commuteService.insertAll();
-        System.out.println("미출근 row 생성!! time:" + LocalDateTime.now());
     }
 
     @Scheduled(cron="0 0 0 * * 1-5")

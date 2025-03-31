@@ -6,5 +6,5 @@ public class Statics {
     public static final String WORK_OFF_CHECK_TIME = "0 10 18 * * 1-5";
 
     // 파일 입출력 경로
-    public static final String FILE_UPLOAD_PATH = "/";
+    public static final String FILE_UPLOAD_PATH = "C:/files";
 }

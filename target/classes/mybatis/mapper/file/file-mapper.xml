@@ -24,7 +24,7 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO FILES(files_id, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
+        INSERT INTO FILES(filesId, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
         <choose>
             <when test="column.equals('approvalId')">
                 #{id}
@@ -40,7 +40,7 @@
     </insert>
 
     <insert id="detailInsert">
-        INSERT INTO FILE_DETAIL VALUES (${id}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
+        INSERT INTO FILE_DETAIL VALUES (FILE_DETAIL_SEQ_ID.NEXTVAL, ${feliId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
     </insert>
 
     <delete id="deleteById">

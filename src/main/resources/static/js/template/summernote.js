@@ -5,7 +5,7 @@ const summernoteSetting = (target) => {
             placeholder : '내용을 입력하십시오',
             height : 700,
             minHeight : null, // set minimum height of editor
-            maxHeight : null, // set maximum height of editor
+            maxHeight : 300,
             lang : 'ko-KR',
             toolbar : [
                 [ 'fontname', [ 'fontname' ] ],
@@ -33,15 +33,26 @@ const summernoteSetting = (target) => {
                 onPaste : function(e) {
                     console.log(e);
 
-                    var clipboardData = e.originalEvent.clipboardData;
+                    const clipboardData = e.originalEvent.clipboardData;
                     if (clipboardData && clipboardData.items
                         && clipboardData.items.length) {
-                        var item = clipboardData.items[0];
+                        const item = clipboardData.items[0];
                         if (item.kind === 'file'
                             && item.type.indexOf('image/') !== -1) {
                             e.preventDefault();
 
                         }
+                    }
+                },
+
+                onMediaDelete: function (target) {
+                    if (confirm('이미지를 삭제 하시겠습니까?')) {
+                        const deletedImageUrl = target
+                            .attr('src')
+                            .split('/')
+                            .pop()
+
+                        deleteImage(deletedImageUrl)
                     }
                 }
             }
@@ -52,7 +63,7 @@ function uploadImage(file, editor) {
     let formData = new FormData();
     formData.append('file', file);
     $.ajax({
-        url : '/file/upload/image/temp',
+        url : '/file/upload/image',
         data : formData,
         type : 'POST',
         contentType : false,
@@ -65,4 +76,10 @@ function uploadImage(file, editor) {
     }).done(function(data) {
         $(editor).summernote('insertImage', data);
     });
+}
+
+function deleteImage(path) {
+    $.ajax({
+        url: 'file/delete/image/' + path
+    })
 }

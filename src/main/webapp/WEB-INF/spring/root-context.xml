@@ -18,7 +18,7 @@
 	<!--MyBatis 연결-->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath:/mybatis/*-mapper.xml" /> <!--MyBatis가 참조해야할 문서 연결-->
+		<property name="mapperLocations" value="classpath:/mybatis/mapper/*/*-mapper.xml" /> <!--MyBatis가 참조해야할 문서 연결-->
 		<property name="configLocation" value="classpath:/mybatis/config/mybatis-config.xml" />
  	</bean>
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">

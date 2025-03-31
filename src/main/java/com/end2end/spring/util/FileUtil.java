@@ -10,17 +10,19 @@ import java.util.List;
 import java.util.UUID;
 
 public class FileUtil {
-    private static final String FILE_PATH = "/";
-
     public static List<FileDTO> upload(String path, MultipartFile[] files) {
-        String uploadPath = FILE_PATH + path;
+        String uploadPath = Statics.FILE_UPLOAD_PATH + path;
 
         File filePath = new File(uploadPath);
 
-        boolean result = filePath.mkdir();
+        filePath.mkdir();
 
         List<FileDTO> list = new ArrayList<>();
         for (MultipartFile file : files) {
+            if (file.isEmpty()) {
+                continue;
+            }
+
             String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
             try {
                 file.transferTo(new File(uploadPath + "/" + systemFileName));
@@ -40,18 +42,18 @@ public class FileUtil {
         return list;
     }
 
-    public static boolean removeFile(String path) {
+    public static void removeFile(String path) {
         File file = new File(path);
 
         if (file.exists()) {
-            return file.delete();
+            file.delete();
         }
 
         throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
     }
 
     public static String uploadTempImage(MultipartFile file) throws IOException {
-        String uploadPath = FILE_PATH + "image/temp";
+        String uploadPath = Statics.FILE_UPLOAD_PATH + "image";
 
         File filePath = new File(uploadPath);
 
@@ -60,6 +62,6 @@ public class FileUtil {
         String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
         file.transferTo(new File(uploadPath + "/" + systemFileName));
 
-        return uploadPath + "/" + systemFileName;
+        return "/files/image/" + systemFileName;
     }
 }

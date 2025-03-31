@@ -1,0 +1,30 @@
+*{
+    box-sizing: border-box;
+}
+.hrContainer{
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    padding: 20px;
+}
+.hrHeader{
+    height: 20%;
+}
+h3{
+    margin-bottom: 30px;
+}
+.hrBody{
+    height: 80%;
+}
+.newEmployee {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+    width: 40%;
+}
+.btn{
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}

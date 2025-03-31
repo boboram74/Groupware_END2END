@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,10 +33,14 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/insert")
-    public String commute(HttpSession session, CommuteDTO dto) {
+    public String commute(HttpSession session, String state) {
         // TODO: 출퇴근
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        dto.setEmployeeId(employee.getEmployeeId());
+
+        CommuteDTO dto = CommuteDTO.builder()
+                .employeeId(employee.getEmployeeId())
+                .state(state)
+                .build();
 
         commuteService.insert(dto);
         return dto.getState();

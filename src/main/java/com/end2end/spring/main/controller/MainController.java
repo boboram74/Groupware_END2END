@@ -15,7 +15,7 @@ public class MainController {
 	public String home(HttpSession session, Model model) {
 		session.getAttribute("loginId");
 		EmployeeDTO employee = EmployeeDTO.builder()
-				.employeeId("'YBZ230710")
+				.employeeId("YBZ230710")
 				.name("예봉준")
 				.email("YBZ230710@end2end.site")
 				.role("USER")

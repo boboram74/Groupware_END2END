@@ -8,6 +8,6 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO COMMUTE VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{employeeId}, #{state})
+        INSERT INTO COMMUTE(id, employee_id, state) VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{employeeId}, #{state})
     </insert>
 </mapper>

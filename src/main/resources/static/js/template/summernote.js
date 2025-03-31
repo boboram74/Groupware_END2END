@@ -5,7 +5,7 @@ const summernoteSetting = (target) => {
             placeholder : '내용을 입력하십시오',
             height : 700,
             minHeight : null, // set minimum height of editor
-            maxHeight : 300, // set maximum height of editor
+            maxHeight : 300,
             lang : 'ko-KR',
             toolbar : [
                 [ 'fontname', [ 'fontname' ] ],

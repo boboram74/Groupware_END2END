@@ -62,6 +62,6 @@ public class FileUtil {
         String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
         file.transferTo(new File(uploadPath + "/" + systemFileName));
 
-        return uploadPath + "/" + systemFileName;
+        return "/files/image/" + systemFileName;
     }
 }

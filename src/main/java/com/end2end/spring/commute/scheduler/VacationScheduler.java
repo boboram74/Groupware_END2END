@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 
 @Component
 public class VacationScheduler {
-    @Scheduled(cron= "0 0 0 1 * ?")
+    @Scheduled(cron= "0 0 0 * * ?")
     public void workOnCheck() {
-        // TODO: 매달 연차 지급
+        // TODO: 연차 지급 확인
         System.out.println("휴가 체크!! time:" + LocalDateTime.now());
     }
 }

@@ -3,8 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="commute">
-    <select id="selectByNotState" resultType="com.end2end.spring.commute.dto.CommuteDTO">
-        SELECT * FROM COMMUTE WHERE STATE != #{state}
+    <select id="checkLate" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT *
+        FROM COMMUTE
+        WHERE
+            state = 'NOT_WORK'
+        AND
+            TRUNC(regDate) = TRUNC(SYSDATE)
     </select>
 
     <select id="selectLeaveEarly" resultType="com.end2end.spring.commute.dto.CommuteDTO">
@@ -24,7 +29,11 @@
         ) A
     </insert>
 
-    <insert id="insert">
-        INSERT INTO COMMUTE(id, employee_id, state) VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{employeeId}, #{state})
+    <update id="workOn">
+        UPDATE SET COMMUTE state = 'WORK_ON' WHERE employeeId = #{employeeId} AND TRUNC(regDate) = TRUNC(SYSDATE)  AND state='NOT_WORK';
+    </update>
+
+    <insert id="workOff">
+        INSERT INTO COMMUTE(state, employeeId) VALUES ('WORK_OFF', #{employeeId})
     </insert>
 </mapper>

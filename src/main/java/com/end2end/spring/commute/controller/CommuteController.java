@@ -31,17 +31,16 @@ public class CommuteController {
     }
 
     @ResponseBody
-    @RequestMapping("/insert")
-    public String commute(HttpSession session, String state) {
-        // TODO: 출퇴근
+    @RequestMapping("/workOn")
+    public void workOn(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        commuteService.workOn(employee.getId());
+    }
 
-        CommuteDTO dto = CommuteDTO.builder()
-                .employeeId(employee.getId())
-                .state(state)
-                .build();
-
-        commuteService.insert(dto);
-        return dto.getState();
+    @ResponseBody
+    @RequestMapping("/workOff")
+    public void workOff(HttpSession session) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        commuteService.workOff(employee.getId());
     }
 }

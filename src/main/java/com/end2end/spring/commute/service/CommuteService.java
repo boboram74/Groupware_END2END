@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface CommuteService {
     List<CommuteDTO> checkLate(String state);
-    void insert(CommuteDTO dto);
+    void workOn(String employeeId);
+    void workOff(String employeeId);
     void checkLeaveEarly();
     void insertAll();
 }

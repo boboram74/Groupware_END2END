@@ -34,8 +34,13 @@ public class CommuteServiceImpl implements CommuteService {
     }
 
     @Override
-    public void insert(CommuteDTO dto) {
-        commuteDAO.insert(dto);
+    public void workOn(String employeeId) {
+        commuteDAO.workOn(employeeId);
+    }
+
+    @Override
+    public void workOff(String employeeId) {
+        commuteDAO.workOff(employeeId);
     }
 
     @Override

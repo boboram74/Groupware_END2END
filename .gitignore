@@ -16,10 +16,17 @@ local.properties
 .classpath
 .project
 .smarttomcat
-.idea
 logs
 conf
 work
+
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
 
 src/main/webapp/config/config.properties
 

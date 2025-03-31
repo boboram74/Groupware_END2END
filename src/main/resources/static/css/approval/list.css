@@ -1,0 +1,133 @@
+
+.userInfo {
+    display: flex;
+    align-Items: center;
+    padding: 20px;
+    background-Color: #eee;
+}
+
+.userIcon {
+    width: 40px;
+    height: 40px;
+    border-Radius: 50%;
+    background-Color: white;
+    display: flex;
+    justify-Content: center;
+    align-Items: center;
+    margin-Right: 10px;
+}
+
+.userText {
+    font-Size: 18px;
+    font-Weight: bold;
+}
+
+
+.apDocumentControls {
+    display: flex;
+    justify-Content: flex-end;
+    padding: 10px 20px;
+}
+.apControls{
+    text-align:right;
+}
+.apBtnNewDoc {
+    background-Color: #6c757d;
+    color: white;
+    padding: 8px 15px;
+    border-Radius: 4px;
+    cursor: pointer;
+    margin-Right: 10px;
+}
+
+.apBtnRefresh {
+    background-Color: #ddd;
+    padding: 8px 15px;
+    border-Radius: 4px;
+    cursor: pointer;
+}
+
+.apDocumentSection {
+    margin: 20px;
+    background-Color: white;
+    border-Radius: 5px;
+    overflow: hidden;
+}
+
+.apSectionHeader {
+    padding: 15px;
+    background-Color: #f8f9fa;
+    border-Bottom: 1px solid #ddd;
+}
+
+.apSectionTitle {
+    font-Size: 16px;
+    font-Weight: bold;
+    color: #333;
+}
+
+.apDocumentTable {
+    width: 100%;
+    overflow-X: auto;
+}
+
+table {
+    width: 100%;
+    border-Collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-Align: left;
+    border-Bottom: 1px solid #eee;
+}
+
+th {
+    background-Color: #f8f9fa;
+    font-Weight: normal;
+    color: #666;
+}
+
+.colStar {
+    width: 30px;
+}
+
+
+.colDate {
+    width: 80px;
+}
+
+.writerInfo {
+    display: flex;
+    align-Items: center;
+}
+
+.writerName {
+    margin-Left: 10px;
+    font-Size: 14px;
+}
+
+.writerPosition {
+    font-Size: 12px;
+    color: #666;
+}
+.bottomButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.btnChat {
+    background-Color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-Radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-Items: center;
+}
+
+.btnChat {
+    margin-Right: 5px;
+}

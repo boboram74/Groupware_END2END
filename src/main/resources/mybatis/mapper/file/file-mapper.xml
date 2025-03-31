@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="files">
+    <select id="selectByParentsId" resultType="com.end2end.spring.file.dto.FileDTO">
+        SELECT *
+        FROM FILES
+        INNER JOIN FILE_DETAIL
+        ON FILES.ID = FILE_DETAIL.ID
+        WHERE ${column} =
+        <choose>
+            <when test="column.equals('approvalId')">
+                #{id}
+            </when>
+            <otherwise>
+                ${id}
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectById" resultType="com.end2end.spring.file.dto.FileDTO">
+        SELECT * FROM FILE_DETAIL WHERE id = ${id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO FILES(files_id, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
+        <choose>
+            <when test="column.equals('approvalId')">
+                #{id}
+            </when>
+            <otherwise>
+                ${id}
+            </otherwise>
+        </choose>
+        )
+        <selectKey keyProperty="files_id" resultType="int" order="AFTER">
+            SELECT FILES_ID_SEQ.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+
+    <insert id="detailInsert">
+        INSERT INTO FILE_DETAIL VALUES (FILE_DETAIL_SEQ_ID.NEXTVAL, ${feliId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM FILE_DETAIL WHERE id = ${id}
+    </delete>
+</mapper>

@@ -2,8 +2,17 @@ package com.end2end.spring.employee.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class EmployeeDTO {
+    private String employeeId;
+    private int departmentId;
+    private int jobId;
+    private String name;
+    private String email;
+    private String profileImg;
+    private String role;
 }

@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class CommuteServiceImpl implements CommuteService {
-    @Autowired private CommuteDAO commuteDAO;
-    @Autowired private SolderingDAO solderingDAO;
+    @Autowired
+    private CommuteDAO commuteDAO;
+    @Autowired
+    private SolderingDAO solderingDAO;
 
     @Override
     public List<CommuteDTO> checkLate(String state) {
@@ -29,6 +31,6 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Override
     public void insert(CommuteDTO dto) {
-
+        commuteDAO.insert(dto);
     }
 }

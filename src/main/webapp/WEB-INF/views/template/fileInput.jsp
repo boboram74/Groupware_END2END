@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="/css/template/fileInput.css" />
 <div class="file-form">
   <input type="file" name="files" multiple style="display: none" />

@@ -3,11 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="file">
-    <select id="selectByParentsId" resultType="com.end2end.spring.file.dto.FileDTO">
+    <select id="selectByParentsId" resultType="com.end2end.spring.file.dto.FileDetailDTO">
         SELECT *
         FROM FILES
-        INNER JOIN FILE_DETAIL
-        ON FILES.ID = FILE_DETAIL.ID
+        JOIN FILE_DETAIL
+            ON FILES.id = FILE_DETAIL.filesId
         WHERE ${column} =
         <choose>
             <when test="column.equals('approvalId')">

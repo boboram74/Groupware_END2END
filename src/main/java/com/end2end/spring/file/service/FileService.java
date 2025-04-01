@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface FileService {
     List<FileDetailDTO> selectByParentsId(FileDTO dto);
-    void deleteById(int id);
 }

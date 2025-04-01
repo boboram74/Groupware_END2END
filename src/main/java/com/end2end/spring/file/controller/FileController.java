@@ -27,7 +27,7 @@ public class FileController {
     @RequestMapping("/upload/image")
     public String uploadImage(MultipartFile file) {
         try {
-            return FileUtil.uploadTempImage(file);
+            return FileUtil.uploadImage(file);
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -36,7 +36,11 @@ public class FileController {
     @ResponseBody
     @RequestMapping("/delete/image/{path}")
     public void deleteImage(@PathVariable String path) {
-        fileUtil.removeFile(path);
+        try {
+            fileUtil.removeFile(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @RequestMapping("/download")
@@ -70,7 +74,11 @@ public class FileController {
 
     @RequestMapping("/delete/test")
     public String delete(String path) {
-        fileUtil.removeFile(path);
+        try {
+            fileUtil.removeFile(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return "redirect:/";
     }

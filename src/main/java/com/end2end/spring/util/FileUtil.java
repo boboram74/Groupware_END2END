@@ -53,17 +53,22 @@ public class FileUtil {
         }
     }
 
-    public void removeFile(String path) {
+    public void removeFile(String path) throws IOException {
         File file = new File(path);
 
-        if (file.exists()) {
-            file.delete();
+        if (!file.exists()) {
+            throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
         }
 
-        throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
+        boolean isDelete = file.delete();
+        if (!isDelete) {
+            throw new IOException("해당 경로에 파일이 존재하나, 파일 삭제에 실패했습니다.");
+        }
+
+        dao.deleteByPath(path);
     }
 
-    public static String uploadTempImage(MultipartFile file) throws IOException {
+    public static String uploadImage(MultipartFile file) throws IOException {
         String uploadPath = Statics.FILE_UPLOAD_PATH + "image";
 
         File filePath = new File(uploadPath);

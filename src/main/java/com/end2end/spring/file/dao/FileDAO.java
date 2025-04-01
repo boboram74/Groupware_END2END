@@ -28,12 +28,12 @@ public class FileDAO {
         return mybatis.insert("file.insert", dto);
     };
 
-    public void detailInsertAll(List<FileDetailDTO> dto) {
-        mybatis.insert("file.detailInsertAll", dto);
-    }
-
     public void detailInsert(FileDetailDTO dto) {
         mybatis.insert("file.detailInsert", dto);
+    }
+
+    public int deleteByPath(String path) {
+        return mybatis.delete("file.deleteByPath", path);
     }
 
     public boolean deleteById(int id) {

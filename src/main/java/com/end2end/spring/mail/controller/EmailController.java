@@ -10,9 +10,11 @@ import java.util.List;
 @RequestMapping("/email")
 @Controller
 public class EmailController {
+
     @RequestMapping("/list")
-    public void list() {
+    public String list() {
         // TODO: 모든 등록된 이메일을 출력
+        return "mail/list";
     }
     
     @RequestMapping("/{email}")

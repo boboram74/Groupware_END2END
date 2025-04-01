@@ -16,12 +16,8 @@ public class FileDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public List<FileDTO> selectByParentsId(String column, Object id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        params.put("column", column);
-
-        return mybatis.selectList("file.selectByParentsId", params);
+    public List<FileDetailDTO> selectByParentsId(FileColumnMapperDTO dto) {
+        return mybatis.selectList("file.selectByParentsId", dto);
     }
 
     public FileDTO selectById(int id) {

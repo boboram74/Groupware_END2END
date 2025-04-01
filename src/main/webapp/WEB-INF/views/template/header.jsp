@@ -145,7 +145,7 @@
         </li>
       </ul>
       <ul>
-        <li>홈</li>
+        <li><a href="/contact">연락처</a></li>
       </ul>
     </div>
 
@@ -185,7 +185,7 @@
       <input type="text" placeholder="검색" id="headerSearch"/>
       <div class="profile">
             <span class="photo">
-              <a>
+              <a href="/mypage/{employeeId}">
                 <img class="profileIcon" src="프로필이미지.jpg" />
                 <!-- 세션에서 이미지 불러오기 -->
               </a>

@@ -3,8 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="commute">
-    <select id="selectByNotState" resultType="com.end2end.spring.commute.dto.CommuteDTO">
-        SELECT * FROM COMMUTE WHERE STATE != #{state}
+    <select id="checkLate" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT *
+        FROM COMMUTE
+        WHERE
+            state = 'NOT_WORK'
+        AND
+            TRUNC(regDate) = TRUNC(SYSDATE)
     </select>
 
     <select id="selectLeaveEarly" resultType="com.end2end.spring.commute.dto.CommuteDTO">

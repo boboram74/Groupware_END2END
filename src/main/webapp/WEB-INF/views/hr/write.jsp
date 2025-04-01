@@ -1,11 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
+
 <link rel="stylesheet" href="/css/hr/write.css">
 
 <div class="hrContainer">
     <div class="hrHeader">
-        <h3>사원 추가</h3>
+        <h2>사원 추가</h2>
     </div>
     <div class="hrBody">
         <form action="/hr/insert" method="post" enctype="multipart/form-data">
@@ -35,4 +36,5 @@
 </div>
 
 <script src="/js/hr/write.js" type="text/javascript"></script>
+
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

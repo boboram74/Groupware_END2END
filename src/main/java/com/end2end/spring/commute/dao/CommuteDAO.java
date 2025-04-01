@@ -12,11 +12,23 @@ public class CommuteDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public List<CommuteDTO> selectByNotState(String state) {
-        return mybatis.selectList("commute.selectByNotState", state);
+    public void workOff(String employeeId) {
+        mybatis.insert("commute.workOff", employeeId);
     }
 
-    public void insert(CommuteDTO dto) {
-        mybatis.insert("commute.insert", dto);
+    public void workOn(String employeeId) {
+        mybatis.update("commute.workOn", employeeId);
+    }
+
+    public List<CommuteDTO> selectLate() {
+        return mybatis.selectList("commute.checkLate");
+    }
+
+    public List<CommuteDTO> selectEarlyLeave() {
+        return mybatis.selectList("commute.selectEarlyLeave");
+    }
+
+    public void insertAll(List<CommuteDTO> dtoList) {
+        mybatis.insert("commute.insertAll", dtoList);
     }
 }

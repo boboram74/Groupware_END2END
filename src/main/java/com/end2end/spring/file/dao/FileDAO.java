@@ -1,6 +1,8 @@
 package com.end2end.spring.file.dao;
 
+import com.end2end.spring.file.dto.FileColumnMapperDTO;
 import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.dto.FileDetailDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,13 +28,13 @@ public class FileDAO {
         return mybatis.selectOne("file.selectById", id);
     }
 
-    public int insert(String column, Object id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        params.put("column", column);
-
-        return mybatis.insert("file.insert", params);
+    public int insert(FileColumnMapperDTO dto) {
+        return mybatis.insert("file.insert", dto);
     };
+
+    public void detailInsertAll(List<FileDetailDTO> dto) {
+        mybatis.insert("file.detailInsertAll", dto);
+    }
 
     public void detailInsert(FileDTO dto) {
         mybatis.insert("file.detailInsert", dto);

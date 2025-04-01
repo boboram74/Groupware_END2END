@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="files">
+<mapper namespace="file">
     <select id="selectByParentsId" resultType="com.end2end.spring.file.dto.FileDTO">
         SELECT *
         FROM FILES
@@ -24,7 +24,7 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO FILES(filesId, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
+        INSERT INTO FILES(id, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
         <choose>
             <when test="column.equals('approvalId')">
                 #{id}
@@ -34,13 +34,22 @@
             </otherwise>
         </choose>
         )
-        <selectKey keyProperty="files_id" resultType="int" order="AFTER">
+        <selectKey keyProperty="filesId" resultType="int" order="AFTER">
             SELECT FILES_ID_SEQ.CURRVAL FROM DUAL
         </selectKey>
     </insert>
 
     <insert id="detailInsert">
         INSERT INTO FILE_DETAIL VALUES (FILE_DETAIL_SEQ_ID.NEXTVAL, ${feliId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
+    </insert>
+
+    <insert id="detailInsertAll">
+        INSERT INTO FILE_DETAIL(id, originFileName, systemFileName, path, fileSize)
+        SELECT FILE_DETAIL_SEQ_ID.NEXTVAL, A* FROM (
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT ${filesId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize} FROM DUAL
+        </foreach>z
+        ) A
     </insert>
 
     <delete id="deleteById">

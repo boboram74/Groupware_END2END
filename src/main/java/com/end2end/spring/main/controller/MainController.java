@@ -15,15 +15,17 @@ public class MainController {
 	public String home(HttpSession session, Model model) {
 		session.getAttribute("loginId");
 		EmployeeDTO employee = EmployeeDTO.builder()
-				.id("YBZ230710")
-				.name("예봉준")
-				.email("YBZ230710@end2end.site")
+				.id("21092011")
+				.name("오호정")
+				.email("21092011@end2end.site")
 				.role("USER")
 				.profileImg("https://picsum.photos/200/200")
-				.departmentId(13)
-				.jobId(5)
+				.departmentId(1)
+				.jobId(4)
 				.build();
 		session.setAttribute("employee", employee);
+
+		model.addAttribute("title", "내용");
 
 		return "main/index";
 	}

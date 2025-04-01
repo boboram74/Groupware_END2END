@@ -12,6 +12,7 @@
         <div>
             <form action="file/upload/test" method="post" enctype="multipart/form-data">
                 <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
+                <input type="hidden" name="id" value="1">
                 <textarea id="contents"></textarea>
                 <button>submit</button>
             </form>

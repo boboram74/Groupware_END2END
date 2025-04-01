@@ -1,6 +1,7 @@
 package com.end2end.spring.util;
 
 import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.dto.FileDetailDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -10,14 +11,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class FileUtil {
-    public static List<FileDTO> upload(String path, MultipartFile[] files) {
+    public static List<FileDetailDTO> upload(MultipartFile[] files, int filesId, String path) {
         String uploadPath = Statics.FILE_UPLOAD_PATH + path;
 
         File filePath = new File(uploadPath);
 
         filePath.mkdir();
 
-        List<FileDTO> list = new ArrayList<>();
+        List<FileDetailDTO> list = new ArrayList<>();
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
                 continue;
@@ -26,17 +27,18 @@ public class FileUtil {
             String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
             try {
                 file.transferTo(new File(uploadPath + "/" + systemFileName));
+
+                FileDetailDTO fileDTO = FileDetailDTO.builder()
+                        .filesId(filesId)
+                        .originFileName(file.getOriginalFilename())
+                        .systemFileName(systemFileName)
+                        .fileSize(file.getSize())
+                        .path(path + "/" + systemFileName)
+                        .build();
+                list.add(fileDTO);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-            FileDTO fileDTO = FileDTO.builder()
-                    .originFileName(file.getOriginalFilename())
-                    .systemFileName(systemFileName)
-                    .fileSize(file.getSize())
-                    .path(path + "/" + systemFileName)
-                    .build();
-            list.add(fileDTO);
         }
 
         return list;

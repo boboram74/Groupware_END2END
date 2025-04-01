@@ -1,18 +1,26 @@
 package com.end2end.spring.util;
 
-import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.dao.FileDAO;
 import com.end2end.spring.file.dto.FileDetailDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Component
 public class FileUtil {
-    public static List<FileDetailDTO> upload(MultipartFile[] files, int filesId, String path) {
-        String uploadPath = Statics.FILE_UPLOAD_PATH + path;
+    @Autowired
+    private FileDAO dao;
+
+    public List<FileDetailDTO> upload(MultipartFile[] files, int filesId, String path) {
+        String today = LocalDate.now().toString();
+        String uploadPath = Statics.FILE_UPLOAD_PATH + path + "/" + today;
 
         File filePath = new File(uploadPath);
 
@@ -27,15 +35,14 @@ public class FileUtil {
             String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
             try {
                 file.transferTo(new File(uploadPath + "/" + systemFileName));
-
-                FileDetailDTO fileDTO = FileDetailDTO.builder()
+                FileDetailDTO dto = FileDetailDTO.builder()
                         .filesId(filesId)
                         .originFileName(file.getOriginalFilename())
                         .systemFileName(systemFileName)
                         .fileSize(file.getSize())
                         .path(path + "/" + systemFileName)
                         .build();
-                list.add(fileDTO);
+                dao.detailInsert(dto);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -44,7 +51,7 @@ public class FileUtil {
         return list;
     }
 
-    public static void removeFile(String path) {
+    public void removeFile(String path) {
         File file = new File(path);
 
         if (file.exists()) {

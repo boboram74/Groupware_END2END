@@ -36,7 +36,7 @@ public class FileDAO {
         mybatis.insert("file.detailInsertAll", dto);
     }
 
-    public void detailInsert(FileDTO dto) {
+    public void detailInsert(FileDetailDTO dto) {
         mybatis.insert("file.detailInsert", dto);
     }
 

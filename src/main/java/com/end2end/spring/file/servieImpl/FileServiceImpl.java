@@ -18,6 +18,9 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private FileDAO dao;
 
+    @Autowired
+    private FileUtil fileUtil;
+
     @Override
     public List<FileDTO> selectByParentsId(String column, Object id) {
         return dao.selectByParentsId(column, id);
@@ -30,7 +33,7 @@ public class FileServiceImpl implements FileService {
 
         int filesId = dao.insert(fileColumnMapperDTO);
 
-        List<FileDetailDTO> dtoList = FileUtil.upload(files, fileColumnMapperDTO.getFilesId(), fileColumnMapperDTO.getPath());
+        List<FileDetailDTO> dtoList = fileUtil.upload(files, fileColumnMapperDTO.getFilesId(), fileColumnMapperDTO.getPath());
         dao.detailInsertAll(dtoList);
     }
 
@@ -40,7 +43,7 @@ public class FileServiceImpl implements FileService {
         // FileDetailDTO dto = dao.selectById(id);
 
         if (dao.deleteById(id)) {
-            FileUtil.removeFile("");
+            fileUtil.removeFile("");
         }
     }
 }

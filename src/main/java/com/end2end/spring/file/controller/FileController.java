@@ -19,6 +19,9 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private FileUtil fileUtil;
+
     @ResponseBody
     @RequestMapping("/upload/image")
     public String uploadImage(MultipartFile file) {
@@ -32,7 +35,7 @@ public class FileController {
     @ResponseBody
     @RequestMapping("/delete/image/{path}")
     public void deleteImage(@PathVariable String path) {
-        FileUtil.removeFile(path);
+        fileUtil.removeFile(path);
     }
 
     @RequestMapping("/download")
@@ -52,7 +55,7 @@ public class FileController {
 
     @RequestMapping("/delete/test")
     public String delete(String path) {
-        FileUtil.removeFile(path);
+        fileUtil.removeFile(path);
 
         return "redirect:/";
     }

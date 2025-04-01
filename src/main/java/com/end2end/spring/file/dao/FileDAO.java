@@ -28,7 +28,7 @@ public class FileDAO {
         return mybatis.selectOne("file.selectById", id);
     }
 
-    public int insert(FileColumnMapperDTO dto) {
+    public int insert(FileDTO dto) {
         return mybatis.insert("file.insert", dto);
     };
 

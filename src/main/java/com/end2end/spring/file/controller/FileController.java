@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @RequestMapping("/file")
 @Controller
@@ -48,7 +47,7 @@ public class FileController {
         FileDTO dto = FileDTO.builder()
                 .boardId(id)
                 .build();
-        fileService.insert(files, dto);
+        fileUtil.upload(files, dto);
 
         return "redirect:/";
     }

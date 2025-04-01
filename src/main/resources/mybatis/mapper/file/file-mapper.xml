@@ -44,7 +44,7 @@
     </insert>
 
     <insert id="detailInsertAll">
-        INSERT INTO FILE_DETAIL(id, filesId, originFileName, systemFileName, path, fileSize)
+        INSERT INTO FILE_DETAIL(id, originFileName, systemFileName, path, fileSize)
         SELECT FILE_DETAIL_SEQ_ID.NEXTVAL, A* FROM (
         <foreach collection="list" item="item" separator="UNION ALL">
             SELECT ${item.filesId}, #{item.originFileName}, #{item.systemFileName}, #{item.path}, ${item.fileSize} FROM DUAL

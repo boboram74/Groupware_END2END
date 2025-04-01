@@ -1,6 +1,7 @@
 package com.end2end.spring.util;
 
 import com.end2end.spring.file.dao.FileDAO;
+import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,8 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -18,15 +17,16 @@ public class FileUtil {
     @Autowired
     private FileDAO dao;
 
-    public List<FileDetailDTO> upload(MultipartFile[] files, int filesId, String path) {
+    public void upload(MultipartFile[] files, FileDTO dto) {
         String today = LocalDate.now().toString();
-        String uploadPath = Statics.FILE_UPLOAD_PATH + path + "/" + today;
+        String uploadPath = Statics.FILE_UPLOAD_PATH + dto.getPath() + "/" + today;
 
         File filePath = new File(uploadPath);
 
         filePath.mkdir();
 
-        List<FileDetailDTO> list = new ArrayList<>();
+        dao.insert(dto);
+
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
                 continue;
@@ -35,20 +35,18 @@ public class FileUtil {
             String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
             try {
                 file.transferTo(new File(uploadPath + "/" + systemFileName));
-                FileDetailDTO dto = FileDetailDTO.builder()
-                        .filesId(filesId)
+                FileDetailDTO fileDetailDTO = FileDetailDTO.builder()
+                        .filesId(dto.getId())
                         .originFileName(file.getOriginalFilename())
                         .systemFileName(systemFileName)
                         .fileSize(file.getSize())
-                        .path(path + "/" + systemFileName)
+                        .path(dto.getPath() + "/" + systemFileName)
                         .build();
-                dao.detailInsert(dto);
+                dao.detailInsert(fileDetailDTO);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-
-        return list;
     }
 
     public void removeFile(String path) {

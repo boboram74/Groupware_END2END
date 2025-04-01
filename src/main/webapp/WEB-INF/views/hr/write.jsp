@@ -25,7 +25,6 @@
                 <div class="address1">주소 : <input type="text" name="address1"></div>
                 <div class="address2">상세주소 : <input type="text" name="address2"></div>
                 <div class="dob">생년월일 : <input type="date" name="dob"></div>
-
             </div>
         </form>
         <div class="btn">

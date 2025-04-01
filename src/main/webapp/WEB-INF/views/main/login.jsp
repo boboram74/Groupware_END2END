@@ -11,11 +11,11 @@
 
 <body>
 <form action="/employee/login" method="post">
-  <div class="container">
-    <div class="header">
+  <div class="hrContainer">
+    <div class="hrHeader">
       <img src="로그인로고.PNG">
     </div>
-    <div class="body">
+    <div class="hrBody">
       <input type="text" name="id" id="id" placeholder="사번 입력"><br>
       <input type="password" name="pw" id="pw" placeholder="패스워드 입력"><br>
       <input type="checkbox" id="check"> 사번 저장하기<br>

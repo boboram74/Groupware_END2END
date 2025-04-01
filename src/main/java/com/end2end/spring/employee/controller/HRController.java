@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/hr")
 @Controller
@@ -34,7 +35,7 @@ public class HRController {
     }
 
     @RequestMapping("/insert")
-    public void insert(EmployeeDetailDTO dto) {
+    public void insert(EmployeeDetailDTO dto, MultipartFile file) {
         // TODO: 직원 데이터 추가
     }
 

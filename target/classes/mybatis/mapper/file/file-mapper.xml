@@ -46,4 +46,16 @@
     <delete id="deleteById">
         DELETE FROM FILE_DETAIL WHERE id = ${id}
     </delete>
+
+    <delete id="deleteAll">
+        DELETE FROM FILES WHERE ${column} =
+        <choose>
+            <when test="column.equals('approvalId')">
+                #{id}
+            </when>
+            <otherwise>
+                ${id}
+            </otherwise>
+        </choose>
+    </delete>
 </mapper>

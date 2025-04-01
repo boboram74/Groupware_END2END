@@ -6,7 +6,11 @@
 <link rel="stylesheet" href="/css/hr/chart.css">
 
 <div>
-    <div class="chartContainer">
+    <div class="hrContainer">
+        <div class="hrHeader">
+            <h2>직원 관리 DashBoard</h2>
+        </div>
+        <div class="hrBody">
         <div class="chartUp">
             <div class="chartLeft">
                 <canvas id="totalEmployeesChart"></canvas>
@@ -22,6 +26,7 @@
             <div class="chartRight">
                 <canvas id="horizontalBarChart"></canvas>
             </div>
+        </div>
         </div>
     </div>
 </div>

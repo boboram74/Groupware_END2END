@@ -1,6 +1,7 @@
 package com.end2end.spring.util;
 
 import com.end2end.spring.file.dao.FileDAO;
+import com.end2end.spring.file.dto.FileColumnMapperDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,17 @@ public class FileUtil {
     private FileDAO dao;
 
     public void upload(MultipartFile[] files, FileDTO dto) {
+        FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
+
         String today = LocalDate.now().toString();
-        String uploadPath = Statics.FILE_UPLOAD_PATH + dto.getPath() + "/" + today;
+        String uploadPath = Statics.FILE_UPLOAD_PATH + fileColumnMapperDTO.getPath() + "/" + today;
+        String mappedPath = Statics.MAPPED_FILE_UPLOAD_PATH + fileColumnMapperDTO.getPath() + "/" + today;
 
         File filePath = new File(uploadPath);
 
         filePath.mkdir();
 
-        dao.insert(dto);
+        dao.insert(fileColumnMapperDTO);
 
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
@@ -36,11 +40,11 @@ public class FileUtil {
             try {
                 file.transferTo(new File(uploadPath + "/" + systemFileName));
                 FileDetailDTO fileDetailDTO = FileDetailDTO.builder()
-                        .filesId(dto.getId())
+                        .filesId(fileColumnMapperDTO.getFilesId())
                         .originFileName(file.getOriginalFilename())
                         .systemFileName(systemFileName)
                         .fileSize(file.getSize())
-                        .path(dto.getPath() + "/" + systemFileName)
+                        .path(mappedPath + "/" + systemFileName)
                         .build();
                 dao.detailInsert(fileDetailDTO);
             } catch (IOException e) {

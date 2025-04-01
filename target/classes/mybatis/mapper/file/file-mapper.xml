@@ -24,19 +24,28 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO FILES(id, messageId, boardId, approvalId, reportId) VALUES (FILES_ID_SEQ.NEXTVAL, ${messageId}, ${boardId}, #{approvalId}, ${reportId}, ${mailId})
+        INSERT INTO FILES(id, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
+        <choose>
+            <when test="column.equals('approvalId')">
+                #{id}
+            </when>
+            <otherwise>
+                ${id}
+            </otherwise>
+        </choose>
         )
-        <selectKey keyProperty="id" resultType="int" order="AFTER">
+        <selectKey keyProperty="filesId" resultType="int" order="AFTER">
             SELECT FILES_ID_SEQ.CURRVAL FROM DUAL
         </selectKey>
     </insert>
 
     <insert id="detailInsert">
-        INSERT INTO FILE_DETAIL VALUES (FILE_DETAIL_SEQ_ID.NEXTVAL, ${fliesId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
+        INSERT INTO FILE_DETAIL(id, filesId, originFileName, systemFileName, path, fileSize)
+        VALUES (FILE_DETAIL_ID_SEQ.NEXTVAL, ${filesId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
     </insert>
 
     <insert id="detailInsertAll">
-        INSERT INTO FILE_DETAIL(id, filesId, originFileName, systemFileName, path, fileSize)
+        INSERT INTO FILE_DETAIL(id, originFileName, systemFileName, path, fileSize)
         SELECT FILE_DETAIL_SEQ_ID.NEXTVAL, A* FROM (
         <foreach collection="list" item="item" separator="UNION ALL">
             SELECT ${item.filesId}, #{item.originFileName}, #{item.systemFileName}, #{item.path}, ${item.fileSize} FROM DUAL

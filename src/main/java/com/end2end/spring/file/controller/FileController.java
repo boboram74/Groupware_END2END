@@ -45,7 +45,7 @@ public class FileController {
     @RequestMapping("/upload/test")
     public String test(MultipartFile[] files, int id) {
         FileDTO dto = FileDTO.builder()
-                .boardId(id)
+                .approvalId(String.valueOf(id))
                 .build();
         fileUtil.upload(files, dto);
 

@@ -29,7 +29,7 @@ public class FileServiceImpl implements FileService {
     @Transactional
     @Override
     public void insert(MultipartFile[] files, FileDTO dto) {
-        dao.insert(dto);
+        //dao.insert(dto);
 
         //List<FileDetailDTO> dtoList = fileUtil.upload(files, dto.getId(), fileColumnMapperDTO.getPath());
         //dao.detailInsertAll(dtoList);

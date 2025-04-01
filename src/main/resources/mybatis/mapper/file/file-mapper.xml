@@ -40,7 +40,8 @@
     </insert>
 
     <insert id="detailInsert">
-        INSERT INTO FILE_DETAIL VALUES (FILE_DETAIL_SEQ_ID.NEXTVAL, ${feliId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
+        INSERT INTO FILE_DETAIL(id, filesId, originFileName, systemFileName, path, fileSize)
+        VALUES (FILE_DETAIL_ID_SEQ.NEXTVAL, ${filesId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
     </insert>
 
     <insert id="detailInsertAll">

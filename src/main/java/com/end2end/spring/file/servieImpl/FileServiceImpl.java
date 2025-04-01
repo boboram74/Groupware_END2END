@@ -1,7 +1,9 @@
 package com.end2end.spring.file.servieImpl;
 
 import com.end2end.spring.file.dao.FileDAO;
+import com.end2end.spring.file.dto.FileColumnMapperDTO;
 import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -24,22 +25,22 @@ public class FileServiceImpl implements FileService {
 
     @Transactional
     @Override
-    public void insert(MultipartFile[] files, String column, Object parentId) {
-        int id = dao.insert(column, parentId);
+    public void insert(MultipartFile[] files, FileDTO dto) {
+        FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
 
-        List<FileDTO> dtoList = FileUtil.upload(column, files);
-        dtoList.forEach(dto -> {
-            dto.setId(id);
-        });
+        int filesId = dao.insert(fileColumnMapperDTO);
+
+        List<FileDetailDTO> dtoList = FileUtil.upload(files, fileColumnMapperDTO.getFilesId(), fileColumnMapperDTO.getPath());
+        dao.detailInsertAll(dtoList);
     }
 
     @Transactional
     @Override
     public void deleteById(int id) {
-        FileDTO dto = dao.selectById(id);
+        // FileDetailDTO dto = dao.selectById(id);
 
         if (dao.deleteById(id)) {
-            FileUtil.removeFile(dto.getPath());
+            FileUtil.removeFile("");
         }
     }
 }

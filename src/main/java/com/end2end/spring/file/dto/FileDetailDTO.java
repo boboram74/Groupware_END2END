@@ -10,12 +10,12 @@ import oracle.sql.TIMESTAMP;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FileDTO {
+public class FileDetailDTO {
     private int id;
-    private int messageId;
-    private int boardId;
-    private String approvalId;
-    private int reportId;
-    private int mailId;
-    private int noticeId;
+    private int filesId;
+    private String originFileName;
+    private String systemFileName;
+    private String path;
+    private long fileSize;
+    private TIMESTAMP regDate;
 }

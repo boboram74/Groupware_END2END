@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FileService {
     List<FileDTO> selectByParentsId(String column, Object id);
-    void insert(MultipartFile[] files, String column, Object parentId);
+    void insert(MultipartFile[] files, FileDTO dto);
     void deleteById(int id);
 }

@@ -30,7 +30,7 @@
     </insert>
 
     <update id="workOn">
-        UPDATE SET COMMUTE state = 'WORK_ON' WHERE employeeId = #{employeeId} AND TRUNC(regDate) = TRUNC(SYSDATE)  AND state='NOT_WORK';
+        UPDATE COMMUTE SET state = 'WORK_ON', regDate = SYSDATE WHERE employeeId = #{employeeId} AND TRUNC(regDate) = TRUNC(SYSDATE)  AND state='NOT_WORK';
     </update>
 
     <insert id="workOff">

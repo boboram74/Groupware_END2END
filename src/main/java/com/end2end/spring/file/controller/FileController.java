@@ -1,7 +1,9 @@
 package com.end2end.spring.file.controller;
 
 import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.util.FileUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,9 @@ import java.util.List;
 @RequestMapping("/file")
 @Controller
 public class FileController {
+    @Autowired
+    private FileService fileService;
+
     @ResponseBody
     @RequestMapping("/upload/image")
     public String uploadImage(MultipartFile file) {
@@ -36,12 +41,11 @@ public class FileController {
     }
 
     @RequestMapping("/upload/test")
-    public String test(MultipartFile[] files) {
-        List<FileDTO> dto = FileUtil.upload("image/test", files);
-
-        for (FileDTO fileDTO : dto) {
-            System.out.println(fileDTO.getSystemFileName());
-        }
+    public String test(MultipartFile[] files, int id) {
+        FileDTO dto = FileDTO.builder()
+                .boardId(id)
+                .build();
+        fileService.insert(files, dto);
 
         return "redirect:/";
     }

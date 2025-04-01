@@ -12,8 +12,8 @@
 	<annotation-driven />
 
 	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/css/**" location="classpath:/static/css/" />
-	<resources mapping="/js/**" location="classpath:/static/js/" />
+	<resources mapping="/css/**" location="/resources/static/css/" />
+	<resources mapping="/js/**" location="/resources/static/js/" />
 	<resources mapping="/image/**" location="/resources/image/" />
 	<resources mapping="/files/**" location="file:/C:/files/" />
 

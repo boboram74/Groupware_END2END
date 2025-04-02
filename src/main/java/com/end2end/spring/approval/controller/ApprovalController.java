@@ -1,21 +1,39 @@
 package com.end2end.spring.approval.controller;
 
 import com.end2end.spring.approval.dto.ApprovalDTO;
+import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.dto.TempApprovalDTO;
+import com.end2end.spring.approval.service.ApprovalService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/approval")
 @Controller
 public class ApprovalController {
 
+    @Autowired
+    public ApprovalService approvalService;
+
     @RequestMapping("/list")
     public String toList(Model model) {
-        // TODO: 모든 전자 결재를 list.jsp에 출력
+        List<ApprovalDTO> waitingList = approvalService.selectByState("대기중");
+        List<ApprovalDTO> goingList = approvalService.selectByState("진행중");
+        List<ApprovalDTO> completedList = approvalService.selectByState("완료");
+
+        model.addAttribute("waitingList", waitingList);
+        model.addAttribute("goingList", goingList);
+        model.addAttribute("completedList", completedList);
+
         return "approval/list";
     }
+
+
     @RequestMapping("/list/{employeeId}")
     public String toListEmployee(@PathVariable String employeeId, Model model) {
         // TODO: 해당 사원의 모든 전자결재를 list.jsp에 출력
@@ -48,7 +66,7 @@ public class ApprovalController {
 
     @RequestMapping("/write")
     public String toWrite(Model model) {
-        // TODO: 전자 결재 입력폼으로 이동
+
         return "approval/write";
     }
 
@@ -59,7 +77,7 @@ public class ApprovalController {
     }
 
     @RequestMapping("/insert")
-    public void insert(ApprovalDTO dto, Model model) {
+    public void insert(FileDTO fdto, ApprovalDTO adto, List<String> apperoverId, Model model) {
         // TODO: 전재 결재 입력
     }
 

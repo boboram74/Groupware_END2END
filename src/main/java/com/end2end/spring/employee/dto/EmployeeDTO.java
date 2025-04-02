@@ -17,4 +17,9 @@ public class EmployeeDTO {
     private String email;
     private String profileImg;
     private String role;
+<<<<<<< HEAD
 }
+=======
+    private String jobName;
+}
+>>>>>>> bfacc3d5c379845129c6291328b1909a3b594908

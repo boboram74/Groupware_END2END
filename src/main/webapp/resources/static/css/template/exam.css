@@ -7,6 +7,7 @@
     height: 100vh;
     margin: auto;
     padding: 10px;
+    overflow-y: scroll;
 }
 .mainHeader{
     width: 100%;
@@ -40,11 +41,6 @@
 }
 .search div {
     margin-left: 7px;
-}
-.searchOption{
-    width: 40%;
-    height:100%;
-    padding: 10px;
 }
 #searchOption{
     width: 100%;

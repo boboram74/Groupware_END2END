@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="file">
     <select id="selectByParentsId" resultType="com.end2end.spring.file.dto.FileDetailDTO">
-        SELECT *
+        SELECT FILE_DETAIL.*
         FROM FILES
         JOIN FILE_DETAIL
             ON FILES.id = FILE_DETAIL.filesId
@@ -19,7 +19,7 @@
         </choose>
     </select>
 
-    <select id="selectById" resultType="com.end2end.spring.file.dto.FileDTO">
+    <select id="selectById" resultType="com.end2end.spring.file.dto.FileDetailDTO">
         SELECT * FROM FILE_DETAIL WHERE id = ${id}
     </select>
 
@@ -44,6 +44,7 @@
         VALUES (FILE_DETAIL_ID_SEQ.NEXTVAL, ${filesId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
     </insert>
 
+<<<<<<< HEAD
     <delete id="deleteById">
         DELETE FROM FILE_DETAIL WHERE id = ${id}
     </delete>
@@ -53,6 +54,13 @@
     </delete>
 
     <delete id="deleteAll">
+=======
+    <delete id="deleteDetailByPath">
+        DELETE FROM FILE_DETAIL WHERE path = #{path}
+    </delete>
+
+    <delete id="deleteById">
+>>>>>>> bfacc3d5c379845129c6291328b1909a3b594908
         DELETE FROM FILES WHERE ${column} =
         <choose>
             <when test="column.equals('approvalId')">

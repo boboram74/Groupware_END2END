@@ -15,4 +15,12 @@ public class EmployeeDAO {
     public List<EmployeeDTO> selectAll() {
         return mybatis.selectList("employee.selectAll");
     }
+
+    public void insert(EmployeeDTO dto) {
+        mybatis.insert("employee.insert", dto);
+    }
+
+    public List<EmployeeDTO> selectByDepartmentId(int departmentId) {
+        return mybatis.selectList("employee.selectByDepartmentId", departmentId);
+    }
 }

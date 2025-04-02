@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="stylesheet" href="/css/approval/draft.css">
     <script src="/js/summernote/summernote-lite.js"></script>
@@ -26,21 +25,23 @@
                 <div id="departments1">
                     <label for="selector">부서 목록</label>
                     <select id="selector" onchange="employees(this.value)">
-                        <option>부서명</option>
-                        <option value="1">인사</option>
-                        <option value="2">경영</option>
-                        <option value="3">공무</option>
+                        <option>부서</option>
+                        <option value="1">경영</option>
+                        <option value="2">인사</option>
+                        <option value="3">총무</option>
+                        <option value="4">운영지원</option>
+                        <option value="5">연구</option>
+                        <option value="6">사장</option>
                     </select>
                 </div>
-
-                <div ondrop="drop(e)" ondragover="allowDrop(e)"></div>
             </div>
-
         </div>
 
         <div>
             <h3>결재선</h3>
-            <div id="approvalLine" ondrop="drop(e)" ondragover="allowDrop(e)"></div>
+            <div id="approvalLine" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+            </div>
         </div>
     </div>
     <div>
@@ -48,7 +49,6 @@
         <button id="closeModal">닫기</button>
     </div>
 </div>
-
 
 <form action="/approval/insert">
     <div class="container">
@@ -62,32 +62,33 @@
             <div class="informBox">
                 <div class="employeeNameBox">
                     <div class="employee">작성자</div>
-                    <div id="name">임근한</div>
+                    <div id="name">${employee.name}</div>
                 </div>
                 <div class="sysdateBox">
                     <div class="sysdate">기안 일자</div>
-                    <div id="date">오늘</div>
+                    <div class="date"></div>
                 </div>
                 <div class="positionsBox">
                     <div class="employeePosition">직위</div>
-                    <div id="positions">인턴</div>
+                    <div id="positions">${employee.jobName}</div>
                 </div>
             </div>
 
             <div class="approvalBox">
-                <div class="lineBox">
+                <div class="lineBox" id="lineBox">
                     <div class="line">
-                        <div class="linePositions">인턴</div>
-                        <div class="lineEmployeeName">임근한</div>
-                        <div class="signDate">2025.03.28</div>
+                        <div class="linePositions">${employee.jobName}</div>
+                        <div class="lineEmployeeName">${employee.name}</div>
+                        <div class="date"></div>
+                        <input type="hidden" name="employeeId" value="sdf" />
                     </div>
-                    <input type="hidden" name="approver" value="1231231">
                 </div>
                 <div class="addBox">
                     <button type="button" id="add">결재선 추가</button>
                 </div>
             </div>
         </div>
+
         <div class="body">
             <div class="titleBox">
                 <input type="text" id="title" name="title">
@@ -103,8 +104,60 @@
         </div>
     </div>
 </form>
+
 <script src="/js/template/summernote.js" type="text/javascript"></script>
 <script>
+    window.onload = function() {
+        const date = new Date();
+        $('.date').html(date.toLocaleDateString());
+    }
+    const approvalList = [];
+
+    $('#addApproval').on('click', function () {
+        const lineBox = $('#lineBox');
+        const approvalLine = $('#approvalLine');
+
+        approvalList.forEach(employee => {
+
+            if ($('#lineBox').find(`#${employee.name}`).length > 0) {
+                return;
+            }
+
+            const div = makeEmployee(employee);
+            lineBox.append(div);
+        });
+        $('#approvalLine').data("");
+        $('.modalContainer').fadeOut();
+        $('.overlay').fadeOut();
+    });
+
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.textContent);
+
+    }
+
+
+    function drop(event) {
+        event.preventDefault();
+        let employee = JSON.parse(event.dataTransfer.getData("application/json"));
+        const exists = approvalList.some(emp => emp.id === employee.id);
+        if (exists) {
+            alert("이미 추가된 사원입니다.");
+            return;
+        }
+        if (employee) {
+            $('#' + employee.id).remove();
+            const div = makeEmployee(employee);
+            $('#approvalLine').append(div);
+            approvalList.push(employee);
+        }
+
+    }
 
     $('#add').on('click', function () {
         $('.modalContainer').fadeIn();
@@ -112,53 +165,29 @@
     });
 
     $('#closeModal').on('click', function () {
+        $('#approvalLine').val("");
         $('.modalContainer').fadeOut();
         $('.overlay').fadeOut();
     });
-
 
     $('#contents').summernote({
         height: 300,
         lang: 'ko-KR'
     });
 
-
-    function allowDrop(e) {
-        e.preventDefault();
-    }
-
-    function drag(e) {
-        e.dataTransfer.setData("text", e.target.textContent);
-    }
-
-    function drop(e) {
-        e.preventDefault();
-        let data = e.dataTransfer.getData("text");
-        let div = document.createElement("div");
-        div.className = "employee";
-        div.textContent = data;
-        div.draggable = true;
-        div.ondragstart = drag;
-        e.target.appendChild(div);
-    }
-
     function employees(departmentId) {
         $.ajax({
             url: '/employee/department/' + departmentId,
             type: 'GET',
             dataType: 'json',
-            success: function(response) {
-                console.log(response);
+            success: function (response) {
                 let employeesHtml = '';
+                $('#employees').find('div:not(#departments1)').remove();
                 if (response.length === 0) {
                     employeesHtml = "<p>해당 부서에 사원이 없습니다.</p>";
                 } else {
-                    response.forEach(function(employee) {
-                        console.log(employee);
-
-                        const div = $('<div>').addClass("employee").attr('draggable', true);
-                        div.append($("<span>").addClass("employee-name").html(employee.name+ " : "+employee.jobname ));
-                        console.log(div);
+                    response.forEach(function (employee) {
+                        const div = makeEmployee(employee)
 
                         $('#employees').append(div);
                     });
@@ -166,9 +195,18 @@
             }
         });
     }
+    function makeEmployee(employee){
+        const div = $('<div>').addClass("employee").attr('draggable', true).attr('id', employee.id);
+        div.append($("<span>").addClass("jobName").html(employee.jobName));
+        $("<span>").html(":")
+        div.append($("<span>").addClass("name").html(employee.name));
 
+        div.on('dragstart', function(event) {
+            event.originalEvent.dataTransfer.setData("application/json", JSON.stringify(employee));
+        })
 
-
+        return div;
+    }
 
 </script>
 

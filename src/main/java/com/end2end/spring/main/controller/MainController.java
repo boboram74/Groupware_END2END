@@ -22,6 +22,7 @@ public class MainController {
 				.profileImg("https://picsum.photos/200/200")
 				.departmentId(1)
 				.jobId(4)
+				.jobName("사원")
 				.build();
 		session.setAttribute("employee", employee);
 

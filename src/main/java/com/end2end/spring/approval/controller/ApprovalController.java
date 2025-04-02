@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequestMapping("/approval")
@@ -65,8 +66,10 @@ public class ApprovalController {
     }
 
     @RequestMapping("/write")
-    public String toWrite(Model model) {
+    public String toWrite(HttpSession session, Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
 
+        model.addAttribute("employee", employee);
         return "approval/write";
     }
 

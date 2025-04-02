@@ -20,9 +20,6 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-    @Autowired
-    private FileUtil fileUtil;
-
     @ResponseBody
     @RequestMapping("/upload/image")
     public String uploadImage(MultipartFile file) {
@@ -36,11 +33,7 @@ public class FileController {
     @ResponseBody
     @RequestMapping("/delete/image/{path}")
     public void deleteImage(@PathVariable String path) {
-        try {
-            fileUtil.removeFile(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        // TODO: 이미지 지우기
     }
 
     @RequestMapping("/download")
@@ -74,11 +67,18 @@ public class FileController {
 
     @RequestMapping("/delete/test")
     public String delete(String path) {
-        try {
-            fileUtil.removeFile(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        fileService.removeByPath(path);
+
+        return "redirect:/";
+    }
+
+    @RequestMapping("/delelte/test")
+    public String delelte() {
+        FileDTO dto = FileDTO.builder()
+                .approvalId(String.valueOf("1"))
+                .build();
+
+        fileService.removeByParentsId(dto);
 
         return "redirect:/";
     }

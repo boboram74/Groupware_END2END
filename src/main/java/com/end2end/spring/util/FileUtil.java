@@ -41,19 +41,14 @@ public class FileUtil {
 
 
 
-    public void removeFile(String path) throws IOException {
+    public static void removeFile(String path) {
         File file = new File(path);
 
         if (!file.exists()) {
             throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
         }
 
-        boolean isDelete = file.delete();
-        if (!isDelete) {
-            throw new IOException("해당 경로에 파일이 존재하나, 파일 삭제에 실패했습니다.");
-        }
-
-        dao.deleteByPath(path);
+        file.delete();
     }
 
     public static String uploadImage(MultipartFile file) throws IOException {

@@ -7,9 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class FileDAO {
@@ -20,7 +19,7 @@ public class FileDAO {
         return mybatis.selectList("file.selectByParentsId", dto);
     }
 
-    public FileDTO selectById(int id) {
+    public Optional<FileDetailDTO> selectById(int id) {
         return mybatis.selectOne("file.selectById", id);
     }
 
@@ -32,11 +31,15 @@ public class FileDAO {
         mybatis.insert("file.detailInsert", dto);
     }
 
-    public int deleteByPath(String path) {
-        return mybatis.delete("file.deleteByPath", path);
+    public void deleteDetailByPath(String path) {
+        mybatis.delete("file.deleteByPath", path);
     }
 
-    public boolean deleteById(int id) {
-        return mybatis.delete("file.deleteById", id) > 1;
+    public boolean deleteDetailById(int id) {
+        return mybatis.delete("file.deleteDetailById", id) > 1;
+    }
+
+    public void deleteById(FileColumnMapperDTO dto) {
+        mybatis.delete("file.deleteByParentsId", dto);
     }
 }

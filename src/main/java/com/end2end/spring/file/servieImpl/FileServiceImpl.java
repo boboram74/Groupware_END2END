@@ -8,7 +8,6 @@ import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void insert(MultipartFile[] files, FileDTO dto) throws IOException {
+    public void insert(MultipartFile[] files, FileDTO dto) {
         FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
 
         dao.insert(fileColumnMapperDTO);
@@ -47,7 +46,7 @@ public class FileServiceImpl implements FileService {
                 uploadedFilePathList.add(fileDetailDTO.getPath());
             } catch (IOException e) {
                 for (String uploadedFilePath : uploadedFilePathList) {
-                    fileUtil.removeFile(uploadedFilePath);
+                    FileUtil.removeFile(uploadedFilePath);
                 }
 
                 throw new RuntimeException(e);
@@ -57,11 +56,20 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void removeByPath(String path) {
-
+        FileUtil.removeFile(path);
+        dao.deleteDetailByPath(path);
     }
 
     @Override
     public void removeByParentsId(FileDTO dto) {
+        FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
 
+        List<FileDetailDTO> filesList = dao.selectByParentsId(fileColumnMapperDTO);
+
+        for (FileDetailDTO fileDetailDTO : filesList) {
+            FileUtil.removeFile(fileDetailDTO.getPath());
+        }
+
+        dao.deleteById(fileColumnMapperDTO);
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,5 +27,37 @@ public class FileServiceImpl implements FileService {
     public List<FileDetailDTO> selectByParentsId(FileDTO dto) {
         FileColumnMapperDTO mapper = FileColumnMapperDTO.of(dto);
         return dao.selectByParentsId(mapper);
+    }
+
+    @Override
+    public void insert(MultipartFile[] files, FileDTO dto) throws IOException {
+        FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
+
+        dao.insert(fileColumnMapperDTO);
+
+        List<String> uploadedFilePathList = new ArrayList<>();
+        for (MultipartFile file : files) {
+            try {
+                FileDetailDTO fileDetailDTO = FileUtil.upload(file, fileColumnMapperDTO);
+                dao.detailInsert(fileDetailDTO);
+                uploadedFilePathList.add(fileDetailDTO.getPath());
+            } catch (IOException e) {
+                for (String uploadedFilePath : uploadedFilePathList) {
+                    fileUtil.removeFile(uploadedFilePath);
+                }
+
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
+    public void removeByPath(String path) {
+
+    }
+
+    @Override
+    public void removeByParentsId(FileDTO dto) {
+
     }
 }

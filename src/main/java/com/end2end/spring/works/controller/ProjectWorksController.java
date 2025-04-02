@@ -7,9 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/approval")
+@RequestMapping("/project")
 @Controller
-public class ApprovalController {
+public class ProjectWorksController {
 
     @RequestMapping("/list")
     public String toList(Model model) {

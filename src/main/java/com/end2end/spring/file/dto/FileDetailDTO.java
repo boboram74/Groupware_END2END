@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import oracle.sql.TIMESTAMP;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -17,5 +18,5 @@ public class FileDetailDTO {
     private String systemFileName;
     private String path;
     private long fileSize;
-    private TIMESTAMP regDate;
+    private LocalDate regDate;
 }

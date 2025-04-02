@@ -70,6 +70,7 @@ th {
     float: right;
     width: 35%;
     height: 100%;
+
 }
 
 
@@ -78,6 +79,7 @@ th {
     float: left;
     width: 100%;
     height: 80%;
+
 }
 
 .line {
@@ -160,4 +162,84 @@ th {
     justify-content: flex-end;
     gap: 10px;
     padding: 10px;
+}
+
+#employees,
+#approvalLine {
+    width: 200px;
+    min-height: 300px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.employee {
+    padding: 5px;
+    margin: 5px 0;
+    background-color: #f0f0f0;
+    cursor: grab;
+    border-radius: 4px;
+    user-select: none;
+}
+
+
+
+
+.modalContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+
+
+.employee {
+    padding: 5px 10px;
+    margin: 5px;
+    background: #f4f4f4;
+    cursor: grab;
+    border-radius: 5px;
+}
+
+
+.approvalModalSelect {
+    display: flex;
+    padding: 10px;
+    width: 500px;
+    justify-content: space-between;
+}
+
+#departments {
+    margin-left: 10px;
+    height: fit-content;
 }

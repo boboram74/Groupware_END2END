@@ -6,4 +6,16 @@
     <select id="selectAll" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT * FROM EMPLOYEE
     </select>
+
+    <insert id="insert">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select concat(to_char(trunc(sysdate), 'YYMMDD'), EMPLOYEE_ID_SEQ.nextval) from dual
+        </selectKey>
+        insert into EMPLOYEE(id, departmentId, jobId, name, email, profileImg)
+        values (#{id}, ${departmentId}, ${jobId}, #{name}, #{email}, #{profileImg})
+    </insert>
+
+    <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT * FROM EMPLOYEE WHERE departmentId = ${departmentId}
+    </select>
 </mapper>

@@ -2,7 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/template/exam.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <div class="mainContainer">
     <div class="mainHeader">
@@ -10,7 +9,7 @@
             <h2><span class="material-icons">mail</span>제목</h2>
         </div>
         <div class="search">
-            <div class="serchOption">
+            <div>
                 <select id="searchOption">
                     <option>선택</option>
                     <option>선택</option>

@@ -44,12 +44,8 @@
         VALUES (FILE_DETAIL_ID_SEQ.NEXTVAL, ${filesId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
     </insert>
 
-    <delete id="deleteDetailById">
-        DELETE FROM FILE_DETAIL WHERE id = ${id}
-    </delete>
-
-    <delete id="deleteByPath">
-        DELETE FROM FILE_DETAIL WHERE PATH = ${path}
+    <delete id="deleteDetailByPath">
+        DELETE FROM FILE_DETAIL WHERE path = #{path}
     </delete>
 
     <delete id="deleteAll">

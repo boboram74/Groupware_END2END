@@ -1,18 +1,30 @@
 package com.end2end.spring.approval.serviceImpl;
 
+import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.approval.service.ApprovalService;
+import com.end2end.spring.employee.dto.EmployeeDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
+
+    @Autowired
+    private ApprovalDAO approvalDAO;
+
     @Override
     public List<ApprovalDTO> selectAll() {
-        // TODO: 모든 결재 리스트 출력
-        return null;
+
+        return approvalDAO.toList();
     }
+
+//    @Override
+//    public List<EmployeeDTO> selectAll() {
+//       return  approvalDAO.write();
+//    }
 
     @Override
     public List<ApprovalDTO> selectByEmployeeId(String employeeId) {

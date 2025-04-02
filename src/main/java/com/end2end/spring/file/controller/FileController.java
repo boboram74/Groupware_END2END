@@ -47,17 +47,12 @@ public class FileController {
         fileService.removeByPath(path);
     }
 
+    @ResponseBody
     @RequestMapping("/select/test")
-    public String selectByParentsId() {
+    public List<FileDetailDTO> selectByParentsId() {
         FileDTO dto = FileDTO.builder()
                 .approvalId("1")
                 .build();
-        List<FileDetailDTO> result = fileService.selectByParentsId(dto);
-
-        for(FileDetailDTO fileDetailDTO : result) {
-            System.out.println(fileDetailDTO.getSystemFileName());
-        }
-
-        return "redirect:/";
+        return fileService.selectByParentsId(dto);
     }
 }

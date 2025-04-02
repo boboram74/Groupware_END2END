@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
@@ -66,5 +68,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteById(String id) {
         // TODO: 해당 id의 사원 삭제
+    }
+
+    @Override
+    public List<EmployeeDTO> selectByDepartmentId(int departmentId) {
+        return employeeDAO.selectByDepartmentId(departmentId);
     }
 }

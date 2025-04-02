@@ -19,4 +19,8 @@ public class EmployeeDAO {
     public void insert(EmployeeDTO dto) {
         mybatis.insert("employee.insert", dto);
     }
+
+    public List<EmployeeDTO> selectByDepartmentId(int departmentId) {
+        return mybatis.selectList("employee.selectByDepartmentId", departmentId);
+    }
 }

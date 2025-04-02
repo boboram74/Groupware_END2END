@@ -14,4 +14,8 @@
         insert into EMPLOYEE(id, departmentId, jobId, name, email, profileImg)
         values (#{id}, ${departmentId}, ${jobId}, #{name}, #{email}, #{profileImg})
     </insert>
+
+    <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT * FROM EMPLOYEE WHERE departmentId = ${departmentId}
+    </select>
 </mapper>

@@ -27,7 +27,7 @@ public class MainController {
 
 		model.addAttribute("title", "내용");
 
-		return "main/index";
+		return "main/login";
 	}
 
 	@RequestMapping("/mypage/{employeeId}")

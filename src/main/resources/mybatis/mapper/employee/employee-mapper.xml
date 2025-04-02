@@ -6,4 +6,8 @@
     <select id="selectAll" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT * FROM EMPLOYEE
     </select>
+
+    <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT * FROM EMPLOYEE WHERE DEPARTMENTID = ${departmentId}
+    </select>
 </mapper>

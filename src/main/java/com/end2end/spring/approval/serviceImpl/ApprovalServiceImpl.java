@@ -21,10 +21,10 @@ public class ApprovalServiceImpl implements ApprovalService {
         return approvalDAO.toList();
     }
 
-//    @Override
-//    public List<EmployeeDTO> selectAll() {
-//       return  approvalDAO.write();
-//    }
+    @Override
+    public List<EmployeeDTO> selectEmployee(int departmentId) {
+       return  approvalDAO.employeeList(departmentId);
+    }
 
     @Override
     public List<ApprovalDTO> selectByEmployeeId(String employeeId) {

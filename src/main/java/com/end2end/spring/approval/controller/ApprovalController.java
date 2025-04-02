@@ -1,6 +1,7 @@
 package com.end2end.spring.approval.controller;
 
 import com.end2end.spring.approval.dto.ApprovalDTO;
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.dto.TempApprovalDTO;
 import com.end2end.spring.approval.service.ApprovalService;
@@ -8,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +32,15 @@ public class ApprovalController {
 
         return "approval/list";
     }
+
+    @RequestMapping("/employeeList")
+    @ResponseBody
+    public String toEmployeeList(@RequestParam("departmentId") int departmentId, Model model) {
+        List<EmployeeDTO> list = approvalService.selectEmployee(departmentId);
+        model.addAttribute("list", list);
+        return "approval/employeeList";
+    }
+
     @RequestMapping("/list/{employeeId}")
     public String toListEmployee(@PathVariable String employeeId, Model model) {
         // TODO: 해당 사원의 모든 전자결재를 list.jsp에 출력
@@ -76,7 +84,7 @@ public class ApprovalController {
     }
 
     @RequestMapping("/insert")
-    public void insert(FileDTO fdto, ApprovalDTO adto, Model model) {
+    public void insert(FileDTO fdto, ApprovalDTO adto, List<String> apperoverId, Model model) {
         // TODO: 전재 결재 입력
     }
 

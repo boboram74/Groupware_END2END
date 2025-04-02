@@ -27,13 +27,13 @@ public class FileServiceImpl implements FileService {
         return dao.selectByParentsId(mapper);
     }
 
-    @Transactional
-    @Override
-    public void deleteById(int id) {
-        // FileDetailDTO dto = dao.selectById(id);
-
-        if (dao.deleteById(id)) {
-            fileUtil.removeFile("");
-        }
-    }
+//    @Transactional
+//    @Override
+//    public void deleteById(int id) {
+//        // FileDetailDTO dto = dao.selectById(id);
+//
+//        if (dao.deleteById(id)) {
+//            fileUtil.removeFile("");
+//        }
+//    }
 }

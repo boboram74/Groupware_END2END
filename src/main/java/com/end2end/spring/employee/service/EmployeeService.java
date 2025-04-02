@@ -4,6 +4,8 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.dto.LoginDTO;
 
+import java.util.List;
+
 public interface EmployeeService {
     EmployeeDTO selectById(String id);
     EmployeeDetailDTO selectDetailById(String id);
@@ -12,4 +14,5 @@ public interface EmployeeService {
     void insert(EmployeeDetailDTO dto);
     void update(EmployeeDetailDTO dto);
     void deleteById(String id);
+    List<EmployeeDTO> selectByDepartmentId(int departmentId);
 }

@@ -19,7 +19,8 @@ public class ApprovalDAO {
         return mybatis.selectList("approval.toList");
     }
 
-    public List<EmployeeDTO> write(){
-        return mybatis.selectList("approval.write");
+    public List<EmployeeDTO> employeeList(int departmentId){
+
+        return mybatis.selectList("approval.employeeList",departmentId);
     }
 }

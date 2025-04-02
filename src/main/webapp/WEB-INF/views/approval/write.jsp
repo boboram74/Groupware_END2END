@@ -12,30 +12,19 @@
     <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
     <link rel="stylesheet" href="/js/summernote/summernote-lite.css">
     <title>Document</title>
-    <style>
-        .approvalModalSelect {
-            display: flex;
-            padding: 10px;
-            width: 500px;
-            justify-content: space-between;
-        }
 
-        #departments {
-            margin-left: 10px;
-            height: fit-content;
-        }
-    </style>
 </head>
 
 <body>
+
 <div class="overlay"></div>
 <div class="modalContainer">
     <div class="approvalModalSelect">
         <div>
             <h3>사원 목록</h3>
-            <div id="employees" >
+            <div id="employees">
                 <div id="departments1">
-                    <lebel for="selector">부서 목록</lebel>
+                    <label for="selector">부서 목록</label>
                     <select id="selector" onchange="employees(this.value)">
                         <option>부서명</option>
                         <option value="1">인사</option>
@@ -45,15 +34,20 @@
                 </div>
                 <div ondrop="drop(e)" ondragover="allowDrop(e)"></div>
             </div>
+
         </div>
+
         <div>
             <h3>결재선</h3>
             <div id="approvalLine" ondrop="drop(e)" ondragover="allowDrop(e)"></div>
         </div>
     </div>
-    <button id="addApproval">추가</button>
-    <button id="closeModal">닫기</button>
+    <div>
+        <button id="addApproval">추가</button>
+        <button id="closeModal">닫기</button>
+    </div>
 </div>
+
 
 <form action="/approval/insert">
     <div class="container">
@@ -86,7 +80,7 @@
                         <div class="lineEmployeeName">임근한</div>
                         <div class="signDate">2025.03.28</div>
                     </div>
-                    <input type="hidden" id="approval1" value="1231231">
+                    <input type="hidden" name="approver" value="1231231">
                 </div>
                 <div class="addBox">
                     <button type="button" id="add">결재선 추가</button>
@@ -111,44 +105,68 @@
 <script src="/js/template/summernote.js" type="text/javascript"></script>
 <script>
 
-        $('#add').on('click', function () {
-            $('.modalContainer').fadeIn();
-            $('.overlay').fadeIn();
+    $('#add').on('click', function () {
+        $('.modalContainer').fadeIn();
+        $('.overlay').fadeIn();
+    });
+
+    $('#closeModal').on('click', function () {
+        $('.modalContainer').fadeOut();
+        $('.overlay').fadeOut();
+    });
+
+
+    $('#contents').summernote({
+        height: 300,
+        lang: 'ko-KR'
+    });
+
+
+    function allowDrop(e) {
+        e.preventDefault();
+    }
+
+    function drag(e) {
+        e.dataTransfer.setData("text", e.target.textContent);
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        let data = e.dataTransfer.getData("text");
+        let div = document.createElement("div");
+        div.className = "employee";
+        div.textContent = data;
+        div.draggable = true;
+        div.ondragstart = drag;
+        e.target.appendChild(div);
+    }
+
+    function employees(departmentId) {
+        $.ajax({
+            url: '/approval/employeeList',
+            type: 'GET',
+            dataType: 'json',
+            data: { departmentId: departmentId },
+            success: function(response) {
+                let employeesHtml = '';
+                if (response.length === 0) {
+                    employeesHtml = "<p>해당 부서에 사원이 없습니다.</p>";
+                } else {
+                    response.forEach(function(employee) {
+                        employeesHtml += `
+                            <div class="employee" draggable="true" ondragstart="drag(event)" data-name="${employee.name}">
+                                <span class="employee-name">${employee.name}</span> -
+                            </div>
+                        `;
+                    });
+                }
+                $('#employeeList').html(employeesHtml);
+            }
         });
-
-        $('#closeModal').on('click', function () {
-            $('.modalContainer').fadeOut();
-            $('.overlay').fadeOut();
-        });
+    }
 
 
-        $('#contents').summernote({
-            height: 300,
-            lang: 'ko-KR'
-        });
 
-
-        function allowDrop(e) {
-            e.preventDefault();
-        }
-
-        function drag(e) {
-            e.dataTransfer.setData("text", e.target.textContent);
-        }
-
-        function drop(e) {
-            e.preventDefault();
-            let data = e.dataTransfer.getData("text");
-            let div = document.createElement("div");
-            div.className = "employee";
-            div.textContent = data;
-            div.draggable = true;
-            div.ondragstart = drag;
-            e.target.appendChild(div);
-        }
-        $('#addApproval').on('click', function () {
-
-        });
 
 </script>
 

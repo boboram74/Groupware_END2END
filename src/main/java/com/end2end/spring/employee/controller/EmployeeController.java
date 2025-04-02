@@ -1,5 +1,6 @@
 package com.end2end.spring.employee.controller;
 
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.LoginDTO;
 import com.end2end.spring.employee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @RequestMapping("/employee")
 @Controller
@@ -37,5 +41,11 @@ public class EmployeeController {
     @RequestMapping("/detail/{id}")
     public void selectDetailEmployee(@PathVariable String id) {
         // TODO: 해당 id 사원의 상세 데이터를 출력
+    }
+
+    @ResponseBody
+    @RequestMapping("/department/{departmentId}")
+    public List<EmployeeDTO> selectDepartmentEmployee(@PathVariable int departmentId) {
+        return employeeService.selectByDepartmentId(departmentId);
     }
 }

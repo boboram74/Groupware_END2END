@@ -16,7 +16,7 @@
 
 <div class="apDocumentSection">
     <div class="apSectionHeader">
-        <h3 class="apSectionTitle">결재 대기 중 (0)</h3>
+        <h3 class="apSectionTitle">결재 대기 중</h3>
     </div>
     <div class="apDocumentTable">
         <table>
@@ -30,15 +30,31 @@
             </tr>
             </thead>
             <tbody>
-            <!-- 결재 대기 중 문서 목록 -->
-
+                <c:choose>
+                    <c:when test="${empty waitingList}">
+                        <tr>
+                            <td colspan="5" class="emptyMessage">대기 중인 문서가 없습니다.</td>
+                        </tr>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="i" items="${waitingList}">
+                            <tr>
+                                <td class="apColStar">★</td>
+                                <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
+                                <td class="apColStatus">${i.state}</td>
+                                <td class="apColWriter">${i.employeeId}</td>
+                                <td class="apColDate">${i.regDate}</td>
+                            </tr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>
 </div>
 <div class="apDocumentSection">
     <div class="apSectionHeader">
-        <h3 class="apSectionTitle">결재 진행 중 (0)</h3>
+        <h3 class="apSectionTitle">결재 진행 중</h3>
     </div>
     <div class="apDocumentTable">
         <table>
@@ -52,15 +68,31 @@
             </tr>
             </thead>
             <tbody>
-            <!-- 결재 진행 중 문서 목록 -->
-
+                <c:choose>
+                    <c:when test="${empty goingList}">
+                        <tr>
+                            <td colspan="5" class="emptyMessage">진행 중인 문서가 없습니다.</td>
+                        </tr>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="i" items="${goingList}">
+                            <tr>
+                                <td class="apColStar">★</td>
+                                <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
+                                <td class="apColStatus">${i.state}</td>
+                                <td class="apColWriter">${i.employeeId}</td>
+                                <td class="apColDate">${i.regDate}</td>
+                            </tr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>
 </div>
 <div class="apDocumentSection">
     <div class="apSectionHeader">
-        <h3 class="apSectionTitle">결재 완료 (0)</h3>
+        <h3 class="apSectionTitle">결재 완료</h3>
     </div>
     <div class="apDocumentTable">
         <table>
@@ -74,8 +106,24 @@
             </tr>
             </thead>
             <tbody>
-            <!-- 결재 완료 문서 목록 -->
-
+                <c:choose>
+                    <c:when test="${empty completedList}">
+                        <tr>
+                            <td colspan="5" class="emptyMessage">완료된 문서가 없습니다.</td>
+                        </tr>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="i" items="${completedList}">
+                            <tr>
+                                <td class="apColStar">★</td>
+                                <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
+                                <td class="apColStatus">${i.state}</td>
+                                <td class="apColWriter">${i.employeeId}</td>
+                                <td class="apColDate">${i.regDate}</td>
+                            </tr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>

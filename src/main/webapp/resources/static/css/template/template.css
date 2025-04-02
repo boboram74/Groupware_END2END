@@ -26,19 +26,18 @@ body {
     height: 30px;
 }
 
+
 .sidebar {
     margin: 0;
-    width: 50px;
-    overflow: hidden;
     background: #030848;
     height: 100vh;
     text-align: center;
-    position: fixed;
+    position:fixed;
     transition: width 0.3s ease-in-out;
     color: white;
     z-index: 3;
+    /* transition-duration: 0.5s; */
 }
-
 .sidebar ul {
     padding: 0;
     margin: 0;
@@ -48,7 +47,8 @@ body {
     list-style: none;
     padding: 10px;
     cursor: pointer;
-    margin-top: 20px;
+    padding-top: 50px;
+
 }
 
 .sidebar a {
@@ -59,6 +59,24 @@ body {
 .sidebar:hover {
     width: 150px;
 }
+
+.submenu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 150px;
+    height: 100%;
+    background-color: #1c2159;
+    display: none;
+    transition: transform 0.9s ease;
+    padding: 20px;
+}
+
+.sidebar >ul >li:hover .submenu {
+    display: block;
+
+}
+
 
 .boxContents {
     margin-left: 50px;

@@ -8,16 +8,10 @@ import java.security.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectWorkDTO {
+public class ProjectUserDTO {
+
     private int id;
+    private String employeeId;
     private int projectId;
-    private int projectUserId;
-    private String title;
-    private String state;  // "ONGOING", "FINISH"
-    private String priority; // "HIGH", "MIDDLE", "LOW"
-    private Timestamp finishDate;
-    private Timestamp deadLine;
     private Timestamp regDate;
-
-
 }

@@ -44,7 +44,7 @@ public class FileUtil {
     }
 
     public static String uploadImage(MultipartFile file) throws IOException {
-        String uploadPath = Statics.FILE_UPLOAD_PATH + "image";
+        String uploadPath = Statics.FILE_UPLOAD_PATH + "image/" + LocalDate.now().toString();
 
         File filePath = new File(uploadPath);
 

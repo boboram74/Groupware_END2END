@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface FileService {
     List<FileDetailDTO> selectByParentsId(FileDTO dto);
-    void deleteById (int id) throws Exception;
+    void insert(MultipartFile[] files, FileDTO dto) throws Exception;
+    void removeByPath(String path);
+    void removeByParentsId(FileDTO dto);
 }

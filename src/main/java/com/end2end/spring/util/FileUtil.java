@@ -44,16 +44,19 @@ public class FileUtil {
     }
 
     public static String uploadImage(MultipartFile file) throws IOException {
-        String uploadPath = Statics.FILE_UPLOAD_PATH + "image/" + LocalDate.now().toString();
+        String today = LocalDate.now().toString();
+        String uploadPath = Statics.FILE_UPLOAD_PATH + "image/" + today;
+        String mappedPath = Statics.MAPPED_FILE_UPLOAD_PATH + "image/" + today;
 
         File filePath = new File(uploadPath);
 
         filePath.mkdir();
 
         String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
+
         file.transferTo(new File(uploadPath + "/" + systemFileName));
 
-        return "/files/image/" + systemFileName;
+        return mappedPath + "/" + systemFileName;
     }
 
     public static void removeImage(String path) {

@@ -1,5 +1,6 @@
 package com.end2end.spring.main.controller;
 
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,19 @@ public class MainController {
 	@GetMapping("/")
 	public String home(HttpSession session, Model model) {
 		session.getAttribute("loginId");
+		EmployeeDTO employee = EmployeeDTO.builder()
+				.id("21092011")
+				.name("오호정")
+				.email("21092011@end2end.site")
+				.role("USER")
+				.profileImg("https://picsum.photos/200/200")
+				.departmentId(1)
+				.jobId(4)
+				.build();
+		session.setAttribute("employee", employee);
+
+		model.addAttribute("title", "내용");
+
 		return "main/index";
 	}
 

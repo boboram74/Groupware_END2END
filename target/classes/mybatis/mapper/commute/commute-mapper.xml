@@ -20,6 +20,48 @@
         AND TRUNC(regDate) = TRUNC(SYSDATE)
     </select>
 
+    <select id="selectNotCheck" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT *
+        FROM EMPLOYEE
+        WHERE
+            ID NOT IN (
+                SELECT EMPLOYEEID
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_OFF'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+        AND
+            ID IN (
+                SELECT EMPLOYEEID
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_ON'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+    </select>
+
+    <select id="selectAbsence" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT *
+        FROM EMPLOYEE
+        WHERE
+            ID NOT IN (
+                SELECT EMPLOYEEID
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_OFF'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+        AND
+            ID NOT IN (
+                SELECT EMPLOYEEID
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_ON'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+    </select>
+
     <insert id="insertAll" parameterType="list">
         INSERT INTO COMMUTE(id, employeeId)
         SELECT COMMUTE_ID_SEQ.NEXTVAL, A.* FROM (
@@ -30,7 +72,7 @@
     </insert>
 
     <update id="workOn">
-        UPDATE COMMUTE SET state = 'WORK_ON', regDate = SYSDATE WHERE employeeId = #{employeeId} AND TRUNC(regDate) = TRUNC(SYSDATE)  AND state='NOT_WORK';
+        UPDATE COMMUTE SET state = 'WORK_ON', regDate = SYSDATE WHERE employeeId = #{employeeId} AND TRUNC(regDate) = TRUNC(SYSDATE)  AND state='NOT_WORK'
     </update>
 
     <insert id="workOff">

@@ -53,8 +53,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void removeByPath(String path) {
-        FileUtil.removeFile(path);
         dao.deleteDetailByPath(path);
+        FileUtil.removeFile(path);
     }
 
     @Override

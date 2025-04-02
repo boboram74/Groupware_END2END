@@ -32,7 +32,7 @@ public class FileDAO {
     }
 
     public void deleteDetailByPath(String path) {
-        mybatis.delete("file.deleteByPath", path);
+        mybatis.delete("file.deleteDetailByPath", path);
     }
 
     public boolean deleteDetailById(int id) {
@@ -40,6 +40,6 @@ public class FileDAO {
     }
 
     public void deleteById(FileColumnMapperDTO dto) {
-        mybatis.delete("file.deleteByParentsId", dto);
+        mybatis.delete("file.deleteById", dto);
     }
 }

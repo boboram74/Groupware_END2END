@@ -5,7 +5,7 @@
 
 <div class="hrContainer">
     <div class="hrHeader">
-        <h3>사원 정보</h3>
+        <h2>사원 정보</h2>
     </div>
     <div class="hrBody">
         <form action="/hr/update" method="post" enctype="multipart/form-data">
@@ -20,7 +20,6 @@
                 <div class="address1">주소 </div>
                 <div class="address2">상세주소 </div>
                 <div class="dob">생년월일 </div>
-
             </div>
         </form>
         <div class="btn">

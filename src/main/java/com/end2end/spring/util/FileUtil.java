@@ -32,7 +32,9 @@ public class FileUtil {
     }
 
     public static void removeFile(String path) {
-        File file = new File(path);
+        String fileLocation = Statics.FILE_UPLOAD_PATH + path.substring("/files/".length());
+
+        File file = new File(fileLocation);
 
         if (!file.exists()) {
             throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
@@ -42,15 +44,28 @@ public class FileUtil {
     }
 
     public static String uploadImage(MultipartFile file) throws IOException {
-        String uploadPath = Statics.FILE_UPLOAD_PATH + "image";
+        String today = LocalDate.now().toString();
+        String uploadPath = Statics.FILE_UPLOAD_PATH + "image/" + today;
+        String mappedPath = Statics.MAPPED_FILE_UPLOAD_PATH + "image/" + today;
 
         File filePath = new File(uploadPath);
 
         filePath.mkdir();
 
         String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
+
         file.transferTo(new File(uploadPath + "/" + systemFileName));
 
-        return "/files/image/" + systemFileName;
+        return mappedPath + "/" + systemFileName;
+    }
+
+    public static void removeImage(String path) {
+        File filePath = new File(path);
+        if (!filePath.exists()) {
+            filePath.delete();
+            return;
+        }
+
+        throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
     }
 }

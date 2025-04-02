@@ -41,45 +41,18 @@ public class FileController {
         // TODO: 다운로드
     }
 
+    @ResponseBody
+    @RequestMapping("/delete")
+    public void delete(String path) {
+        fileService.removeByPath(path);
+    }
+
+    @ResponseBody
     @RequestMapping("/select/test")
-    public String selectByParentsId() {
+    public List<FileDetailDTO> selectByParentsId() {
         FileDTO dto = FileDTO.builder()
                 .approvalId("1")
                 .build();
-        List<FileDetailDTO> result = fileService.selectByParentsId(dto);
-
-        for(FileDetailDTO fileDetailDTO : result) {
-            System.out.println(fileDetailDTO.getSystemFileName());
-        }
-
-        return "redirect:/";
-    }
-
-    @RequestMapping("/upload/test")
-    public String test(MultipartFile[] files, int id) throws IOException {
-        FileDTO dto = FileDTO.builder()
-                .approvalId(String.valueOf(id))
-                .build();
-        fileService.insert(files, dto);
-
-        return "redirect:/";
-    }
-
-    @RequestMapping("/delete/test")
-    public String delete(String path) {
-        fileService.removeByPath(path);
-
-        return "redirect:/";
-    }
-
-    @RequestMapping("/delelte/test")
-    public String delelte() {
-        FileDTO dto = FileDTO.builder()
-                .approvalId(String.valueOf("1"))
-                .build();
-
-        fileService.removeByParentsId(dto);
-
-        return "redirect:/";
+        return fileService.selectByParentsId(dto);
     }
 }

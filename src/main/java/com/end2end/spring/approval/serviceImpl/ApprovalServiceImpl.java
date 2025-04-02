@@ -3,7 +3,6 @@ package com.end2end.spring.approval.serviceImpl;
 import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.approval.service.ApprovalService;
-import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +20,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         return approvalDAO.toList();
     }
 
-    @Override
-    public List<EmployeeDTO> selectEmployee(int departmentId) {
-       return  approvalDAO.employeeList(departmentId);
-    }
+
 
     @Override
     public List<ApprovalDTO> selectByEmployeeId(String employeeId) {

@@ -33,13 +33,6 @@ public class ApprovalController {
         return "approval/list";
     }
 
-    @RequestMapping("/employeeList")
-    @ResponseBody
-    public String toEmployeeList(@RequestParam("departmentId") int departmentId, Model model) {
-        List<EmployeeDTO> list = approvalService.selectEmployee(departmentId);
-        model.addAttribute("list", list);
-        return "approval/employeeList";
-    }
 
     @RequestMapping("/list/{employeeId}")
     public String toListEmployee(@PathVariable String employeeId, Model model) {

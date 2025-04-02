@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -29,7 +30,7 @@ public class FileServiceImpl implements FileService {
 
     @Transactional
     @Override
-    public void deleteById(int id) {
+    public void deleteById(int id) throws IOException {
         // FileDetailDTO dto = dao.selectById(id);
 
         if (dao.deleteById(id)) {

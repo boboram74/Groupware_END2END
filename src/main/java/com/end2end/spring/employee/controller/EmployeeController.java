@@ -1,6 +1,8 @@
 package com.end2end.spring.employee.controller;
 
 import com.end2end.spring.employee.dto.LoginDTO;
+import com.end2end.spring.employee.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/employee")
 @Controller
 public class EmployeeController {
+    @Autowired
+    private EmployeeService employeeService;
+
     @RequestMapping("/login")
     public void login(LoginDTO dto) {
         // TODO: 로그인 처리

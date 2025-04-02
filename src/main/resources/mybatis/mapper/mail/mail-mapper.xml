@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mail">
+
+    <select id="selectAll" resultType="com.end2end.spring.mail.dto.MailListDTO">
+        SELECT SENDEREMILADDRESS, TITLE, REGDATE FROM email
+    </select>
+
+    <select id="getRecordTotalCount" resultType="int" >
+        SELECT COUNT(*)
+        FROM EMAIL E
+        JOIN EMAIL_ADDRESS_USER EAU
+            ON E.RECIPIENTEMILADDRESS = EAU.EMAILADDRESS
+        JOIN EMAIL_STATE ES
+            ON EAU.id = ES.EMAILUSERID
+        WHERE EAU.EMPLOYEEID = #{employeeId}
+            AND ES.HIDEYN = 'N'
+            AND ES.TRASHCANYN = 'N'
+            AND ES.IMPORTANTYN = 'N'
+    </select>
+
+    <select id="selectFromto" parameterType="map" resultType="com.end2end.spring.mail.dto.MailListDTO">
+<!--        select-->
+<!--            id,-->
+<!--            SENDEREMILADDRESS as senderEmailAddress,-->
+<!--            title,-->
+<!--            regdate-->
+<!--        from (-->
+<!--        select email.*, ROW_NUMBER() OVER (order by id desc) as rnum from email-->
+<!--        )-->
+<!--        WHERE rnum BETWEEN #{start} AND #{end}-->
+        SELECT
+            id,
+            SENDEREMILADDRESS AS senderEmailAddress,
+            title,
+            regdate
+        FROM (
+            SELECT E.*, ROW_NUMBER() OVER (ORDER BY E.id DESC) AS rnum
+            FROM EMAIL E
+            JOIN EMAIL_ADDRESS_USER EAU
+                ON E.RECIPIENTEMILADDRESS = EAU.EMAILADDRESS
+            JOIN EMAIL_STATE ES
+                ON EAU.id = ES.EMAILUSERID
+            WHERE EAU.EMPLOYEEID = #{employeeId}
+                AND ES.HIDEYN = 'N'
+                AND ES.TRASHCANYN = 'N'
+                AND ES.IMPORTANTYN = 'N'
+        )
+        WHERE rnum BETWEEN #{start} AND #{end}
+    </select>
+
+</mapper>

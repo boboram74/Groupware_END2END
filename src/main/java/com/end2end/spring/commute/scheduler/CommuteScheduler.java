@@ -19,13 +19,6 @@ public class CommuteScheduler {
         System.out.println("출근 체크!! time:" + LocalDateTime.now());
     }
 
-    @Scheduled(cron=Statics.WORK_OFF_CHECK_TIME)
-    public void workOffCheck() {
-        // TODO: 지정한 시간에 자동으로 퇴근 체크
-        commuteService.checkLeaveEarly();
-        System.out.println("퇴근 체크!! time:" + LocalDateTime.now());
-    }
-    
     @Scheduled(cron="0 0 0 * * ?")
     public void insertAllCommute() {
         commuteService.insertAll();

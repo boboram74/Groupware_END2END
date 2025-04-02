@@ -10,13 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-<<<<<<< HEAD
-import java.io.IOException;
-=======
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
->>>>>>> bfacc3d5c379845129c6291328b1909a3b594908
 import java.util.List;
 
 @Service
@@ -31,13 +27,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-<<<<<<< HEAD
-    public void deleteById(int id) throws IOException {
-        // FileDetailDTO dto = dao.selectById(id);
-=======
     public void insert(MultipartFile[] files, FileDTO dto) {
         FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
->>>>>>> bfacc3d5c379845129c6291328b1909a3b594908
 
         dao.insert(fileColumnMapperDTO);
 

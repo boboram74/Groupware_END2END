@@ -1,11 +1,7 @@
 package com.end2end.spring.util;
 
-import com.end2end.spring.file.dao.FileDAO;
 import com.end2end.spring.file.dto.FileColumnMapperDTO;
-import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -13,11 +9,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Component
 public class FileUtil {
-    @Autowired
-    private FileDAO dao;
-
     public static FileDetailDTO upload(MultipartFile file, FileColumnMapperDTO dto) throws IOException {
         String today = LocalDate.now().toString();
         String uploadPath = Statics.FILE_UPLOAD_PATH + dto.getPath() + "/" + today;
@@ -38,8 +30,6 @@ public class FileUtil {
                 .path(mappedPath + "/" + systemFileName)
                 .build();
     }
-
-
 
     public static void removeFile(String path) {
         File file = new File(path);

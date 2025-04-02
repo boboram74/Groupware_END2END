@@ -1,13 +1,20 @@
 package com.end2end.spring.employee.serviceImpl;
 
+import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.dto.LoginDTO;
 import com.end2end.spring.employee.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+    @Autowired
+    private EmployeeDAO dao;
+
     @Override
     public EmployeeDTO selectById(String id) {
         // TODO: 해당 id의 사원 출력
@@ -43,5 +50,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteById(String id) {
         // TODO: 해당 id의 사원 삭제
+    }
+
+    @Override
+    public List<EmployeeDTO> selectByDepartmentId(int departmentId) {
+        return dao.selectByDepartmentId(departmentId);
     }
 }

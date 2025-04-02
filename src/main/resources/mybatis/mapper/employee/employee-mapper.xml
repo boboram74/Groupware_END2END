@@ -8,6 +8,10 @@
     </select>
 
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT * FROM EMPLOYEE WHERE DEPARTMENTID = ${departmentId}
+        SELECT job.name as jobName, employee.*
+        FROM EMPLOYEE
+        JOIN JOB
+            ON EMPLOYEE.JOBID = JOB.ID
+        WHERE DEPARTMENTID = ${departmentId}
     </select>
 </mapper>

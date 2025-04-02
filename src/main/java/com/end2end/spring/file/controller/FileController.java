@@ -1,7 +1,6 @@
 package com.end2end.spring.file.controller;
 
 import com.end2end.spring.file.dto.FileDTO;
-import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +52,12 @@ public class FileController {
         FileDTO dto = FileDTO.builder()
                 .approvalId("1")
                 .build();
-        List<FileDetailDTO> result = fileService.selectByParentsId(dto);
-
+        //List<FileDetailDTO> result = fileService.selectByParentsId(dto);
+/*
         for(FileDetailDTO fileDetailDTO : result) {
             System.out.println(fileDetailDTO.getSystemFileName());
         }
-
+*/
         return "redirect:/";
     }
 

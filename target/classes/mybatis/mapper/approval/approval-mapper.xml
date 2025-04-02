@@ -7,7 +7,7 @@
     <select id="toList" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
         SELECT * FROM approvals ORDER BY regDate DESC
     </select>
-    <select id="write" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+    <select id="employeeList" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         select * from employee where DEPARTMENTID = #{departmentId}
     </select>
 </mapper>

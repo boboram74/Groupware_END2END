@@ -32,6 +32,7 @@
                         <option value="3">공무</option>
                     </select>
                 </div>
+
                 <div ondrop="drop(e)" ondragover="allowDrop(e)"></div>
             </div>
 
@@ -143,24 +144,36 @@
 
     function employees(departmentId) {
         $.ajax({
-            url: '/approval/employeeList',
+            url: '/employee/department/' + departmentId,
             type: 'GET',
             dataType: 'json',
-            data: { departmentId: departmentId },
             success: function(response) {
+                console.log(response);
                 let employeesHtml = '';
                 if (response.length === 0) {
                     employeesHtml = "<p>해당 부서에 사원이 없습니다.</p>";
                 } else {
                     response.forEach(function(employee) {
-                        employeesHtml += `
+                        console.log(employee);
+
+                        const div = $('<div>').addClass("employee").attr('draggable', true);
+                        div.append($("<span>").addClass("employee-name").html(employee.name));
+                        console.log(div);
+                        /*
+                        employeesHtml += '
                             <div class="employee" draggable="true" ondragstart="drag(event)" data-name="${employee.name}">
                                 <span class="employee-name">${employee.name}</span> -
-                            </div>
-                        `;
+                            </div>';
+                            */
+                        $('#employees').append(div);
                     });
                 }
-                $('#employeeList').html(employeesHtml);
+                // $('#employeeList').html(employeesHtml);
+            },
+            error : function(request, status, error) {
+                console.log("code: " + request.status)
+                console.log("message: " + request.responseText)
+                console.log("error: " + error);
             }
         });
     }

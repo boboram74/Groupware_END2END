@@ -19,7 +19,7 @@
         </choose>
     </select>
 
-    <select id="selectById" resultType="com.end2end.spring.file.dto.FileDetailDTO">
+    <select id="selectById" resultType="com.end2end.spring.file.dto.FileDTO">
         SELECT * FROM FILE_DETAIL WHERE id = ${id}
     </select>
 
@@ -46,10 +46,6 @@
 
     <delete id="deleteDetailById">
         DELETE FROM FILE_DETAIL WHERE id = ${id}
-    </delete>
-
-    <delete id="deleteByPath">
-        DELETE FROM FILE_DETAIL WHERE PATH = ${path}
     </delete>
 
     <delete id="deleteAll">

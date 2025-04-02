@@ -40,6 +40,6 @@ public class FileDAO {
     }
 
     public void deleteById(FileColumnMapperDTO dto) {
-        mybatis.delete("file.deleteByParentsId", dto);
+        mybatis.delete("file.deleteById", dto);
     }
 }

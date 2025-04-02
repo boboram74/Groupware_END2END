@@ -55,4 +55,14 @@ public class FileUtil {
 
         return "/files/image/" + systemFileName;
     }
+
+    public static void removeImage(String path) {
+        File filePath = new File(path);
+        if (!filePath.exists()) {
+            filePath.delete();
+            return;
+        }
+
+        throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
+    }
 }

@@ -1,20 +1,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<link rel="stylesheet" href="/css/mail/mail.css" />
+<link rel="stylesheet" href="/css/mail/list.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
-            <h2><span class="material-icons">mail</span>제목</h2>
+            <h2><span class="material-icons">mail</span>메일함</h2>
+        </div>
+        <div class="mailSend">
+            <button><span class="material-icons">outgoing_mail</span>메일쓰기</button>
         </div>
         <div class="search">
-            <div class="serchOption">
+            <div>
                 <select id="searchOption">
-                    <option>선택</option>
-                    <option>선택</option>
-                    <option>선택</option>
+                    <option>보낸 사람  </option>
+                    <option>내용 </option>
+                    <option>제목 </option>
                 </select>
             </div>
             <div class="searchInput">
@@ -24,16 +27,89 @@
                 <button id="searchBtn"> <span class="material-icons">search</span> 검색</button>
             </div>
         </div>
+        <div class="titleArea">
+            <h4>전체 메일 (0)</h4> <h4>안읽은 메일 (0)</h4>
+        </div>
     </div>
     <div class="mainBody">
         <div class="content">
-            출력 공간(높이 주지말고 컨텐츠 내용에 따라 유동적으로 증가하게 두세요)
+            <table class="mailList">
+                <thead>
+                <tr>
+                    <th style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></th>
+                    <th style="width: 20%">보낸사람</th>
+                    <th style="width: 65%">제목</th>
+                    <th style="width: 10%">발송 일자</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></td>
+                    <td>shj04367@naver.com</td>
+                    <td>제목</td>
+                    <td>2025.04.02</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <div class="pageNavi">
             1 2 3 4 5
         </div>
     </div>
 </div>
-
 <script src="/js/main/contact.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

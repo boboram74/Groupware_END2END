@@ -5,16 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
-@RequestMapping("/email")
+@RequestMapping("/inbox")
 @Controller
-public class EmailController {
+public class InboxController {
 
     @RequestMapping("/list")
-    public String list() {
+    public void list() {
         // TODO: 모든 등록된 이메일을 출력
-        return "mail/list";
     }
     
     @RequestMapping("/{email}")

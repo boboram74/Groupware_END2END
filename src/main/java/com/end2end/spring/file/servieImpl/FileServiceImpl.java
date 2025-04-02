@@ -37,6 +37,10 @@ public class FileServiceImpl implements FileService {
 
         List<String> uploadedFilePathList = new ArrayList<>();
         for (MultipartFile file : files) {
+            if (file.isEmpty()) {
+                continue;
+            }
+
             try {
                 FileDetailDTO fileDetailDTO = FileUtil.upload(file, fileColumnMapperDTO);
                 dao.detailInsert(fileDetailDTO);

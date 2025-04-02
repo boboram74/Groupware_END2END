@@ -18,41 +18,6 @@ public class FileUtil {
     @Autowired
     private FileDAO dao;
 
-    public void upload(MultipartFile[] files, FileDTO dto) {
-        FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
-
-        String today = LocalDate.now().toString();
-        String uploadPath = Statics.FILE_UPLOAD_PATH + fileColumnMapperDTO.getPath() + "/" + today;
-        String mappedPath = Statics.MAPPED_FILE_UPLOAD_PATH + fileColumnMapperDTO.getPath() + "/" + today;
-
-        File filePath = new File(uploadPath);
-
-        filePath.mkdir();
-
-        dao.insert(fileColumnMapperDTO);
-
-        for (MultipartFile file : files) {
-            if (file.isEmpty()) {
-                continue;
-            }
-
-            String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
-            try {
-                file.transferTo(new File(uploadPath + "/" + systemFileName));
-                FileDetailDTO fileDetailDTO = FileDetailDTO.builder()
-                        .filesId(fileColumnMapperDTO.getFilesId())
-                        .originFileName(file.getOriginalFilename())
-                        .systemFileName(systemFileName)
-                        .fileSize(file.getSize())
-                        .path(mappedPath + "/" + systemFileName)
-                        .build();
-                dao.detailInsert(fileDetailDTO);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     public static FileDetailDTO upload(MultipartFile file, FileColumnMapperDTO dto) throws IOException {
         String today = LocalDate.now().toString();
         String uploadPath = Statics.FILE_UPLOAD_PATH + dto.getPath() + "/" + today;

@@ -63,11 +63,11 @@ public class FileController {
     }
 
     @RequestMapping("/upload/test")
-    public String test(MultipartFile[] files, int id) {
+    public String test(MultipartFile[] files, int id) throws IOException {
         FileDTO dto = FileDTO.builder()
                 .approvalId(String.valueOf(id))
                 .build();
-        fileUtil.upload(files, dto);
+        fileService.insert(files, dto);
 
         return "redirect:/";
     }

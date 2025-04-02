@@ -1,6 +1,7 @@
 package com.end2end.spring.file.controller;
 
 import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,14 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private FileUtil fileUtil;
+
     @ResponseBody
     @RequestMapping("/upload/image")
     public String uploadImage(MultipartFile file) {
         try {
-            return FileUtil.uploadTempImage(file);
+            return FileUtil.uploadImage(file);
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -32,7 +36,11 @@ public class FileController {
     @ResponseBody
     @RequestMapping("/delete/image/{path}")
     public void deleteImage(@PathVariable String path) {
-        FileUtil.removeFile(path);
+        try {
+            fileUtil.removeFile(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @RequestMapping("/download")
@@ -40,19 +48,37 @@ public class FileController {
         // TODO: 다운로드
     }
 
+    @RequestMapping("/select/test")
+    public String selectByParentsId() {
+        FileDTO dto = FileDTO.builder()
+                .approvalId("1")
+                .build();
+        List<FileDetailDTO> result = fileService.selectByParentsId(dto);
+
+        for(FileDetailDTO fileDetailDTO : result) {
+            System.out.println(fileDetailDTO.getSystemFileName());
+        }
+
+        return "redirect:/";
+    }
+
     @RequestMapping("/upload/test")
     public String test(MultipartFile[] files, int id) {
         FileDTO dto = FileDTO.builder()
-                .boardId(id)
+                .approvalId(String.valueOf(id))
                 .build();
-        fileService.insert(files, dto);
+        fileUtil.upload(files, dto);
 
         return "redirect:/";
     }
 
     @RequestMapping("/delete/test")
     public String delete(String path) {
-        FileUtil.removeFile(path);
+        try {
+            fileUtil.removeFile(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return "redirect:/";
     }

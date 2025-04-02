@@ -18,29 +18,12 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private FileDAO dao;
 
+    @Autowired
+    private FileUtil fileUtil;
+
     @Override
-    public List<FileDTO> selectByParentsId(String column, Object id) {
-        return dao.selectByParentsId(column, id);
-    }
-
-    @Transactional
-    @Override
-    public void insert(MultipartFile[] files, FileDTO dto) {
-        FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
-
-        int filesId = dao.insert(fileColumnMapperDTO);
-
-        List<FileDetailDTO> dtoList = FileUtil.upload(files, fileColumnMapperDTO.getFilesId(), fileColumnMapperDTO.getPath());
-        dao.detailInsertAll(dtoList);
-    }
-
-    @Transactional
-    @Override
-    public void deleteById(int id) {
-        // FileDetailDTO dto = dao.selectById(id);
-
-        if (dao.deleteById(id)) {
-            FileUtil.removeFile("");
-        }
+    public List<FileDetailDTO> selectByParentsId(FileDTO dto) {
+        FileColumnMapperDTO mapper = FileColumnMapperDTO.of(dto);
+        return dao.selectByParentsId(mapper);
     }
 }

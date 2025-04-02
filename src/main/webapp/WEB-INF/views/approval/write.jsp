@@ -157,23 +157,12 @@
                         console.log(employee);
 
                         const div = $('<div>').addClass("employee").attr('draggable', true);
-                        div.append($("<span>").addClass("employee-name").html(employee.name));
+                        div.append($("<span>").addClass("employee-name").html(employee.name+ " : "+employee.jobname ));
                         console.log(div);
-                        /*
-                        employeesHtml += '
-                            <div class="employee" draggable="true" ondragstart="drag(event)" data-name="${employee.name}">
-                                <span class="employee-name">${employee.name}</span> -
-                            </div>';
-                            */
+
                         $('#employees').append(div);
                     });
                 }
-                // $('#employeeList').html(employeesHtml);
-            },
-            error : function(request, status, error) {
-                console.log("code: " + request.status)
-                console.log("message: " + request.responseText)
-                console.log("error: " + error);
             }
         });
     }

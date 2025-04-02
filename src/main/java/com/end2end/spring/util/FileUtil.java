@@ -1,9 +1,8 @@
 package com.end2end.spring.util;
 
 import com.end2end.spring.file.dao.FileDAO;
-import com.end2end.spring.file.dto.FileColumnMapperDTO;
+import com.end2end.spring.file.*;
 import com.end2end.spring.file.dto.FileDTO;
-import com.end2end.spring.file.dto.FileDetailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,6 +51,8 @@ public class FileUtil {
             }
         }
     }
+
+
 
     public void removeFile(String path) throws IOException {
         File file = new File(path);

@@ -7,13 +7,14 @@ import com.end2end.spring.employee.dto.LoginDTO;
 import com.end2end.spring.employee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
-    private EmployeeDAO dao;
+    private EmployeeDAO employeeDAO;
+    // @Autowired private EmailDAO
 
     @Override
     public EmployeeDTO selectById(String id) {
@@ -37,9 +38,24 @@ public class EmployeeServiceImpl implements EmployeeService {
         // TODO: 로그아웃
     }
 
+    @Transactional
     @Override
-    public void insert(EmployeeDetailDTO dto) {
+    public void insert(EmployeeDetailDTO dto, MultipartFile file) {
         // TODO: 사원 등록
+        // employee <- insert employeeId 1번
+        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+                .departmentId(dto.getDepartmentId())
+                .jobId(dto.getJobId())
+                .name(dto.getName())
+                .email(dto.getEmail())
+                .profileImg(dto.getProfileImage())
+                .build();
+        employeeDAO.insert(employeeDTO);
+
+        String employeeId = employeeDTO.getId();  // 방금 만든 사번
+
+        // 2번
+        dto.setId(employeeId);
     }
 
     @Override
@@ -50,10 +66,5 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteById(String id) {
         // TODO: 해당 id의 사원 삭제
-    }
-
-    @Override
-    public List<EmployeeDTO> selectByDepartmentId(int departmentId) {
-        return dao.selectByDepartmentId(departmentId);
     }
 }

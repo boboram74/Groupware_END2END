@@ -3,11 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="file">
-    <select id="selectByParentsId" resultType="com.end2end.spring.file.dto.FileDTO">
+    <select id="selectByParentsId" resultType="com.end2end.spring.file.dto.FileDetailDTO">
         SELECT *
         FROM FILES
-        INNER JOIN FILE_DETAIL
-        ON FILES.ID = FILE_DETAIL.ID
+        JOIN FILE_DETAIL
+            ON FILES.id = FILE_DETAIL.filesId
         WHERE ${column} =
         <choose>
             <when test="column.equals('approvalId')">
@@ -40,15 +40,16 @@
     </insert>
 
     <insert id="detailInsert">
-        INSERT INTO FILE_DETAIL VALUES (FILE_DETAIL_SEQ_ID.NEXTVAL, ${feliId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
+        INSERT INTO FILE_DETAIL(id, filesId, originFileName, systemFileName, path, fileSize)
+        VALUES (FILE_DETAIL_ID_SEQ.NEXTVAL, ${filesId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
     </insert>
 
     <insert id="detailInsertAll">
         INSERT INTO FILE_DETAIL(id, originFileName, systemFileName, path, fileSize)
         SELECT FILE_DETAIL_SEQ_ID.NEXTVAL, A* FROM (
         <foreach collection="list" item="item" separator="UNION ALL">
-            SELECT ${filesId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize} FROM DUAL
-        </foreach>z
+            SELECT ${item.filesId}, #{item.originFileName}, #{item.systemFileName}, #{item.path}, ${item.fileSize} FROM DUAL
+        </foreach>
         ) A
     </insert>
 

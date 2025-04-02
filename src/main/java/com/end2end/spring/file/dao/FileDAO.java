@@ -16,12 +16,8 @@ public class FileDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public List<FileDTO> selectByParentsId(String column, Object id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        params.put("column", column);
-
-        return mybatis.selectList("file.selectByParentsId", params);
+    public List<FileDetailDTO> selectByParentsId(FileColumnMapperDTO dto) {
+        return mybatis.selectList("file.selectByParentsId", dto);
     }
 
     public FileDTO selectById(int id) {
@@ -32,12 +28,12 @@ public class FileDAO {
         return mybatis.insert("file.insert", dto);
     };
 
-    public void detailInsertAll(List<FileDetailDTO> dto) {
-        mybatis.insert("file.detailInsertAll", dto);
+    public void detailInsert(FileDetailDTO dto) {
+        mybatis.insert("file.detailInsert", dto);
     }
 
-    public void detailInsert(FileDTO dto) {
-        mybatis.insert("file.detailInsert", dto);
+    public int deleteByPath(String path) {
+        return mybatis.delete("file.deleteByPath", path);
     }
 
     public boolean deleteById(int id) {

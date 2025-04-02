@@ -19,9 +19,6 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private FileDAO dao;
 
-    @Autowired
-    private FileUtil fileUtil;
-
     @Override
     public List<FileDetailDTO> selectByParentsId(FileDTO dto) {
         FileColumnMapperDTO mapper = FileColumnMapperDTO.of(dto);

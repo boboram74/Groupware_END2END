@@ -26,14 +26,4 @@ public class FileServiceImpl implements FileService {
         FileColumnMapperDTO mapper = FileColumnMapperDTO.of(dto);
         return dao.selectByParentsId(mapper);
     }
-
-    @Transactional
-    @Override
-    public void deleteById(int id) {
-        // FileDetailDTO dto = dao.selectById(id);
-
-        if (dao.deleteById(id)) {
-            fileUtil.removeFile("");
-        }
-    }
 }

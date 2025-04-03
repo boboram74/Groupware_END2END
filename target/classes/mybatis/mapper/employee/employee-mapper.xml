@@ -9,19 +9,19 @@
     </select>
 
     <select id="selectAllDepartment" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
-        SELECT * FROM Department
+        SELECT * FROM DEPARTMENT
     </select>
 
     <select id="selectAllJob" resultType="com.end2end.spring.employee.dto.JobDTO">
-        SELECT * FROM Job
+        SELECT * FROM JOB
     </select>
 
     <insert id="insert">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">
-            select concat(to_char(trunc(sysdate), 'YYMMDD'), EMPLOYEE_ID_SEQ.nextval) from dual
+            SELECT CONCAT(to_char(trunc(sysdate), 'YYMMDD'), EMPLOYEE_ID_SEQ.NEWTVAL) FROM DUAL
         </selectKey>
-        insert into EMPLOYEE(id, departmentId, jobId, name, email, profileImg, contact)
-        values (#{id}, ${departmentId}, ${jobId}, #{name}, #{email}, #{profileImg}, #{contact})
+        INSERT INTO EMPLOYEE(id, departmentId, jobId, name, email, profileImg, contact)
+        VALUES (#{id}, ${departmentId}, ${jobId}, #{name}, #{email}, #{profileImg}, #{contact})
     </insert>
 
     <insert id="insertDetail">
@@ -30,22 +30,22 @@
     </insert>
 
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT * FROM EMPLOYEE WHERE departmentId = ${departmentId} ORDER BY desc 1
+        SELECT * FROM EMPLOYEE WHERE DEPARTMENTID = ${departmentId} ORDER BY DESC 1
     </select>
 
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        select employee.*
-        from EMPLOYEE_DETAIL
-        join employee
-            on EMPLOYEE_DETAIL.id = employee.id
-        WHERE loginId = #{loginId} AND PASSWORD =  #{password}
+        SELECT EMPLOYEE.*
+        FROM EMPLOYEE_DETAIL
+        JOIN EMPLOYEE
+        ON EMPLOYEE_DETAIL.ID = EMPLOYEE.ID
+        WHERE LOGINID = #{loginId} AND PASSWORD = #{password}
     </select>
 
     <select id="selectDetailById" resultType="com.end2end.spring.employee.dto.EmployeeDetailDTO">
-        select employee.*
-        from EMPLOYEE_DETAIL
-        join employee
-        on EMPLOYEE_DETAIL.id = employee.id
-        where id = #{id}
+        SELECT EMPLOYEE.*
+        FROM EMPLOYEE_DETAIL
+        JOIN EMPLOYEE
+        ON EMPLOYEE_DETAIL.ID = EMPLOYEE.ID
+        WHERE LOGINID = #{loginId}
     </select>
 </mapper>

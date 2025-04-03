@@ -39,4 +39,8 @@ public class EmployeeDAO {
     public EmployeeDTO login(LoginDTO dto) {
         return mybatis.selectOne("employee.login", dto);
     }
+
+    public EmployeeDetailDTO selectDetailById(String loginId){
+        return mybatis.selectOne("employee.selectDetailById", loginId);
+    }
 }

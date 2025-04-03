@@ -25,11 +25,9 @@ public class EmployeeController {
     public String login(@ModelAttribute LoginDTO dto, HttpSession session, Model model) {
         // TODO: 로그인 처리
          EmployeeDTO employee = employeeService.login(dto);
-
         if (employee != null) {
             session.setAttribute("employee", employee);
         }
-
         return "redirect:/";
     }
 

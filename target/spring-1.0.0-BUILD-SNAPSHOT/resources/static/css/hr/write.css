@@ -1,0 +1,86 @@
+*{
+    /*border: 1px solid red;*/
+    box-sizing: border-box;
+}
+.mainContainer{
+    width: 90%;
+    height: 100vh;
+    margin: auto;
+    padding: 10px;
+}
+.mainHeader{
+    width: 100%;
+    height: 10%;
+    margin: 10px;
+}
+.title{
+    width: 100%;
+    height: 40%;
+}
+.title span {
+    font-size: 60px;
+}
+.title h2 {
+    display: flex;
+    align-items: center;
+}
+.title h2 .material-icons {
+    font-size: 65px;
+    margin-right: 8px;
+}
+.mainBody{
+    width: 100%;
+    height: 90%;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+    width: 100%;
+}
+.btn{
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+.id input,.pw input,.repw input{
+    width: 40vw;
+}
+.address1 input,.address2 input{
+    width: 30vw;
+}
+.hrProfile {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin:10px;
+}
+
+.hrProfile label {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: relative;
+}
+
+.hrProfile img#profilePreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid dimgray;
+}
+
+.hrProfile .material-icons {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 20px;
+    color: #333;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}

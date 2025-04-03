@@ -138,7 +138,7 @@
       <input type="text" placeholder="검색" id="headerSearch"/>
       <div class="profile">
             <span class="photo">
-              <a href="/mypage/{employeeId}">
+              <a href="/mypage/${employee.id}">
                 <img class="profileIcon" src="${employee.profileImg}" />
                 <!-- 세션에서 이미지 불러오기 -->
               </a>

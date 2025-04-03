@@ -1,0 +1,213 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container-fluid {
+    overflow: hidden;
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-color: #eef1f6;
+    position: relative;
+    padding: 0;
+    overflow-y: scroll;
+}
+
+.main {
+    display: flex;
+    width: 100%;
+    display: block;
+}
+
+.logo {
+    position: absolute;
+    left: 0;
+    width: 30px;
+    height: 30px;
+}
+
+.sidebar {
+    margin: 0;
+    width: 50px;
+    overflow: hidden;
+    background: #030848;
+    height: 100vh;
+    text-align: center;
+    position: fixed;
+    transition: width 0.3s ease-in-out;
+    color: white;
+    z-index: 3;
+    /* transition-duration: 0.5s; */
+}
+.sidebar ul {
+    padding: 0;
+    margin: 0;
+}
+div {
+    border: 1px solid red;
+}
+
+.sidebar ul li {
+    list-style: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.sidebar a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.sidebar:hover {
+    width: 150px;
+}
+
+.boxContents {
+    margin-left: 50px;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.header {
+    position: relative;
+    background: #fff;
+    padding: 10px;
+    height: 50px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+input {
+    /* width: 50vw; */
+    margin-right: 50px;
+}
+
+.bellBtn {
+    /* display: block; */
+    background: #fff;
+    border: none;
+}
+
+.profileIcon {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}
+
+.icon {
+    display: flex;
+    padding-top: 20px;
+}
+.menu {
+    list-style: none;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+.boxContents {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    /* gap: 50px; */
+    margin-bottom: 20px;
+}
+.btnBox {
+    margin-top: 10px;
+    display: flex;
+    margin-left: 50px;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+button {
+    margin-right: 10px;
+    margin-top: 10px;
+}
+.selectBox {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    justify-content: flex-end;
+}
+.pageName {
+    font-size: 30px;
+    margin-left: 100px;
+}
+
+.modalPage {
+    position: absolute;
+    display: flex;
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    border: 1px solid black;
+    top: 50px;
+    left: 50px;
+    z-index: 1050;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.close {
+    display: none;
+}
+
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-color: gray;
+    opacity: 0.5;
+    z-index: 1000;
+}
+
+.modalWapper {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: first;
+}
+
+.modalWrapper select {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.column {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.modalBtnBox {
+    justify-content: end;
+}
+
+.columnTitle {
+    margin-right: 10px;
+    min-width: 30%;
+}
+.divTitle {
+    display: flex;
+    font-size: 30px;
+    margin-bottom: 30px;
+}

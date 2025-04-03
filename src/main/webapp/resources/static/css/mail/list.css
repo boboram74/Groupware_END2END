@@ -1,0 +1,158 @@
+*{
+    /*border: 1px solid red;*/
+    box-sizing: border-box;
+}
+.mainContainer{
+    width: 90%;
+    height: 100vh;
+    margin: auto;
+    padding: 10px;
+}
+.mainHeader{
+    width: 100%;
+    height: 20%;
+    margin: 10px;
+}
+.title{
+    width: 100%;
+    height: 40%;
+}
+.title span {
+    font-size: 60px;
+}
+.title h2 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+.title h2 .material-icons {
+    font-size: 65px;
+    margin-right: 8px;
+}
+
+.mailSend {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: right;
+}
+
+.mailSend span {
+    font-size: 17px;
+}
+
+.search{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: right;
+    margin-right: 10%;
+}
+.search div {
+    margin-left: 7px;
+}
+.searchOption{
+    width: 40%;
+    height:100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+#searchOption{
+    width: 100%;
+    height:100%;
+    padding-right: 20px;
+}
+.searchInput {
+    width: 30%;
+    height: 100%;
+}
+
+#input{
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+}
+#searchBtn{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titleArea {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.titleArea h4 {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+#searchBtn span {
+    font-size: 20px;
+}
+.mainBody{
+    width: 100%;
+    height: 80%;
+    margin: 10px;
+}
+.content { /* 높이 설정 X */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+}
+
+.mailList {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+.mailList th,
+.mailList td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+}
+.mailList th {
+    background-color: #eef1f6;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+.pageNavi{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.paging {
+    display: inline-block;
+    margin: 5px 3px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    background: #e0e0e0;
+    color: #333;
+    border: 1px solid #ccc;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.paging:hover {
+    background: #ccc;
+    transform: translateY(-2px);
+}
+.paging.active {
+    background-color: #999;
+    color: #fff;
+    transform: none;
+}

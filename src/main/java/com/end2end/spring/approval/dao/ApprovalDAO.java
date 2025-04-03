@@ -19,4 +19,9 @@ public class ApprovalDAO {
         return mybatis.selectList("approval.toList");
     }
 
+    public void insert(ApprovalDTO dto){
+        mybatis.insert("approval.insert", dto);
+
+    }
+
 }

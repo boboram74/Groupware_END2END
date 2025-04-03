@@ -5,7 +5,6 @@ import com.end2end.spring.file.dto.FileDetailDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.util.List;
 
 public interface FileService {

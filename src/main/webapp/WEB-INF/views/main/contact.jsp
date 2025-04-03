@@ -6,7 +6,7 @@
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
-            <h2><span class="material-icons">mail</span>연락처</h2>
+            <h2><span class="material-icons">phone_in_talk</span>연락처</h2>
         </div>
         <div class="search">
             <div>

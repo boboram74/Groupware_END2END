@@ -5,7 +5,10 @@ import com.end2end.spring.file.dto.FileDetailDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+<<<<<<< HEAD
+=======
 
+>>>>>>> 565ca15d07c69e1c5718af77596ed244035d797c
 import java.util.List;
 
 public interface FileService {

@@ -8,7 +8,7 @@
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
-            <h2><span class="material-icons">mail</span>직원관리 DashBoard</h2>
+            <h2><span class="material-icons">insert_chart</span>직원관리 DashBoard</h2>
         </div>
         <div class="mainBody">
             <div class="chartUp">

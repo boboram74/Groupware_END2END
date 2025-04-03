@@ -24,11 +24,9 @@ public class EmployeeController {
     @RequestMapping("/login")
     public String login(@ModelAttribute LoginDTO dto, HttpSession session, Model model) {
          EmployeeDTO employee = employeeService.login(dto);
-
         if (employee != null) {
             session.setAttribute("employee", employee);
         }
-
         return "redirect:/";
     }
 

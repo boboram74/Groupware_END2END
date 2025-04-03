@@ -12,12 +12,87 @@
             TRUNC(regDate) = TRUNC(SYSDATE)
     </select>
 
-    <select id="selectLeaveEarly" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+    <select id="selectTodayWorkTimeList" resultType="com.end2end.spring.commute.dto.TodayWorkTimeDTO">
+        SELECT WORK_OFF.EMPLOYEEID, (WORK_OFF_TIME - WORK_ON_TIME) AS todayWorkTime
+        FROM (
+            SELECT EMPLOYEEID, MAX(REGDATE) AS WORK_OFF_TIME, state
+            FROM COMMUTE
+            WHERE
+                TRUNC(REGDATE) = TRUNC(SYSDATE)
+            AND
+                STATE = 'WORK_OFF'
+            GROUP BY EMPLOYEEID, state) WORK_OFF
+        JOIN (
+            SELECT EMPLOYEEID, REGDATE AS WORK_ON_TIME, STATE
+            FROM COMMUTE
+            WHERE
+                STATE = 'WORK_ON'
+            AND
+                TRUNC(REGDATE) = TRUNC(SYSDATE)) WORK_ON
+        ON WORK_OFF.EMPLOYEEID = WORK_ON.EMPLOYEEID
+    </select>
+
+    <select id="selectWorked" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT *
-        FROM COMMUTE
-        WHERE STATE = 'WORK_OFF'
-        AND EXTRACT(HOUR FROM regDate) = 18
-        AND TRUNC(regDate) = TRUNC(SYSDATE)
+        FROM EMPLOYEE
+        WHERE
+            ID IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_OFF'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+        AND
+            ID IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_ON'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+    </select>
+
+    <select id="selectNotCheck" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT *
+        FROM EMPLOYEE
+        WHERE
+            ID NOT IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_OFF'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+        AND
+            ID IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_ON'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+    </select>
+
+    <select id="selectAbsence" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT *
+        FROM EMPLOYEE
+        WHERE
+            ID NOT IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_OFF'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+        AND
+            ID NOT IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_ON'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
     </select>
 
     <insert id="insertAll" parameterType="list">
@@ -34,6 +109,6 @@
     </update>
 
     <insert id="workOff">
-        INSERT INTO COMMUTE(state, employeeId) VALUES ('WORK_OFF', #{employeeId})
+        INSERT INTO COMMUTE(id, state, employeeId) VALUES (COMMUTE_ID_SEQ.NEXTVAL, 'WORK_OFF', #{employeeId})
     </insert>
 </mapper>

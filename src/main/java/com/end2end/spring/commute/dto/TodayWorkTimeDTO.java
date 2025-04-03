@@ -1,18 +1,15 @@
 package com.end2end.spring.commute.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-@Builder
-public class SolderingDTO {
-    private int id;
+@NoArgsConstructor
+public class TodayWorkTimeDTO {
     private String employeeId;
-    private String state;
-    private LocalDateTime regDate;
+    private Timestamp todayWorkTime;
 }

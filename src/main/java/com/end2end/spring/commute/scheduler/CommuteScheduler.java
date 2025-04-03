@@ -13,10 +13,9 @@ public class CommuteScheduler {
     @Autowired
     private CommuteService commuteService;
 
-    @Scheduled(cron= Statics.WORK_ON_CHECK_TIME)
-    public void workOnCheck() {
-        // TODO: 지정한 시간에 자동으로 출근 체크
-        System.out.println("출근 체크!! time:" + LocalDateTime.now());
+    @Scheduled(cron="0 59 23 * * 1-5")
+    public void lateCheck() {
+        commuteService.checkLate();
     }
 
     @Scheduled(cron="0 0 0 * * ?")

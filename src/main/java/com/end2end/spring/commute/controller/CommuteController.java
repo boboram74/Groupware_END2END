@@ -43,4 +43,10 @@ public class CommuteController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         commuteService.workOff(employee.getId());
     }
+
+    @ResponseBody
+    @RequestMapping("/leaveEarly/test")
+    public void leaveEarly(HttpSession session) {
+        commuteService.checkLeaveEarly();
+    }
 }

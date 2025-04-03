@@ -3,6 +3,7 @@ package com.end2end.spring.employee.serviceImpl;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.*;
 import com.end2end.spring.employee.service.EmployeeService;
+import com.end2end.spring.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeDAO employeeDAO;
-    @Autowired private MailDAO mailDAO;
+    //@Autowired private MailDAO mailDAO;
 
     @Override
     public EmployeeDTO selectById(String id) {
@@ -29,8 +30,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void login(LoginDTO dto) {
-        // TODO: 로그인
+    public EmployeeDTO login(LoginDTO dto) {
+        String password = SecurityUtil.hashPassword(dto.getPassword());
+        dto.setPassword(password);
+
+        return employeeDAO.login(dto);
     }
 
     @Override
@@ -43,6 +47,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void insert(EmployeeDetailDTO dto, MultipartFile file) {
         // TODO: 사원 등록
         // employee insert 사원 테이블 추가
+        String hashedPassword = SecurityUtil.hashPassword(dto.getPassword());
+        dto.setPassword(hashedPassword);
         EmployeeDTO employeeDTO = EmployeeDTO.builder()
                 .departmentId(dto.getDepartmentId())
                 .jobId(dto.getJobId())

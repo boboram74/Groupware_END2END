@@ -8,7 +8,7 @@ import java.util.List;
 public interface EmployeeService {
     EmployeeDTO selectById(String id);
     EmployeeDetailDTO selectDetailById(String id);
-    void login(LoginDTO dto);
+    EmployeeDTO login(LoginDTO dto);
     void logout();
     void insert(EmployeeDetailDTO dto, MultipartFile file);
     void update(EmployeeDetailDTO dto);

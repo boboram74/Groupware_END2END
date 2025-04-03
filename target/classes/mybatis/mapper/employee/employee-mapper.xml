@@ -32,4 +32,20 @@
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT * FROM EMPLOYEE WHERE departmentId = ${departmentId} ORDER BY desc 1
     </select>
+
+    <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        select employee.*
+        from EMPLOYEE_DETAIL
+        join employee
+            on EMPLOYEE_DETAIL.id = employee.id
+        WHERE loginId = #{loginId} AND PASSWORD =  #{password}
+    </select>
+
+    <select id="selectDetailById" resultType="com.end2end.spring.employee.dto.EmployeeDetailDTO">
+        select employee.*
+        from EMPLOYEE_DETAIL
+        join employee
+        on EMPLOYEE_DETAIL.id = employee.id
+        where id = #{id}
+    </select>
 </mapper>

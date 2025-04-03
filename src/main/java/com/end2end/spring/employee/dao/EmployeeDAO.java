@@ -1,9 +1,6 @@
 package com.end2end.spring.employee.dao;
 
-import com.end2end.spring.employee.dto.DepartmentDTO;
-import com.end2end.spring.employee.dto.EmployeeDTO;
-import com.end2end.spring.employee.dto.EmployeeDetailDTO;
-import com.end2end.spring.employee.dto.JobDTO;
+import com.end2end.spring.employee.dto.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,5 +34,9 @@ public class EmployeeDAO {
 
     public List<JobDTO> selectAllJob() {
         return mybatis.selectList("employee.selectAllJob");
+    }
+
+    public EmployeeDTO login(LoginDTO dto) {
+        return mybatis.selectOne("employee.login", dto);
     }
 }

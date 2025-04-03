@@ -13,14 +13,16 @@ public class EmployeeDetailDTO {
     private String id;
     private String name;
     private String email;
-    private String profileImage;
+    private String profileImg;
     private int departmentId;
     private int jobId;
     private String role;
     private String loginId;
     private String password;
-    private int address;
+    private int postCode;
+    private String address;
     private String detailAddress;
+    private String contact;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;

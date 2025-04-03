@@ -186,7 +186,7 @@
       <div class="profile">
             <span class="photo">
               <a href="/mypage/{employeeId}">
-                <img class="profileIcon" src="프로필이미지.jpg" />
+                <img class="profileIcon" src="${employee.profileImg}" />
                 <!-- 세션에서 이미지 불러오기 -->
               </a>
             </span>

@@ -21,5 +21,6 @@ public class EmployeeDTO {
 }
 =======
     private String jobName;
+    private String contact;
 }
 >>>>>>> bfacc3d5c379845129c6291328b1909a3b594908

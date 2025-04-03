@@ -7,7 +7,7 @@
 
     </insert>
 
-    <select id="vacationCheck" resultType="com.end2end.spring.commute.dto.VacationDTO">
+    <select id="selectCurrentVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">
         SELECT *
         FROM VACATION
         WHERE

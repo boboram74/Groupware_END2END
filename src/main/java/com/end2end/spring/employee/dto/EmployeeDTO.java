@@ -17,4 +17,7 @@ public class EmployeeDTO {
     private String email;
     private String profileImg;
     private String role;
+    private String jobName;
+    private String contact;
 }
+

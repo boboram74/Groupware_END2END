@@ -20,10 +20,11 @@
     </insert>
     <!-- 프로젝트 진행중 보고된 게시물 추가 -->
 
-    <select id="updateById" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+    <update id="updateById" >
         update project_work set
         title=?,content=?,state=?,priority=?, deadLine=? where id =${value}
-    </select>
+    </update>
+
 <!-- 프로젝트 진행중 보고된 게시물 수정-->
 
     <select id="selectByCon" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">

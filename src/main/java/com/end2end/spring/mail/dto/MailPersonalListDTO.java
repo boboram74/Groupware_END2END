@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class MailListDTO {
+public class MailPersonalListDTO {
     private int id;
     private String senderEmailAddress;
     private String title;
-    private Timestamp regDate;
+    private LocalDateTime regDate;
 }

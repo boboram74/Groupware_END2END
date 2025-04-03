@@ -5,22 +5,29 @@ $(function () {
         url: "/mail/listAll",
         data: { cpage: cpage }
     }).done(function (resp) {
-        console.log(resp);
         let list = resp.list;
         for(let i = 0; i < list.length; i++) {
                 let tr = $('<tr>');
 
                 tr.append($('<td style="width: 5%; text-align: center;">').html('<input style="zoom: 1.5;" type="checkbox">'));
 
-                tr.append($('<td>').html(list[i].senderEmailAddress));
+                tr.append($('<td>').html(list[i].SENDEREMAILADDRESS));
 
-                let a = $('<a>').attr('href','/mail/detail?id='+ list[i].id).text(list[i].title);
-                tr.append($('<td>').append(a).addClass('contents').attr('id', list.seq));
+                let a = $('<a>').attr('href','/mail/'+ list[i].id).text(list[i].title);
+                tr.append($('<td>').append(a).addClass('contents').attr('id', list.id));
 
-                let timestamp = new Date(list[i].regDate).getTime();
-                tr.append($('<td>').addClass('relative-date').attr('data-timestamp',timestamp).html(list[i].regDate));
-
-            $('#buttons').before(tr);
+                let rawDate = list[i].regdate;
+                if (typeof rawDate !== 'string') {
+                    rawDate = String(rawDate);
+                }
+                if (rawDate) {
+                    let isoDate = rawDate.replace(" ", "T").split(".")[0];
+                    let timestamp = new Date(isoDate).getTime();
+                    tr.append($('<td>').addClass('relative-date').attr('data-timestamp', timestamp).html(rawDate));
+                } else {
+                    tr.append($('<td>').addClass('relative-date').html("날짜 정보 없음"));
+                }
+                $('#buttons').before(tr);
         }
         let pagingTr = $('<tr>');
         let pagingTd = $('<td colspan="5" style="text-align: center;">');

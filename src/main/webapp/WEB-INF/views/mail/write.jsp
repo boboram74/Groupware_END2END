@@ -38,8 +38,7 @@
             <textarea id="mailContent" placeholder="메일내용"></textarea>
         </div>
         <div class="buttons">
-            <button type="button">임시 저장</button>
-            <button type="button" id="sendMail">보내기</button>
+            <button type="button" id="sendMail">답장하기</button>
         </div>
     </div>
 </div>

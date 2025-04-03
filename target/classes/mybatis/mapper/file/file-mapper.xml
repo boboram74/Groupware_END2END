@@ -44,23 +44,11 @@
         VALUES (FILE_DETAIL_ID_SEQ.NEXTVAL, ${filesId}, #{originFileName}, #{systemFileName}, #{path}, ${fileSize})
     </insert>
 
-<<<<<<< HEAD
-    <delete id="deleteById">
-        DELETE FROM FILE_DETAIL WHERE id = ${id}
-    </delete>
-
-    <delete id="deleteByPath">
-        DELETE FROM FILE_DETAIL WHERE PATH = ${path}
-    </delete>
-
-    <delete id="deleteAll">
-=======
     <delete id="deleteDetailByPath">
         DELETE FROM FILE_DETAIL WHERE path = #{path}
     </delete>
 
     <delete id="deleteById">
->>>>>>> bfacc3d5c379845129c6291328b1909a3b594908
         DELETE FROM FILES WHERE ${column} =
         <choose>
             <when test="column.equals('approvalId')">

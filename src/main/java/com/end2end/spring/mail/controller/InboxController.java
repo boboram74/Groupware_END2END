@@ -1,6 +1,6 @@
 package com.end2end.spring.mail.controller;
 
-import com.end2end.spring.mail.dto.MailListDTO;
+import com.end2end.spring.mail.dto.MailPersonalListDTO;
 import com.end2end.spring.mail.dto.TempMailDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,7 +52,7 @@ public class InboxController {
     }
 
     @RequestMapping("/insert")
-    public void insert(MailListDTO dto) {
+    public void insert(MailPersonalListDTO dto) {
         // TODO: 메일을 송신함
     }
 

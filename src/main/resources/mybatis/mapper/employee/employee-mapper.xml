@@ -42,10 +42,28 @@
     </select>
 
     <select id="selectDetailById" resultType="com.end2end.spring.employee.dto.EmployeeDetailDTO">
-        SELECT EMPLOYEE.*
-        FROM EMPLOYEE_DETAIL
-        JOIN EMPLOYEE
-        ON EMPLOYEE_DETAIL.ID = EMPLOYEE.ID
-        WHERE LOGINID = #{loginId}
+        SELECT
+        e.id AS id,
+        e.name,
+        e.email,
+        e.profileImg,
+        e.departmentId,
+        d.name AS departmentName,
+        e.jobId,
+        j.name AS jobName,
+        e.role AS role,
+        ed.loginId,
+        ed.password,
+        ed.postCode,
+        ed.address,
+        ed.detailAddress,
+        e.contact,
+        ed.birthday,
+        ed.hiredDate as hiredate
+        FROM EMPLOYEE_DETAIL ed
+        JOIN EMPLOYEE e ON ed.id = e.id
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        JOIN JOB j ON e.jobId = j.id
+        WHERE e.id = #{id}
     </select>
 </mapper>

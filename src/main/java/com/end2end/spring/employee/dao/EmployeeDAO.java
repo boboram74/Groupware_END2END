@@ -40,7 +40,7 @@ public class EmployeeDAO {
         return mybatis.selectOne("employee.login", dto);
     }
 
-    public EmployeeDetailDTO selectDetailById(String loginId){
-        return mybatis.selectOne("employee.selectDetailById", loginId);
+    public EmployeeDetailDTO selectDetailById(String employeeId){
+        return mybatis.selectOne("employee.selectDetailById", employeeId);
     }
 }

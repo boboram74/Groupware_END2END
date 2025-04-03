@@ -13,18 +13,18 @@
     </div>
     <div class="mainBody">
             <div class="content">
-                <div class="profile">
-                    <img src="/images/profile/${employee.profileImg}" alt="프로필 이미지" width="100" height="100">
+                <div class="hrProfile">
+                    <img src="${employeeDetail.profileImg}" alt="프로필 이미지">
                 </div>
-                <div class="name">이름 : ${employee.name}</div>
-                <div class="contact">연락처 : ${employee.contact}</div>
-                <div class="birthday">생년월일 : ${employee.birthday}</div>
-                <div class="position">직급 : ${employee.jobId}</div>
-                <div class="department">부서 : ${employee.departmentId}</div>
-                <div class="email">이메일 : ${employee.email}</div>
-                <div class="postCode">우편번호 : ${employee.postCode}</div>
-                <div class="address">주소 : ${employee.address}</div>
-                <div class="detailAddress">상세주소 : ${employee.detailAddress}</div>
+                <div class="name">이름 : ${employeeDetail.name}</div>
+                <div class="contact">연락처 : ${employeeDetail.contact}</div>
+                <div class="birthday">생년월일 : ${employeeDetail.birthday}</div>
+                <div class="position">직급 : ${employeeDetail.jobName}</div>
+                <div class="department">부서 : ${employeeDetail.departmentName}</div>
+                <div class="email">이메일 : ${employeeDetail.email}</div>
+                <div class="postCode">우편번호 : ${employeeDetail.postCode}</div>
+                <div class="address">주소 : ${employeeDetail.address}</div>
+                <div class="detailAddress">상세주소 : ${employeeDetail.detailAddress}</div>
             </div>
         <div class="btn">
             <button id="EditBtn">수정하기</button>

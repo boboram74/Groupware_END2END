@@ -20,3 +20,4 @@ public class EmployeeDTO {
     private String jobName;
     private String contact;
 }
+

@@ -5,5 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class EmailDTO {
+public class InboxDTO {
+
 }

@@ -11,6 +11,7 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ public class CommuteServiceImpl implements CommuteService {
         commuteDAO.workOff(employeeId);
     }
 
+    @Transactional
     @Override
     public void checkLate() {
         List<CommuteDTO> lateList = commuteDAO.selectLate();
@@ -44,6 +46,7 @@ public class CommuteServiceImpl implements CommuteService {
         solderingDAO.insertList(solderingDTOList);
     }
 
+    @Transactional
     @Override
     public void checkLeaveEarly() {
         // TODO: 조퇴자 체크
@@ -61,18 +64,37 @@ public class CommuteServiceImpl implements CommuteService {
         solderingDAO.insertList(leaveEarlyList);
     }
 
+    @Transactional
     @Override
     public void checkNotCheck() {
         // TODO: 미체크 체크
         List<EmployeeDTO> employeeList = commuteDAO.selectNotCheck();
+
+        List<SolderingDTO> solderingDTOList = employeeList.stream()
+                .map((employee) -> SolderingDTO.builder()
+                        .employeeId(employee.getId())
+                        .state("NOT_CHECK")
+                        .build())
+                .collect(Collectors.toList());
+        solderingDAO.insertList(solderingDTOList);
     }
 
+    @Transactional
     @Override
     public void checkAbsence() {
         // TODO: 결근자 체크
         List<EmployeeDTO> employeeList = commuteDAO.selectAbsence();
+
+        List<SolderingDTO> solderingDTOList = employeeList.stream()
+                .map((employee) -> SolderingDTO.builder()
+                        .employeeId(employee.getId())
+                        .state("ABSENCE")
+                        .build())
+                .collect(Collectors.toList());
+        solderingDAO.insertList(solderingDTOList);
     }
 
+    @Transactional
     @Override
     public void insertAll() {
         List<EmployeeDTO> employeeDTOList = employeeDAO.selectAll();

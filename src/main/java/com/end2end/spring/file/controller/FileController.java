@@ -72,7 +72,7 @@ public class FileController {
         return "redirect:/";
     }
 
-    @RequestMapping("/delelte/test")
+    @RequestMapping("/delete/test/all")
     public String delelte() {
         FileDTO dto = FileDTO.builder()
                 .approvalId(String.valueOf("1"))

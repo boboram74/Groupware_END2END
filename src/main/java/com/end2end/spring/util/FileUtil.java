@@ -32,7 +32,9 @@ public class FileUtil {
     }
 
     public static void removeFile(String path) {
-        File file = new File(path);
+        String fileLocation = Statics.FILE_UPLOAD_PATH + path.substring("/files/".length());
+
+        File file = new File(fileLocation);
 
         if (!file.exists()) {
             throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
@@ -52,5 +54,15 @@ public class FileUtil {
         file.transferTo(new File(uploadPath + "/" + systemFileName));
 
         return "/files/image/" + systemFileName;
+    }
+
+    public static void removeImage(String path) {
+        File filePath = new File(path);
+        if (!filePath.exists()) {
+            filePath.delete();
+            return;
+        }
+
+        throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
     }
 }

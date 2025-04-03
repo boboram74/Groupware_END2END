@@ -19,9 +19,6 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private FileDAO dao;
 
-    @Autowired
-    private FileUtil fileUtil;
-
     @Override
     public List<FileDetailDTO> selectByParentsId(FileDTO dto) {
         FileColumnMapperDTO mapper = FileColumnMapperDTO.of(dto);
@@ -56,8 +53,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void removeByPath(String path) {
-        FileUtil.removeFile(path);
         dao.deleteDetailByPath(path);
+        FileUtil.removeFile(path);
     }
 
     @Override

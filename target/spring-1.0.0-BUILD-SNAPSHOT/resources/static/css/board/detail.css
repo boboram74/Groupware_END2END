@@ -1,0 +1,134 @@
+
+*{
+    /*border: 1px solid red;*/
+    box-sizing: border-box;
+}
+.mainContainer{
+    width: 90%;
+    height: 100vh;
+    margin: auto;
+    padding: 10px;
+}
+.mainHeader{
+    width: 100%;
+    height: 20%;
+    margin: 10px;
+}
+.title{
+    width: 100%;
+    height: 40%;
+}
+.title span {
+    font-size: 60px;
+}
+.title h2 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+.title h2 .material-icons {
+    font-size: 65px;
+    margin-right: 8px;
+}
+
+.search{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 3%;
+    margin-right: 10%;
+}
+.search div {
+    margin-left: 7px;
+}
+.searchOption{
+    width: 40%;
+    height:100%;
+    padding: 10px;
+}
+#searchOption{
+    width: 100%;
+    height:100%;
+}
+.searchInput {
+    width: 30%;
+    height: 100%;
+}
+
+#input{
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+#searchBtn{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#searchBtn span {
+    font-size: 20px;
+}
+.mainBody{
+    width: 100%;
+    height: 80%;
+    margin: 10px;
+}
+.content { /* 높이 설정 X */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+.pageNavi{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.editBtn {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.inputContents {
+    width: 100%;
+}
+
+.inputReply {
+    margin-top: 10px;
+}
+
+.inputContents input {
+    width: 100%;
+    height: 200px;
+}
+
+.inputReply input {
+    width: 100%;
+    height: 50px;
+}
+
+.editBtn button {
+    width: 90px;
+    border-radius: 4px;
+}
+.memberInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.memberInfo ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}

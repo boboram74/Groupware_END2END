@@ -30,12 +30,21 @@
     margin-right: 8px;
 }
 
+.mailSend {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: right;
+}
+
+.mailSend span {
+    font-size: 17px;
+}
+
 .search{
     width: 100%;
     height: 20%;
     display: flex;
     justify-content: right;
-    margin-top: 3%;
     margin-right: 10%;
 }
 .search div {
@@ -44,11 +53,13 @@
 .searchOption{
     width: 40%;
     height:100%;
+    box-sizing: border-box;
     padding: 10px;
 }
 #searchOption{
     width: 100%;
     height:100%;
+    padding-right: 20px;
 }
 .searchInput {
     width: 30%;
@@ -68,6 +79,18 @@
     justify-content: center;
 }
 
+.titleArea {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.titleArea h4 {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
 #searchBtn span {
     font-size: 20px;
 }
@@ -82,11 +105,54 @@
     justify-content: center;
     align-items: center;
     background-color: white;
+    padding: 20px;
 }
+
+.mailList {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+.mailList th,
+.mailList td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+}
+.mailList th {
+    background-color: #eef1f6;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
 .pageNavi{
     width: 100%;
     height: 20%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.paging {
+    display: inline-block;
+    margin: 5px 3px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    background: #e0e0e0;
+    color: #333;
+    border: 1px solid #ccc;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.paging:hover {
+    background: #ccc;
+    transform: translateY(-2px);
+}
+.paging.active {
+    background-color: #999;
+    color: #fff;
+    transform: none;
 }

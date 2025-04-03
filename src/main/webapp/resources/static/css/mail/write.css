@@ -1,0 +1,173 @@
+*{
+    /*border: 1px solid red;*/
+    box-sizing: border-box;
+}
+.mainContainer{
+    width: 90%;
+    height: 100vh;
+    margin: auto;
+    padding: 10px;
+}
+.mainHeader{
+    width: 100%;
+    height: 10%;
+    margin: 10px;
+}
+.formContainer {
+    width: 100%;
+    padding: 20px;
+}
+.formGroup {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.formGroup label {
+    width: 100px;
+    font-weight: bold;
+    margin-right: 100px;
+}
+.formGroup input {
+    width: 70%;
+}
+
+.addressBtn {
+    margin-left: 20px;
+    padding: 8px 12px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.fileSize {
+    margin-left: 10px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.title{
+    width: 100%;
+    height: 40%;
+}
+.title span {
+    font-size: 60px;
+}
+.title h2 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+.title h2 .material-icons {
+    font-size: 65px;
+    margin-right: 8px;
+}
+
+.search{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: left;
+    margin-right: 10%;
+}
+.search div {
+    margin-left: 7px;
+}
+
+#input{
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.titleArea {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.titleArea h4 {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+#searchBtn span {
+    font-size: 20px;
+}
+.mainBody{
+    width: 100%;
+    height: 80%;
+    margin: 10px;
+}
+.content { /* 높이 설정 X */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+}
+
+.content textarea {
+    border: none;
+    resize: none;
+    width: 100%;
+    min-height: 20vh;
+}
+
+.dragDropArea {
+    width: 70%;
+    min-height: 100px;
+    height: auto;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.dragDropArea p {
+    margin: 3px 0;
+    text-align: center;
+    color: #666;
+    font-size: 0.9em;
+}
+.dragDropArea .upload-icon {
+    font-size: 30px;
+    color: #aaa;
+    margin-bottom: 3px;
+}
+.dragDropArea.active {
+    background-color: #f0f8ff;
+    border-color: #00bfff;
+}
+.fileSize {
+    margin-left: 10px;
+    color: #666;
+    font-size: 0.9em;
+}
+.file-info {
+    width: 300px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    font-size: 0.9em;
+}
+.buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: right;
+}
+.buttons button {
+    margin-top: 10px;
+    margin-left: 20px;
+    padding: 8px 12px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

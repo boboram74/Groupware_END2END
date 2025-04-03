@@ -18,7 +18,7 @@ public class CommuteController {
     @Autowired
     private CommuteService commuteService;
 
-    @RequestMapping("/{employeeId}")
+    @RequestMapping("/detail/{employeeId}")
     public String toDetail(@PathVariable int employeeId, Model model) {
         // TODO: 해당 id의 사원의 detail.jsp로 이동
         return "commute/detail";

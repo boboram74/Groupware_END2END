@@ -51,7 +51,7 @@ public class CommuteServiceImpl implements CommuteService {
 
         List<SolderingDTO> leaveEarlyList = todayWorkTimeList.stream()
                 .filter((leaveEarlyDTO) ->
-                        leaveEarlyDTO.todayWorkTime() < Statics.WORK_TIME)
+                        leaveEarlyDTO.todayWorkTime().toHours() < 2)
                 .map((leaveEarlyDTO) ->
                         SolderingDTO.builder()
                             .employeeId(leaveEarlyDTO.getEmployeeId())

@@ -40,11 +40,24 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Override
     public void checkLeaveEarly() {
-        List<CommuteDTO> leaveEarly = commuteDAO.selectEarlyLeave();
+        // TODO: 조퇴자 체크
+    }
 
-        for(CommuteDTO dto : leaveEarly){
-            System.out.println(dto.getEmployeeId());
-        }
+    @Override
+    public void checkNotCheck() {
+        // TODO: 미체크 체크
+        List<EmployeeDTO> employeeList = commuteDAO.selectNotCheck();
+    }
+
+    @Override
+    public void checkLate() {
+        // TODO: 지각자 체크
+    }
+
+    @Override
+    public void checkAbsence() {
+        // TODO: 결근자 체크
+        List<EmployeeDTO> employeeList = commuteDAO.selectAbsence();
     }
 
     @Override

@@ -1,4 +1,3 @@
-
 *{
     /*border: 1px solid red;*/
     box-sizing: border-box;
@@ -8,6 +7,7 @@
     height: 100vh;
     margin: auto;
     padding: 10px;
+    overflow-y: scroll;
 }
 .mainHeader{
     width: 100%;
@@ -35,17 +35,12 @@
     width: 100%;
     height: 20%;
     display: flex;
-    flex-direction: column;
+    justify-content: right;
     margin-top: 3%;
     margin-right: 10%;
 }
 .search div {
     margin-left: 7px;
-}
-.searchOption{
-    width: 40%;
-    height:100%;
-    padding: 10px;
 }
 #searchOption{
     width: 100%;
@@ -61,7 +56,6 @@
     width: 100%;
     height: 100%;
 }
-
 #searchBtn{
     width: 100%;
     height: 100%;
@@ -92,38 +86,33 @@
     justify-content: center;
     align-items: center;
 }
-.editBtn {
+.boxBody {
+    width:100%;
+}
+
+.boxBody input{
+    width:100%;
+    height:300px;
+}
+
+.addBtn {
     display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 10px;
-    margin-right: 20px;
+    justify-content: flex-start;
+
 }
 
-.inputContents {
-    width: 100%;
-}
-
-.inputReply {
-    margin-top: 10px;
-}
-
-.inputContents input {
-    width: 100%;
-    height: 200px;
-}
-
-.inputReply input {
-    width: 100%;
-    height: 50px;
-}
-
-.editBtn button {
-    width: 90px;
+.addBtn button{
+    width:100px;
     border-radius: 4px;
 }
-.memberInfo {
-    border:1px solid red;
 
+.completeBtn {
+    display: flex;
+    justify-content: flex-end;
 
+}
+
+.completeBtn button{
+    width:100px;
+    border-radius: 4px;
 }

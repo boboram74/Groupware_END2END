@@ -7,10 +7,10 @@
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
-            <h2><span class="material-icons">mail</span>전체 메일함</h2>
+            <h2><span class="material-icons">mail</span>받은 메일함</h2>
         </div>
         <div class="mailSend">
-            <button onclick="location.href='/mail/write';"><span class="material-icons">outgoing_mail</span>메일쓰기</button>
+            <button><span class="material-icons">outgoing_mail</span>메일쓰기</button>
         </div>
         <div class="search">
             <div>

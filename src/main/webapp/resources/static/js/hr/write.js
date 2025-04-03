@@ -6,6 +6,24 @@ $("#profileInput").on("change", function (e) {
             $("#profilePreview").attr("src", event.target.result);
         };
         reader.readAsDataURL(file);
+
+        let formData = new FormData();
+        formData.append('file', file);
+        $.ajax({
+            url : '/file/upload/image',
+            data : formData,
+            type : 'POST',
+            contentType : false,
+            processData : false,
+            error : function(request, status, error) {
+                console.log("code: " + request.status)
+                console.log("message: " + request.responseText)
+                console.log("error: " + error);
+            }
+        }).done(function(data) {
+            $('input [name=profileImg]').val(data);
+            console.log(data);
+        });
     } else {
         $("#profilePreview").attr("src", "/image/defaultImg.jpg"); // 기본 이미지 복구
     }

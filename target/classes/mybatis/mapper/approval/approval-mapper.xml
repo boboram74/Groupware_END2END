@@ -5,7 +5,14 @@
 <mapper namespace="approval">
 
     <select id="toList" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
-        SELECT * FROM approvals ORDER BY regDate DESC
+        SELECT * FROM approval ORDER BY regDate DESC
     </select>
 
+    <insert id="insert">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            SELECT CONCAT('문서-', APPROVAL_ID_SEQ.nextval) FROM DUAL
+        </selectKey>
+        INSERT INTO APPROVAL(ID, EMPLOYEEID, APPROVALFORMID, DEPARTMENTID, TITLE, CONTENT)
+               VALUES (#{id}, #{employeeId}, ${approvalFormId}, ${departmentId}, #{title}, #{content})
+    </insert>
 </mapper>

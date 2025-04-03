@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,6 @@ public class FileServiceImpl implements FileService {
             if (file.isEmpty()) {
                 continue;
             }
-
             try {
                 FileDetailDTO fileDetailDTO = FileUtil.upload(file, fileColumnMapperDTO);
                 dao.detailInsert(fileDetailDTO);
@@ -45,7 +45,6 @@ public class FileServiceImpl implements FileService {
                 for (String uploadedFilePath : uploadedFilePathList) {
                     FileUtil.removeFile(uploadedFilePath);
                 }
-
                 throw new RuntimeException(e);
             }
         }
@@ -68,5 +67,14 @@ public class FileServiceImpl implements FileService {
         }
 
         dao.deleteById(fileColumnMapperDTO);
+    }
+
+    @Override
+    public void download(String path, HttpServletResponse response) {
+        try {
+            FileUtil.download(path, response);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

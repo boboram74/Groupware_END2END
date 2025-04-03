@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class MainController {
 	@GetMapping("/")
+<<<<<<< HEAD
 	public String home(HttpSession session, Model model) {
 		session.getAttribute("loginId");
 		EmployeeDTO employee = EmployeeDTO.builder()
@@ -28,6 +29,9 @@ public class MainController {
 
 		model.addAttribute("title", "내용");
 
+=======
+	public String home() {
+>>>>>>> 353f33ddf8156b499ad2f9f2a45e8c862fd9c87f
 		return "main/index";
 	}
 

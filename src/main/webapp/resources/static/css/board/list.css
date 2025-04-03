@@ -23,11 +23,13 @@
 .title h2 {
     display: flex;
     align-items: center;
+    margin: 0;
 }
 .title h2 .material-icons {
     font-size: 65px;
     margin-right: 8px;
 }
+
 .search{
     width: 100%;
     height: 20%;
@@ -39,6 +41,11 @@
 .search div {
     margin-left: 7px;
 }
+.searchOption{
+    width: 40%;
+    height:100%;
+    padding: 10px;
+}
 #searchOption{
     width: 100%;
     height:100%;
@@ -47,6 +54,7 @@
     width: 30%;
     height: 100%;
 }
+
 #input{
     padding: 10px;
     width: 100%;
@@ -73,16 +81,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.list{
-    width: 70%;
-    margin-right: 10px;
     background-color: white;
-}
-.new{
-    width: 30%;
-    background-color: white;
-    border: 4px solid dimgray;
 }
 .pageNavi{
     width: 100%;
@@ -90,4 +89,52 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+.table {
+    margin-left: 49px;
+}
+
+.searchBox {
+    margin-left: 10px;
+}
+
+.selectBox {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* div{
+  border: 1px solid red;
+} */
+
+.btnBox {
+    margin-top: 10px;
+    display: flex;
+    margin-right: 50px;
+    justify-content: flex-end;
+}
+#writeBtn{
+    border-radius: 4px;
+}
+#searchBtn{
+    border-radius:4px;
+}
+.searchBox {
+    margin-right: 50px;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    justify-content: flex-end;
+
+}
+
+.pageName {
+    font-size: 30px;
+    margin-left: 100px;
+}
+
+.boxTitle {
+    font-size: 30px;
 }

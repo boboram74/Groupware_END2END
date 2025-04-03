@@ -1,3 +1,4 @@
+
 *{
     /*border: 1px solid red;*/
     box-sizing: border-box;
@@ -23,21 +24,28 @@
 .title h2 {
     display: flex;
     align-items: center;
+    margin: 0;
 }
 .title h2 .material-icons {
     font-size: 65px;
     margin-right: 8px;
 }
+
 .search{
     width: 100%;
     height: 20%;
     display: flex;
-    justify-content: right;
+    flex-direction: column;
     margin-top: 3%;
     margin-right: 10%;
 }
 .search div {
     margin-left: 7px;
+}
+.searchOption{
+    width: 40%;
+    height:100%;
+    padding: 10px;
 }
 #searchOption{
     width: 100%;
@@ -47,11 +55,13 @@
     width: 30%;
     height: 100%;
 }
+
 #input{
     padding: 10px;
     width: 100%;
     height: 100%;
 }
+
 #searchBtn{
     width: 100%;
     height: 100%;
@@ -73,16 +83,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.list{
-    width: 70%;
-    margin-right: 10px;
     background-color: white;
-}
-.new{
-    width: 30%;
-    background-color: white;
-    border: 4px solid dimgray;
 }
 .pageNavi{
     width: 100%;
@@ -90,4 +91,44 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.editBtn {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.inputContents {
+    width: 100%;
+}
+
+.inputReply {
+    margin-top: 10px;
+}
+
+.inputContents input {
+    width: 100%;
+    height: 200px;
+}
+
+.inputReply input {
+    width: 100%;
+    height: 50px;
+}
+
+.editBtn button {
+    width: 90px;
+    border-radius: 4px;
+}
+.memberInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.memberInfo ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }

@@ -9,5 +9,8 @@ public interface CommuteService {
     void workOn(String employeeId);
     void workOff(String employeeId);
     void checkLeaveEarly();
+    void checkNotCheck();
+    void checkLate();
+    void checkAbsence();
     void insertAll();
 }

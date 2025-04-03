@@ -1,3 +1,6 @@
 $("#loginBtn").on("click",function(){
-    location.href="/login";
+    //location.href="employee/login";
+})
+$("#newBtn").on("click",function(){
+    location.href="hr/write";
 })

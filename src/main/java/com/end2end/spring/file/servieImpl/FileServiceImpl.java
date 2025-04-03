@@ -36,7 +36,6 @@ public class FileServiceImpl implements FileService {
             if (file.isEmpty()) {
                 continue;
             }
-
             try {
                 FileDetailDTO fileDetailDTO = FileUtil.upload(file, fileColumnMapperDTO);
                 dao.detailInsert(fileDetailDTO);
@@ -45,7 +44,6 @@ public class FileServiceImpl implements FileService {
                 for (String uploadedFilePath : uploadedFilePathList) {
                     FileUtil.removeFile(uploadedFilePath);
                 }
-
                 throw new RuntimeException(e);
             }
         }

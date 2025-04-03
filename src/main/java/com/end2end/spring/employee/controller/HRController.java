@@ -1,6 +1,8 @@
 package com.end2end.spring.employee.controller;
 
+import com.end2end.spring.employee.dto.DepartmentDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
+import com.end2end.spring.employee.dto.JobDTO;
 import com.end2end.spring.employee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,8 +41,8 @@ public class HRController {
     @RequestMapping("/write")
     public String toWrite(Model model) {
         // TODO: 직원 추가 페이지로 이동
-        List<String> departmentList = new ArrayList<>();  // SELECT * FROM DEPARTMENT;
-        List<String> jobList = new ArrayList<>();  // SELECT * FORM JOB;
+        List<DepartmentDTO> departmentList = employeeService.selectAllDepartment();  // SELECT * FROM DEPARTMENT;
+        List<JobDTO> jobList = employeeService.selectAllJob();  // SELECT * FORM JOB;
 
         model.addAttribute("departmentList", departmentList);
         model.addAttribute("jobList", jobList);

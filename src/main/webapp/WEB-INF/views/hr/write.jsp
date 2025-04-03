@@ -20,7 +20,8 @@
                         <img id="profilePreview" src="/image/defaultImg.jpg" alt="프로필 이미지">
                         <span class="material-icons">add_a_photo</span>
                     </label>
-                    <input type="file" id="profileInput" name="profileImg" accept="image/*" style="display: none;">
+                    <input type="file" id="profileInput" name="file" accept="image/*" style="display: none;">
+                    <input type="hidden" name="profileImg" value="/image/defaultImg.jpg" />
                 </div>
                 <div class="name">이름 : <input type="text" name="name"></div>
                 <div class="ssn">생년월일 :
@@ -33,24 +34,23 @@
                 <div class="pw">패스워드 입력 : <input type="password" name="password" placeholder="8자 이상의 영어소문자,숫자를 포함한 PW 입력">
                 </div>
                 <div class="repw">패스워드 확인 : <input type="password" placeholder="위와 동일하게 패스워드 입력"></div>
-                <div class="position">직급 :
-                    <select name="jobId">
-                        <option value="4">사원</option>
-                        <option value="3">팀장</option>
-                        <option value="5">사장</option>
-                    </select>
-                </div>
-                <div class="department">부서 :
-                    <select name="departmentId">
-                        <option value="1">개발팀</option>
-                        <option value="2">인사팀</option>
-                        <option value="3">운영팀</option>
-                        <option value="4">경영팀</option>
-                        <option value="5">총무팀</option>
-                    </select>
-                </div>
+                    <div class="position">직급 :
+                        <select name="jobId">
+                            <c:forEach var="job" items="${jobList}">
+                                <option value="${job.id}">${job.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="department">부서 :
+                        <select name="departmentId">
+                            <c:forEach var="dept" items="${departmentList}">
+                                <option value="${dept.id}">${dept.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
                 <div class="email">이메일 : <input type="text" name="email"></div>
-                <!--<div class="contact">연락처 : <input type="text" name="contact"></div> -->
+                <div class="contact">연락처 : <input type="text" name="contact"></div>
                 <div class="postCode">우편번호 : <input type="text" name="postCode" id="postcode">
                     <button type="button" class="postBtn" id="postBtn">우편번호 검색</button>
                 </div>
@@ -64,16 +64,6 @@
         </form>
     </div>
 </div>
-<script>
 
-    $('#form').on('submit', function(e) {
-       // e.preventDefault();
-        let formData1 = new FormData(document.getElementById("form"));
-
-        formData1.forEach((value, key) => {
-            console.log(key + ':', value);
-        });
-    })
-</script>
-<!--<script src="/js/hr/write.js" type="text/javascript"></script>-->
+<script src="/js/hr/write.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

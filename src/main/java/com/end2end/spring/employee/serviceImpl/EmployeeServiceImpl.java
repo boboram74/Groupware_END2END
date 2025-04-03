@@ -1,9 +1,7 @@
 package com.end2end.spring.employee.serviceImpl;
 
 import com.end2end.spring.employee.dao.EmployeeDAO;
-import com.end2end.spring.employee.dto.EmployeeDTO;
-import com.end2end.spring.employee.dto.EmployeeDetailDTO;
-import com.end2end.spring.employee.dto.LoginDTO;
+import com.end2end.spring.employee.dto.*;
 import com.end2end.spring.employee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +14,7 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeDAO employeeDAO;
-    // @Autowired private EmailDAO
+    @Autowired private MailDAO mailDAO;
 
     @Override
     public EmployeeDTO selectById(String id) {
@@ -44,20 +42,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void insert(EmployeeDetailDTO dto, MultipartFile file) {
         // TODO: 사원 등록
-        // employee <- insert employeeId 1번
+        // employee insert 사원 테이블 추가
         EmployeeDTO employeeDTO = EmployeeDTO.builder()
                 .departmentId(dto.getDepartmentId())
                 .jobId(dto.getJobId())
                 .name(dto.getName())
                 .email(dto.getEmail())
-                .profileImg(dto.getProfileImage())
+                .profileImg(dto.getProfileImg())
+                .contact("010-1234-1234")
                 .build();
         employeeDAO.insert(employeeDTO);
+        String employeeId = employeeDTO.getId();
 
-        String employeeId = employeeDTO.getId();  // 방금 만든 사번
-
-        // 2번
+        // employee_detail insert 사원 상세 테이블 추가
         dto.setId(employeeId);
+        employeeDAO.insertDetail(dto);
+
+        // email_addreses 사원의 이메일을 추가
+
     }
 
     @Override
@@ -73,5 +75,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> selectByDepartmentId(int departmentId) {
         return employeeDAO.selectByDepartmentId(departmentId);
+    }
+
+    @Override
+    public List<DepartmentDTO> selectAllDepartment() {
+        return employeeDAO.selectAllDepartment();
+    }
+
+    @Override
+    public List<JobDTO> selectAllJob() {
+        return employeeDAO.selectAllJob();
     }
 }

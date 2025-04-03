@@ -76,27 +76,22 @@ th {
 
 
 .lineBox {
-    float: left;
-    width: 100%;
-    height: 80%;
-
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
 
 .line {
-    float: left;
-    width: 40%;
-    height: 80%;
-    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+    cursor: move;
 
 }
 
-.line div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid black;
-
-}
 
 #linePositions {
     float: left;
@@ -164,14 +159,22 @@ th {
     padding: 10px;
 }
 
-#employees,
-#approvalLine {
+#employees
+{
     width: 200px;
     min-height: 300px;
     border: 1px solid #ccc;
     padding: 10px;
     overflow-y: auto;
     background-color: #fff;
+}
+#approvalLine{
+    flex-direction: row;
+    width: 200px;
+    min-height: 300px;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid black;
 }
 
 h3 {

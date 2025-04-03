@@ -1,6 +1,7 @@
 package com.end2end.spring.approval.controller;
 
 import com.end2end.spring.approval.dto.ApprovalDTO;
+import com.end2end.spring.approval.dto.ApprovalInsertDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.dto.TempApprovalDTO;
@@ -10,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequestMapping("/approval")
@@ -65,8 +68,10 @@ public class ApprovalController {
     }
 
     @RequestMapping("/write")
-    public String toWrite(Model model) {
+    public String toWrite(HttpSession session, Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
 
+        model.addAttribute("employee", employee);
         return "approval/write";
     }
 
@@ -76,9 +81,14 @@ public class ApprovalController {
         return "approval/detail";
     }
 
+    @ResponseBody
     @RequestMapping("/insert")
-    public void insert(FileDTO fdto, ApprovalDTO adto, List<String> apperoverId, Model model) {
+    public void insert(MultipartFile[] files, ApprovalInsertDTO dto, HttpSession session, Model model) {
         // TODO: 전재 결재 입력
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        dto.setEmployeeId(employee.getId());
+
+        approvalService.insert(files, dto);
     }
 
     @RequestMapping("/update")

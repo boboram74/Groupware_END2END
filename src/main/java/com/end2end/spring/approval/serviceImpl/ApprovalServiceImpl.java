@@ -1,18 +1,25 @@
 package com.end2end.spring.approval.serviceImpl;
 
 import com.end2end.spring.approval.dao.ApprovalDAO;
+import com.end2end.spring.approval.dao.ApproverDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
+import com.end2end.spring.approval.dto.ApprovalInsertDTO;
+import com.end2end.spring.approval.dto.ApproverDTO;
 import com.end2end.spring.approval.service.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
-
     @Autowired
     private ApprovalDAO approvalDAO;
+
+    @Autowired
+    private ApproverDAO approverDAO;
 
     @Override
     public List<ApprovalDTO> selectAll() {
@@ -58,10 +65,30 @@ public class ApprovalServiceImpl implements ApprovalService {
         return null;
     }
 
+    @Transactional
     @Override
-    public void insert(ApprovalDTO dto) {
-        // TODO: 결재 등록
+    public void insert(MultipartFile[] files, ApprovalInsertDTO dto) {
+        ApprovalDTO approvalDTO = ApprovalDTO.builder()
+                .employeeId(dto.getEmployeeId())
+                .approvalFormId(dto.getApprovalFormId())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .build();
+        approvalDAO.insert(approvalDTO);
+
+        int order = 1;
+        for (String approverId : dto.getApproverId()) {
+            ApproverDTO approverDTO = ApproverDTO.builder()
+                    .approvalId(approvalDTO.getId())
+                    .employeeId(approverId)
+                    .orders(order)
+                    .build();
+
+            approverDAO.insertApprover(approverDTO);
+            order++;
+        }
     }
+
 
     @Override
     public void update(ApprovalDTO dto) {

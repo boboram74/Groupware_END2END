@@ -3,6 +3,8 @@ package com.end2end.spring.board.controller;
 import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
+import com.end2end.spring.board.service.BoardService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/board")
 @Controller
 public class BoardController {
+    @Autowired
+    private BoardService boardService;
+
+    @RequestMapping("/list")
+    public String list() {
+        // TODO: 모든 리스트
+        return "/board/list";
+    }
+
+    @RequestMapping("/detail")
+    public String list(Model model) {
+        return "board/detail";
+    }
+
     @RequestMapping("/list/{categoryId}")
     public String toList(@PathVariable int categoryId, Model model) {
         // TODO: 카테고리 id를 받아 해당 카테고리의 모든 게시글을 list.jsp에 표시

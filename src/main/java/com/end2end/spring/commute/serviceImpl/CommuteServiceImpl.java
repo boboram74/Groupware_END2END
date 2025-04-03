@@ -8,10 +8,10 @@ import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +50,8 @@ public class CommuteServiceImpl implements CommuteService {
         List<TodayWorkTimeDTO> todayWorkTimeList = commuteDAO.selectTodayWorkTimeList();
 
         List<SolderingDTO> leaveEarlyList = todayWorkTimeList.stream()
-                .filter((leaveEarlyDTO) -> leaveEarlyDTO.getTodayWorkTime().getTime() < 5)
+                .filter((leaveEarlyDTO) ->
+                        leaveEarlyDTO.todayWorkTime() < Statics.WORK_TIME)
                 .map((leaveEarlyDTO) ->
                         SolderingDTO.builder()
                             .employeeId(leaveEarlyDTO.getEmployeeId())

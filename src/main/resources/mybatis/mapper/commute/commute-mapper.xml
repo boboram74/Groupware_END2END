@@ -13,7 +13,10 @@
     </select>
 
     <select id="selectTodayWorkTimeList" resultType="com.end2end.spring.commute.dto.TodayWorkTimeDTO">
-        SELECT WORK_OFF.EMPLOYEEID AS employeeId, (WORK_OFF_TIME - WORK_ON_TIME) AS todayWorkTime
+        SELECT
+            WORK_OFF.EMPLOYEEID AS employeeId,
+            WORK_OFF_TIME AS workOffTime,
+            WORK_ON_TIME AS workOnTime
         FROM (
             SELECT EMPLOYEEID, MAX(REGDATE) AS WORK_OFF_TIME, state
             FROM COMMUTE

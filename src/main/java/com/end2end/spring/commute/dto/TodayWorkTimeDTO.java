@@ -11,5 +11,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class TodayWorkTimeDTO {
     private String employeeId;
-    private Timestamp todayWorkTime;
+    private Timestamp workOnTime;
+    private Timestamp workOffTime;
+
+    public long todayWorkTime(){
+        return workOffTime.getTime() - workOnTime.getTime();
+    }
 }

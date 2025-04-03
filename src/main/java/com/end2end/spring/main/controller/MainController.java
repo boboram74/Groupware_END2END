@@ -24,11 +24,11 @@ public class MainController {
 
 	@RequestMapping("/mypage/{employeeId}")
 	public String toMyPage(@PathVariable String employeeId, HttpSession session, Model model) {
-		// TODO: 해당 사원의 마이페이지 출력
 		EmployeeDTO loginUser = (EmployeeDTO) session.getAttribute("employee");
 		if (loginUser == null || !loginUser.getId().equals(employeeId)) {
 			return "redirect:/";
 		}
+
 		EmployeeDetailDTO employee = employeeService.selectDetailById(employeeId);
 		model.addAttribute("employeeDetail", employee);
 		return "main/mypage";

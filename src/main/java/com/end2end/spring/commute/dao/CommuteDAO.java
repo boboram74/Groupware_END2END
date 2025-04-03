@@ -26,8 +26,6 @@ public class CommuteDAO {
         return mybatis.selectList("commute.checkLate");
     }
 
-    public List<EmployeeDTO> selectWorked() { return mybatis.selectList("commute.selectWorked"); }
-
     public List<EmployeeDTO> selectNotCheck() {
         return mybatis.selectList("commute.selectByNotCheck");
     }

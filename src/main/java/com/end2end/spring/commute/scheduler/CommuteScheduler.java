@@ -15,6 +15,7 @@ public class CommuteScheduler {
 
     @Scheduled(cron="0 59 23 * * 1-5")
     public void lateCheck() {
+        // TODO: 지각자 체크
         commuteService.checkLate();
     }
 
@@ -23,7 +24,7 @@ public class CommuteScheduler {
         commuteService.insertAll();
     }
 
-    @Scheduled(cron="0 0 0 * * 1-5")
+    @Scheduled(cron="0 59 23 * * 1-5")
     public void workOffCheckFinal() {
         // TODO: 연장 근무를 포함한 전인원 퇴근 체크
         commuteService.checkLeaveEarly();

@@ -1,64 +1,76 @@
-*{
-    /*border: 1px solid red;*/
+* {
     box-sizing: border-box;
 }
-.mainContainer{
-    width: 90%;
+
+.mainHeader {
+    position: fixed;
+    left: 60px;
+    top: 0;
+    width: 250px;
     height: 100vh;
-    margin: auto;
-    padding: 10px;
-    overflow-y: scroll;
+    background-color: #fff;
+    border-right: 1px solid #e0e0e0;
+    z-index: 100;
 }
-.mainHeader{
+
+.mainContainer {
+    margin-left: 310px;
+    width: calc(100% - 310px);
+    min-height: 100vh;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.mainBody {
+    max-width: 1200px;
     width: 100%;
-    height: 20%;
-    margin: 10px;
+    padding: 0 20px;
 }
-.title{
+
+.title {
     width: 100%;
-    height: 40%;
+    padding: 20px;
 }
+
 .title span {
     font-size: 60px;
 }
+
 .title h2 {
     display: flex;
     align-items: center;
     margin: 0;
 }
+
 .title h2 .material-icons {
     font-size: 65px;
     margin-right: 8px;
 }
 
-.search{
-    width: 100%;
-    height: 20%;
+.search {
+    margin-bottom: 20px;
     display: flex;
-    justify-content: right;
-    margin-top: 3%;
-    margin-right: 10%;
+    gap: 10px;
+    align-items: center;
 }
-.search div {
-    margin-left: 7px;
-}
-#searchOption{
-    width: 100%;
-    height:100%;
-}
-.searchInput {
-    width: 30%;
+
+#searchOption {
     height: 100%;
 }
 
-#input{
+.searchInput {
+    width: 30%;
+}
+
+#input {
     padding: 10px;
     width: 100%;
     height: 100%;
 }
-#searchBtn{
-    width: 100%;
-    height: 100%;
+
+#searchBtn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -67,22 +79,34 @@
 #searchBtn span {
     font-size: 20px;
 }
-.mainBody{
-    width: 100%;
-    height: 80%;
-    margin: 10px;
-}
-.content { /* 높이 설정 X */
+
+.content {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
 }
-.pageNavi{
+
+.pageNavi {
     width: 100%;
-    height: 20%;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .mainHeader {
+        position: relative;
+        left: 0;
+        width: 100%;
+        height: auto;
+    }
+
+    .mainContainer {
+        margin-left: 0;
+        width: 100%;
+    }
 }

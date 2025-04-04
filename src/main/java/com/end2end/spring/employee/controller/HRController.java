@@ -45,9 +45,6 @@ public class HRController {
         List<DepartmentDTO> departmentList = employeeService. selectAllDepartment();
         List<JobDTO> jobList = employeeService.selectAllJob();
 
-
-
-
         model.addAttribute("departmentList", departmentList);
         model.addAttribute("jobList", jobList);
 

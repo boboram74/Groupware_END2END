@@ -42,4 +42,8 @@ public class FileDAO {
     public void deleteById(FileColumnMapperDTO dto) {
         mybatis.delete("file.deleteById", dto);
     }
+
+    public List<FileDetailDTO> selectByEmail(String email) {
+        return mybatis.selectList("file.selectByEmail", email);
+    }
 }

@@ -28,6 +28,7 @@ $("#profileInput").on("change", function (e) {
         $("#profilePreview").attr("src", "/image/defaultImg.jpg"); // 기본 이미지 복구
     }
 });
+
 $("#idcheckBtn").on("click",function(){
     $.ajax({
         url:"/hr/idcheck",
@@ -44,6 +45,7 @@ $("#idcheckBtn").on("click",function(){
 
     });
 });
+
 $("#postBtn").on("click", function () {
     new daum.Postcode({
         oncomplete: function (data) {
@@ -53,10 +55,105 @@ $("#postBtn").on("click", function () {
         }
     }).open();
 });
-/*$("#insertBtn").on("click", function () {
-    location.href = "/hr/insert";
-})*/
+
 $("#backBtn").on("click", function () {
     location.href = "/hr/list";
 })
-// 유효성 검사
+
+$("#form").on("submit", function(e) {
+    e.preventDefault(); // 기본 제출 막기
+
+    let name = $("input[name='name']").val().trim();
+    let birthday = $("input[name='birthday']").val().trim();
+    let loginId = $("input[name='loginId']").val().trim();
+    let password = $("input[name='password']").val().trim();
+    let repw = $(".repw input").val().trim();
+    let email = $("input[name='email']").val().trim();
+    let contact = $("input[name='contact']").val().trim();
+    let postCode = $("input[name='postCode']").val().trim();
+    let address = $("input[name='address']").val().trim();
+    let detailAddress = $("input[name='detailAddress']").val().trim();
+    let jobId = $("select[name='jobId']").val();
+    let departmentId = $("select[name='departmentId']").val();
+
+    if(name === "") {
+        alert("이름을 입력하세요.");
+        $("input[name='name']").focus();
+        return false;
+    }
+    if(birthday === "") {
+        alert("생년월일을 선택하세요.");
+        $("input[name='birthday']").focus();
+        return false;
+    }
+    if(loginId === "") {
+        alert("아이디를 입력하세요.");
+        $("input[name='loginId']").focus();
+        return false;
+    }
+    let loginIdPattern = /^[a-z0-9]{8,20}$/;
+    if(!loginIdPattern.test(loginId)) {
+        alert("아이디는 영어 소문자와 숫자로 8~20자 입력하세요.");
+        $("input[name='loginId']").focus();
+        return false;
+    }
+    if(password === "") {
+        alert("패스워드를 입력하세요.");
+        $("input[name='password']").focus();
+        return false;
+    }
+    let passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+    if(!passwordPattern.test(password)) {
+        alert("패스워드는 8자 이상이며, 영문과 숫자를 포함해야 합니다.");
+        $("input[name='password']").focus();
+        return false;
+    }
+    if(repw === "") {
+        alert("패스워드 확인을 입력하세요.");
+        $(".repw input").focus();
+        return false;
+    }
+    if(password !== repw) {
+        alert("패스워드와 패스워드 확인이 일치하지 않습니다.");
+        $(".repw input").focus();
+        return false;
+    }
+    if(email === "") {
+        alert("이메일을 입력하세요.");
+        $("input[name='email']").focus();
+        return false;
+    }
+    let emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    if(!emailPattern.test(email)) {
+        alert("유효한 이메일 주소를 입력하세요.");
+        $("input[name='email']").focus();
+        return false;
+    }
+    if(contact === "") {
+        alert("연락처를 입력하세요.");
+        $("input[name='contact']").focus();
+        return false;
+    }
+    let contactPattern = /^010\d{8,9}$/;
+    if(!contactPattern.test(contact.replace(/[-\s]/g, ""))) {
+        alert("연락처는 010으로 시작하는 10~11자리 숫자여야 합니다.");
+        $("input[name='contact']").focus();
+        return false;
+    }
+    if(jobId === "" || jobId == null) {
+        alert("직급을 선택하세요.");
+        $("select[name='jobId']").focus();
+        return false;
+    }
+    if(departmentId === "" || departmentId == null) {
+        alert("부서를 선택하세요.");
+        $("select[name='departmentId']").focus();
+        return false;
+    }
+    if(postCode === "" || address === "") {
+        alert("우편번호와 주소를 모두 입력하세요.");
+        $("input[name='postCode']").focus();
+        return false;
+    }
+    this.submit();
+});

@@ -70,7 +70,6 @@ public class MailServiceImpl implements MailService {
     @Override
     public Map<String, Object> getPageList(int cpage, String employeeId) {
         int recordTotalCount = this.getRecordTotalCount(employeeId);
-        System.out.println(recordTotalCount);
         String selectDepartment = this.selectDepartment(employeeId);
 
         int pageTotalCount = (recordTotalCount % Statics.recordCountPerPage > 0)

@@ -136,24 +136,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     transition: background-color 0.2s;
 }
-.dragDropArea p {
-    margin: 3px 0;
-    text-align: center;
-    color: #666;
-    font-size: 0.9em;
-}
-.dragDropArea .upload-icon {
-    font-size: 30px;
-    color: #aaa;
-    margin-bottom: 3px;
-}
-.dragDropArea.active {
-    background-color: #f0f8ff;
-    border-color: #00bfff;
-}
+
 .fileSize {
     margin-left: 10px;
     color: #666;

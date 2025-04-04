@@ -23,8 +23,6 @@ public class ProjectWorkController {
         return "/works/list";
     }
 
-
-
     @RequestMapping("/write")
     public String toWrite(Model model) {
         // TODO: 게시글 입력 폼으로 이동

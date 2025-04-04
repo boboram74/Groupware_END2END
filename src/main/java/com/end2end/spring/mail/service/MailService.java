@@ -1,5 +1,6 @@
 package com.end2end.spring.mail.service;
 
+import com.end2end.spring.mail.dto.ImportYnDTO;
 import com.end2end.spring.mail.dto.MailDetailDTO;
 import com.end2end.spring.mail.dto.MailPersonalListDTO;
 import com.end2end.spring.mail.dto.MailTeamListDTO;
@@ -18,4 +19,6 @@ public interface MailService {
     int getRecordTotalCount(String employeeId);
     String selectDepartment(String employeeId);
     List<MailTeamListDTO> selectFromto(int start, int end, String employeeId);
+    int insertReadYn(int esId);
+    int updateImportant(ImportYnDTO dto);
 }

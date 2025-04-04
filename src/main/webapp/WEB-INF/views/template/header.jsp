@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>sidebar</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=work" />
   <link
@@ -106,15 +106,13 @@
       </ul>
     </div>
 
-
     <div class="icon">
       <ul>
         <li><span class="material-icons">person</span>
         </li>
       </ul>
       <ul>
-        <li>인사관리
-        </li>
+        <li>인사관리</li>
       </ul>
     </div>
 

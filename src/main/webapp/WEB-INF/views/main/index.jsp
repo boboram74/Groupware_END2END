@@ -82,7 +82,6 @@
                 }
                 .box{
                     background-color: white;
-                ;
                 }
 
                 .boxContents {
@@ -239,7 +238,6 @@
 
                 }
                 .logbox{
-
                     height: 30%;
                     margin-left: 20px;
                     background-color: white;
@@ -258,7 +256,6 @@
                     background-color: white;
                     border-radius: 10px;
                     margin-left: 20px;
-
                 }
 
                 #calendar {
@@ -296,7 +293,6 @@
                     display: flex;
                     width: 137px;
                     height: 50px;
-                    /*border: 2px solid navy;*/
                     background-color: white;
                     color: navy;
                     font-size: 16px;
@@ -548,8 +544,8 @@
 
                             <div class="information">
                                 <!-- ${login.name} 사원
-      ${login.part} 부
-      ${login.mail}  -->
+                                     ${login.part} 부
+                                     ${login.mail}  -->
                                 홍길동 사원<br>
                                 인사부<br>
                                 test@gmail.com

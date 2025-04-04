@@ -1,10 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:choose>
-    <c:when test="${employee != null}">
-        <jsp:include page="login.jsp"/>
-    </c:when>
-    <c:otherwise>
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -360,7 +355,7 @@
         <body>
 
         <div class="container-fluid">
-            <div class="sidebar d-xs-none .d-md-block">
+            <div class="sidebar d-xs-none d-md-block">
                 <div class="icon">
                     <ul><li><span class="material-icons">menu</span></li></ul>
                     <ul><li>Home</li></ul>
@@ -445,14 +440,12 @@
                 <ul><li><span class="material-icons">person</span></li></ul>
                 <ul><li>인사관리</li></ul>
             </div>
-
             </div>
 
 
             <div class="main">
 
                 <div class="header">
-
                     <div class="logo">
                     <img src="image/로그인로고.PNG" class="fit"> </div>
 <%--                    <button class="bellBtn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">--%>
@@ -461,12 +454,12 @@
 <%--                    <input type="text" placeholder="검색" />--%>
                     <div class="profile">
          <span class="photo">
-              <a href="/mypage/{employeeId}">
+              <a href="/mypage/${employee.id}">
                 <img class="profileIcon" src="${employee.profileImg}" />
                   <!-- 세션에서 이미지 불러오기 -->
               </a>
             </span>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="boxContents">
                     <div class=leftContents">
@@ -488,8 +481,6 @@
                         </div>
                         <div class="loginlist ViWidthL">최근 로그인 내역</div>
                         <div class="calenderBox ViWidthL"  id='calendar'>캘린더
-
-
 
                         </div>
                     </div>
@@ -542,7 +533,6 @@
                             <a href="work/write">
                             <button type="button" class="btn btn-primary"
                                     style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color: #ffffff; color: black;display: inline-block;">
-
                                 <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20"  fill="currentColor" class="bi bi-briefcase-fill" viewBox="0 0 16 16">
                                     <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"/>
                                     <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"/>
@@ -565,8 +555,6 @@
         </body>
         </html>
 
-    </c:otherwise>
-</c:choose>
 
 
 

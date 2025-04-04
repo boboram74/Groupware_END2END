@@ -125,6 +125,7 @@
       background-color: #fff;
       border-bottom: 1px solid #e0e0e0;
       display: flex;
+      justify-content: space-between;
       align-items: center;
       padding: 0 20px;
       z-index: 999;
@@ -133,6 +134,66 @@
       right: 0;
       width: calc(100% - 60px);
       transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    /* 기존 header 구조는 유지하고 로고와 프로필 이미지만 수정 */
+    header .logo img {
+      display: none; /* 기존 img 태그 숨김 */
+    }
+
+    header .logo {
+      width: 150px;
+      height: 40px;
+      background-image: url('/image/로그인로고.PNG');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    header .profile img {
+      display: none; /* 기존 img 태그 숨김 */
+    }
+
+    /* CSS 코드 */
+    .profile-container {
+      position: relative;
+    }
+
+    .profile-menu {
+      display: none;
+      position: absolute;
+      top: 45px;  /* header height(50px) + 약간의 여백 */
+      right: 0;
+      width: 160px;
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .menu-item {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .menu-item:hover {
+      background-color: #f5f5f5;
+      color: #2c3e50;
+    }
+
+    .profile {
+      width: 40px;
+      height: 40px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      cursor: pointer;
     }
 
     /* boxContents 스타일 */
@@ -285,11 +346,6 @@
       text-decoration: none;
     }
 
-    /* hover 효과도 추가 */
-    .menu-items .menu-item:hover a {
-      color: white;
-      text-decoration: none;
-    }
 
     /* 모바일 반응형 */
     @media (max-width: 768px) {
@@ -349,7 +405,7 @@
         </a>
       </div>
       <div class="menu-item">
-        <a href="/mail/list/1">
+        <a href="/mail/list">
           <i class="material-icons">mail</i>
           <span>메일</span>
         </a>
@@ -369,10 +425,22 @@
     </div>
   </div>
   <div class="main-wrapper">
-    <div class="header">
-      <!-- 헤더 내용 -->
-    </div>
-
+    <header class="header">
+      <div class="logo"></div>
+      <div class="profile-container">
+        <div class="profile"
+             style="background-image: url('${(employee.profileImg == null) ? '/images/defaultImg.jpg' : employee.profileImg}')">
+        </div>
+        <div class="profile-menu" id="profileMenu">
+          <div class="menu-item" id="mypage">마이페이지</div>
+          <div class="menu-item" id="login-history">로그인 기록</div>
+          <c:if test='${employee.role.equals("ADMIN")}'>
+            <div class="menu-item" id="admin">관리자 페이지로 이동</div>
+          </c:if>
+          <div class="menu-item" id="logout">로그아웃</div>
+        </div>
+      </div>
+    </header>
     <!-- 전체 메뉴 모달 -->
     <div class="full-menu-modal">
       <div class="full-menu-content">
@@ -486,6 +554,32 @@
     // 메뉴 컨텐츠 클릭 시 이벤트 전파 중지
     $('.full-menu-content').click(function(e) {
       e.stopPropagation();
+    });
+  });
+
+  $(document).ready(function() {
+    // 프로필 이미지 클릭 이벤트
+    $('.profile').on('click', function(e) {
+      e.stopPropagation(); // 이벤트 버블링 방지
+      $('#profileMenu').toggle();
+    });
+
+    // 문서 전체 클릭 이벤트 (메뉴 외부 클릭시 닫기)
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('.profile-container').length) {
+        $('#profileMenu').hide();
+      }
+    });
+
+    // 선택적: 메뉴 아이템 클릭 이벤트 예시
+    $('.menu-item').on('click', function() {
+      const id = $(this).attr('id');
+
+      if (id == 'mypage') {
+        window.location.href = '/mypage/${employee.id}';
+      } else if (id == 'logout') {
+        window.location.href = '/employee/logout';
+      }
     });
   });
 </script>

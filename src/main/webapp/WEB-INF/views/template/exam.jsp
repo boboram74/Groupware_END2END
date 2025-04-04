@@ -34,7 +34,10 @@
     .mainBody {
         max-width: 1200px;
         width: 100%;
-        padding: 0;  /* 패딩 제거하여 딱 맞게 조정 */
+        padding: 0;
+        gap: 20px;  /* 자식 요소들 간의 간격 */
+        display: flex;  /* flex 컨테이너로 설정 */
+        flex-direction: column;  /* 세로 방향 정렬 */
     }
 
 
@@ -123,35 +126,33 @@
     }
 
     .search {
-        margin-bottom: 20px;
         display: flex;
-        gap: 10px;
+        justify-content: flex-end;  /* 오른쪽 정렬 */
         align-items: center;
+        gap: 20px;  /* search 내부 자식 요소들 간의 간격 */
     }
 
-    #searchOption {
-        height: 100%;
+    .search * {  /* search의 모든 자식 요소 */
+        height: 25px !important;  /* 모든 자식 요소 높이 통일 */
     }
 
-    .searchInput {
-        width: 30%;
-    }
-
-    #input {
-        padding: 10px;
-        width: 100%;
-        height: 100%;
+    /* 입력 필드나 버튼 등의 추가 스타일 필요시 */
+    .search input,
+    .search button,
+    .search select {
+        height: 25px;
+        line-height: 25px;
+        padding: 0 8px;  /* 좌우 여백 추가 */
     }
 
     #searchBtn {
+        font-size: 13px;  /* 글자 크기 조정 */
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: center;  /* 수직 가운데 정렬 */
+        justify-content: center;  /* 수평 가운데 정렬 */
+        padding: 0 12px;  /* 좌우 여백 */
     }
 
-    #searchBtn span {
-        font-size: 20px;
-    }
 
     .content {
         width: 100%;
@@ -166,7 +167,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 20px;
     }
 
     .detail-menu-modal {
@@ -272,7 +272,20 @@
         .detail-menu-modal.active {
             display: block;
         }
+    }
 
+    /* 미디어 쿼리 추가 */
+    @media screen and (max-width: 768px) {
+        .mainHeader {
+            margin-top: 10px;
+        }
+
+        .mainContainer {
+            margin-top: 10px;
+            width: 100%;
+            margin-left: 0;
+            min-height: calc(100vh - 70px);
+        }
     }
 </style>
 <div class="mainHeader">

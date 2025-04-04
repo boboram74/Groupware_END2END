@@ -6,20 +6,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SIXMAN</title>
-  <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-  />
-  <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=work"
-  />
-  <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=work" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
@@ -27,7 +16,6 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      transition: all 0.3s ease;
     }
 
     body {
@@ -36,13 +24,17 @@
       overflow-x: hidden;
     }
 
+    ul {
+      list-style-type: none;
+    }
+
     .container-fluid {
       display: flex;
       min-height: 100vh;
       padding: 0;
     }
 
-    /* PC 사이드바 스타일 */
+    /* 사이드바 스타일 */
     .sidebar {
       width: 60px;
       background-color: #2c3e50;
@@ -65,10 +57,15 @@
       text-align: center;
       border-bottom: 1px solid #34495e;
       white-space: nowrap;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .logo h3 {
       display: none;
+      margin: 0;
     }
 
     .sidebar:hover .logo h3 {
@@ -85,7 +82,7 @@
       align-items: center;
       cursor: pointer;
       white-space: nowrap;
-      transition: background-color 0.3s;
+      position: relative;
     }
 
     .menu-item:hover {
@@ -93,32 +90,144 @@
     }
 
     .menu-item i {
-      min-width: 24px;
+      width: 24px;
       margin-right: 10px;
       font-size: 20px;
       text-align: center;
+      position: absolute;
+      left: 20px;
     }
 
     .menu-item span {
       opacity: 0;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.3s ease;
+      margin-left: 34px;
     }
 
     .sidebar:hover .menu-item span {
       opacity: 1;
     }
 
-    /* 메인 콘텐츠 영역 */
-    .boxContents {
+    /* main-wrapper 스타일 */
+    .main-wrapper {
+      flex: 1;
       margin-left: 60px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+      width: calc(100% - 60px);
+    }
+
+    /* 헤더 스타일 */
+    .header {
+      height: 50px;
+      background-color: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 999;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: calc(100% - 60px);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    /* boxContents 스타일 */
+    .boxContents {
       flex: 1;
       padding: 20px;
       background-color: #f8f9fa;
-      transition: margin-left 0.3s ease;
+      margin-top: 50px;
     }
 
-    .sidebar:hover + .boxContents {
-      margin-left: 240px;
+    /* 모바일 메뉴 모달 스타일 */
+    .full-menu-modal {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1100;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease-in-out;
+      opacity: 0;
+    }
+
+
+    .full-menu-modal.show {
+      left: 0;
+      opacity: 1;
+    }
+
+    .full-menu-content {
+      position: fixed;
+      top: 0;
+      left: -100%; /* 300px에서 100%로 변경 */
+      width: 100%; /* 300px에서 100%로 변경 */
+      height: 100vh;
+      background-color: #2c3e50;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .full-menu-modal.show .full-menu-content {
+      left: 0;
+    }
+
+    .full-menu-header {
+      padding: 30px;
+      background-color: #2c3e50;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .full-menu-list {
+      background-color: #2c3e50;
+      height: calc(100% - 60px);
+      overflow-y: auto;
+      padding: 20px;
+      display: flex; /* 추가 */
+      flex-direction: column; /* 추가 */
+      gap: 10px; /* 추가 - 메뉴 항목 간 간격 */
+
+    }
+
+    .full-menu-list li {
+      padding: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .full-menu-list li a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+    }
+
+    .full-menu-list li i {
+      width: 24px;
+      text-align: center;
+      margin-right: 20px; /* 여백 증가 */
+      font-size: 32px;
+    }
+
+    .close-menu-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 32px;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+      z-index: 1200;
+    }
+
+    .close-menu-btn:hover {
+      color: #e74c3c;
     }
 
     /* 모바일 하단 네비게이션 바 */
@@ -133,7 +242,6 @@
       z-index: 1000;
     }
 
-    /* 모바일 하단 네비게이션 스크롤 컨테이너 */
     .mobile-nav-scroll-container {
       width: 100%;
       overflow-x: auto;
@@ -155,101 +263,33 @@
     }
 
     .mobile-menu-item {
-      flex: 0 0 auto;
       padding: 0 15px;
-      white-space: nowrap;
       color: white;
       text-align: center;
-      font-size: 12px;
-      cursor: pointer;
+      text-decoration: none;
     }
 
     .mobile-menu-item i {
       font-size: 24px;
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
-    /* 스크롤 인디케이터 스타일 */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 2px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .scroll-indicator-bar {
-      height: 100%;
-      width: 33.33%;
-      background: #ffffff;
-      transition: transform 0.3s ease;
-    }
-
-    /* 전체 메뉴 모달 스타일 수정 */
-    .full-menu-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: -100%; /* 초기 위치를 왼쪽 바깥으로 설정 */
-      width: 100%;
-      height: 100%;
-      background-color: #2c3e50;
-      z-index: 2000;
-      overflow-y: auto;
-      transition: left 0.3s ease-in-out; /* 왼쪽에서 오른쪽으로 이동하는 트랜지션 */
-    }
-
-    /* 모달이 보여질 때의 스타일 */
-    .full-menu-modal.show {
-      left: 0; /* 화면 안으로 이동 */
-      display: block;
-    }
-
-    .full-menu-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      border-bottom: 1px solid #34495e;
-      color: white;
-    }
-
-    .full-menu-close {
-      color: white;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .full-menu-list {
-      padding: 20px;
-    }
-
-    .full-menu-item {
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      color: white;
-      border-bottom: 1px solid #34495e;
-      cursor: pointer;
-    }
-
-    .full-menu-item i {
-      margin-right: 15px;
-      font-size: 24px;
-    }
-
-    .full-menu-item span {
-      font-size: 16px;
-    }
-
-    /* 반응형 스타일 */
+    /* 모바일 반응형 */
     @media (max-width: 768px) {
       .sidebar {
+        width: 0;
         display: none;
+      }
+
+      .main-wrapper {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .header {
+        width: 100%;
+        left: 0;
       }
 
       .mobile-nav {
@@ -257,285 +297,170 @@
       }
 
       .boxContents {
-        margin-left: 0;
-        margin-bottom: 70px;
+        padding-bottom: 70px;
       }
 
-      .sidebar:hover + .boxContents {
-        margin-left: 0;
+      .full-menu-modal.show {
+        display: block;
       }
-    }
-
-    /* 툴팁 스타일 */
-    .menu-item::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      left: 70px;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 12px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      white-space: nowrap;
-    }
-
-    .sidebar:not(:hover) .menu-item:hover::after {
-      opacity: 1;
     }
   </style>
 </head>
 <body>
 <div class="container-fluid">
-  <!-- PC 사이드바 -->
+  <!-- 사이드바 -->
   <div class="sidebar">
     <div class="logo">
       <h3>SIXMAN</h3>
     </div>
     <div class="menu-items">
-      <div class="menu-item" data-tooltip="홈">
+      <div class="menu-item">
         <i class="material-icons">home</i>
         <span>홈</span>
       </div>
-      <div class="menu-item" data-tooltip="인사관리">
-        <i class="material-icons">person</i>
-        <span>인사관리</span>
+      <div class="menu-item">
+        <i class="material-icons">dashboard</i>
+        <span>게시판</span>
       </div>
-      <div class="menu-item" data-tooltip="일정관리">
-        <i class="material-icons">event</i>
-        <span>일정관리</span>
-      </div>
-      <div class="menu-item" data-tooltip="메일">
-        <i class="material-icons">mail</i>
-        <span>메일</span>
-      </div>
-      <div class="menu-item" data-tooltip="전자결재">
+      <div class="menu-item">
         <i class="material-icons">description</i>
         <span>전자결재</span>
       </div>
-      <div class="menu-item" data-tooltip="게시판">
-        <i class="material-icons">forum</i>
-        <span>게시판</span>
+      <div class="menu-item">
+        <i class="material-icons">mail</i>
+        <span>메일</span>
       </div>
-      <div class="menu-item" data-tooltip="업무관리">
-        <i class="material-symbols-outlined">work</i>
-        <span>업무관리</span>
+      <div class="menu-item">
+        <i class="material-icons">schedule</i>
+        <span>근태관리</span>
       </div>
-      <div class="menu-item" data-tooltip="조직도">
-        <i class="material-icons">groups</i>
-        <span>조직도</span>
-      </div>
-      <div class="menu-item" data-tooltip="주소록">
-        <i class="material-icons">contact_phone</i>
-        <span>주소록</span>
-      </div>
-      <div class="menu-item" data-tooltip="예약">
-        <i class="material-icons">calendar_today</i>
+      <div class="menu-item">
+        <i class="material-icons">event_available</i>
         <span>예약</span>
       </div>
     </div>
   </div>
 
-  <!-- 모바일 하단 네비게이션 -->
-  <nav class="mobile-nav">
-    <div class="mobile-nav-scroll-container">
-      <ul class="mobile-menu">
-        <li class="mobile-menu-item">
-          <i class="material-icons">home</i>
-          <span>홈</span>
-        </li>
-        <li class="mobile-menu-item">
-          <i class="material-icons">person</i>
-          <span>인사관리</span>
-        </li>
-        <li class="mobile-menu-item">
-          <i class="material-icons">event</i>
-          <span>일정</span>
-        </li>
-        <li class="mobile-menu-item">
-          <i class="material-icons">mail</i>
-          <span>메일</span>
-        </li>
-        <li class="mobile-menu-item">
-          <i class="material-icons">description</i>
-          <span>전자결재</span>
-        </li>
-        <li class="mobile-menu-item">
-          <i class="material-icons">forum</i>
-          <span>게시판</span>
-        </li>
-        <li class="mobile-menu-item">
-          <i class="material-symbols-outlined">work</i>
-          <span>업무관리</span>
-        </li>
-        <li class="mobile-menu-item more-btn">
-          <i class="material-icons">menu</i>
-          <span>더보기</span>
-        </li>
-      </ul>
+  <!-- 메인 콘텐츠 래퍼 -->
+  <div class="main-wrapper">
+    <!-- 헤더 -->
+    <div class="header">
+      <!-- 헤더 내용 -->
     </div>
-    <div class="scroll-indicator">
-      <div class="scroll-indicator-bar"></div>
-    </div>
-  </nav>
 
-  <!-- 전체 메뉴 모달 -->
-  <div class="full-menu-modal">
-    <div class="full-menu-header">
-      <h3>전체 메뉴</h3>
-      <button class="full-menu-close">&times;</button>
+    <!-- 전체 메뉴 모달 -->
+    <div class="full-menu-modal">
+      <div class="full-menu-content">
+        <div class="full-menu-header">
+          <button class="close-menu-btn">
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+        <ul class="full-menu-list">
+          <li>
+            <a href="#">
+              <i class="material-icons">home</i>
+              <span>홈</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="material-icons">dashboard</i>
+              <span>게시판</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="material-icons">description</i>
+              <span>전자결재</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="material-icons">mail</i>
+              <span>메일</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="material-icons">schedule</i>
+              <span>근태관리</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="material-icons">event_available</i>
+              <span>예약</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="full-menu-list">
-      <div class="full-menu-item">
-        <i class="material-icons">home</i>
-        <span>홈</span>
-      </div>
-      <div class="full-menu-item">
-        <i class="material-icons">person</i>
-        <span>인사관리</span>
-      </div>
-      <div class="full-menu-item">
-        <i class="material-icons">event</i>
-        <span>일정관리</span>
-      </div>
-      <div class="full-menu-item">
-        <i class="material-icons">mail</i>
-        <span>메일</span>
-      </div>
-      <div class="full-menu-item">
-        <i class="material-icons">description</i>
-        <span>전자결재</span>
-      </div>
-      <div class="full-menu-item">
-        <i class="material-icons">forum</i>
-        <span>게시판</span>
-      </div>
-      <div class="full-menu-item">
-        <i class="material-symbols-outlined">work</i>
-        <span>업무관리</span>
-      </div>
-      <div class="full-menu-item">
-        <i class="material-icons">groups</i>
-        <span>조직도</span>
-      </div>
-      <div class="full-menu-item">
-        <i class="material-icons">contact_phone</i>
-        <span>주소록</span>
-      </div>
-      <div class="full-menu-item">
-        <i class="material-icons">calendar_today</i>
-        <span>예약</span>
-      </div>
-    </div>
-  </div>
 
-  <div class="boxContents">
+    <!-- 모바일 네비게이션 -->
+    <div class="mobile-nav">
+      <div class="mobile-nav-scroll-container">
+        <div class="mobile-menu">
+          <a href="#" class="mobile-menu-item">
+            <i class="material-icons">home</i>
+            <span>홈</span>
+          </a>
+          <a href="#" class="mobile-menu-item">
+            <i class="material-icons">dashboard</i>
+            <span>게시판</span>
+          </a>
+          <a href="#" class="mobile-menu-item">
+            <i class="material-icons">description</i>
+            <span>전자결재</span>
+          </a>
+          <a href="#" class="mobile-menu-item">
+            <i class="material-icons">mail</i>
+            <span>메일</span>
+          </a>
+          <a href="#" class="mobile-menu-item">
+            <i class="material-icons">schedule</i>
+            <span>근태관리</span>
+          </a>
+          <a href="#" class="mobile-menu-item">
+            <i class="material-icons">event_available</i>
+            <span>예약</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 콘텐츠 영역 -->
+    <div class="boxContents">
+      <!-- 메인 콘텐츠가 들어갈 자리 -->
 
 <script>
-  // PC 메뉴 아이템 클릭 이벤트
-  document.querySelectorAll(".menu-item").forEach((item) => {
-    item.addEventListener("click", function () {
-      const currentActive = document.querySelector(".menu-item.active");
-      if (currentActive && currentActive !== this) {
-        currentActive.classList.remove("active");
+  $(document).ready(function() {
+    // 모바일 메뉴 열기
+    $('.mobile-menu-item').click(function(e) {
+      e.preventDefault();
+      $('.full-menu-modal').addClass('show');
+      $('body').css('overflow', 'hidden');
+    });
+
+    // 모바일 메뉴 닫기 (수정된 부분)
+    $('.close-menu-btn').click(function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('.full-menu-modal').removeClass('show');
+      $('body').css('overflow', '');
+    });
+
+    // 모달 배경 클릭 시 닫기
+    $('.full-menu-modal').click(function(e) {
+      if ($(e.target).hasClass('full-menu-modal')) {
+        $('.full-menu-modal').removeClass('show');
+        $('body').css('overflow', '');
       }
-      this.classList.toggle("active");
     });
-  });
 
-  // 스크롤 인디케이터 관련 코드
-  const scrollContainer = document.querySelector(
-          ".mobile-nav-scroll-container"
-  );
-  const scrollIndicatorBar = document.querySelector(
-          ".scroll-indicator-bar"
-  );
-
-  scrollContainer.addEventListener("scroll", () => {
-    const scrollPercentage =
-            (scrollContainer.scrollLeft /
-                    (scrollContainer.scrollWidth - scrollContainer.clientWidth)) *
-            100;
-    const translateX =
-            scrollPercentage * ((100 - scrollIndicatorBar.clientWidth) / 100);
-    scrollIndicatorBar.style.transform = `translateX(${translateX}%)`;
-  });
-
-  // 터치 스와이프 관련 변수
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  // 터치 이벤트 리스너
-  scrollContainer.addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
-  });
-
-  scrollContainer.addEventListener("touchmove", (e) => {
-    touchEndX = e.touches[0].clientX;
-    const diffX = touchStartX - touchEndX;
-    scrollContainer.scrollLeft += diffX;
-    touchStartX = touchEndX;
-  });
-
-  // 스크롤 인디케이터 너비 계산
-  function updateScrollIndicatorWidth() {
-    const containerWidth = scrollContainer.clientWidth;
-    const contentWidth = scrollContainer.scrollWidth;
-    const percentage = (containerWidth / contentWidth) * 100;
-    scrollIndicatorBar.style.width = `${percentage}%`;
-  }
-
-  // 초기 로드 및 리사이즈 시 인디케이터 너비 업데이트
-  window.addEventListener("load", updateScrollIndicatorWidth);
-  window.addEventListener("resize", updateScrollIndicatorWidth);
-
-  // 모바일 메뉴 아이템 활성화 효과
-  const menuItems = document.querySelectorAll(
-          ".mobile-menu-item:not(.more-btn)"
-  );
-  menuItems.forEach((item) => {
-    item.addEventListener("click", function () {
-      menuItems.forEach((i) => i.classList.remove("active"));
-      this.classList.add("active");
-    });
-  });
-
-  // 더보기 버튼 클릭 이벤트
-  document
-          .querySelector(".mobile-menu-item.more-btn")
-          .addEventListener("click", function () {
-            const modal = document.querySelector(".full-menu-modal");
-            modal.style.display = "block";
-            // 약간의 지연 후 show 클래스 추가 (트랜지션 효과를 위해)
-            setTimeout(() => {
-              modal.classList.add("show");
-            }, 10);
-          });
-
-  // 닫기 버튼 클릭 이벤트
-  document
-          .querySelector(".full-menu-close")
-          .addEventListener("click", function () {
-            const modal = document.querySelector(".full-menu-modal");
-            modal.classList.remove("show");
-            // 트랜지션이 완료된 후 display none 처리
-            setTimeout(() => {
-              modal.style.display = "none";
-            }, 300); // 트랜지션 시간(0.3s)과 동일하게 설정
-          });
-
-  // 전체 메뉴 아이템 클릭 이벤트
-  document.querySelectorAll(".full-menu-item").forEach((item) => {
-    item.addEventListener("click", function () {
-      const modal = document.querySelector(".full-menu-modal");
-      modal.classList.remove("show");
-      setTimeout(() => {
-        modal.style.display = "none";
-      }, 300);
+    // 메뉴 컨텐츠 클릭 시 이벤트 전파 중지
+    $('.full-menu-content').click(function(e) {
+      e.stopPropagation();
     });
   });
 </script>

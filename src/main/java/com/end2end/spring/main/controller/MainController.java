@@ -45,4 +45,9 @@ public class MainController {
 		// TODO: 조직도 페이지 출력
 		return "main/worktree";
 	}
+
+	@RequestMapping("/test")
+	public String toTest() {
+		return "/template/exam";
+	}
 }

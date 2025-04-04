@@ -2,13 +2,13 @@ package com.end2end.spring.commute.serviceImpl;
 
 import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.commute.dao.SolderingDAO;
+import com.end2end.spring.commute.dao.VacationDAO;
 import com.end2end.spring.commute.dto.CommuteDTO;
 import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
-import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +21,7 @@ public class CommuteServiceImpl implements CommuteService {
     @Autowired private CommuteDAO commuteDAO;
     @Autowired private SolderingDAO solderingDAO;
     @Autowired private EmployeeDAO employeeDAO;
+    @Autowired private VacationDAO vacationDAO;
 
     @Override
     public void workOn(String employeeId) {
@@ -84,8 +85,9 @@ public class CommuteServiceImpl implements CommuteService {
     public void checkAbsence() {
         // TODO: 결근자 체크
         List<EmployeeDTO> employeeList = commuteDAO.selectAbsence();
+        List<EmployeeDTO> notVacationEmployeeList = vacationDAO.selectNotTodayVacation(employeeList);
 
-        List<SolderingDTO> solderingDTOList = employeeList.stream()
+        List<SolderingDTO> solderingDTOList = notVacationEmployeeList.stream()
                 .map((employee) -> SolderingDTO.builder()
                         .employeeId(employee.getId())
                         .state("ABSENCE")

@@ -47,6 +47,6 @@ public class CommuteController {
     @ResponseBody
     @RequestMapping("/leaveEarly/test")
     public void leaveEarly(HttpSession session) {
-        commuteService.checkLeaveEarly();
+        commuteService.checkAbsence();
     }
 }

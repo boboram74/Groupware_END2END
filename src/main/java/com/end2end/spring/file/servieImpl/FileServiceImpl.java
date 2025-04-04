@@ -77,4 +77,9 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<FileDetailDTO> selectByEmail(String email) {
+        return dao.selectByEmail(email);
+    }
 }

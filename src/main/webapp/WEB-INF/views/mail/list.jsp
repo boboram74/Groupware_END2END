@@ -36,7 +36,7 @@
             <table class="mailList">
                 <thead>
                 <tr>
-                    <th style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox"></th>
+                    <th style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox" id="checkAll"></th>
                     <th style="width: 20%">보낸사람</th>
                     <th style="width: 65%">제목</th>
                     <th style="width: 10%">발송 일자</th>
@@ -48,6 +48,8 @@
             </table>
         </div>
         <div class="pageNavi">
+            <button>읽음</button>
+            <button>휴지통</button>
         </div>
     </div>
 </div>

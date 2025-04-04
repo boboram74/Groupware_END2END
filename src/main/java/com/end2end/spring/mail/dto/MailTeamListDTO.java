@@ -13,7 +13,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MailTeamListDTO {
     private String id;
-    private String SENDEREMAILADDRESS;
+    private String emailAddress;
     private String title;
+    private int fileCount;
+    private String readYn;
+    private String importantYn;
+    private int esId;
     private Timestamp regdate;
 }

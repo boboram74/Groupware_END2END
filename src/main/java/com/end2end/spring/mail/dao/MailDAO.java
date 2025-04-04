@@ -1,7 +1,6 @@
 package com.end2end.spring.mail.dao;
 
-import com.end2end.spring.employee.dto.EmployeeDTO;
-import com.end2end.spring.employee.dto.EmployeeDetailDTO;
+import com.end2end.spring.mail.dto.ImportYnDTO;
 import com.end2end.spring.mail.dto.MailDetailDTO;
 import com.end2end.spring.mail.dto.MailPersonalListDTO;
 import com.end2end.spring.mail.dto.MailTeamListDTO;
@@ -41,5 +40,10 @@ public class MailDAO {
     public MailDetailDTO selectByEmail(String email) {
         return mybatis.selectOne("mail.selectByEmail", email);
     }
-
+    public int insertReadYn(int esId) {
+        return mybatis.update("mail.insertReadYn", esId);
+    }
+    public int updateImportant(ImportYnDTO dto) {
+        return mybatis.update("mail.updateImportant", dto);
+    }
 }

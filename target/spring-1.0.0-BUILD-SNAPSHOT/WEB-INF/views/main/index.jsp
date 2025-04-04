@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:choose>
-    <c:when test="${employee != null}">
+    <c:when test="${employee == null}">
         <jsp:include page="login.jsp"/>
     </c:when>
     <c:otherwise>
@@ -261,7 +261,7 @@
 
                 #calendar {
                     max-width: 350px; /* 최대 너비 설정 */
-                     max-height: 400px;
+                    max-height: 400px;
                 }
                 .loginlist{
                     border-radius: 10px;
@@ -527,11 +527,7 @@
                 <div class="header">
 
                     <div class="logo">
-                    <img src="image/로그인로고.PNG" class="fit"> </div>
-<%--                    <button class="bellBtn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">--%>
-<%--                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>--%>
-<%--                    </svg></button>--%>
-<%--                    <input type="text" placeholder="검색" />--%>
+                        <img src="image/로그인로고.PNG" class="fit"> </div>
                     <div class="profile">
          <span class="photo">
               <a href="/mypage/{employeeId}">
@@ -539,7 +535,7 @@
                   <!-- 세션에서 이미지 불러오기 -->
               </a>
             </span>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="boxContents">
                     <div class=leftContents">
@@ -597,13 +593,13 @@
                                 </svg>     게시글 작성
                             </button>
                             <a href="mail/write">
-                            <button type="button" class="btn btn-primary"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color: #ffffff; color: black; display: inline-block; ">
-                                <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
-                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
-                                </svg>
-                                메일 작성
-                            </button></a>
+                                <button type="button" class="btn btn-primary"
+                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color: #ffffff; color: black; display: inline-block; ">
+                                    <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
+                                    </svg>
+                                    메일 작성
+                                </button></a>
                             <button type="button" class="btn btn-primary"
                                     style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color:  #ffffff; color: black; display:inline-block;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -613,15 +609,15 @@
                                 결재 작성
                             </button>
                             <a href="work/write">
-                            <button type="button" class="btn btn-primary"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color: #ffffff; color: black;display: inline-block;">
+                                <button type="button" class="btn btn-primary"
+                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color: #ffffff; color: black;display: inline-block;">
 
-                                <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20"  fill="currentColor" class="bi bi-briefcase-fill" viewBox="0 0 16 16">
-                                    <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"/>
-                                    <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"/>
-                                </svg>
-                                보고서 작성
-                            </button>
+                                    <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20"  fill="currentColor" class="bi bi-briefcase-fill" viewBox="0 0 16 16">
+                                        <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"/>
+                                        <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"/>
+                                    </svg>
+                                    보고서 작성
+                                </button>
                             </a>
 
                         </div>

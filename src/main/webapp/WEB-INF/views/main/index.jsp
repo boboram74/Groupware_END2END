@@ -53,14 +53,12 @@
                     background-color: #eef1f6;
                     position: relative;
                     padding: 0;
-
+                    overflow-y: scroll;
                     position: relative;
                 }
 
                 .main{
                     width: 100%;
-
-                    overflow-y: scroll;
                 }
 
                 .logo {
@@ -328,6 +326,10 @@
                     opacity: 0;
                     transition: opacity 0.3s ease-in-out;
                 }
+
+                .material-icons{
+                    font-size: 30px;
+                }
                 /*
                 @media all and (max-width: 639px) {
                   .SizeVisibleClass .ViWidthS { display: block; }
@@ -491,11 +493,11 @@
 
                 <div class="icon">
                     <ul>
-                        <li><span class="material-symbols-outlined">person</span>
+                        <li><span class="material-icons">person</span>
                         </li>
                     </ul>
                     <ul>
-                        <li>홈
+                        <li>인사관리
                         </li>
                     </ul>
                 </div>
@@ -606,7 +608,7 @@
                                 </svg>
                                 결재 작성
                             </button>
-
+                            <a href="work/write">
                             <button type="button" class="btn btn-primary"
                                     style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color: #ffffff; color: black;display: inline-block;">
 
@@ -616,6 +618,7 @@
                                 </svg>
                                 보고서 작성
                             </button>
+                            </a>
 
                         </div>
                         <div class="birthBox">

@@ -39,7 +39,6 @@
                 }
                 /* div{   border: 1px solid red;
                               } */
-
                 html, body {
                     margin: 0;
                     padding: 0;
@@ -56,11 +55,9 @@
                     overflow-y: scroll;
                     position: relative;
                 }
-
                 .main{
                     width: 100%;
                 }
-
                 .logo {
                     position: absolute;
                     left:65px;
@@ -73,7 +70,6 @@
                     height: 100%;
                     object-fit: cover;
                 }
-
                 .boardBox{
                     height: 60%;
                     background-color: white;
@@ -81,7 +77,6 @@
                 .box{
                     background-color: white;
                 }
-
                 .boxContents {
 
                     display: flex;
@@ -93,17 +88,13 @@
                     left: 50px;
                     position: absolute;
                 }
-
                 .leftContents{
                     min-width: 300px;
                     width: 30vw;
-
                     display: flex;
                     flex-grow: 1;
-
                 }
                 .centerContents {
-
                     width: 60vw;
                     min-width: 580px;
                     padding: 15px;
@@ -116,18 +107,13 @@
                     display: flex;
                     flex-direction: column;
                     flex-grow: 2;
-
                 }
-
                 .mainContent {
                     flex: 1;
                     padding: 20px;
                     background: #fff;
                     position: absolute;
-
                 }
-
-
                 .header {
                     background: #fff;
                     padding: 10px;
@@ -141,10 +127,7 @@
                     position: sticky;
                     top: 0;
                     z-index: 1;
-
                 }
-
-
                 .sidebar {
                     text-align: left;
                     margin: 0;
@@ -152,22 +135,17 @@
                     overflow: hidden;
                     background: #003465;
                     height: 100vh;
-                    /*text-align: center;*/
                     position:fixed;
                     transition: width 0.3s ease;
                     color: white;
                     z-index: 3;
-
                 }
-
                 .sidebar ul {
                     padding: 0;
                     margin: 0;
                     flex: 1;
                     width: 100%;
-
                 }
-
                 .sidebar:hover {
                     width: 150px;
                 }
@@ -191,7 +169,6 @@
                     opacity: 1; /* 메뉴 열릴 때 자연스럽게 표시 */
                     align-items: center;
                 }
-
                 /*.sidebar ul li:hover {*/
                 /*    background-color: whitesmoke;*/
                 /*    color: #003465;*/
@@ -199,8 +176,6 @@
                 .sidebar>.icon{
                     display: flex;
                     margin-top: 20px;
-
-
                 }
                 .sidebar>.icon:hover{
                     background-color: whitesmoke;
@@ -211,17 +186,14 @@
                     margin-bottom: 10px;
                     padding: 10px;
                     background: #fff;
-
                     border: none;
                     cursor: pointer;
                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 }
-
                 .chat-button {
                     padding: 15px;
                     border-radius: 50%;
                 }
-
                 profileimg{
                     overflow: clip;
                     height: 100px;
@@ -233,7 +205,6 @@
                     overflow: hidden;
                     background-image: url("./ㄴ.jpg");
                     background-repeat: no-repeat;    background-position: center;
-
                 }
                 .logbox{
                     height: 30%;
@@ -246,18 +217,14 @@
                     border-radius: 10px;
                     margin-top: 16px;
                 }
-
-
-
                 .calenderBox{
                     margin-top: 30px;
                     background-color: white;
                     border-radius: 10px;
                     margin-left: 20px;
                 }
-
                 #calendar {
-                    max-width: 350px; /* 최대 너비 설정 */
+                    max-width: 350px;
                      max-height: 400px;
                 }
                 .loginlist{
@@ -277,13 +244,12 @@
                     height: 35%;
                     background-color: white;
                 }
-                .btnBox
+                .btnBox,
                 .btn-primary{
                     flex-direction: column;
                     display: flex;
                     width: 137px;
                     height: 50px;
-
                 }
                 .btn-primary {
                     border: none;
@@ -306,7 +272,6 @@
                     color: white !important;
                     transform: scale(1.05) !important;
                 }
-
                 .btnBox{
                     display: flex;
                     flex-direction: column;
@@ -319,14 +284,12 @@
                     width: 35px;
                     height: 35px;
                 }
-
                 .menu {
                     list-style: none;
                     padding: 10px;
                     opacity: 0;
                     transition: opacity 0.3s ease-in-out;
                 }
-
                 .material-icons{
                     font-size: 30px;
                 }
@@ -337,13 +300,11 @@
                   .SizeVisibleClass .ViWidthL { display: none; }
                 }
 
-
                 @media all and (min-width: 640px) and (max-width: 1200px) {
                   .SizeVisibleClass .ViWidthS { display: none; }
                   .SizeVisibleClass .ViWidthM { display: block; }
                   .SizeVisibleClass .ViWidthL { display: none; }
                 }
-
 
                 @media all and (min-width: 1024px) {
                   .SizeVisibleClass .ViWidthS { display: none; }
@@ -384,7 +345,6 @@
                     color: black;
                     font-size: 18px;
                   }
-
                     .main > div:not(.logbox):not(.boardBox):not(.myWaitingBox) {
                     display: none;
                   }
@@ -396,31 +356,22 @@
                 } */
 
             </style>
-
-
         </head>
-
         <body>
-
 
         <div class="container-fluid">
             <div class="sidebar d-xs-none .d-md-block">
                 <div class="icon">
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-                        </svg>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>홈
-                        </li>
-                    </ul>
+                    <ul><li><span class="material-icons">menu</span></li></ul>
+                    <ul><li>Home</li></ul>
                 </div>
 
                 <div class="icon">
+                    <ul><li><span class="material-icons">smartphone</span></li></ul>
+                    <ul><li>연락처</li></ul>
+                </div>
 
-
+                <div class="icon">
                     <ul>
                         <li><svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25" fill="currentColor" class="bi bi-clipboard2" viewBox="0 0 16 16">
                             <path d="M3.5 2a.5.5 0 0 0-.5.5v12a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-12a.5.5 0 0 0-.5-.5H12a.5.5 0 0 1 0-1h.5A1.5 1.5 0 0 1 14 2.5v12a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-12A1.5 1.5 0 0 1 3.5 1H4a.5.5 0 0 1 0 1z"/>
@@ -490,31 +441,11 @@
                     </ul>
                 </div>
 
+            <div class="icon">
+                <ul><li><span class="material-icons">person</span></li></ul>
+                <ul><li>인사관리</li></ul>
+            </div>
 
-                <div class="icon">
-                    <ul>
-                        <li><span class="material-icons">person</span>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>인사관리
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="icon">
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25"  fill="currentColor" class="bi bi-briefcase-fill" viewBox="0 0 16 16">
-                            <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"/>
-                            <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"/>
-                        </svg>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>조직도
-                        </li>
-                    </ul>
-                </div>
             </div>
 
 

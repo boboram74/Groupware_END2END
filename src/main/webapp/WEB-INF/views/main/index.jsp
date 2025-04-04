@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:choose>
-    <c:when test="${employee != null}">
+    <c:when test="${employee == null}">
         <jsp:include page="login.jsp"/>
     </c:when>
     <c:otherwise>
@@ -460,7 +460,8 @@
                         </li>
                     </ul>
                     <ul>
-                        <li>전자결재
+                        <li>
+                            <a href="/approval/list">전자결재</a>
                         </li>
                     </ul>
                 </div>

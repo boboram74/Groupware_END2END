@@ -34,4 +34,9 @@ public class ApprovalDAO {
         return  mybatis.selectList("approval.selectByStateAndEmployeeId", map);
     }
 
+    public ApprovalDTO selectById(String id) {
+        return mybatis.selectOne("approval.selectById", id);
+    }
+
+
 }

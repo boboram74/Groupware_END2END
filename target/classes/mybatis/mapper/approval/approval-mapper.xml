@@ -12,6 +12,11 @@
         SELECT * FROM approval WHERE state = #{state} AND EmployeeId = #{employeeId} ORDER BY regDate DESC
     </select>
 
+    <select id="selectById" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
+        SELECT * FROM approval WHERE id = #{id}
+    </select>
+
+
     <insert id="insert">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">
             SELECT CONCAT('문서-', APPROVAL_ID_SEQ.nextval) FROM DUAL

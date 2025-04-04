@@ -71,7 +71,13 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public ApprovalDTO selectById(String id) {
         // TODO: 해당 id의 결재를 출력
-        return null;
+        return approvalDAO.selectById(id);
+    }
+
+    @Override
+    public String nextId(String approvalId) {
+        // TODO: 해당 id의 결재를 출력
+        return approverDAO.nextId(approvalId);
     }
 
     @Transactional

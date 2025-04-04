@@ -79,10 +79,29 @@ public class ApprovalController {
     }
 
     @RequestMapping("/{id}")
-    public String toDetail(Model model, @PathVariable String id) {
-        // TODO: 전자 결재 상세 폼으로 이동
+    public String toDetail(Model model, @PathVariable String id, HttpSession session) {
+        ApprovalDTO approvalDTO = approvalService.selectById(id);
+
+        EmployeeDTO employeeId = (EmployeeDTO) session.getAttribute("employee");
+        System.out.println(employeeId);
+        if (employeeId == null) {
+            return "redirect:/";
+        }
+
+        String nextId = approvalService.nextId(id);
+
+
+        model.addAttribute("approval", approvalDTO);
+        model.addAttribute("nextId", nextId);
+        model.addAttribute("employee", approvalService.selectById(id));
+
+        System.out.println("ApprovalDTO: " + approvalService.selectById(id));
+        System.out.println("Next ID: " + approvalService.nextId(id));
+        System.out.println("Employee ID: " + employeeId);
+
         return "approval/detail";
     }
+
 
     @ResponseBody
     @RequestMapping("/insert")

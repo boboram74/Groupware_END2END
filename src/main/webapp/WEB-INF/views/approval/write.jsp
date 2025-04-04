@@ -98,7 +98,7 @@
                     <input type="text" id="title" name="title">
                 </div>
                 <div class="contentsBox">
-                    <textarea id="contents"></textarea>
+                    <textarea></textarea>
                 </div>
                 <div class="signInform" id="signButtons">
                     <input type="file" name="files">

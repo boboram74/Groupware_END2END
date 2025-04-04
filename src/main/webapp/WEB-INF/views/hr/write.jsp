@@ -1,5 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/hr/write.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
@@ -27,7 +27,7 @@
                 <div class="birthday">생년월일 :
                     <input type="date" name="birthday">
                 </div>
-                <div class="loginId">아이디 : <input type="text" name="loginId" placeholder="8~20자 이내 영어소문자,숫자를 포함한 ID 입력">
+                <div class="loginId">아이디 : <input type="text" id="id" name="loginId" placeholder="8~20자 이내 영어소문자,숫자를 포함한 ID 입력">
                     <button type="button" id="idCheckBtn">중복 체크</button>
                 </div>
                 <div id="result"></div>

@@ -14,12 +14,26 @@
         <div class="formGroup">
             <label>받는 사람</label>
             <input type="hidden" id="sender" value=${employee.email}>
-            <input type="text" id="receiveMail" placeholder="받는 사람을 입력해주십시오">
+            <c:choose>
+                <c:when test="${not empty receiveMail}">
+                    <input type="text" id="receiveMail" value="${receiveMail}">
+                </c:when>
+                <c:otherwise>
+                    <input type="text" id="receiveMail" placeholder="받는 사람을 입력해주십시오">
+                </c:otherwise>
+            </c:choose>
             <button class="addressBtn">주소록</button>
         </div>
         <div class="formGroup">
             <label>제목</label>
-            <input type="text" id="inputTitle" placeholder="제목을 입력하십시오">
+            <c:choose>
+                <c:when test="${not empty title}">
+                    <input type="text" id="inputTitle" value="re : ${title}">
+                </c:when>
+                <c:otherwise>
+                    <input type="text" id="inputTitle" placeholder="제목을 입력하십시오">
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="formGroup">
             <label>파일 첨부</label>
@@ -35,10 +49,24 @@
 
     <div class="mainBody">
         <div class="content">
-            <textarea id="mailContent" placeholder="메일내용"></textarea>
+        <c:choose>
+            <c:when test="${not empty content}">
+                <textarea id="mailContent">원본내용 :
+
+${content}
+
+============================================
+
+</textarea>
+            </c:when>
+            <c:otherwise>
+                <textarea id="mailContent"></textarea>
+            </c:otherwise>
+        </c:choose>
         </div>
         <div class="buttons">
-            <button type="button" id="sendMail">답장하기</button>
+            <button type="button">임시 저장</button>
+            <button type="button" id="sendMail">보내기</button>
         </div>
     </div>
 </div>

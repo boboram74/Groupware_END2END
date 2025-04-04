@@ -275,6 +275,22 @@
       margin-bottom: 5px;
     }
 
+    /* menu-item 관련 스타일 - !important 제거하고 선택자 구체성 높임 */
+    .menu-items .menu-item a,
+    .menu-items .menu-item a:link,
+    .menu-items .menu-item a:visited,
+    .menu-items .menu-item a:hover,
+    .menu-items .menu-item a:active {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* hover 효과도 추가 */
+    .menu-items .menu-item:hover a {
+      color: white;
+      text-decoration: none;
+    }
+
     /* 모바일 반응형 */
     @media (max-width: 768px) {
       .sidebar {
@@ -315,35 +331,44 @@
     </div>
     <div class="menu-items">
       <div class="menu-item">
-        <i class="material-icons">home</i>
-        <span>홈</span>
+        <a href="/">
+          <i class="material-icons">home</i>
+          <span>홈</span>
+        </a>
       </div>
       <div class="menu-item">
-        <i class="material-icons">dashboard</i>
-        <span>게시판</span>
+        <a href="/board/list/1">
+          <i class="material-icons">dashboard</i>
+          <span>게시판</span>
+        </a>
       </div>
       <div class="menu-item">
-        <i class="material-icons">description</i>
-        <span>전자결재</span>
+        <a href="/approval/list/1">
+          <i class="material-icons">description</i>
+          <span>전자결재</span>
+        </a>
       </div>
       <div class="menu-item">
-        <i class="material-icons">mail</i>
-        <span>메일</span>
+        <a href="/mail/list/1">
+          <i class="material-icons">mail</i>
+          <span>메일</span>
+        </a>
       </div>
       <div class="menu-item">
-        <i class="material-icons">schedule</i>
-        <span>근태관리</span>
+        <a href="/commute/detail/1">
+          <i class="material-icons">schedule</i>
+          <span>근태관리</span>
+        </a>
       </div>
       <div class="menu-item">
-        <i class="material-icons">event_available</i>
-        <span>예약</span>
+        <a href="/schedule/list">
+          <i class="material-icons">event_available</i>
+          <span>예약</span>
+        </a>
       </div>
     </div>
   </div>
-
-  <!-- 메인 콘텐츠 래퍼 -->
   <div class="main-wrapper">
-    <!-- 헤더 -->
     <div class="header">
       <!-- 헤더 내용 -->
     </div>
@@ -358,37 +383,37 @@
         </div>
         <ul class="full-menu-list">
           <li>
-            <a href="#">
+            <a href="/">
               <i class="material-icons">home</i>
               <span>홈</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="/board/list/1">
               <i class="material-icons">dashboard</i>
               <span>게시판</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="/approval/list">
               <i class="material-icons">description</i>
               <span>전자결재</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="/mail/list">
               <i class="material-icons">mail</i>
               <span>메일</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="/commute/detail/1">
               <i class="material-icons">schedule</i>
               <span>근태관리</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="/schedule/list/1">
               <i class="material-icons">event_available</i>
               <span>예약</span>
             </a>

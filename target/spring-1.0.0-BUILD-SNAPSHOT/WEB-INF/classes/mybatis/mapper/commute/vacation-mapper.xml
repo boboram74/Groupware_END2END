@@ -7,13 +7,25 @@
 
     </insert>
 
-    <select id="selectCurrentVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">
+    <select id="selectNotCurrentVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">
         SELECT *
         FROM VACATION
         WHERE
             startDate + NUMTODSINTERVAL(vacationDate, 'DAY') > SYSDATE
         AND
-            employeeId in
+            employeeId NOT IN
+        <foreach collection="list" item="employeeId" open="(" separator="," close=")">
+            #{employeeId}
+        </foreach>
+    </select>
+
+    <select id="selectNotTodayVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">
+        SELECT employeeId as id
+        FROM VACATION
+        WHERE
+        startDate + NUMTODSINTERVAL(vacationDate, 'DAY') > TRUNC(SYSDATE)
+        AND
+        employeeId NOT IN
         <foreach collection="list" item="employeeId" open="(" separator="," close=")">
             #{employeeId}
         </foreach>

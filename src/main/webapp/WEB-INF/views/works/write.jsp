@@ -4,23 +4,10 @@
 
 <link rel="stylesheet" href="/css/write.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
-
-<%--<link--%>
-<%--        href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"--%>
-<%--        rel="stylesheet"--%>
-<%--/>--%>
-<%--<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>--%>
-
-<%--<link--%>
-<%--        href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css"--%>
-<%--        rel="stylesheet"--%>
-<%--/>--%>
-<div>
-    <form action="file/upload/test" method="post" enctype="multipart/form-data">
-        <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
-        <input type="hidden" name="id" value="1">
-
+<script src="/js/summernote/summernote-lite.js"></script>
+<script src="/js/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="/js/summernote/summernote-lite.css">
+<div class="boardmain">
 <div class="boardbox">
     <!-- <h1>작성하기</h1> -->
 
@@ -60,16 +47,11 @@
                     required
             />
 
-            <label for="file">파일 첨부</label>
-            <input
-                    type="file"
-                    name="file2"
-                    accept="image/*, .pdf, .docx"
-            />
 
-            <div class="card-header">내용 입력</div>
-            <input type="hidden" name="contents" id="input-contents" />
-            <div class="card-body" id="contents"></div>
+            <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
+            <div class="card-header">
+                <textarea id="contents"></textarea>
+            </div>
         </div>
         <div id="buttonbox">
             <button class="button" id="writebtn" type="submit">
@@ -83,6 +65,12 @@
         </div>
     </form>
 </div>
+</div>
             <script src="/js/main/write.js" type="text/javascript">
-
+                <script src="/js/template/summernote.js" type="text/javascript"></script>
+            <script>
+                $(document).ready(() => {
+                    $('#contents').summernote(summernoteSetting());
+                })
+            </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />

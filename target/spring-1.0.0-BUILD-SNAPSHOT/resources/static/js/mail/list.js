@@ -64,7 +64,7 @@ $(function () {
             pagingTd.append(nextSpan);
         }
 
-        pagingTr.append(pagingTd);
+        $(".pageNavi").append(pagingTd);
         $('#buttons').before(pagingTr);
 
         // 페이지 번호 클릭 시

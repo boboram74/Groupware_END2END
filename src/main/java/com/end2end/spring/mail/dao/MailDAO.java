@@ -40,11 +40,9 @@ public class MailDAO {
     public MailDetailDTO selectByEmail(String email) {
         return mybatis.selectOne("mail.selectByEmail", email);
     }
-
     public int insertReadYn(int esId) {
         return mybatis.update("mail.insertReadYn", esId);
     }
-
     public int updateImportant(ImportYnDTO dto) {
         return mybatis.update("mail.updateImportant", dto);
     }

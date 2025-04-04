@@ -22,12 +22,21 @@ public class ApprovalServiceImpl implements ApprovalService {
     private ApproverDAO approverDAO;
 
     @Override
-    public List<ApprovalDTO> selectAll() {
+    public List<ApprovalDTO> myList(String state) {
 
-        return approvalDAO.toList();
+        return approvalDAO.toList(state);
     }
 
 
+    @Override
+    public List<ApprovalDTO> selectAll() {
+        return null;
+    }
+
+    @Override
+    public List<ApprovalDTO> selectAll(String state) {
+        return null;
+    }
 
     @Override
     public List<ApprovalDTO> selectByEmployeeId(String employeeId) {
@@ -56,13 +65,19 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public List<ApprovalDTO> selectByState(String state, String employeeId) {
         // TODO: 해당 id의 사원이 볼 수 있는 결재 상태(진행중, 완료)으로 결재 리스트 출력
-        return null;
+        return approvalDAO.selectByStateAndEmployeeId(state, employeeId);
     }
 
     @Override
     public ApprovalDTO selectById(String id) {
         // TODO: 해당 id의 결재를 출력
-        return null;
+        return approvalDAO.selectById(id);
+    }
+
+    @Override
+    public String nextId(String approvalId) {
+        // TODO: 해당 id의 결재를 출력
+        return approverDAO.nextId(approvalId);
     }
 
     @Transactional

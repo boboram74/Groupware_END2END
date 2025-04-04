@@ -15,5 +15,7 @@ public class ApproverDAO {
         mybatis.insert("approver.insertApprover", approverDTO);
     }
 
-
+    public String nextId(String approvalId) {
+        return mybatis.selectOne("approver.nextId", approvalId);
+    }
 }

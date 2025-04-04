@@ -49,8 +49,8 @@ $("#postBtn").on("click", function () {
     new daum.Postcode({
         oncomplete: function (data) {
             $("#postcode").val(data.zonecode);
-            $("input[name='address1']").val(data.roadAddress);
-            $("input[name='address2']").focus();
+            $("input[name='address']").val(data.roadAddress);
+            $("input[name='detailAddress']").focus();
         }
     }).open();
 });

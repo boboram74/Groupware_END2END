@@ -1,23 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: yoonah
-  Date: 25. 4. 1.
-  Time: 오후 5:00
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="/css/template/worksmain.css">
+    <link rel="stylesheet" href="/css/template/exam.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-            crossorigin="anonymous"
-    />
+            crossorigin="anonymous"/>
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
@@ -38,6 +30,186 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"
 ></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .container-fluid {
+        overflow: hidden;
+        display: flex;
+        height: 100vh;
+        width: 100%;
+        background-color: #eef1f6;
+        position: relative;
+        padding: 0;
+        overflow-y: scroll;
+    }
+
+    .main {
+        display: flex;
+        width: 100%;
+        display: block;
+    }
+
+    .logo {
+        position: absolute;
+        left: 0;
+        width: 30px;
+        height: 30px;
+    }
+
+    div {
+        border: 1px solid red;
+    }
+
+    .boxContents {
+        margin-left: 50px;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .header {
+        position: relative;
+        background: #fff;
+        padding: 10px;
+        height: 50px;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    input {
+        /* width: 50vw; */
+        margin-right: 50px;
+    }
+
+    .bellBtn {
+        /* display: block; */
+        background: #fff;
+        border: none;
+    }
+
+    .profileIcon {
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+    }
+
+    .icon {
+        display: flex;
+        padding-top: 20px;
+    }
+    .menu {
+        list-style: none;
+        padding: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    .boxContents {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        /* gap: 50px; */
+        margin-bottom: 20px;
+    }
+    .btnBox {
+        margin-top: 10px;
+        display: flex;
+        margin-left: 50px;
+        justify-content: flex-end;
+    }
+    .selectBox {
+        display: flex;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        justify-content: flex-end;
+    }
+    .pageName {
+        font-size: 30px;
+        margin-left: 100px;
+    }
+    .sidebar {
+        text-align: left;
+        margin: 0;
+        width: 50px;
+        overflow: hidden;
+        background: #003465;
+        height: 100vh;
+        /*text-align: center;*/
+        position:fixed;
+        transition: width 0.3s ease;
+        color: white;
+        z-index: 3;
+
+    }
+
+    .sidebar ul {
+        padding: 0;
+        margin: 0;
+        flex: 1;
+        width: 100%;
+
+    }
+
+    .sidebar:hover {
+        width: 150px;
+    }
+    .sidebar ul li {
+        list-style: none;
+        padding: 10px;
+        cursor: pointer;
+
+        text-align: left; /* 글씨 밀림 방지 */
+
+        transition: opacity 0.3s ease;
+        white-space: nowrap; /* 글씨 줄 바꿈 방지 */
+        display: flex;
+        align-items: center;
+    }
+    .sidebar a {
+        text-decoration: none;
+        color: #fff;
+        padding-left: 10px;
+    }
+    .sidebar:hover ul li {
+        opacity: 1; /* 메뉴 열릴 때 자연스럽게 표시 */
+        align-items: center;
+    }
+
+    /*.sidebar ul li:hover {*/
+    /*    background-color: whitesmoke;*/
+    /*    color: #003465;*/
+    /*}*/
+    .sidebar>.icon{
+        display: flex;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .sidebar>.icon:hover{
+        background-color: whitesmoke;
+        color: #003465;
+    }
+    .selectBtn{
+        margin-left: 10px;
+    }
+</style>
 <div class="container-fluid">
     <div class="sidebar">
         <div class="icon">
@@ -251,7 +423,9 @@
             >업무 통계
         </div>
         <div class="btnBox">
+            <a href="/work/write">
             <button>보고서쓰기</button>
+            </a>
         </div>
         <div class="selectBox">
             <select>
@@ -259,6 +433,7 @@
                 <option>주제1</option>
                 <option>주제2</option>
             </select>
+            <button class="selectBtn">적용하기</button>
         </div>
 
         <div class="row boxContents">

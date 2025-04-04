@@ -29,40 +29,8 @@ body {
     height: 30px;
 }
 
-.sidebar {
-    margin: 0;
-    width: 50px;
-    overflow: hidden;
-    background: #030848;
-    height: 100vh;
-    text-align: center;
-    position: fixed;
-    transition: width 0.3s ease-in-out;
-    color: white;
-    z-index: 3;
-    /* transition-duration: 0.5s; */
-}
-.sidebar ul {
-    padding: 0;
-    margin: 0;
-}
 div {
     border: 1px solid red;
-}
-
-.sidebar ul li {
-    list-style: none;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-.sidebar a {
-    text-decoration: none;
-    color: #fff;
-}
-
-.sidebar:hover {
-    width: 150px;
 }
 
 .boxContents {
@@ -143,4 +111,66 @@ input {
 .pageName {
     font-size: 30px;
     margin-left: 100px;
+}
+.sidebar {
+    text-align: left;
+    margin: 0;
+    width: 50px;
+    overflow: hidden;
+    background: #003465;
+    height: 100vh;
+    /*text-align: center;*/
+    position:fixed;
+    transition: width 0.3s ease;
+    color: white;
+    z-index: 3;
+
+}
+
+.sidebar ul {
+    padding: 0;
+    margin: 0;
+    flex: 1;
+    width: 100%;
+
+}
+
+.sidebar:hover {
+    width: 150px;
+}
+.sidebar ul li {
+    list-style: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    text-align: left; /* 글씨 밀림 방지 */
+
+    transition: opacity 0.3s ease;
+    white-space: nowrap; /* 글씨 줄 바꿈 방지 */
+    display: flex;
+    align-items: center;
+}
+.sidebar a {
+    text-decoration: none;
+    color: #fff;
+    padding-left: 10px;
+}
+.sidebar:hover ul li {
+    opacity: 1; /* 메뉴 열릴 때 자연스럽게 표시 */
+    align-items: center;
+}
+
+/*.sidebar ul li:hover {*/
+/*    background-color: whitesmoke;*/
+/*    color: #003465;*/
+/*}*/
+.sidebar>.icon{
+    display: flex;
+    margin-top: 20px;
+
+
+}
+.sidebar>.icon:hover{
+    background-color: whitesmoke;
+    color: #003465;
 }

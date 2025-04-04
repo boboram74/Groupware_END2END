@@ -7,7 +7,7 @@
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
-            <h2><span class="material-icons">mail</span>직원 관리</h2>
+            <h2><span class="material-icons">badge</span>직원 관리</h2>
         </div>
         <div class="search">
             <div>

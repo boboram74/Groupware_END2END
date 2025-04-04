@@ -77,4 +77,8 @@ $(function () {
             }
         });
     })
+    $(document).on('change', '#checkAll', function() {
+        let isChecked = $(this).prop('checked');
+        $('table.mailList input[type="checkbox"]').not('#checkAll').prop('checked', isChecked);
+    });
 });

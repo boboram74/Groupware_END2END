@@ -1,30 +1,51 @@
 *{
+    /*border: 1px solid red;*/
     box-sizing: border-box;
 }
-.hrContainer{
-    width: 100%;
-    height: 100%;
+.mainContainer{
+    width: 90%;
+    height: 100vh;
     margin: auto;
-    padding: 20px;
+    padding: 10px;
 }
-.hrHeader{
-    height: 20%;
+.mainHeader{
+    width: 100%;
+    height: 10%;
+    margin: 10px;
 }
-h3{
-    margin-bottom: 30px;
+.title{
+    width: 100%;
+    height: 40%;
 }
-.hrBody{
-    height: 80%;
+.title span {
+    font-size: 60px;
 }
-.newEmployee {
+.title h2 {
+    display: flex;
+    align-items: center;
+}
+.title h2 .material-icons {
+    font-size: 65px;
+    margin-right: 8px;
+}
+.mainBody{
+    width: 100%;
+    height: 90%;
+}
+.content {
     display: flex;
     flex-direction: column;
-    height: 100%;
     gap: 10px;
-    width: 40%;
+    width: 100%;
 }
 .btn{
     display: flex;
     justify-content: end;
     gap: 10px;
+}
+
+.hrProfile {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 60px;
 }

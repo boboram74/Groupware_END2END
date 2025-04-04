@@ -14,12 +14,8 @@ public class CommuteDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public void workOn(String employeeId) {
-        mybatis.update("commute.workOn", employeeId);
-    }
-
-    public void workOff(String employeeId) {
-        mybatis.insert("commute.workOff", employeeId);
+    public void insert(CommuteDTO dto) {
+        mybatis.insert("commute.insert", dto);
     }
 
     public List<CommuteDTO> selectLate() {
@@ -35,8 +31,4 @@ public class CommuteDAO {
     }
 
     public List<TodayWorkTimeDTO> selectTodayWorkTimeList() { return mybatis.selectList("commute.selectTodayWorkTimeList"); }
-
-    public void insertAll(List<CommuteDTO> dtoList) {
-        mybatis.insert("commute.insertAll", dtoList);
-    }
 }

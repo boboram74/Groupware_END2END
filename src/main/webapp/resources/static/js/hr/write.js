@@ -21,7 +21,7 @@ $("#profileInput").on("change", function (e) {
                 console.log("error: " + error);
             }
         }).done(function(data) {
-            $('input [name=profileImg]').val(data);
+            $('input[name=profileImg]').val(data);
             console.log(data);
         });
     } else {
@@ -53,9 +53,9 @@ $("#postBtn").on("click", function () {
         }
     }).open();
 });
-$("#insertBtn").on("click", function () {
+/*$("#insertBtn").on("click", function () {
     location.href = "/hr/insert";
-})
+})*/
 $("#backBtn").on("click", function () {
     location.href = "/hr/list";
 })

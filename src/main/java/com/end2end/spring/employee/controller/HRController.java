@@ -41,7 +41,8 @@ public class HRController {
     @RequestMapping("/write")
     public String toWrite(Model model) {
         // TODO: 직원 추가 페이지로 이동
-        List<DepartmentDTO> departmentList = employeeService.selectAllDepartment();
+        System.out.println("호출!");
+        List<DepartmentDTO> departmentList = employeeService. selectAllDepartment();
         List<JobDTO> jobList = employeeService.selectAllJob();
 
         model.addAttribute("departmentList", departmentList);

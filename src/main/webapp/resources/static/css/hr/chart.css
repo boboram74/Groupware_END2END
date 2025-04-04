@@ -1,60 +1,76 @@
-*{
-/*    border: 1px solid red;*/
+* {
     box-sizing: border-box;
 }
-.mainContainer{
+
+.mainContainer {
     width: 90%;
     height: 100vh;
     margin: auto;
     padding: 10px;
 }
-.mainHeader{
+
+.mainHeader {
     width: 100%;
-    height: 20%;
-    margin: 10px;
+    height: 10%;
+    margin-bottom: 10px;
 }
-.title{
+
+.title {
     width: 100%;
-    height: 40%;
+    height: 100%;
 }
+
 .title span {
     font-size: 60px;
 }
+
 .title h2 {
     display: flex;
     align-items: center;
     margin: 0;
 }
+
 .title h2 .material-icons {
     font-size: 65px;
     margin-right: 8px;
 }
-.mainBody{
+
+.mainBody {
     width: 100%;
-    height: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.chartUp,
-.chartDown {
-    width: 100%;
-    height: 50%;
+    height: 90%;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    justify-content: space-evenly;
 }
-.chartRight,
-.chartLeft {
-    width: 50%;
-    height: auto;
+
+.chartRow {
+    width: 100%;
     display: flex;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
+    flex: 1;
 }
+
+.chart1 {
+    width: 30%;
+    height: 270px;
+    margin: 10px;
+}
+.chart2{
+    width: 70%;
+    height: 270px;
+    margin: 10px;
+}
+.chart3,.chart4{
+    width: 50%;
+    height: 250px;
+    margin: 10px;
+}
+
 canvas {
-    width: 600px;
-    height: 600px;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
     background: white;
     padding: 10px;
     border-radius: 10px;

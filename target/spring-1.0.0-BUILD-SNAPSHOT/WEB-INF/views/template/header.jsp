@@ -575,9 +575,9 @@
     $('.menu-item').on('click', function() {
       const id = $(this).attr('id');
 
-      if (id == 'mypage') {
+      if (id === 'mypage') {
         window.location.href = '/mypage/${employee.id}';
-      } else if (id == 'logout') {
+      } else if (id === 'logout') {
         window.location.href = '/employee/logout';
       }
     });

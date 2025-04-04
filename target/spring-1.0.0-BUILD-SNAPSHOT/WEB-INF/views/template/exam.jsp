@@ -21,8 +21,8 @@
     }
 
     .mainContainer {
-        margin-left: 310px;
-        width: calc(100% - 310px);
+        width: calc(100% - 200px);  /* boxContents 전체 너비에서 mainHeader(200px)만큼 뺌 */
+        margin-left: 200px;  /* mainHeader 너비만큼 왼쪽 마진 */
         min-height: 100vh;
         background-color: #fff;
         padding: 20px;
@@ -34,8 +34,9 @@
     .mainBody {
         max-width: 1200px;
         width: 100%;
-        padding: 0 20px;
+        padding: 0;  /* 패딩 제거하여 딱 맞게 조정 */
     }
+
 
     /* 메뉴 헤더 컨테이너 */
     .detail-menu-header {
@@ -248,7 +249,7 @@
         }
 
         .detail-menu-list {
-            margin-top: 10px;  /* 닫기 버튼과의 간격 */
+            margin-top: 30px;  /* 닫기 버튼과의 간격 */
             max-height: 80vh;
             overflow-y: auto;
             padding-top: 10px;  /* 리스트 상단 간격 */
@@ -258,7 +259,7 @@
             display: none;
             position: absolute;
             top: 100%;  /* 헤더 바로 아래에 위치 */
-            left: 0;
+            width: 250px;  /* 너비 250px로 설정 */
             right: 0;
             background: white;
             padding: 20px;

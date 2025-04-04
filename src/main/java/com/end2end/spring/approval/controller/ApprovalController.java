@@ -24,10 +24,13 @@ public class ApprovalController {
     public ApprovalService approvalService;
 
     @RequestMapping("/list")
-    public String toList(Model model) {
-        List<ApprovalDTO> waitingList = approvalService.selectByState("대기중");
-        List<ApprovalDTO> goingList = approvalService.selectByState("진행중");
-        List<ApprovalDTO> completedList = approvalService.selectByState("완료");
+    public String toList(HttpSession session, Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        String employeeId = employee.getId();
+
+        List<ApprovalDTO> waitingList = approvalService.selectByState("ONGOING",employeeId);
+        List<ApprovalDTO> goingList = approvalService.selectByState("ONGOING",employeeId);
+        List<ApprovalDTO> completedList = approvalService.selectByState("SUBMIT",employeeId);
 
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
@@ -76,10 +79,29 @@ public class ApprovalController {
     }
 
     @RequestMapping("/{id}")
-    public String toDetail(Model model, @PathVariable String id) {
-        // TODO: 전자 결재 상세 폼으로 이동
+    public String toDetail(Model model, @PathVariable String id, HttpSession session) {
+        ApprovalDTO approvalDTO = approvalService.selectById(id);
+
+        EmployeeDTO employeeId = (EmployeeDTO) session.getAttribute("employee");
+        System.out.println(employeeId);
+        if (employeeId == null) {
+            return "redirect:/";
+        }
+
+        String nextId = approvalService.nextId(id);
+
+
+        model.addAttribute("approval", approvalDTO);
+        model.addAttribute("nextId", nextId);
+        model.addAttribute("employee", approvalService.selectById(id));
+
+        System.out.println("ApprovalDTO: " + approvalService.selectById(id));
+        System.out.println("Next ID: " + approvalService.nextId(id));
+        System.out.println("Employee ID: " + employeeId);
+
         return "approval/detail";
     }
+
 
     @ResponseBody
     @RequestMapping("/insert")

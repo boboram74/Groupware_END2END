@@ -1,6 +1,7 @@
 package com.end2end.spring.mail.serviceImpl;
 
 import com.end2end.spring.mail.dao.MailDAO;
+import com.end2end.spring.mail.dto.ImportYnDTO;
 import com.end2end.spring.mail.dto.MailDetailDTO;
 import com.end2end.spring.mail.dto.MailPersonalListDTO;
 import com.end2end.spring.mail.dto.MailTeamListDTO;
@@ -68,9 +69,18 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
+    public int insertReadYn(int esId) {
+        return mailDAO.insertReadYn(esId);
+    }
+
+    @Override
+    public int updateImportant(ImportYnDTO dto) {
+        return mailDAO.updateImportant(dto);
+    }
+
+    @Override
     public Map<String, Object> getPageList(int cpage, String employeeId) {
         int recordTotalCount = this.getRecordTotalCount(employeeId);
-        System.out.println(recordTotalCount);
         String selectDepartment = this.selectDepartment(employeeId);
 
         int pageTotalCount = (recordTotalCount % Statics.recordCountPerPage > 0)
@@ -85,15 +95,24 @@ public class MailServiceImpl implements MailService {
         if (endNavi > pageTotalCount) endNavi = pageTotalCount;
         boolean needPrev = startNavi != 1;
         boolean needNext = endNavi != pageTotalCount;
-
         List<MailTeamListDTO> teamMail = this.selectFromto(start, end, employeeId);
+        for (MailTeamListDTO dto : teamMail) {
+            System.out.println("ID: " + dto.getId());
+            System.out.println("보낸사람: " + dto.getEmailAddress());
+            System.out.println("제목: " + dto.getTitle());
+            System.out.println("파일 갯수: " + dto.getFileCount());
+            System.out.println("발송 일자: " + dto.getRegdate());
+            System.out.println("읽음 표시:" + dto.getReadYn());
+            System.out.println("중요 표시:" + dto.getImportantYn());
+            System.out.println("ESID:" + dto.getEsId());
+            System.out.println("==============================");
+        }
         Map<String, Object> result = new HashMap<>();
         result.put("startNavi", startNavi);
         result.put("endNavi", endNavi);
         result.put("needPrev", needPrev);
         result.put("needNext", needNext);
         result.put("list", teamMail);
-
         return result;
     }
 }

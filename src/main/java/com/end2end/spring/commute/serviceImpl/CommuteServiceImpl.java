@@ -25,12 +25,12 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Override
     public void workOn(String employeeId) {
-        commuteDAO.workOn(employeeId);
+        //commuteDAO.workOn(employeeId);
     }
 
     @Override
     public void workOff(String employeeId) {
-        commuteDAO.workOff(employeeId);
+        //commuteDAO.workOff(employeeId);
     }
 
     @Transactional
@@ -106,6 +106,6 @@ public class CommuteServiceImpl implements CommuteService {
                         CommuteDTO.builder().employeeId(employeeDTO.getId()).build())
                 .collect(Collectors.toList());
 
-        commuteDAO.insertAll(commuteDTOList);
+        //commuteDAO.insertAll(commuteDTOList);
     }
 }

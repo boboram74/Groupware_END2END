@@ -13,8 +13,8 @@ public interface EmployeeService {
     void insert(EmployeeDetailDTO dto, MultipartFile file);
     void update(EmployeeDetailDTO dto);
     void deleteById(String id);
+    boolean idVali(String loginId);
     List<EmployeeDTO> selectByDepartmentId(int departmentId);
-
     List<DepartmentDTO> selectAllDepartment();
     List<JobDTO> selectAllJob();
 }

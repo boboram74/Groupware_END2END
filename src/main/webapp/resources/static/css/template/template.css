@@ -17,12 +17,14 @@ body {
     background-color: #eef1f6;
     position: relative;
     padding: 0;
+
 }
 
 .main {
     width: 100%;
     display: block;
     overflow-y: scroll;
+
 }
 .material-icons{
     font-size: 30px;
@@ -41,16 +43,16 @@ body {
     object-fit: cover;
 }
 
-.boxContents {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 20px;
-    left: 50px;
-    position: absolute;
-}
+/*.boxContents {*/
+/*    display: flex;*/
+/*    height: 100%;*/
+/*    width: 100%;*/
+/*    justify-content: space-between;*/
+/*    gap: 20px;*/
+/*    margin-top: 20px;*/
+/*    left: 50px;*/
+/*    position: absolute;*/
+/*}*/
 
 .header {
     background: #fff;

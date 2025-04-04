@@ -1,5 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/hr/write.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
@@ -27,7 +27,7 @@
                 <div class="birthday">생년월일 :
                     <input type="date" name="birthday">
                 </div>
-                <div class="loginId">아이디 : <input type="text" name="loginId" placeholder="8~20자 이내 영어소문자,숫자를 포함한 ID 입력">
+                <div class="loginId">아이디 : <input type="text" id="id" name="loginId" placeholder="8~20자 이내 영어소문자,숫자를 포함한 ID 입력">
                     <button type="button" id="idCheckBtn">중복 체크</button>
                 </div>
                 <div id="result"></div>
@@ -52,10 +52,10 @@
                 </div>
                 <div class="email">이메일 : <input type="text" name="email"></div>
                 <div class="contact">연락처 : <input type="text" name="contact"></div>
-                <div class="postCode">우편번호 : <input type="text" name="postCode" id="postcode">
+                <div class="postCode">우편번호 : <input type="text" name="postCode" id="postcode" readonly>
                     <button type="button" class="postBtn" id="postBtn">우편번호 검색</button>
                 </div>
-                <div class="address">주소 : <input type="text" name="address"></div>
+                <div class="address">주소 : <input type="text" name="address" readonly></div>
                 <div class="detailAddress">상세주소 : <input type="text" name="detailAddress"></div>
             </div>
             <div class="btn">

@@ -3,4 +3,5 @@ $("#loginBtn").on("click",function(){
 })
 $("#newBtn").on("click",function(){
     location.href="hr/write";
+    // location.href="/";
 })

@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="/WEB-INF/views/template/header.jsp" />
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/approval/list.css">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <div class="userInfo">
@@ -10,7 +10,13 @@
 
 
 <div class="apControls">
-    <button class="apBtnNewDoc">새 기안 쓰기</button>
+    <%--    <button class="apBtnNewDoc">새 기안 쓰기</button>--%>
+    <select class="apBtnNewDoc">
+        <option value="">새 기안 쓰기</option>
+        <option value="1">기안문</option>
+        <option value="2">휴가계</option>
+        <option value="3">지출결의서</option>
+    </select>
     <button class="apBtnRefresh">상세 조회</button>
 </div>
 
@@ -30,24 +36,24 @@
             </tr>
             </thead>
             <tbody>
-                <c:choose>
-                    <c:when test="${empty waitingList}">
+            <c:choose>
+                <c:when test="${empty waitingList}">
+                    <tr>
+                        <td colspan="5" class="emptyMessage">대기 중인 문서가 없습니다.</td>
+                    </tr>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="i" items="${waitingList}">
                         <tr>
-                            <td colspan="5" class="emptyMessage">대기 중인 문서가 없습니다.</td>
+                            <td class="apColStar">★</td>
+                            <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
+                            <td class="apColStatus">결재 대기중</td>
+                            <td class="apColWriter">${i.employeeId}</td>
+                            <td class="apColDate">${i.regDate}</td>
                         </tr>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="i" items="${waitingList}">
-                            <tr>
-                                <td class="apColStar">★</td>
-                                <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
-                                <td class="apColStatus">${i.state}</td>
-                                <td class="apColWriter">${i.employeeId}</td>
-                                <td class="apColDate">${i.regDate}</td>
-                            </tr>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
             </tbody>
         </table>
     </div>
@@ -68,24 +74,24 @@
             </tr>
             </thead>
             <tbody>
-                <c:choose>
-                    <c:when test="${empty goingList}">
+            <c:choose>
+                <c:when test="${empty goingList}">
+                    <tr>
+                        <td colspan="5" class="emptyMessage">진행 중인 문서가 없습니다.</td>
+                    </tr>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="i" items="${goingList}">
                         <tr>
-                            <td colspan="5" class="emptyMessage">진행 중인 문서가 없습니다.</td>
+                            <td class="apColStar">★</td>
+                            <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
+                            <td class="apColStatus">결재 진행중</td>
+                            <td class="apColWriter">${i.employeeId}</td>
+                            <td class="apColDate">${i.regDate}</td>
                         </tr>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="i" items="${goingList}">
-                            <tr>
-                                <td class="apColStar">★</td>
-                                <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
-                                <td class="apColStatus">${i.state}</td>
-                                <td class="apColWriter">${i.employeeId}</td>
-                                <td class="apColDate">${i.regDate}</td>
-                            </tr>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
             </tbody>
         </table>
     </div>
@@ -106,24 +112,24 @@
             </tr>
             </thead>
             <tbody>
-                <c:choose>
-                    <c:when test="${empty completedList}">
+            <c:choose>
+                <c:when test="${empty completedList}">
+                    <tr>
+                        <td colspan="5" class="emptyMessage">완료된 문서가 없습니다.</td>
+                    </tr>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="i" items="${completedList}">
                         <tr>
-                            <td colspan="5" class="emptyMessage">완료된 문서가 없습니다.</td>
+                            <td class="apColStar">★</td>
+                            <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
+                            <td class="apColStatus">결재 완료</td>
+                            <td class="apColWriter">${i.employeeName}</td>
+                            <td class="apColDate">${i.regDate}</td>
                         </tr>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="i" items="${completedList}">
-                            <tr>
-                                <td class="apColStar">★</td>
-                                <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
-                                <td class="apColStatus">${i.state}</td>
-                                <td class="apColWriter">${i.employeeId}</td>
-                                <td class="apColDate">${i.regDate}</td>
-                            </tr>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
             </tbody>
         </table>
     </div>
@@ -132,9 +138,15 @@
     <button class="btnChat"> 채팅</button>
 </div>
 <script>
-    $(".apBtnNewDoc").on("click", function () {
-        window.open("/approval/write", "width=400,height=600");
+    $(".apBtnNewDoc").on("change", function () {
+        let selectDoc= $(this).val();
+
+            if (selectDoc) {
+            let url = "/approval/write?" + selectDoc;
+            window.open(url, "new", "width=1000,height=1000");
+        }
     });
 </script>
-<jsp:include page="/WEB-INF/views/template/footer.jsp" />
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
 

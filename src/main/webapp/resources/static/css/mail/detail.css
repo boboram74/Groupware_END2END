@@ -135,25 +135,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    cursor: pointer;
+    align-items: flex-start;
     transition: background-color 0.2s;
 }
-.dragDropArea p {
-    margin: 3px 0;
-    text-align: center;
-    color: #666;
-    font-size: 0.9em;
-}
-.dragDropArea .upload-icon {
-    font-size: 30px;
-    color: #aaa;
-    margin-bottom: 3px;
-}
-.dragDropArea.active {
-    background-color: #f0f8ff;
-    border-color: #00bfff;
-}
+
 .fileSize {
     margin-left: 10px;
     color: #666;
@@ -181,4 +166,30 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+    color: inherit;
+    background-color: transparent;
+}
+.fileItem {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.fileItem .material-icons {
+    margin-right: 5px;
+}
+
+.fileItem .fileSize {
+    margin-left: 8px;
+    color: #888;
+    font-size: 0.9em;
 }

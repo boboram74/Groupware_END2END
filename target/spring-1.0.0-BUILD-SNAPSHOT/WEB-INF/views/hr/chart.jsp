@@ -5,28 +5,31 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
-            <h2><span class="material-icons">mail</span>직원관리 DashBoard</h2>
+            <h2><span class="material-icons">insert_chart</span>직원관리 DashBoard</h2>
         </div>
         <div class="mainBody">
-            <div class="chartUp">
-                <div class="chartLeft">
-                    <canvas id="totalEmployeesChart"></canvas>
+            <div class="chartRow">
+                <div class="chart1">
+                    <canvas id="chart1"></canvas>
                 </div>
-                <div class="chartRight">
-                    <canvas id="employeeChangeChart"></canvas>
-                </div>
-            </div>
-            <div class="chartDown">
-                <div class="chartLeft">
-                    <canvas id="departmentChart"></canvas>
-                </div>
-                <div class="chartRight">
-                    <canvas id="attendanceChart"></canvas>
+                <div class="chart2">
+                    <canvas id="chart2"></canvas>
                 </div>
             </div>
+
+            <div class="chartRow">
+                <div class="chart3">
+                    <canvas id="chart3"></canvas>
+                </div>
+                <div class="chart4">
+                    <canvas id="chart4"></canvas>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

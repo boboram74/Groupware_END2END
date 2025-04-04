@@ -3,6 +3,7 @@ package com.end2end.spring.employee.serviceImpl;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.*;
 import com.end2end.spring.employee.service.EmployeeService;
+import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,12 @@ import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+
     @Autowired
     private EmployeeDAO employeeDAO;
-    //@Autowired private MailDAO mailDAO;
+
+    @Autowired
+    private MailDAO mailDAO;
 
     @Override
     public EmployeeDTO selectById(String id) {
@@ -30,7 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDTO login(LoginDTO dto) {
+    public EmployeeDTO  login(LoginDTO dto) {
         String password = SecurityUtil.hashPassword(dto.getPassword());
         dto.setPassword(password);
 
@@ -66,6 +70,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // email_addreses 사원의 이메일을 추가
 
+
+    }
+
+    @Override
+    public boolean idVali(String loginId){
+        return employeeDAO.idVali(loginId);
     }
 
     @Override

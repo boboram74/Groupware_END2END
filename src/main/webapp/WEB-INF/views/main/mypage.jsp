@@ -12,6 +12,7 @@
         </div>
     </div>
     <div class="mainBody">
+        <form id="addressForm" action="/hr/update" method="post">
             <div class="content">
                 <div class="hrProfile">
                     <img src="${employeeDetail.profileImg}" alt="프로필 이미지">
@@ -23,13 +24,19 @@
                 <div class="department">부서 : ${employeeDetail.departmentName}</div>
                 <div class="email">이메일 : ${employeeDetail.email}</div>
                 <div class="postCode">우편번호 : ${employeeDetail.postCode}</div>
-                <div class="address">주소 : ${employeeDetail.address}</div>
-                <div class="detailAddress">상세주소 : ${employeeDetail.detailAddress}</div>
+                <div class="address">주소 : ${employeeDetail.address}
+                    <input type="text" id="addressInput" name="address" value="${employeeDetail.address}" style="display:none;" />
+                </div>
+                <div class="detailAddress">상세주소 : ${employeeDetail.detailAddress}
+                    <input type="text" id="detailAddressInput" name="detailAddress" value="${employeeDetail.detailAddress}" style="display:none;" />
+                </div>
             </div>
         <div class="btn">
             <button id="EditBtn">수정하기</button>
+            <button type="submit" id="SaveBtn" style="display:none;">저장하기</button>
             <button id="backBtn">돌아가기</button>
         </div>
+        </form>
     </div>
 </div>
 

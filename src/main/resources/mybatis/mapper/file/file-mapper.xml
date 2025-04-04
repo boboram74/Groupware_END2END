@@ -23,6 +23,14 @@
         SELECT * FROM FILE_DETAIL WHERE id = ${id}
     </select>
 
+    <select id="selectByEmail" resultType="com.end2end.spring.file.dto.FileDetailDTO">
+        select file_detail.*
+        from files f
+        join file_detail
+        on f.id = file_detail.filesId
+        where f.emailId = #{value}
+    </select>
+
     <insert id="insert">
         INSERT INTO FILES(id, ${column}) VALUES (FILES_ID_SEQ.NEXTVAL,
         <choose>

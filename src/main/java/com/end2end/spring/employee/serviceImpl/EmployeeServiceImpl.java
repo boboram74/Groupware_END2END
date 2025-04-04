@@ -74,6 +74,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public boolean idVali(String loginId){
+        return employeeDAO.idVali(loginId);
+    }
+
+    @Override
     public void update(EmployeeDetailDTO dto) {
         // TODO: 사원 수정
     }

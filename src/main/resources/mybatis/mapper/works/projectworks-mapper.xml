@@ -22,8 +22,8 @@
     <!-- 프로젝트추가 -->
 
     <insert id="insertProjectUser" parameterType="ProjectUserDTO">
-        INSERT INTO PROJECT_USER (projectId, employeeId)
-        VALUES (#{projectId}, #{employeeId})
+        INSERT INTO PROJECT_USER (employeeId)
+        VALUES (#{employeeId})where #{projectId}
     </insert>
     <!-- 프로젝트인원추가 -->
 

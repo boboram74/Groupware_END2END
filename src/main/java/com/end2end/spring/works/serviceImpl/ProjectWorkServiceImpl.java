@@ -1,15 +1,19 @@
 package com.end2end.spring.works.serviceImpl;
 
 import com.end2end.spring.board.dto.BoardCategoryDTO;
+import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.works.dao.ProjectWorkDAO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ProjectWorkServiceImpl implements ProjectWorkService {
-
+    @Autowired
+    ProjectWorkDAO dao;
 
     @Override
     public List<ProjectWorkDTO> selectAll() {
@@ -23,6 +27,8 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
 
     @Override
     public void insert(ProjectWorkDTO dto) {
+       //게시물 등록
+        dao.insert(dto);
 
     }
 

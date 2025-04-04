@@ -15,4 +15,5 @@ public class ProjectDTO {
     private String name;
     private String hideYn;
     private Timestamp regDate;
+    private Timestamp deadLine;
 }

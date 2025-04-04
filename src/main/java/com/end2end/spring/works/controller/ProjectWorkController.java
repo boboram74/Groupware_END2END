@@ -1,16 +1,29 @@
 package com.end2end.spring.works.controller;
 
 
+import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.dto.FileDetailDTO;
+import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
+import com.end2end.spring.works.service.ProjectWorkService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/work")
 @Controller
 public class ProjectWorkController {
+
+    @Autowired
+    FileService fserv;
+
+    @Autowired
+    ProjectWorkService wserv;
+
     @RequestMapping("/list")
     public String toList(Model model) {
         // TODO:모든게시물 리스트에 표시
@@ -24,7 +37,7 @@ public class ProjectWorkController {
     }
 
     @RequestMapping("/write")
-    public String toWrite(Model model) {
+    public String toWrite() {
         // TODO: 게시글 입력 폼으로 이동
         return "/works/write";
     }
@@ -43,8 +56,14 @@ public class ProjectWorkController {
 
 
     @RequestMapping("/insert")
-    public void insert(ProjectWorkDTO dto) {
-        // TODO: 게시글 입력을 받음
+    public void insert(ProjectWorkDTO wdto, FileDTO dto, MultipartFile[] files){
+    wserv.insert(wdto);
+        try {
+            fserv.insert(files, dto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        // TODO: 게시글 등록
     }
 
     @RequestMapping("/update")

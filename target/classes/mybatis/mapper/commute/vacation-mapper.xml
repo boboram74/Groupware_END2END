@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vacation">
+    <insert id="insert">
+
+    </insert>
+
+    <select id="selectCurrentVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">
+        SELECT *
+        FROM VACATION
+        WHERE
+            startDate + NUMTODSINTERVAL(vacationDate, 'DAY') > SYSDATE
+        AND
+            employeeId in
+        <foreach collection="list" item="employeeId" open="(" separator="," close=")">
+            #{employeeId}
+        </foreach>
+    </select>
+</mapper>

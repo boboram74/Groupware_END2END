@@ -37,8 +37,10 @@
                 <thead>
                 <tr>
                     <th style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox" id="checkAll"></th>
+                    <th style="width: 5%">중요</th>
                     <th style="width: 20%">보낸사람</th>
-                    <th style="width: 65%">제목</th>
+                    <th style="width: 5%"></th>
+                    <th style="width: 55%">제목</th>
                     <th style="width: 10%">발송 일자</th>
                 </tr>
                 </thead>

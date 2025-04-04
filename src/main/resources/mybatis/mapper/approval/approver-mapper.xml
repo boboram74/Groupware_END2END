@@ -7,4 +7,8 @@
         INSERT INTO approver (ID,approvalId, employeeId, orders) VALUES (APPROVER_ID_SEQ.NEXTVAL, #{approvalId}, #{employeeId}, #{orders})
     </select>
 
+    <select id="nextId" resultType="com.end2end.spring.approval.dto.ApproverDTO">
+        SELECT employeeId FROM approver WHERE approvalId = #{approvalId} AND submitYn = 'N' ORDER BY orders
+    </select>
+
 </mapper>

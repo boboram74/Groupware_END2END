@@ -4,9 +4,11 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="soldering">
     <insert id="insert" parameterType="java.util.List">
-        INSERT ALL INTO SOLDERING(solderingId, employeeId) VALUES
-        <foreach collection="list" item="dto" separator=",">
-            (SOLDERING_ID_SEQ.NEXTVAL, #{dto.employeeId})
+        INSERT INTO SOLDERING(id, employeeId, state)
+        SELECT SOLDERING_ID_SEQ.NEXTVAL, A.* FROM (
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT #{item.employeeId}, #{item.state} FROM DUAL
         </foreach>
+        ) A
     </insert>
 </mapper>

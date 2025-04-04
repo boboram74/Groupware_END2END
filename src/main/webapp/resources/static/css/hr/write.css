@@ -44,10 +44,10 @@
     justify-content: end;
     gap: 10px;
 }
-.id input,.pw input,.repw input{
+.loginId input,.pw input,.repw input{
     width: 40vw;
 }
-.address1 input,.address2 input{
+.address input,.detailAddress input{
     width: 30vw;
 }
 .hrProfile {

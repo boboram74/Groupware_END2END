@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -12,11 +13,6 @@ import java.sql.Timestamp;
 public class SolderingDTO {
     private int id;
     private String employeeId;
-    private Timestamp regDate;
-
-    public static SolderingDTO of(CommuteDTO dto) {
-        return SolderingDTO.builder()
-                .employeeId(dto.getEmployeeId())
-                .build();
-    }
+    private String state;
+    private LocalDateTime regDate;
 }

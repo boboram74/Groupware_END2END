@@ -24,9 +24,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDetailDTO selectDetailById(String id) {
-        // TODO: 해당 id의 상세 사원 데이터 출력
-        return null;
+    public EmployeeDetailDTO selectDetailById(String employeeId) {
+        // TODO: 해당 id의 사원 상세정보 조회
+        return employeeDAO.selectDetailById(employeeId);
     }
 
     @Override

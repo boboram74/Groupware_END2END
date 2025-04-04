@@ -200,7 +200,6 @@
     .boxContents {
       flex: 1;
       padding: 20px;
-      background-color: #f8f9fa;
       margin-top: 50px;
     }
 

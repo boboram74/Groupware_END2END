@@ -24,10 +24,13 @@ public class ApprovalController {
     public ApprovalService approvalService;
 
     @RequestMapping("/list")
-    public String toList(Model model) {
-        List<ApprovalDTO> waitingList = approvalService.selectByState("대기중");
-        List<ApprovalDTO> goingList = approvalService.selectByState("진행중");
-        List<ApprovalDTO> completedList = approvalService.selectByState("완료");
+    public String toList(HttpSession session, Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        String employeeId = employee.getId();
+
+        List<ApprovalDTO> waitingList = approvalService.selectByState("ONGOING",employeeId);
+        List<ApprovalDTO> goingList = approvalService.selectByState("ONGOING",employeeId);
+        List<ApprovalDTO> completedList = approvalService.selectByState("SUBMIT",employeeId);
 
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);

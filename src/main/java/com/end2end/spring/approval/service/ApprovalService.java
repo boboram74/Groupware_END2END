@@ -11,8 +11,10 @@ public interface ApprovalService {
     List<ApprovalDTO> selectAll();
 
 
-    List<ApprovalDTO> selectByEmployeeId(String employeeId);
+    List<ApprovalDTO> selectAll(String state);
 
+    List<ApprovalDTO> selectByEmployeeId(String employeeId);
+     List<ApprovalDTO> myList(String state);
     List<ApprovalDTO> search();
     List<ApprovalDTO> search(String employeeId);
     List<ApprovalDTO> selectByState(String state);

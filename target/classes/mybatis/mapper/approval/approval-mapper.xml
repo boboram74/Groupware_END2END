@@ -5,7 +5,11 @@
 <mapper namespace="approval">
 
     <select id="toList" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
-        SELECT * FROM approval ORDER BY regDate DESC
+        SELECT * FROM approval WHERE state = #{state} ORDER BY regDate DESC
+    </select>
+
+    <select id="selectByStateAndEmployeeId" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
+        SELECT * FROM approval WHERE state = #{state} AND EmployeeId = #{employeeId} ORDER BY regDate DESC
     </select>
 
     <insert id="insert">

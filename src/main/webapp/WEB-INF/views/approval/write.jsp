@@ -124,8 +124,9 @@
             approvalList.forEach(employee => {
 
                 if ($('#lineBox').find(`#${employee.name}`).length === 0) {
-                    console.log(employee.name);
                     const div = makeEmployee(employee);
+                    div.append($('<input>').attr('type', 'hidden').attr('name', 'approverId').val(employee.id))
+
                     lineBox.append(div);
                 }
             });
@@ -194,13 +195,21 @@
                             $('#employees').append(div);
                         });
                     }
+                },
+                error : function(request, status, error) {
+                    console.log("code: " + request.status)
+                    console.log("message: " + request.responseText)
+                    console.log("error: " + error);
                 }
             });
         }
         function makeEmployee(employee){
             const div = $('<div>').addClass("employee").attr('draggable', true).attr('id', employee.id);
             div.append($("<span>").addClass("jobName").html(employee.jobName));
-            $("<span>").html(":")
+            console.log(employee.id);
+            console.log(employee.jobName);
+
+            $("<span>").html(" : ")
             div.append($("<span>").addClass("name").html(employee.name));
 
             div.on('dragstart', function(event) {
@@ -217,6 +226,9 @@
             const formData = new FormData(document.getElementById('form'));
             formData.append('content', $('#contents').summernote('code'));
 
+            approvalList.forEach((employee, index) => {
+                formData.append('approverIds[${index}]', employee.id);
+            });
             $.ajax({
                 url: '/approval/insert',
                 method: 'POST',
@@ -227,6 +239,7 @@
                     console.log("code: " + request.status)
                     console.log("message: " + request.responseText)
                     console.log("error: " + error);
+
                 }
             }).done(function(resp) {
                 console.log('전송됨');

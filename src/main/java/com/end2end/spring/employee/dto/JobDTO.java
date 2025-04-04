@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class JobDTO {
     private int id;
-    private String name;
+    private String jobName;
 }

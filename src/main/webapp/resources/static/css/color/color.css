@@ -1,0 +1,132 @@
+@import 'light.css';
+@import 'light-hc.css';
+@import 'light-mc.css';
+@import 'dark.css';
+@import 'dark-hc.css';
+@import 'dark-mc.css';
+/* color.css */
+
+/* Primary Group */
+.primary {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}
+
+.primary-container {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+/* Secondary Group */
+.secondary {
+    background-color: var(--md-sys-color-secondary);
+    color: var(--md-sys-color-on-secondary);
+}
+
+.secondary-container {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Tertiary Group */
+.tertiary {
+    background-color: var(--md-sys-color-tertiary);
+    color: var(--md-sys-color-on-tertiary);
+}
+
+.tertiary-container {
+    background-color: var(--md-sys-color-tertiary-container);
+    color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* Error Group */
+.error {
+    background-color: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
+}
+
+.error-container {
+    background-color: var(--md-sys-color-error-container);
+    color: var(--md-sys-color-on-error-container);
+}
+
+/* Surface Group */
+.surface {
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+}
+
+.surface-variant {
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Background Group */
+.background {
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+}
+
+/* Surface Container Groups */
+.surface-container-lowest {
+    background-color: var(--md-sys-color-surface-container-lowest);
+    color: var(--md-sys-color-on-surface);
+}
+
+.surface-container-low {
+    background-color: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-on-surface);
+}
+
+.surface-container {
+    background-color: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+}
+
+.surface-container-high {
+    background-color: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface);
+}
+
+.surface-container-highest {
+    background-color: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
+}
+
+/* Inverse Group */
+.inverse-surface {
+    background-color: var(--md-sys-color-inverse-surface);
+    color: var(--md-sys-color-inverse-on-surface);
+}
+
+/* Fixed Groups */
+.primary-fixed {
+    background-color: var(--md-sys-color-primary-fixed);
+    color: var(--md-sys-color-on-primary-fixed);
+}
+
+.primary-fixed-dim {
+    background-color: var(--md-sys-color-primary-fixed-dim);
+    color: var(--md-sys-color-on-primary-fixed);
+}
+
+/* Background-only classes */
+.bg-primary { background-color: var(--md-sys-color-primary); }
+.bg-secondary { background-color: var(--md-sys-color-secondary); }
+.bg-tertiary { background-color: var(--md-sys-color-tertiary); }
+.bg-error { background-color: var(--md-sys-color-error); }
+
+/* Text-only classes */
+.text-primary { color: var(--md-sys-color-on-primary); }
+.text-secondary { color: var(--md-sys-color-on-secondary); }
+.text-tertiary { color: var(--md-sys-color-on-tertiary); }
+.text-error { color: var(--md-sys-color-on-error); }
+
+/* Border utilities */
+.border-outline {
+    border: 1px solid var(--md-sys-color-outline);
+}
+
+.border-outline-variant {
+    border: 1px solid var(--md-sys-color-outline-variant);
+}

@@ -355,6 +355,29 @@
         <div class="content">
             출력 공간(높이 주지말고 컨텐츠 내용에 따라 유동적으로 증가하게 두세요)
         </div>
+        <!-- 배경색과 텍스트 색상이 함께 적용됨 -->
+        <div class="primary">
+            Primary Button
+        </div>
+
+        <div class="secondary-container">
+            Secondary Container Content
+        </div>
+
+        <!-- 배경색만 필요한 경우 -->
+        <div class="bg-primary">
+            Custom Text Color Needed
+        </div>
+
+        <!-- 텍스트 색상만 필요한 경우 -->
+        <div class="text-primary">
+            Custom Background Needed
+        </div>
+
+        <!-- 테두리가 필요한 경우 -->
+        <div class="border-outline">
+            Outlined Content
+        </div>
         <div class="pageNavi">
             1123
         </div>

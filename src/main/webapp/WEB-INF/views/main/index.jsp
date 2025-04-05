@@ -5,20 +5,36 @@
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+                left: 'title',
+                right: 'prev,next',
+            },
             initialView: 'dayGridMonth',
-            width:350,
-            height: 400,
-            aspectRatio: 1,
-            expandRows: true
+            height: 'auto',
+            aspectRatio: 1.2,
+            dayCellDidMount: function(info) {
+                // 각 날짜 셀이 마운트될 때 스타일 적용
+                info.el.style.aspectRatio = '1';
+                info.el.style.height = 'auto';
+            },
+            dayMaxEvents: 1, // 이벤트 수 제한
+            fixedWeekCount: false
         });
         calendar.render();
+    });
+
+    calendar.setOption('height', calendar.getEl().offsetWidth * 0.8); // 너비의 80% 높이로 설정
+
+    // 창 크기 변경 시 자동 조절
+    window.addEventListener('resize', function() {
+        calendar.setOption('height', calendar.getEl().offsetWidth * 0.8);
     });
 </script>
 <style>
     .boxContents {
         display: grid;
-        grid-template-columns: 2fr 5.5fr 2.5fr; /* 3:5:2 비율 설정 */
-        max-width: 1850px; /* 최대 너비 설정 */
+        grid-template-columns: 2fr 10fr 2.5fr; /* 3:5:2 비율 설정 */
+        max-width: 2100px; /* 최대 너비 설정 */
         margin: 50px auto 0;
         gap: 30px;
         padding: 35px;
@@ -41,11 +57,8 @@
     }
 
 
-    .calenderBox {
-        grid-row: span 8;
-        background-color: white;
-        border-radius: 10px;
-    }
+
+
 
     /* 중앙 영역 */
     .centerContents {
@@ -60,17 +73,21 @@
         border-radius: 10px;
     }
 
-    .v {
+    .approvalBox {
         grid-row: span 4;
         background-color: white;
         border-radius: 10px;
     }
-
     /* 우측 영역 */
     .rightContents {
         display: grid;
         grid-template-rows: repeat(24, 1fr);
         gap: 20px;
+    }
+
+    .birth-container {
+        width: 100%;
+        grid-row: span 9;
     }
 
     .btnBox {
@@ -286,10 +303,62 @@
         transform: translateY(0);
     }
 
-    #calendar {
-        max-width: 350px;
-        max-height: 400px;
+    .calendarBox {
+        grid-row: span 7; /* 기존 값에서 5로 조정 */
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
     }
+
+    #calendar {
+        max-height: 100px; /* 최대 높이 제한 */
+    }
+
+    /* FullCalendar 내부 요소들 크기 조절 */
+    .fc {
+        font-size: 0.9em; /* 전체 폰트 크기 조절 */
+    }
+
+    .fc .fc-toolbar {
+        padding: 0.5rem; /* 툴바 패딩 조절 */
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1.2em; /* 달력 제목 크기 */
+    }
+
+    .fc .fc-button {
+        padding: 0.3em 0.6em;
+        font-size: 0.8em;
+    }
+    .fc .fc-day-header {
+        padding: 0.3em 0; /* 요일 헤더 높이 조절 */
+    }
+
+    .fc .fc-daygrid-day {
+        min-height: 50px; /* 날짜 칸 최소 높이 */
+    }
+
+    .fc .fc-daygrid-day {
+        aspect-ratio: 1; /* 1:1 비율 설정 */
+        height: auto !important;
+    }
+
+    .fc-daygrid-day-frame {
+        height: 100% !important;
+        min-height: unset !important; /* 기본 최소 높이 제거 */
+    }
+
+    /* 날짜 숫자 크기 조절 */
+    .fc .fc-daygrid-day-number {
+        font-size: 0.9em;
+        padding: 4px;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1em;
+    }
+
 
     .material-icons {
         font-size: 20px;
@@ -299,8 +368,224 @@
         font-size: 14px;
     }
 
+    /* 게시판 컨테이너 스타일 */
+    .board-container {
+        padding: 20px;
+    }
+
+    /* 게시판 타입 버튼 스타일 */
+    .board-type-buttons {
+        display: flex;
+        gap: 0;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #eee; /* 하단 경계선 추가 */
+    }
+
+    .board-type-btn {
+        padding: 15px 30px; /* 패딩 증가로 버튼 크기 증가 */
+        border: none;
+        border-top: 2px solid #eee; /* 기본 하단 경계선 */
+        border-radius: 0; /* 모서리 둥글기 제거 */
+        background: none;
+        cursor: pointer;
+        font-size: 15px;
+        color: #666;
+        position: relative;
+        transition: all 0.2s;
+        min-width: 120px; /* 최소 너비 설정 */
+        text-align: center;
+    }
+
+    /* hover 효과 - active와 동일한 스타일 적용 */
+    .board-type-btn:hover {
+        background: white;
+        color: #003465;
+        font-weight: 600;
+        border-top: 2px solid #003465;
+        border-bottom: 2px solid white;
+        margin-bottom: -2px;
+    }
+
+    /* active 상태 */
+    .board-type-btn.active {
+        background: white;
+        color: #003465;
+        font-weight: 600;
+        border-top: 2px solid #003465;
+        margin-bottom: -2px;
+    }
+
+    /* category-list-container 스타일 */
+    .category-list-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* 카테고리 목록 스타일 */
+    .category-list {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .category-btn {
+        padding: 6px 16px;
+        border: none; /* 테두리 제거 */
+        background: none; /* 배경 제거 */
+        cursor: pointer;
+        font-size: 13px;
+        color: #666; /* 기본 글자색 */
+        transition: all 0.2s;
+    }
+
+    .category-btn.active {
+        background: none; /* 활성화 상태에서도 배경 없음 */
+        color: #003465; /* 활성화 상태일 때 글자색 변경 */
+        font-weight: 600; /* 활성화 상태일 때 글자 굵기 증가 */
+    }
+
+    .category-btn:hover {
+        background: none;
+        color: #003465;
+    }
+
+    /* 더보기 버튼 스타일 */
+    .more-btn {
+        font-size: 14px;
+        color: #666;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        padding: 6px 12px;
+        transition: all 0.2s;
+    }
+
+    .more-btn:hover {
+        color: #003465;
+    }
+
+    /* 게시판 테이블 스타일 */
+    .board-table-container {
+        overflow-x: auto;
+    }
+
+    .board-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .board-table th {
+        background: #f8f9fa;
+        padding: 12px;
+        font-weight: 600;
+        text-align: center;
+        border-top: 2px solid #003465;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .board-table td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .board-table td.title {
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .board-table td.title:hover {
+        text-decoration: underline;
+        color: #003465;
+    }
+
+    /* 테이블 행 호버 효과 */
+    .board-table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* 기존 스타일에 추가 */
+    .writer-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .profile-img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border: 1px solid #eee;
+    }
+
+    .birthBox {
+        background-color: white;
+        border-radius: 10px;
+        height: fit-content;
+    }
+
+    .birth-list {
+        padding: 20px;
+    }
+
+    .birth-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .birth-item:last-child {
+        border-bottom: none;
+    }
+
+    .birth-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .birth-profile .profile-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .birth-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .birth-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .birth-dept {
+        font-size: 13px;
+        color: #666;
+    }
+
+    .birth-date {
+        font-size: 14px;
+        color: #003465;
+        font-weight: 500;
+    }
+
     /* 반응형을 위한 미디어 쿼리 추가 */
-    @media screen and (max-width: 1740px) { /* 1700px + 좌우 패딩 고려 */
+    @media screen and (max-width: 2140px) { /* 1700px + 좌우 패딩 고려 */
         .boxContents {
             padding: 20px;
         }
@@ -360,22 +645,98 @@
                 <button class="endWork">퇴근하기</button>
             </div>
         </div>
-        <div class="calenderBox" id='calendar'>캘린더</div>
+        <div class="calendarBox">
+            <div class="boxTitle">일정</div>
+            <div id="calendar"></div>
+        </div>
     </div>
 
     <div class="centerContents">
-        <div class="boardBox">게시판 목록
-            <div class="boardlist">
-                <h3>최근 게시물 들어올 자리 !</h3>
-                <table>
-                    <thead>
-                    <tr id="title"></tr>
-                    </thead>
-                    <tbody id="latestboard"></tbody>
-                </table>
+
+        <div class="boardBox">
+            <div class="boxTitle">게시글 목록</div>
+            <div class="board-container">
+                <!-- 게시판 타입 버튼 -->
+                <div class="board-type-buttons">
+                    <button class="board-type-btn active">공지 게시판</button>
+                    <button class="board-type-btn">전사 게시판</button>
+                    <button class="board-type-btn">그룹 게시판</button>
+                </div>
+
+                <div class="category-list-container">
+                    <div class="category-list">
+                        <button class="category-btn active">전체</button>
+                        <button class="category-btn">인사</button>
+                        <button class="category-btn">회계</button>
+                        <button class="category-btn">영업</button>
+                        <button class="category-btn">마케팅</button>
+                        <button class="category-btn">개발</button>
+                        <button class="category-btn">기타</button>
+                    </div>
+
+                    <a href="/board/list" class="more-btn">
+                        더보기 <span class="material-icons" style="font-size: 16px; vertical-align: middle;">chevron_right</span>
+                    </a>
+                </div>
+
+                <!-- 게시글 테이블 -->
+                <div class="board-table-container">
+                    <table class="board-table">
+                        <thead>
+                        <tr>
+                            <th width="8%">번호</th>
+                            <th width="52%">제목</th>
+                            <th width="20%">글쓴이</th>
+                            <th width="20%">등록일자</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach begin="1" end="8" var="i">
+                            <tr>
+                                <td>${11 - i}</td> <!-- 10부터 1까지 역순으로 표시 -->
+                                <td class="title">샘플 게시글 제목입니다 ${11 - i}</td>
+                                <td class="writer-info">
+                                    <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
+                                    <span>작성자${i}</span>
+                                </td>
+                                <td>2024-03-19</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <div class="v">나의 결재 대기 문서함</div>
+        <div class="approvalBox">
+            <div class="boxTitle">나의 결재 대기 문서함</div>
+            <div class="board-container">
+                <div class="board-table-container">
+                    <table class="board-table">
+                        <thead>
+                        <tr>
+                            <th width="10%">기안 번호</th>
+                            <th width="50%">제목</th>
+                            <th width="20%">기안자</th>
+                            <th width="20%">등록 일자</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach begin="1" end="4" var="i">
+                            <tr>
+                                <td>문서-${5 - i}</td>
+                                <td class="title">결재 문서 제목입니다 ${5 - i}</td>
+                                <td class="writer-info">
+                                    <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
+                                    <span>기안자${i}</span>
+                                </td>
+                                <td>2024-03-19</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="rightContents">
@@ -397,7 +758,25 @@
                 <span class="btn-text">보고서 작성</span>
             </button>
         </div>
-        <div class="birthBox">생일</div>
+        <div class="birth-container">
+        <div class="birthBox">
+            <div class="boxTitle">이달의 생일</div>
+            <div class="birth-list">
+                <c:forEach begin="1" end="5" var="i">
+                    <div class="birth-item">
+                        <div class="birth-profile">
+                            <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
+                            <div class="birth-info">
+                                <div class="birth-name">홍길동${i}</div>
+                                <div class="birth-dept">개발팀</div>
+                            </div>
+                        </div>
+                        <div class="birth-date">3월 ${i+20}일</div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+        </div>
     </div>
 <script>
     $(document).ready(function() {
@@ -443,6 +822,20 @@
         $('.endWork').click(function() {
             // 퇴근 버튼 클릭 시 동작
             console.log('퇴근');
+        });
+
+        $('.board-type-btn').click(function() {
+            // 모든 버튼에서 active 클래스 제거
+            $('.board-type-btn').removeClass('active');
+            // 클릭된 버튼에만 active 클래스 추가
+            $(this).addClass('active');
+        });
+
+        $('.category-btn').click(function() {
+            // 모든 버튼에서 active 클래스 제거
+            $('.category-btn').removeClass('active');
+            // 클릭된 버튼에만 active 클래스 추가
+            $(this).addClass('active');
         });
     });
 </script>

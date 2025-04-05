@@ -5,6 +5,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'ko',
             headerToolbar: {
                 left: 'title',
                 right: 'prev,next',
@@ -33,10 +34,10 @@
 <style>
     .boxContents {
         display: grid;
-        grid-template-columns: 2fr 10fr 2.5fr; /* 3:5:2 비율 설정 */
+        grid-template-columns: 2.5fr 10fr 2.5fr; /* 3:5:2 비율 설정 */
         max-width: 2100px; /* 최대 너비 설정 */
         margin: 50px auto 0;
-        gap: 30px;
+        gap: 20px;
         padding: 35px;
     }
     /* 좌측 영역 */
@@ -55,10 +56,6 @@
         flex-direction: column;
         overflow: hidden;
     }
-
-
-
-
 
     /* 중앙 영역 */
     .centerContents {
@@ -83,11 +80,6 @@
         display: grid;
         grid-template-rows: repeat(24, 1fr);
         gap: 20px;
-    }
-
-    .birth-container {
-        width: 100%;
-        grid-row: span 9;
     }
 
     .btnBox {
@@ -123,12 +115,6 @@
         background: #003465;
         color: white;
         transform: translateY(-1px);
-    }
-
-    .birthBox {
-        grid-row: span 9;
-        background-color: white;
-        border-radius: 10px;
     }
 
     /* imgBox 수정 */
@@ -204,14 +190,14 @@
         align-items: center;
         justify-content: space-between; /* 양끝 정렬 */
         padding: 5px 0;
-        font-size: 22px;
+        font-size: 18px;
         color: #666;
         margin-left: 20px;
         margin-right: 20px;
     }
 
     .summary-item .material-icons {
-        font-size: 22px;
+        font-size: 18px;
         color: #003465;
     }
 
@@ -224,7 +210,7 @@
     .summary-count {
         color: #003465; /* 배경 제거하고 텍스트 색상만 변경 */
         font-weight: 600;
-        font-size: 22px;
+        font-size: 18px;
     }
 
     .boxTitle {
@@ -307,11 +293,11 @@
         grid-row: span 7; /* 기존 값에서 5로 조정 */
         background-color: white;
         border-radius: 10px;
-        padding: 20px;
     }
 
     #calendar {
         max-height: 100px; /* 최대 높이 제한 */
+        padding: 10px;
     }
 
     /* FullCalendar 내부 요소들 크기 조절 */
@@ -529,13 +515,19 @@
     }
 
     .birthBox {
+        grid-row: span 6;
         background-color: white;
         border-radius: 10px;
-        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* 그리드 셀의 전체 높이 사용 */
     }
 
     .birth-list {
         padding: 20px;
+        overflow-y: auto;
+        height: calc(100% - 53px); /* boxTitle 높이를 뺀 나머지 전체 */
+        min-height: 0; /* 스크롤 동작을 위해 필요 */
     }
 
     .birth-item {
@@ -758,11 +750,11 @@
                 <span class="btn-text">보고서 작성</span>
             </button>
         </div>
-        <div class="birth-container">
+
         <div class="birthBox">
             <div class="boxTitle">이달의 생일</div>
             <div class="birth-list">
-                <c:forEach begin="1" end="5" var="i">
+                <c:forEach begin="1" end="3" var="i">
                     <div class="birth-item">
                         <div class="birth-profile">
                             <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
@@ -775,7 +767,6 @@
                     </div>
                 </c:forEach>
             </div>
-        </div>
         </div>
     </div>
 <script>

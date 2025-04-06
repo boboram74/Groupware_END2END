@@ -24,19 +24,28 @@
         border-radius: 8px;
     }
 
+    .box {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* 전체 높이 사용 */
+    }
+
     .box-title {
         padding: 15px;
         font-size: 20px;
         font-weight: 600;
         border-bottom: 1px solid var(--md-sys-color-outline);
+        flex-shrink: 0; /* 크기 고정 */
     }
 
     .box-content {
+        flex: 1; /* 남은 공간 모두 사용 */
         padding: 20px;
+        display: flex; /* flex 컨테이너로 설정 */
+        flex-direction: column; /* 세로 방향 정렬 */
     }
 
     .work-time-box {
-        gap: 24px;
         border-radius: 8px;
     }
 
@@ -140,16 +149,179 @@
         border-radius: 8px;
     }
 
+    .vacation-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        position: relative;
+        height: 100%; /* box-content의 전체 높이 사용 */
+        flex: 1; /* 남은 공간 모두 사용 */
+    }
+
+    .vacation-grid::after,
+    .vacation-grid::before {
+        content: '';
+        position: absolute;
+        top: 10%;
+        height: 80%;
+        width: 1px;
+        background-color: var(--md-sys-color-outline-variant);
+    }
+
+    .vacation-grid::before {
+        left: 25%;
+    }
+
+    .vacation-grid::after {
+        left: 50%;
+    }
+
+    .vacation-grid::after:last-child {
+        left: 75%;
+    }
+
+    .vacation-item {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 15px 10px;
+    }
+
+    .vacation-item h4 {
+        font-size: 14px;
+        color: var(--md-sys-color-on-surface-variant);
+        margin: 0;
+        text-align: center;
+        padding-top: 20px; /* 상단 여백 추가 */
+    }
+
+    .vacation-display {
+        flex: 1; /* 남은 공간 모두 사용 */
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .vacation-unit {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 32px; /* 크기 증가 */
+        font-weight: 600;
+        min-width: 80px; /* 너비 증가 */
+        min-height: 60px; /* 높이 지정 */
+        padding: 8px 12px; /* 패딩 증가 */
+        background: var(--md-sys-color-surface-container-high);
+        border-radius: 4px;
+        justify-content: center; /* 세로 중앙 정렬 */
+    }
+
+    .vacation-unit small {
+        font-size: 14px; /* 단위 텍스트 크기 증가 */
+        font-weight: normal;
+        color: var(--md-sys-color-secondary);
+    }
+
     /* 두 번째 컨테이너 스타일 */
-    .weekly-status-container {
+    .weekly-status-box {
         grid-row: span 3;
         border-radius: 8px;
     }
 
-    .work-summary {
+    .weekly-status-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 20px;
+        position: relative;
+        height: 100%;
+        flex: 1;
+    }
+
+    /* 구분선 */
+    .weekly-status-grid > div:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 10%;
+        height: 80%;
+        width: 1px;
+        background-color: var(--md-sys-color-outline-variant);
+        right: 0;
+    }
+
+    .status-item {
         display: flex;
-        gap: 24px;
-        margin-bottom: 20px;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 10px;
+        height: 100%;
+        position: relative;
+    }
+
+    .status-item h4 {
+        font-size: 14px;
+        color: var(--md-sys-color-on-surface-variant);
+        margin: 0;
+        text-align: center;
+        padding-top: 20px;
+    }
+
+    .status-display {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .status-unit {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 32px;
+        font-weight: 600;
+        min-width: 80px;
+        min-height: 60px;
+        padding: 8px 12px;
+        background: var(--md-sys-color-surface-container-high);
+        border-radius: 4px;
+        justify-content: center;
+    }
+
+    .status-unit small {
+        font-size: 14px;
+        font-weight: normal;
+        color: var(--md-sys-color-secondary);
+        margin-top: 4px;
+    }
+
+    /* 반응형을 위한 미디어 쿼리 */
+    @media (max-width: 1200px) {
+        .weekly-status-grid {
+            grid-template-columns: repeat(4, 1fr); /* 4열로 변경 */
+            grid-template-rows: auto auto; /* 2행으로 변경 */
+        }
+
+        /* 구분선 재조정 */
+        .weekly-status-grid > div:not(:last-child)::after {
+            content: '';
+            right: 0;
+        }
+
+        .weekly-status-grid > div:nth-child(4)::after {
+            display: none; /* 4번째 아이템 뒤의 구분선 제거 */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .weekly-status-grid {
+            grid-template-columns: repeat(2, 1fr); /* 2열로 변경 */
+            grid-template-rows: auto auto auto auto; /* 4행으로 변경 */
+        }
+
+        .status-unit {
+            font-size: 28px;
+            min-width: 70px;
+        }
     }
 
     /* 세 번째 컨테이너 스타일 */
@@ -224,14 +396,16 @@
         <!-- 1. 출퇴근 버튼 박스 -->
         <div class="commuteBox box surface-bright">
             <div class="box-title">출퇴근 관리</div>
-            <div class="timeDisplay">
-                <div class="currentDate"></div>
-                <div class="currentTime"></div>
-            </div>
-            <div class="commuteButtons">
-                <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
-                ${isWorkOn ? 'disabled' : ''}>출근하기</button>
-                <button class="endWork primary">퇴근하기</button>
+            <div class="box-content">
+                <div class="timeDisplay">
+                    <div class="currentDate"></div>
+                    <div class="currentTime"></div>
+                </div>
+                <div class="commuteButtons">
+                    <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
+                    ${isWorkOn ? 'disabled' : ''}>출근하기</button>
+                    <button class="endWork primary">퇴근하기</button>
+                </div>
             </div>
         </div>
 
@@ -330,18 +504,30 @@
         <div class="box vacation-status-box surface-bright">
             <div class="box-title">휴가 현황</div>
             <div class="box-content">
-                <div class="vacation-info">
+                <div class="vacation-grid">
                     <div class="vacation-item">
-                        <span>총 휴가</span>
-                        <strong>15일</strong>
+                        <h4>총 휴가일</h4>
+                        <div class="vacation-display">
+                            <span class="vacation-unit">0<small>일</small></span>
+                        </div>
                     </div>
                     <div class="vacation-item">
-                        <span>사용</span>
-                        <strong>5일</strong>
+                        <h4>총 사용일</h4>
+                        <div class="vacation-display">
+                            <span class="vacation-unit">0<small>일</small></span>
+                        </div>
                     </div>
                     <div class="vacation-item">
-                        <span>잔여</span>
-                        <strong>10일</strong>
+                        <h4>이번달 사용일</h4>
+                        <div class="vacation-display">
+                            <span class="vacation-unit">0<small>일</small></span>
+                        </div>
+                    </div>
+                    <div class="vacation-item">
+                        <h4>잔여 휴가</h4>
+                        <div class="vacation-display">
+                            <span class="vacation-unit">0<small>일</small></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -349,28 +535,54 @@
     </div>
 
     <!-- 두 번째 컨테이너: 주간 근무 현황 -->
-    <div class="weekly-status-container surface-bright">
-        <div class="box-title">이번 주 근무 현황</div>
-        <div class="status-content">
-            <div class="work-summary">
-                <div class="summary-item">
-                    <span class="material-icons">schedule</span>
-                    <div class="summary-text">
-                        <span>근무시간</span>
-                        <strong>40시간 20분</strong>
+    <div class="box weekly-status-box surface-bright">
+        <div class="box-title">주간 근무 현황</div>
+        <div class="box-content">
+            <div class="weekly-status-grid">
+                <div class="status-item">
+                    <h4>출근</h4>
+                    <div class="status-display">
+                        <span class="status-unit">5<small>일</small></span>
                     </div>
                 </div>
-                <div class="summary-item">
-                    <span class="material-icons">event_busy</span>
-                    <div class="summary-text">
-                        <span>휴가사용</span>
-                        <strong>1일</strong>
+                <div class="status-item">
+                    <h4>지각</h4>
+                    <div class="status-display">
+                        <span class="status-unit">0<small>회</small></span>
                     </div>
                 </div>
-            </div>
-
-            <div class="work-records">
-                <!-- 근무 기록 목록 -->
+                <div class="status-item">
+                    <h4>조퇴</h4>
+                    <div class="status-display">
+                        <span class="status-unit">0<small>회</small></span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <h4>결근</h4>
+                    <div class="status-display">
+                        <span class="status-unit">0<small>일</small></span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <h4>연장근무</h4>
+                    <div class="status-display">
+                        <span class="status-unit">0<small>일</small></span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <h4>이번주 근무시간</h4>
+                    <div class="status-display weekly-total">
+                        <span class="time-unit hour">00<small>HH</small></span>
+                        <span class="time-unit min">00<small>MM</small></span>
+                        <span class="time-unit sec">00<small>SS</small></span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <h4>출석률</h4>
+                    <div class="status-display">
+                        <span class="status-unit">100<small>%</small></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

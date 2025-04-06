@@ -11,4 +11,13 @@
         </foreach>
         ) A
     </insert>
+
+    <select id="countByStateAndEmployeeId" resultType="int">
+        SELECT COUNT(*)
+        FROM SOLDERING
+        WHERE
+            employeeId = #{employeeId}
+        AND
+            state = #{state}
+    </select>
 </mapper>

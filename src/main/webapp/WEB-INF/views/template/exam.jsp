@@ -16,7 +16,7 @@
         background-color: #fff;
         border-right: 1px solid #e0e0e0;
         z-index: 100;
-        margin-top: 50px;
+        margin-top: 60px;
         transition: none;
     }
 

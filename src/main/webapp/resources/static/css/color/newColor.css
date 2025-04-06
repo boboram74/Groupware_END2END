@@ -40,6 +40,13 @@
     --md-sys-color-tertiary-container-hover: #c5d6e6;
     --md-sys-color-error-hover: #d44a3b;
     --md-sys-color-error-container-hover: #ecc9c4;
+
+    /* Surface / Border Colors */
+    --md-sys-color-outline: #ddd;        /* 라이트 모드 테두리 색상 */
+    --md-sys-color-outline-variant: #e5e5e5;  /* 라이트 모드 보조 테두리 */
+    --md-sys-color-surface-variant: #f5f5f5;  /* 라이트 모드 표면 변형 */
+
+    --md-sys-color-surface-container: #f8f9fa;
 }
 
 /* Dark 테마 색상 */
@@ -48,7 +55,7 @@
     --md-sys-color-surface-bright: rgb(54 57 62);
     --md-sys-color-surface: #ffffff;
 
-    --md-sys-color-sidebar-bg: rgb(54 57 62);
+    --md-sys-color-sidebar-bg: #3c4044;
     --md-sys-color-sidebar-text: #ffffff;
 
     /* Primary Colors */
@@ -84,6 +91,13 @@
     --md-sys-color-tertiary-container-hover: #324254;
     --md-sys-color-error-hover: #f0b9b3;
     --md-sys-color-error-container-hover: #9c362a;
+
+    /* Surface / Border Colors */
+    --md-sys-color-outline: #2a2d31;         /* 메인 테두리 색상 */
+    --md-sys-color-outline-variant: #22252a;  /* 보조 테두리 (메인보다 약간 어두움) */
+    --md-sys-color-surface-variant: #1a1d22;  /* 표면 변형 (가장 어두움) */
+
+    --md-sys-color-surface-container: #3c4044;
 }
 
 .bg-color {

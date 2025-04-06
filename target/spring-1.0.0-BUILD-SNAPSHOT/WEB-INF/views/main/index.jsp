@@ -112,8 +112,8 @@
     }
 
     .btnBox button:hover {
-        background: #003465;
-        color: white;
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
         transform: translateY(-1px);
     }
 
@@ -150,7 +150,7 @@
         flex-direction: column;
         gap: 12px;
         padding: 15px;
-        background: #f8f9fa;
+        background-color: var(--md-sys-color-surface-container);
         border-radius: 8px;
         box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
     }
@@ -167,7 +167,7 @@
     .info-item.name {
         font-size: 20px;
         font-weight: 600;
-        color: #333;
+        color: var(--md-sys-color-surface);
     }
 
     /* 부서 스타일 */
@@ -197,7 +197,7 @@
 
     .summary-item .material-icons {
         font-size: 18px;
-        color: #003465;
+        color: var(--md-sys-color-primary);
     }
 
     .summary-left {
@@ -207,7 +207,7 @@
     }
 
     .summary-count {
-        color: #003465; /* 배경 제거하고 텍스트 색상만 변경 */
+        color: var(--md-sys-color-primary);
         font-weight: 600;
         font-size: 18px;
     }
@@ -229,7 +229,6 @@
     .currentTime {
         font-size: 35px;
         font-weight: 600;
-        color: #333;
     }
 
     .commuteButtons {
@@ -247,16 +246,8 @@
         font-weight: 500;
         border: 1px solid rgba(0, 0, 0, 0.1);
         border-radius: 6px;
-        background: white;
-        color: navy;
         cursor: pointer;
         transition: all 0.2s ease-in-out;
-    }
-
-    .commuteButtons button:hover {
-        background: #003465;
-        color: white;
-        transform: translateY(-1px);
     }
 
     /* timeDisplay 여백 조정 */
@@ -269,23 +260,8 @@
         padding: 10px;  /* 패딩 살짝 줄임 */
     }
 
-    .startWork {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    .endWork {
-        background-color: #f44336;
-        color: white;
-    }
-
     .commuteButtons button:hover {
         opacity: 0.9;
-        transform: translateY(-2px);
-    }
-
-    .commuteButtons button:active {
-        transform: translateY(0);
     }
 
     .calendarBox {
@@ -333,40 +309,39 @@
         display: flex;
         gap: 0;
         margin-bottom: 20px;
-        border-bottom: 2px solid #eee; /* 하단 경계선 추가 */
+        border-bottom: 2px solid var(--md-sys-color-outline);
     }
 
     .board-type-btn {
         padding: 15px 30px; /* 패딩 증가로 버튼 크기 증가 */
         border: none;
-        border-top: 2px solid #eee; /* 기본 하단 경계선 */
+        border-top: 2px solid var(--md-sys-color-outline);
         border-radius: 0; /* 모서리 둥글기 제거 */
         background: none;
         cursor: pointer;
         font-size: 15px;
-        color: #666;
         position: relative;
         transition: all 0.2s;
         min-width: 120px; /* 최소 너비 설정 */
         text-align: center;
+        color: var(--md-sys-color-surface);
     }
 
     /* hover 효과 - active와 동일한 스타일 적용 */
     .board-type-btn:hover {
-        background: white;
-        color: #003465;
         font-weight: 600;
-        border-top: 2px solid #003465;
-        border-bottom: 2px solid white;
+        border-top: 2px solid var(--md-sys-color-primary);
+        border-bottom: 2px solid var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-primary);
         margin-bottom: -2px;
     }
 
     /* active 상태 */
     .board-type-btn.active {
-        background: white;
-        color: #003465;
         font-weight: 600;
-        border-top: 2px solid #003465;
+        border-bottom: 2px solid var(--md-sys-color-surface-bright);
+        border-top: 2px solid var(--md-sys-color-primary);
+        color: var(--md-sys-color-primary);
         margin-bottom: -2px;
     }
 
@@ -377,7 +352,7 @@
         align-items: center;
         margin-bottom: 20px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--md-sys-color-outline);
     }
 
     /* 카테고리 목록 스타일 */
@@ -394,19 +369,19 @@
         background: none; /* 배경 제거 */
         cursor: pointer;
         font-size: 13px;
-        color: #666; /* 기본 글자색 */
+        color: 1px solid var(--md-sys-color-outline);
         transition: all 0.2s;
     }
 
     .category-btn.active {
         background: none; /* 활성화 상태에서도 배경 없음 */
-        color: #003465; /* 활성화 상태일 때 글자색 변경 */
+        color: var(--md-sys-color-primary);
         font-weight: 600; /* 활성화 상태일 때 글자 굵기 증가 */
     }
 
     .category-btn:hover {
         background: none;
-        color: #003465;
+        color: var(--md-sys-color-primary);
     }
 
     /* 더보기 버튼 스타일 */
@@ -421,7 +396,7 @@
     }
 
     .more-btn:hover {
-        color: #003465;
+        color: var(--md-sys-color-primary);
     }
 
     /* 게시판 테이블 스타일 */
@@ -435,17 +410,17 @@
     }
 
     .board-table th {
-        background: #f8f9fa;
+        background-color: var(--md-sys-color-surface-container);
         padding: 12px;
         font-weight: 600;
         text-align: center;
-        border-top: 2px solid #003465;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+        border-top: 1px solid var(--md-sys-color-primary);
     }
 
     .board-table td {
         padding: 10px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--md-sys-color-outline);
         text-align: center;
         vertical-align: middle;
     }
@@ -457,12 +432,12 @@
 
     .board-table td.title:hover {
         text-decoration: underline;
-        color: #003465;
+        color: var(--md-sys-color-primary);
     }
 
     /* 테이블 행 호버 효과 */
     .board-table tbody tr:hover {
-        background-color: #f8f9fa;
+        background-color: var(--md-sys-color-surface-container);
     }
 
     /* 기존 스타일에 추가 */
@@ -503,7 +478,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 15px 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--md-sys-color-outline);
     }
 
     .birth-item:last-child {
@@ -530,7 +505,6 @@
     .birth-name {
         font-size: 15px;
         font-weight: 600;
-        color: #333;
     }
 
     .birth-dept {
@@ -540,7 +514,7 @@
 
     .birth-date {
         font-size: 14px;
-        color: #003465;
+        color: var(--md-sys-color-primary);
         font-weight: 500;
     }
 
@@ -601,8 +575,8 @@
                 <div class="currentTime"></div>
             </div>
             <div class="commuteButtons">
-                <button class="startWork">출근하기</button>
-                <button class="endWork">퇴근하기</button>
+                <button class="startWork primary">출근하기</button>
+                <button class="endWork primary">퇴근하기</button>
             </div>
         </div>
         <div class="calendarBox surface-bright">

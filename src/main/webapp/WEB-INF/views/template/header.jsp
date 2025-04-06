@@ -162,8 +162,7 @@
       top: 45px;  /* header height(50px) + 약간의 여백 */
       right: 0;
       width: 160px;
-      background-color: #fff;
-      border: 1px solid #e0e0e0;
+      border: 1px solid var(--md-sys-color-outline);
       border-radius: 4px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       z-index: 1000;
@@ -179,8 +178,8 @@
     }
 
     .menu-item:hover {
-      background-color: #f5f5f5;
-      color: #2c3e50;
+      background-color: var(--md-sys-color-surface-container);
+      color: var(--md-sys-color-primary);
     }
 
     .profile {
@@ -248,7 +247,7 @@
     .boxContents {
       flex: 1;
       padding: 20px;
-      margin-top: 50px;
+      margin-top: 60px;
     }
 
     /* 모바일 메뉴 모달 스타일 */
@@ -492,7 +491,7 @@
           <div class="profile"
                style="background-image: url('${(employee.profileImg == null) ? '/images/defaultImg.jpg' : employee.profileImg}')">
           </div>
-          <div class="profile-menu" id="profileMenu">
+          <div class="profile-menu surface-bright" id="profileMenu">
             <div class="menu-item" id="mypage">마이페이지</div>
             <div class="menu-item" id="login-history">로그인 기록</div>
             <c:if test='${employee.role.equals("ADMIN")}'>

@@ -167,15 +167,12 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: white;
         display: flex;
         flex-direction: column;
     }
 
     .chat-room .chat-header {
         padding: 15px;
-        background: #2c3e50;
-        color: white;
         display: flex;
         align-items: center;
     }
@@ -234,7 +231,7 @@
     }
 
     .employee-item:hover {
-        background-color: #f5f5f5;
+        background-color: var(--md-sys-color-surface-container);
     }
 
     .employee-avatar {
@@ -259,38 +256,6 @@
         color: #666;
     }
 
-    /* 다크모드 대응 */
-    html.dark .chat-sidebar {
-        border-right-color: #333;
-        background-color: #1a1a1a;
-    }
-
-    html.dark .employee-item:hover {
-        background-color: #2a2a2a;
-    }
-
-    html.dark .search-box input {
-        background-color: #333;
-        border-color: #444;
-        color: white;
-    }
-
-    /* 다크모드 스타일 */
-    html.dark .chat-modal {
-        background-color: #1a1a1a;
-        color: white;
-    }
-
-    html.dark .chat-input-area {
-        border-top-color: #333;
-    }
-
-    html.dark .chat-input-area input {
-        background-color: #333;
-        border-color: #444;
-        color: white;
-    }
-
     /* 모바일 반응형 */
     @media (max-width: 768px) {
         .chat-modal {
@@ -300,11 +265,11 @@
         }
     }
 </style>
-<button id="chatButton" class="chat-button primary">
+<button id="chatButton" class="chat-button surface-bright">
     <span class="material-icons">chat</span>
 </button>
 
-<div id="chatModal" class="chat-modal">
+<div id="chatModal" class="chat-modal surface-bright">
     <div class="chat-header">
         <h3>채팅</h3>
         <button class="close-chat">
@@ -355,7 +320,7 @@
         const chatInput = $('.chat-input-area input');
         const sendButton = $('.chat-input-area button');
 
-        let isModalOpen = false; // 모달 상태를 추적하는 변수
+        let isModalOpen = true; // 모달 상태를 추적하는 변수
 
         chatButton.on('click', function(e) {
             e.stopPropagation(); // 이벤트 버블링 방지

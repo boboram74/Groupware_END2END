@@ -1,14 +1,14 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="ko" class="dark">
+<html lang="ko" class="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>END2END</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=work" />
-  <link rel="stylesheet" href="/css/color/color.css" />
+  <link rel="stylesheet" href="/css/color/newColor.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
@@ -20,7 +20,6 @@
 
     body {
       font-family: "Arial", sans-serif;
-      background-color: #f5f5f5;
       overflow-x: hidden;
     }
 
@@ -37,13 +36,11 @@
     /* 사이드바 스타일 */
     .sidebar {
       width: 60px;
-      background-color: #2c3e50;
       height: 100vh;
       position: fixed;
       left: 0;
       top: 0;
       z-index: 1000;
-      color: white;
       overflow: hidden;
       transition: width 0.3s ease;
     }
@@ -121,13 +118,13 @@
 
     /* 헤더 스타일 */
     .header {
-      height: 50px;
+      height: 70px;
       background-color: #fff;
       border-bottom: 1px solid #e0e0e0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 20px;
+      padding: 0 30px;  /* 좌우 패딩 증가 */
       z-index: 999;
       position: fixed;
       top: 0;
@@ -196,6 +193,57 @@
       cursor: pointer;
     }
 
+    /* 헤더 아이콘 관련 스타일 추가 */
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 15px;  /* 아이콘 간격 */
+    }
+
+    .icon-button {
+      background: none;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      position: relative;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+
+    .icon-button:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .icon-button .material-symbols-outlined {
+      font-size: 28px;  /* 아이콘 크기 증가 */
+      color: #666;
+    }
+    /* 알림 배지 스타일 */
+    .notification-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: #e74c3c;
+      color: white;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    /* 다크모드일 때의 스타일 */
+    html.dark .icon-button i {
+      color: #eee;
+    }
+
+    html.dark .icon-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
     /* boxContents 스타일 */
     .boxContents {
       flex: 1;
@@ -229,7 +277,6 @@
       left: -100%; /* 300px에서 100%로 변경 */
       width: 100%; /* 300px에서 100%로 변경 */
       height: 100vh;
-      background-color: #2c3e50;
       transition: all 0.3s ease-in-out;
     }
 
@@ -239,12 +286,10 @@
 
     .full-menu-header {
       padding: 30px;
-      background-color: #2c3e50;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .full-menu-list {
-      background-color: #2c3e50;
       height: calc(100% - 60px);
       overflow-y: auto;
       padding: 20px;
@@ -378,9 +423,9 @@
   </style>
 </head>
 <body>
-<div class="container-fluid">
+<div class="container-fluid bg-color">
   <!-- 사이드바 -->
-  <div class="sidebar">
+  <div class="sidebar sidebar-color">
     <div class="logo">
       <h3>END2END</h3>
     </div>
@@ -426,22 +471,31 @@
   <div class="main-wrapper">
     <header class="header">
       <div class="logo"></div>
-      <div class="profile-container">
-        <div class="profile"
-             style="background-image: url('${(employee.profileImg == null) ? '/images/defaultImg.jpg' : employee.profileImg}')">
-        </div>
-        <div class="profile-menu" id="profileMenu">
-          <div class="menu-item" id="mypage">마이페이지</div>
-          <div class="menu-item" id="login-history">로그인 기록</div>
-          <c:if test='${employee.role.equals("ADMIN")}'>
-            <div class="menu-item" id="admin">관리자 페이지로 이동</div>
-          </c:if>
-          <div class="menu-item" id="logout">로그아웃</div>
+      <div class="header-icons">
+        <!-- 알람 아이콘 -->
+        <button class="icon-button" id="notificationBtn">
+          <span class="material-icons">notifications</span>
+          <span class="notification-badge">0</span>
+        </button>
+
+        <!-- 조직도 아이콘 -->
+        <button class="icon-button" id="orgChartBtn">
+          <span class="material-icons">account_tree</span>
+        </button>
+
+        <!-- 다크모드 토글 아이콘 -->
+        <button class="icon-button" id="darkModeBtn">
+          <span class="material-icons">dark_mode</span>
+        </button>
+
+        <div class="profile-container">
+          <div class="profile" style="background-image: url('${(employee.profileImg == null) ? '/images/defaultImg.jpg' : employee.profileImg}')">
+          </div>
         </div>
       </div>
     </header>
     <!-- 전체 메뉴 모달 -->
-    <div class="full-menu-modal">
+    <div class="full-menu-modal sidebar-color">
       <div class="full-menu-content">
         <div class="full-menu-header">
           <button class="close-menu-btn">
@@ -554,9 +608,7 @@
     $('.full-menu-content').click(function(e) {
       e.stopPropagation();
     });
-  });
 
-  $(document).ready(function() {
     // 프로필 이미지 클릭 이벤트
     $('.profile').on('click', function(e) {
       e.stopPropagation(); // 이벤트 버블링 방지

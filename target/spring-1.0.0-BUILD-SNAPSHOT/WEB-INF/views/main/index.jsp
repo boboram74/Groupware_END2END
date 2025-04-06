@@ -11,20 +11,25 @@
                 right: 'prev,next',
             },
             initialView: 'dayGridMonth',
-            height: 'auto',
-            aspectRatio: 1.2,
-            dayCellDidMount: function(info) {
-                // 각 날짜 셀이 마운트될 때 스타일 적용
-                info.el.style.aspectRatio = '1';
-                info.el.style.height = 'auto';
-            },
-            dayMaxEvents: 1, // 이벤트 수 제한
-            fixedWeekCount: false
+            height: 300,
+            aspectRatio: 0.5,  // 캘린더의 가로/세로 비율 조정
+            // 헤더 스타일 설정
+            viewDidMount: function(arg) {
+                const header = document.querySelector('.fc-header-toolbar');
+                if (header) {
+                    header.style.padding = '5px';  // 헤더 패딩 축소
+                    header.style.marginBottom = '5px';  // 하단 여백 축소
+
+                    // 헤더의 폰트 크기 조정
+                    const title = header.querySelector('.fc-toolbar-title');
+                    if (title) {
+                        title.style.fontSize = '1em';
+                    }
+                }
+            }
         });
         calendar.render();
     });
-
-    calendar.setOption('height', calendar.getEl().offsetWidth * 0.8); // 너비의 80% 높이로 설정
 
     // 창 크기 변경 시 자동 조절
     window.addEventListener('resize', function() {
@@ -36,21 +41,20 @@
         display: grid;
         grid-template-columns: 2.5fr 10fr 2.5fr; /* 3:5:2 비율 설정 */
         max-width: 2100px; /* 최대 너비 설정 */
-        margin: 50px auto 0;
+        margin: 60px auto 0;
         gap: 20px;
         padding: 35px;
     }
     /* 좌측 영역 */
     .leftContents {
         display: grid;
-        grid-template-rows: repeat(24, 1fr);
+        grid-template-rows: repeat(12, 1fr);
         gap: 20px;
     }
 
     /* commuteBox 수정 - grid-row 값을 4에서 3으로 변경 */
     .commuteBox {
         grid-row: span 3;  /* 4에서 3으로 변경하여 높이 25% 감소 */
-        background: white;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -60,25 +64,23 @@
     /* 중앙 영역 */
     .centerContents {
         display: grid;
-        grid-template-rows: repeat(24, 1fr);
+        grid-template-rows: repeat(12, 1fr);
         gap: 20px;
     }
 
     .boardBox {
-        grid-row: span 8;
-        background-color: white;
+        grid-row: span 7;
         border-radius: 10px;
     }
 
     .approvalBox {
-        grid-row: span 4;
-        background-color: white;
+        grid-row: span 5;
         border-radius: 10px;
     }
     /* 우측 영역 */
     .rightContents {
         display: grid;
-        grid-template-rows: repeat(24, 1fr);
+        grid-template-rows: repeat(12, 1fr);
         gap: 20px;
     }
 
@@ -96,8 +98,6 @@
         height: 100%;
         border: 1px solid rgba(0, 0, 0, 0.1);
         border-radius: 6px;
-        background: white;
-        color: navy;
         font-size: 25px;
         font-weight: 600;
         padding: 30px 20px; /* 패딩 증가로 버튼 크기 키움 */
@@ -133,8 +133,7 @@
 
     /* logbox 수정 */
     .logbox {
-        grid-row: span 5;
-        background-color: white;
+        grid-row: span 4;
         border-radius: 10px;
         padding: 10px; /* 상하좌우 패딩 축소 */
         display: flex;
@@ -290,8 +289,7 @@
     }
 
     .calendarBox {
-        grid-row: span 7; /* 기존 값에서 5로 조정 */
-        background-color: white;
+        grid-row: span 5; /* 기존 값에서 5로 조정 */
         border-radius: 10px;
     }
 
@@ -300,51 +298,22 @@
         padding: 10px;
     }
 
-    /* FullCalendar 내부 요소들 크기 조절 */
+    /* FullCalendar 커스텀 스타일 */
     .fc {
-        font-size: 0.9em; /* 전체 폰트 크기 조절 */
+        height: 100% !important;
     }
 
     .fc .fc-toolbar {
-        padding: 0.5rem; /* 툴바 패딩 조절 */
-    }
-
-    .fc .fc-toolbar-title {
-        font-size: 1.2em; /* 달력 제목 크기 */
+        font-size: 0.9em;  /* 툴바 전체 폰트 크기 축소 */
     }
 
     .fc .fc-button {
-        padding: 0.3em 0.6em;
-        font-size: 0.8em;
-    }
-    .fc .fc-day-header {
-        padding: 0.3em 0; /* 요일 헤더 높이 조절 */
+        padding: 0.2em 0.4em;  /* 버튼 크기 축소 */
     }
 
     .fc .fc-daygrid-day {
-        min-height: 50px; /* 날짜 칸 최소 높이 */
+        height: auto !important;  /* 날짜 셀 높이 자동 조정 */
     }
-
-    .fc .fc-daygrid-day {
-        aspect-ratio: 1; /* 1:1 비율 설정 */
-        height: auto !important;
-    }
-
-    .fc-daygrid-day-frame {
-        height: 100% !important;
-        min-height: unset !important; /* 기본 최소 높이 제거 */
-    }
-
-    /* 날짜 숫자 크기 조절 */
-    .fc .fc-daygrid-day-number {
-        font-size: 0.9em;
-        padding: 4px;
-    }
-
-    .fc .fc-toolbar-title {
-        font-size: 1em;
-    }
-
 
     .material-icons {
         font-size: 20px;
@@ -475,7 +444,7 @@
     }
 
     .board-table td {
-        padding: 12px;
+        padding: 10px;
         border-bottom: 1px solid #eee;
         text-align: center;
         vertical-align: middle;
@@ -515,8 +484,7 @@
     }
 
     .birthBox {
-        grid-row: span 6;
-        background-color: white;
+        grid-row: span 10;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -599,7 +567,7 @@
 </style>
 
     <div class="leftContents">
-        <div class="logbox">
+        <div class="logbox surface-bright">
             <div class="imgBox" style="background-image: url(${employee.profileImg})"></div>
             <div class="information">
                 <div class="info-item name">
@@ -626,7 +594,7 @@
                 </div>
             </div>
         </div>
-        <div class="commuteBox">
+        <div class="commuteBox surface-bright">
             <div class="boxTitle">출퇴근 관리</div>
             <div class="timeDisplay">
                 <div class="currentDate"></div>
@@ -637,7 +605,7 @@
                 <button class="endWork">퇴근하기</button>
             </div>
         </div>
-        <div class="calendarBox">
+        <div class="calendarBox surface-bright">
             <div class="boxTitle">일정</div>
             <div id="calendar"></div>
         </div>
@@ -645,7 +613,7 @@
 
     <div class="centerContents">
 
-        <div class="boardBox">
+        <div class="boardBox surface-bright">
             <div class="boxTitle">게시글 목록</div>
             <div class="board-container">
                 <!-- 게시판 타입 버튼 -->
@@ -683,7 +651,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach begin="1" end="8" var="i">
+                        <c:forEach begin="1" end="7" var="i">
                             <tr>
                                 <td>${11 - i}</td> <!-- 10부터 1까지 역순으로 표시 -->
                                 <td class="title">샘플 게시글 제목입니다 ${11 - i}</td>
@@ -699,7 +667,7 @@
                 </div>
             </div>
         </div>
-        <div class="approvalBox">
+        <div class="approvalBox surface-bright">
             <div class="boxTitle">나의 결재 대기 문서함</div>
             <div class="board-container">
                 <div class="board-table-container">
@@ -713,7 +681,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach begin="1" end="4" var="i">
+                        <c:forEach begin="1" end="6" var="i">
                             <tr>
                                 <td>문서-${5 - i}</td>
                                 <td class="title">결재 문서 제목입니다 ${5 - i}</td>
@@ -733,25 +701,25 @@
 
     <div class="rightContents">
         <div class="btnBox">
-            <button type="button">
+            <button type="button" class="surface-bright">
                 <span class="material-icons">article</span>
                 <span class="btn-text">게시글 작성</span>
             </button>
-            <button type="button">
+            <button type="button" class="surface-bright">
                 <span class="material-icons">mail</span>
                 <span class="btn-text">메일 작성</span>
             </button>
-            <button type="button">
+            <button type="button" class="surface-bright">
                 <span class="material-icons">edit_note</span>
                 <span class="btn-text">결재 작성</span>
             </button>
-            <button type="button">
+            <button type="button" class="surface-bright">
                 <span class="material-icons">work</span>
                 <span class="btn-text">보고서 작성</span>
             </button>
         </div>
 
-        <div class="birthBox">
+        <div class="birthBox surface-bright">
             <div class="boxTitle">이달의 생일</div>
             <div class="birth-list">
                 <c:forEach begin="1" end="3" var="i">
@@ -808,6 +776,13 @@
         $('.startWork').click(function() {
             // 출근 버튼 클릭 시 동작
             console.log('출근');
+
+            $.ajax({
+                url: '/commute/workOn'
+            }).done(function(data) {
+                alert("출근하셨습니다.");
+                $(this).attr('disabled', true);
+            })
         });
 
         $('.endWork').click(function() {

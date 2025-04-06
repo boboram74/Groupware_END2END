@@ -355,33 +355,25 @@
         <div class="content">
             출력 공간(높이 주지말고 컨텐츠 내용에 따라 유동적으로 증가하게 두세요)
         </div>
-        <!-- 배경색과 텍스트 색상이 함께 적용됨 -->
-        <div class="primary">
-            Primary Button
+        <!-- 배경색과 텍스트 색상 조합 -->
+        <div class="primary">Primary 배경과 텍스트</div>
+        <div class="primary-container">Primary Container 배경과 텍스트</div>
+
+        <!-- 텍스트만 색상 지정 -->
+        <p class="primary-text">Primary 색상의 텍스트만</p>
+        <span class="secondary-container-text">Secondary Container 색상의 텍스트만</span>
+
+        <!-- 테두리와 조합 -->
+        <div class="primary primary-border">테두리가 있는 Primary 요소</div>
+        <div class="secondary-container secondary-container-border">
+            테두리가 있는 Secondary Container 요소
         </div>
 
-        <div class="secondary-container">
-            Secondary Container Content
+        <!-- 복합 사용 -->
+        <div class="primary-container">
+            <p class="secondary-text">Container 안의 다른 색상 텍스트</p>
+            <span class="error-text">오류 메시지</span>
         </div>
-
-        <!-- 배경색만 필요한 경우 -->
-        <div class="bg-primary">
-            Custom Text Color Needed
-        </div>
-
-        <!-- 텍스트 색상만 필요한 경우 -->
-        <div class="text-primary">
-            Custom Background Needed
-        </div>
-
-        <!-- 테두리가 필요한 경우 -->
-        <div class="border-outline">
-            Outlined Content
-        </div>
-        <div class="pageNavi">
-            1123
-        </div>
-    </div>
 </div>
 <script>
     $(document).ready(function() {

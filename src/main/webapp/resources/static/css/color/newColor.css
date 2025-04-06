@@ -1,10 +1,87 @@
-@import 'light.css';
-@import 'dark.css';
-
 /* color.css */
 
+/* ===== 색상 변수 정의 ===== */
+.light {
+    --md-sys-color-bg: #f5f5f5;
+    --md-sys-color-surface-bright: #ffffff;
+    --md-sys-color-surface: #202024;
+    --md-sys-color-sidebar-bg: #2c3e50;
+    --md-sys-color-sidebar-text: #ffffff;
+
+    /* Primary Colors */
+    --md-sys-color-primary: #2c3e50;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #d5e1f2;
+    --md-sys-color-on-primary-container: #1a2633;
+
+    /* Secondary Colors */
+    --md-sys-color-secondary: #546e7a;
+    --md-sys-color-on-secondary: #ffffff;
+    --md-sys-color-secondary-container: #dae4e9;
+    --md-sys-color-on-secondary-container: #334954;
+
+    /* Tertiary Colors */
+    --md-sys-color-tertiary: #34495e;
+    --md-sys-color-on-tertiary: #ffffff;
+    --md-sys-color-tertiary-container: #d6e4f0;
+    --md-sys-color-on-tertiary-container: #1c2836;
+
+    /* Error Colors */
+    --md-sys-color-error: #c0392b;
+    --md-sys-color-on-error: #ffffff;
+    --md-sys-color-error-container: #fcd7d2;
+    --md-sys-color-on-error-container: #621b15;
+}
+
+/* Dark 테마 색상 */
+.dark {
+    --md-sys-color-bg: #202024;
+    --md-sys-color-surface-bright: rgb(54 57 62);
+    --md-sys-color-surface: #ffffff;
+
+    --md-sys-color-sidebar-bg: rgb(54 57 62);
+    --md-sys-color-sidebar-text: #ffffff;
+
+    /* Primary Colors */
+    --md-sys-color-primary: #a8c6ef;
+    --md-sys-color-on-primary: #0a1622;
+    --md-sys-color-primary-container: #1e2d3e;
+    --md-sys-color-on-primary-container: #e8f1fc;
+
+    /* Secondary Colors */
+    --md-sys-color-secondary: #b4c5ce;
+    --md-sys-color-on-secondary: #1e2930;
+    --md-sys-color-secondary-container: #3d4f58;
+    --md-sys-color-on-secondary-container: #e6eef2;
+
+    /* Tertiary Colors */
+    --md-sys-color-tertiary: #a8c1d9;
+    --md-sys-color-on-tertiary: #0d1824;
+    --md-sys-color-tertiary-container: #243242;
+    --md-sys-color-on-tertiary-container: #e6f0fa;
+
+    /* Error Colors */
+    --md-sys-color-error: #e6a8a1;
+    --md-sys-color-on-error: #2c0d0a;
+    --md-sys-color-error-container: #8c2a1f;
+    --md-sys-color-on-error-container: #fce8e6;
+}
+
+.bg-color {
+    background-color: var(--md-sys-color-bg);
+}
+
+.sidebar-color {
+    background-color: var(--md-sys-color-sidebar-bg);
+    color: var(--md-sys-color-sidebar-text);
+}
+
+.surface-bright {
+    background-color: var(--md-sys-color-surface-bright);
+    color: var(--md-sys-color-surface);
+}
+
 /* ===== 배경색과 텍스트 색상 조합 ===== */
-/* Primary 색상 조합 */
 .primary {
     background-color: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
@@ -25,7 +102,6 @@
     color: var(--md-sys-color-primary-container);
 }
 
-/* Secondary 색상 조합 */
 .secondary {
     background-color: var(--md-sys-color-secondary);
     color: var(--md-sys-color-on-secondary);
@@ -46,7 +122,6 @@
     color: var(--md-sys-color-secondary-container);
 }
 
-/* Tertiary 색상 조합 */
 .tertiary {
     background-color: var(--md-sys-color-tertiary);
     color: var(--md-sys-color-on-tertiary);
@@ -67,7 +142,6 @@
     color: var(--md-sys-color-tertiary-container);
 }
 
-/* Error 색상 조합 */
 .error {
     background-color: var(--md-sys-color-error);
     color: var(--md-sys-color-on-error);

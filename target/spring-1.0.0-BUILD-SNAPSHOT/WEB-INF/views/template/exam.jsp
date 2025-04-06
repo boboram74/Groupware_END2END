@@ -355,25 +355,17 @@
         <div class="content">
             출력 공간(높이 주지말고 컨텐츠 내용에 따라 유동적으로 증가하게 두세요)
         </div>
-        <!-- 배경색과 텍스트 색상 조합 -->
-        <div class="primary">Primary 배경과 텍스트</div>
-        <div class="primary-container">Primary Container 배경과 텍스트</div>
+        <!-- 배경색 hover 효과 -->
+        <button class="primary primary-hover">호버 효과가 있는 기본 버튼</button>
+        <div class="primary-container primary-container-hover">호버 효과가 있는 컨테이너</div>
 
-        <!-- 텍스트만 색상 지정 -->
-        <p class="primary-text">Primary 색상의 텍스트만</p>
-        <span class="secondary-container-text">Secondary Container 색상의 텍스트만</span>
+        <!-- 텍스트 hover 효과 -->
+        <a class="primary-text primary-text-hover">호버 효과가 있는 링크</a>
 
-        <!-- 테두리와 조합 -->
-        <div class="primary primary-border">테두리가 있는 Primary 요소</div>
-        <div class="secondary-container secondary-container-border">
-            테두리가 있는 Secondary Container 요소
-        </div>
-
-        <!-- 복합 사용 -->
-        <div class="primary-container">
-            <p class="secondary-text">Container 안의 다른 색상 텍스트</p>
-            <span class="error-text">오류 메시지</span>
-        </div>
+        <!-- 여러 효과 조합 -->
+        <button class="secondary secondary-hover">
+            <span class="primary-text primary-text-hover">혼합된 호버 효과</span>
+        </button>
 </div>
 <script>
     $(document).ready(function() {

@@ -489,7 +489,16 @@
         </button>
 
         <div class="profile-container">
-          <div class="profile" style="background-image: url('${(employee.profileImg == null) ? '/images/defaultImg.jpg' : employee.profileImg}')">
+          <div class="profile"
+               style="background-image: url('${(employee.profileImg == null) ? '/images/defaultImg.jpg' : employee.profileImg}')">
+          </div>
+          <div class="profile-menu" id="profileMenu">
+            <div class="menu-item" id="mypage">마이페이지</div>
+            <div class="menu-item" id="login-history">로그인 기록</div>
+            <c:if test='${employee.role.equals("ADMIN")}'>
+              <div class="menu-item" id="admin">관리자 페이지로 이동</div>
+            </c:if>
+            <div class="menu-item" id="logout">로그아웃</div>
           </div>
         </div>
       </div>

@@ -13,8 +13,7 @@
         top: 0;
         width: 200px;
         height: 100vh;
-        background-color: #fff;
-        border-right: 1px solid #e0e0e0;
+        border-right: 1px solid var(--md-sys-color-outline);
         z-index: 100;
         margin-top: 60px;
         transition: none;
@@ -48,7 +47,7 @@
         justify-content: space-between;
         padding: 10px 10px 0 10px;
         width: 100%;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solid var(--md-sys-color-outline);
     }
 
 
@@ -81,6 +80,7 @@
         cursor: pointer;
         transition: background-color 0.2s;
         border-radius: 4px;
+        color: var(--md-sys-color-secondary);
     }
 
     .detail-menu-item:hover {
@@ -93,7 +93,7 @@
 
     .detail-menu-item>.material-icons {
         font-size: 18px;
-        color: #757575;
+        color: var(--md-sys-color-secondary);
     }
 
     .detail-menu-item span:not(.material-icons):not(.detail-badge) {
@@ -288,7 +288,7 @@
         }
     }
 </style>
-<div class="mainHeader">
+<div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
             <span class="material-icons">mail</span>

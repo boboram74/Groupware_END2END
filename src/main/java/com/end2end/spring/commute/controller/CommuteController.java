@@ -1,7 +1,9 @@
 package com.end2end.spring.commute.controller;
 
 import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.service.CommuteService;
+import com.end2end.spring.commute.service.SolderingService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +18,8 @@ import java.sql.Timestamp;
 @RequestMapping("/commute")
 @Controller
 public class CommuteController {
-    @Autowired
-    private CommuteService commuteService;
+    @Autowired private CommuteService commuteService;
+    @Autowired private SolderingService solderingService;
 
     @RequestMapping("/detail/{employeeId}")
     public String toDetail(@PathVariable int employeeId, HttpSession session, Model model) {
@@ -30,14 +32,26 @@ public class CommuteController {
         commuteDTO.setState("WORK_ON");
         CommuteDTO workOnTime = commuteService.selectByEmployeeIdAndState(commuteDTO);
         if(workOnTime != null) {
-            session.setAttribute("workOnTime", workOnTime.getRegDate());
+            model.addAttribute("workOnTime", workOnTime.getRegDate());
         }
 
         commuteDTO.setState("WORK_OFF");
         CommuteDTO workOffTime = commuteService.selectByEmployeeIdAndState(commuteDTO);
         if(workOffTime != null) {
-            session.setAttribute("workOffTime", workOffTime.getRegDate());
+            model.addAttribute("workOffTime", workOffTime.getRegDate());
         }
+
+        SolderingDTO solderingDTO = SolderingDTO.builder()
+                .employeeId(employee.getId())
+                .build();
+        solderingDTO.setState("ABSENCE");
+        //model.addAttribute("absenceCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+
+        solderingDTO.setState("LATE");
+        //model.addAttribute("lateCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+
+        solderingDTO.setState("LEAVE_EARLY");
+        //model.addAttribute("leaveEarlyCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
 
         return "commute/detail";
     }

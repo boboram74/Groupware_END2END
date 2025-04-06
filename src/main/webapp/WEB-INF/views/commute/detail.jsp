@@ -389,6 +389,7 @@
 <div class="button-container">
     <button class="extended-button">연장근무 신청</button>
     <button class="vacation-button">휴가 신청</button>
+    <button class="vacation-list-button">휴가 조회</button>
 </div>
 <div class="commute-detail-wrapper">
     <!-- 첫 번째 컨테이너: 출퇴근 현황 -->

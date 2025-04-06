@@ -11,12 +11,10 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class VacationDTO {
+public class VacationManagementDTO {
     private int id;
     private String employeeId;
-    private String approvalId;
-    private Timestamp startDate;
+    private double dates;
     private String reason;
-    private String type;
     private Timestamp regDate;
 }

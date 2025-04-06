@@ -12,12 +12,14 @@
         ) A
     </insert>
 
-    <select id="countByStateAndEmployeeId" resultType="int">
+    <select id="countTisWeekByStateAndEmployeeId" resultType="int">
         SELECT COUNT(*)
         FROM SOLDERING
         WHERE
             employeeId = #{employeeId}
         AND
             state = #{state}
+        AND
+            TRUNC(regDate) BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE)
     </select>
 </mapper>

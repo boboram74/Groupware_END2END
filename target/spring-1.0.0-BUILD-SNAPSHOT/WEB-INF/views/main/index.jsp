@@ -580,8 +580,8 @@
                 <div class="currentTime"></div>
             </div>
             <div class="commuteButtons">
-                <button class="startWork primary ${isWorkOn ? '' : 'disabled'}"
-                ${isWorkOn ? '' : 'disabled'}>출근하기</button>
+                <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
+                ${isWorkOn ? 'disabled' : ''}>출근하기</button>
                 <button class="endWork primary">퇴근하기</button>
             </div>
         </div>

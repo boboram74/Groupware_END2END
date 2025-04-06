@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class CommuteServiceImpl implements CommuteService {
                 .build();
         commuteDAO.insert(dto);
 
-        return dto;
+        return commuteDAO.selectById(dto.getId());
     }
 
     @Transactional
@@ -57,7 +58,8 @@ public class CommuteServiceImpl implements CommuteService {
                 .build();
         commuteDAO.insert(dto);
 
-        return dto;
+        return commuteDAO.selectById(dto.getId());
+
     }
 
     @Override

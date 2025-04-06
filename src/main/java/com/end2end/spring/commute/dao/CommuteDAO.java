@@ -14,11 +14,15 @@ public class CommuteDAO {
     @Autowired
     private SqlSession mybatis;
 
+    public CommuteDTO selectById(int id) {
+        return mybatis.selectOne("commute.selectById", id);
+    }
+
     public int isWorkOn(String employeeId) {
         return mybatis.selectOne("commute.isWorkOn", employeeId);
     }
 
-    public CommuteDTO insert(CommuteDTO dto) {
+    public void insert(CommuteDTO dto) {
         mybatis.insert("commute.insert", dto);
     }
 

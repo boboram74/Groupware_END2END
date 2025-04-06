@@ -229,8 +229,8 @@
                 <div class="currentTime"></div>
             </div>
             <div class="commuteButtons">
-                <button class="startWork primary ${isWorkOn ? '' : 'disabled'}"
-                ${isWorkOn ? '' : 'disabled'}>출근하기</button>
+                <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
+                ${isWorkOn ? 'disabled' : ''}>출근하기</button>
                 <button class="endWork primary">퇴근하기</button>
             </div>
         </div>
@@ -243,8 +243,8 @@
                     <div class="time-column">
                         <div class="time-item">
                             <h4>출근 시간</h4>
-                            <div class="time-display">
-                                <span class="time-unit">
+                            <div class="time-display work-on-time">
+                                <span class="time-unit hours">
                                     <c:choose>
                                         <c:when test="${workOnTime == null}">
                                             --
@@ -254,7 +254,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                     <small>HH</small></span>
-                                <span class="time-unit">
+                                <span class="time-unit min">
                                     <c:choose>
                                         <c:when test="${workOnTime == null}">
                                             --
@@ -264,7 +264,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                     <small>MM</small></span>
-                                <span class="time-unit">
+                                <span class="time-unit sec">
                                     <c:choose>
                                         <c:when test="${workOnTime == null}">
                                             --
@@ -278,8 +278,8 @@
                         </div>
                         <div class="time-item">
                             <h4>퇴근 시간</h4>
-                            <div class="time-display">
-                                <span class="time-unit">
+                            <div class="time-display work-off-time">
+                                <span class="time-unit hour">
                                     <c:choose>
                                         <c:when test="${workOffTime == null}">
                                             --
@@ -289,7 +289,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                     <small>HH</small></span>
-                                <span class="time-unit">
+                                <span class="time-unit min">
                                     <c:choose>
                                         <c:when test="${workOffTime == null}">
                                             --
@@ -299,7 +299,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                     <small>MM</small></span>
-                                <span class="time-unit">
+                                <span class="time-unit sec">
                                     <c:choose>
                                         <c:when test="${workOffTime == null}">
                                             --
@@ -316,9 +316,9 @@
                         <div class="time-item total">
                             <h4>오늘 근무시간</h4>
                             <div class="time-display">
-                                <span class="time-unit">00<small>HH</small></span>
-                                <span class="time-unit">00<small>MM</small></span>
-                                <span class="time-unit">00<small>SS</small></span>
+                                <span class="time-unit hour">00<small>HH</small></span>
+                                <span class="time-unit min">00<small>MM</small></span>
+                                <span class="time-unit sec">00<small>SS</small></span>
                             </div>
                         </div>
                     </div>
@@ -385,6 +385,51 @@
 </div>
 <script>
     $(document).ready(function() {
+        let workOnTime = ${workOnTime != null ? workOnTime.getTime() : "null"};
+        let workOffTime = ${workOffTime != null ? workOffTime.getTime() : "null"};
+
+        function formatDuration(ms) {
+            // 음수 처리
+            const millisec = Math.abs(ms);
+
+            const hours = (Math.floor(millisec / (60 * 60 * 1000)) >= 10)
+                ? Math.floor(millisec / (60 * 60 * 1000)) : '0' + Math.floor(millisec / (60 * 60 * 1000));
+            const minutes = (Math.floor((millisec % (60 * 60 * 1000)) / (60 * 1000)) >= 10)
+                ? Math.floor((millisec % (60 * 60 * 1000)) / (60 * 1000)) : '0' + Math.floor((millisec % (60 * 60 * 1000)) / (60 * 1000));
+            const seconds = (Math.floor((millisec % (60 * 1000)) / 1000) >= 10) ?
+                Math.floor((millisec % (60 * 1000)) / 1000) : '0' + Math.floor((millisec % (60 * 1000)) / 1000);
+
+            return {
+                hours,
+                minutes,
+                seconds
+            };
+        }
+
+        function setTimeDisplay(className, time) {
+            $(className + ' .hours').html(time.hours + '<small>HH</small>');
+            $(className + ' .min').html(time.minutes + '<small>mm</small>');
+            $(className + ' .sec').html(time.seconds + '<small>ss</small>');
+        }
+
+        let workTime = 0;
+        function getWorkTime() {
+            if (workOnTime != null && workOffTime != null) {
+                workTime = workOffTime - workOnTime;
+            } else if (workOnTime != null) {
+                workTime = Date.now() - workOnTime;
+            }
+            return workTime;
+        }
+
+        workTime = getWorkTime();
+        setTimeDisplay('.total', formatDuration(workTime));
+        setInterval(function () {
+            workTime = getWorkTime();
+            setTimeDisplay('.total', formatDuration(workTime));
+        }, 1000);
+
+
         // 날짜와 시간 표시 함수
         function updateDateTime() {
             const now = new Date();
@@ -436,6 +481,8 @@
                     if (data) {
                         alert("퇴근했습니다.");
                         $(this).attr('disabled', true);
+                        workOffTime = new Date(data.regDate).getTime();
+                        setTimeDisplay('.work-off-time', formatDuration(workOffTime));
                     }
                 })
             }

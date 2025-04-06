@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="commute">
+    <select id="selectById" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT * FROM COMMUTE WHERE id = ${id}
+    </select>
+
     <select id="checkLate" resultType="com.end2end.spring.commute.dto.CommuteDTO">
         SELECT *
         FROM COMMUTE
@@ -109,6 +113,9 @@
 
     <insert id="insert">
         INSERT INTO COMMUTE(id, state, employeeId) VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{state}, #{employeeId})
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT COMMUTE_ID_SEQ.CURRVAL FROM DUAL
+        </selectKey>
     </insert>
 
     <select id="isWorkOn" resultType="Integer">

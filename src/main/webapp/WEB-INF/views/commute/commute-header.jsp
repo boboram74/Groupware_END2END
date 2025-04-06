@@ -7,7 +7,7 @@
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
-            <span class="material-icons">mail</span>
+            <span class="material-icons">work_history</span>
             <span>근태관리</span>
         </div>
         <button class="detail-menu-toggle-btn">
@@ -17,11 +17,11 @@
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
             <li class="detail-menu-item">
-                <span class="material-icons">star</span>
+                <span class="material-icons">work</span>
                 <span>휴가/근무</span>
             </li>
             <li class="detail-menu-item">
-                <span class="material-icons">all_inbox</span>
+                <span class="material-icons">assessment</span>
                 <span>근태 현황</span>
             </li>
         </ul>

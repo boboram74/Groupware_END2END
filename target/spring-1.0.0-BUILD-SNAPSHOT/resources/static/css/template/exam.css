@@ -26,7 +26,6 @@
 }
 
 .mainBody {
-    max-width: 1200px;
     width: 100%;
     padding: 0;
     gap: 20px;  /* 자식 요소들 간의 간격 */

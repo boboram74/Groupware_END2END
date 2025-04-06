@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 
 @RequestMapping("/commute")
 @Controller
@@ -19,8 +20,25 @@ public class CommuteController {
     private CommuteService commuteService;
 
     @RequestMapping("/detail/{employeeId}")
-    public String toDetail(@PathVariable int employeeId, Model model) {
+    public String toDetail(@PathVariable int employeeId, HttpSession session, Model model) {
         // TODO: 해당 id의 사원의 detail.jsp로 이동
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        CommuteDTO commuteDTO = CommuteDTO.builder()
+                .employeeId(employee.getId())
+                .build();
+
+        commuteDTO.setState("WORK_ON");
+        CommuteDTO workOnTime = commuteService.selectByEmployeeIdAndState(commuteDTO);
+        if(workOnTime != null) {
+            session.setAttribute("workOnTime", workOnTime.getRegDate());
+        }
+
+        commuteDTO.setState("WORK_OFF");
+        CommuteDTO workOffTime = commuteService.selectByEmployeeIdAndState(commuteDTO);
+        if(workOffTime != null) {
+            session.setAttribute("workOffTime", workOffTime.getRegDate());
+        }
+
         return "commute/detail";
     }
 
@@ -32,16 +50,19 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/workOn")
-    public void workOn(HttpSession session) {
+    public CommuteDTO workOn(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        commuteService.workOn(employee.getId());
+        CommuteDTO workOn = commuteService.workOn(employee.getId());
+
+        session.setAttribute("workOn", workOn);
+        return workOn;
     }
 
     @ResponseBody
     @RequestMapping("/workOff")
-    public void workOff(HttpSession session) {
+    public CommuteDTO workOff(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        commuteService.workOff(employee.getId());
+        return commuteService.workOff(employee.getId());
     }
 
     @ResponseBody

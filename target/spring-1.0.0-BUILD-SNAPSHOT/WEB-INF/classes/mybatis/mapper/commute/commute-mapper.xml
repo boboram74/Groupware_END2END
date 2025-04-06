@@ -108,6 +108,43 @@
     </insert>
 
     <insert id="insert">
-        INSERT INTO COMMUTE(id, state, employeeId) VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{state}', #{employeeId})
+        INSERT INTO COMMUTE(id, state, employeeId) VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{state}, #{employeeId})
     </insert>
+
+    <select id="isWorkOn" resultType="Integer">
+        SELECT COUNT(*)
+        FROM COMMUTE
+        WHERE
+            employeeId = #{employeeId}
+        AND
+            state = 'WORK_ON'
+        AND
+            TRUNC(regDate) = TRUNC(SYSDATE)
+    </select>
+
+    <select id="selectWorkOnByEmployeeId" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT *
+        FROM COMMUTE
+        WHERE
+            employeeId = #{employeeId}
+        AND
+            state = 'WORK_ON'
+        AND
+            TRUNC(regDate) = TRUNC(SYSDATE)
+    </select>
+
+    <select id="selectWorkOffByEmployeeId" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT *
+        FROM COMMUTE
+        WHERE
+            regDate = (
+            SELECT MAX(regDate)
+            FROM COMMUTE
+            WHERE
+                state = 'WORK_OFF'
+            AND
+                TRUNC(regDate) = TRUNC(SYSDATE)
+            AND
+                employeeId = #{employeeId})
+    </select>
 </mapper>

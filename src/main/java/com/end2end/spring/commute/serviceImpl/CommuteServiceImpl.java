@@ -23,14 +23,47 @@ public class CommuteServiceImpl implements CommuteService {
     @Autowired private EmployeeDAO employeeDAO;
     @Autowired private VacationDAO vacationDAO;
 
+    @Transactional
     @Override
-    public void workOn(String employeeId) {
-        //commuteDAO.workOn(employeeId);
+    public boolean isWorkOn(String employeeId) {
+        return commuteDAO.isWorkOn(employeeId) > 0;
+    }
+
+    @Transactional
+    @Override
+    public CommuteDTO workOn(String employeeId) {
+        if (commuteDAO.isWorkOn(employeeId) > 0) {
+            return null;
+        }
+        CommuteDTO dto = CommuteDTO.builder()
+                .employeeId(employeeId)
+                .state("WORK_ON")
+                .build();
+        commuteDAO.insert(dto);
+
+        return dto;
+    }
+
+    @Transactional
+    @Override
+    public CommuteDTO workOff(String employeeId) {
+        if (commuteDAO.isWorkOn(employeeId) == 0) {
+            return null;
+        }
+
+        CommuteDTO dto = CommuteDTO.builder()
+                .employeeId(employeeId)
+                .state("WORK_OFF")
+                .build();
+        commuteDAO.insert(dto);
+
+        return dto;
     }
 
     @Override
-    public void workOff(String employeeId) {
-        //commuteDAO.workOff(employeeId);
+    public CommuteDTO selectByEmployeeIdAndState(CommuteDTO dto) {
+        return  (dto.getState().equals("WORK_ON")) ?
+                commuteDAO.selectWorkOnByEmployeeId(dto.getEmployeeId()) : commuteDAO.selectWorkOffByEmployeeId(dto.getEmployeeId());
     }
 
     @Transactional

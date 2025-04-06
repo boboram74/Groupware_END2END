@@ -536,8 +536,8 @@
             </a>
           </li>
           <li>
-            <a href="/commute/detail/1">
-              <i class="material-icons">schedule</i>
+            <a href="/commute/detail">
+              <i class="material-icons">work</i>
               <span>근태관리</span>
             </a>
           </li>

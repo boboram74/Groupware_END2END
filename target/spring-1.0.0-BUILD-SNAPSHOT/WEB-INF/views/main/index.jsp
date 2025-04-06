@@ -216,7 +216,7 @@
         padding: 15px;
         font-size: 20px;
         font-weight: 600;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--md-sys-color-outline);
     }
 
     .currentDate {
@@ -260,8 +260,13 @@
         padding: 10px;  /* 패딩 살짝 줄임 */
     }
 
-    .commuteButtons button:hover {
+    .commuteButtons button:hover:not(.disabled) {
         opacity: 0.9;
+    }
+
+    .startWork.disabled {
+        opacity: 0.5;
+        pointer-events: none; /* 호버 효과 완전히 제거 */
     }
 
     .calendarBox {
@@ -575,7 +580,8 @@
                 <div class="currentTime"></div>
             </div>
             <div class="commuteButtons">
-                <button class="startWork primary">출근하기</button>
+                <button class="startWork primary ${isWorkOn ? '' : 'disabled'}"
+                ${isWorkOn ? '' : 'disabled'}>출근하기</button>
                 <button class="endWork primary">퇴근하기</button>
             </div>
         </div>
@@ -625,7 +631,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach begin="1" end="7" var="i">
+                        <c:forEach begin="1" end="8" var="i">
                             <tr>
                                 <td>${11 - i}</td> <!-- 10부터 1까지 역순으로 표시 -->
                                 <td class="title">샘플 게시글 제목입니다 ${11 - i}</td>
@@ -655,7 +661,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach begin="1" end="6" var="i">
+                        <c:forEach begin="1" end="7" var="i">
                             <tr>
                                 <td>문서-${5 - i}</td>
                                 <td class="title">결재 문서 제목입니다 ${5 - i}</td>
@@ -754,8 +760,10 @@
             $.ajax({
                 url: '/commute/workOn'
             }).done(function(data) {
-                alert("출근하셨습니다.");
-                $(this).attr('disabled', true);
+                if(data) {
+                    alert("출근하셨습니다.");
+                    $(this).attr('disabled', true);
+                }
             })
         });
 

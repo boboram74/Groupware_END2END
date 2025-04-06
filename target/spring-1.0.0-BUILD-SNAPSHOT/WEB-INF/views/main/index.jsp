@@ -173,7 +173,7 @@
     /* 부서 스타일 */
     .info-item.department {
         font-size: 14px;
-        color: #666;
+        color: var(--md-sys-color-secondary);
     }
 
     .info-summary {
@@ -190,7 +190,7 @@
         justify-content: space-between; /* 양끝 정렬 */
         padding: 5px 0;
         font-size: 18px;
-        color: #666;
+        color: var(--md-sys-color-secondary);
         margin-left: 20px;
         margin-right: 20px;
     }
@@ -223,7 +223,7 @@
         font-size: 18px;
         font-weight: 500;
         margin-bottom: 10px;
-        color: #666;
+        color: var(--md-sys-color-secondary);
     }
 
     .currentTime {
@@ -387,7 +387,7 @@
     /* 더보기 버튼 스타일 */
     .more-btn {
         font-size: 14px;
-        color: #666;
+        color: var(--md-sys-color-secondary);
         text-decoration: none;
         display: flex;
         align-items: center;
@@ -509,7 +509,7 @@
 
     .birth-dept {
         font-size: 13px;
-        color: #666;
+        color: var(--md-sys-color-secondary);
     }
 
     .birth-date {

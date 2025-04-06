@@ -218,7 +218,7 @@
 
     .icon-button .material-symbols-outlined {
       font-size: 28px;  /* 아이콘 크기 증가 */
-      color: #666;
+      color: var(--md-sys-color-secondary);
     }
     /* 알림 배지 스타일 */
     .notification-badge {

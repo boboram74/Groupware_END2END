@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project">
+
+    <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectDTO">
+        SELECT * FROM project
+    </select>
+    <!-- 프로젝트 모아보기-->
+
+
+    <delete id="deleteById">
+        delete from project where id=${value}
+    </delete>
+    <!-- 프로젝트 삭제-->
+
+
+    <insert id="insert">
+        INSERT INTO project (id, name) values (Project_SEQ.NEXTVAL, #{name})
+    </insert>
+    <!-- 프로젝트추가 -->
+
+    <insert id="insertProjectUser" parameterType="ProjectUserDTO">
+        INSERT INTO PROJECT_USER (projectId, employeeId)
+        VALUES (#{projectId}, #{employeeId})
+    </insert>
+    <!-- 프로젝트인원추가 -->
+
+    <update id="updateById">
+        update project set
+        name=?,deadLine=? where id =${value}
+    </update>
+    <!--프로젝트수정-->
+
+    <select id="selectByCon" resultType="com.end2end.spring.works.dto.ProjectDTO">
+        select * from project where
+        ${name} like '%'||#{deadLine}||'%'
+    </select>
+    <!--프로젝트 찾기 -->
+</mapper>

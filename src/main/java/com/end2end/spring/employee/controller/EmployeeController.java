@@ -1,5 +1,7 @@
 package com.end2end.spring.employee.controller;
 
+import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.LoginDTO;
 import com.end2end.spring.employee.service.EmployeeService;
@@ -21,11 +23,17 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private CommuteService commuteService;
+
     @RequestMapping("/login")
     public String login(@ModelAttribute LoginDTO dto, HttpSession session, Model model) {
          EmployeeDTO employee = employeeService.login(dto);
         if (employee != null) {
             session.setAttribute("employee", employee);
+
+            boolean isWorkOn = commuteService.isWorkOn(employee.getId());
+            session.setAttribute("isWorkOn", isWorkOn);
         }
         return "redirect:/";
     }

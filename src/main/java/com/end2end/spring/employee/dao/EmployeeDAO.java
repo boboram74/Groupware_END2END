@@ -43,4 +43,10 @@ public class EmployeeDAO {
     public EmployeeDetailDTO selectDetailById(String employeeId){
         return mybatis.selectOne("employee.selectDetailById", employeeId);
     }
+
+    public boolean idVali(String loginId) {
+        Integer count = mybatis.selectOne("employee.idVali", loginId);
+        return count != null && count > 0;
+    }
+
 }

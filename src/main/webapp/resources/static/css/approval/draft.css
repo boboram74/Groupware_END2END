@@ -145,11 +145,13 @@ th {
 .contentsBox {
     width: 100%;
     height: 70%;
+
 }
 
-#contents {
+.contentsBox textarea {
     width: 100%;
-    height: 100%;
+    height: 90%;
+    resize: none;
 }
 
 .signImform {

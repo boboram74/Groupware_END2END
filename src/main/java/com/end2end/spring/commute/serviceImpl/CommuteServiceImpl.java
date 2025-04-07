@@ -2,13 +2,13 @@ package com.end2end.spring.commute.serviceImpl;
 
 import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.commute.dao.SolderingDAO;
+import com.end2end.spring.commute.dao.VacationDAO;
 import com.end2end.spring.commute.dto.CommuteDTO;
 import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
-import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +21,50 @@ public class CommuteServiceImpl implements CommuteService {
     @Autowired private CommuteDAO commuteDAO;
     @Autowired private SolderingDAO solderingDAO;
     @Autowired private EmployeeDAO employeeDAO;
+    @Autowired private VacationDAO vacationDAO;
 
+    @Transactional
     @Override
-    public void workOn(String employeeId) {
-        //commuteDAO.workOn(employeeId);
+    public boolean isWorkOn(String employeeId) {
+        return commuteDAO.isWorkOn(employeeId) > 0;
+    }
+
+    @Transactional
+    @Override
+    public CommuteDTO workOn(String employeeId) {
+        if (commuteDAO.isWorkOn(employeeId) > 0) {
+            return null;
+        }
+        CommuteDTO dto = CommuteDTO.builder()
+                .employeeId(employeeId)
+                .state("WORK_ON")
+                .build();
+        commuteDAO.insert(dto);
+
+        return commuteDAO.selectById(dto.getId());
+    }
+
+    @Transactional
+    @Override
+    public CommuteDTO workOff(String employeeId) {
+        if (commuteDAO.isWorkOn(employeeId) == 0) {
+            return null;
+        }
+
+        CommuteDTO dto = CommuteDTO.builder()
+                .employeeId(employeeId)
+                .state("WORK_OFF")
+                .build();
+        commuteDAO.insert(dto);
+
+        return commuteDAO.selectById(dto.getId());
+
     }
 
     @Override
-    public void workOff(String employeeId) {
-        //commuteDAO.workOff(employeeId);
+    public CommuteDTO selectByEmployeeIdAndState(CommuteDTO dto) {
+        return  (dto.getState().equals("WORK_ON")) ?
+                commuteDAO.selectWorkOnByEmployeeId(dto.getEmployeeId()) : commuteDAO.selectWorkOffByEmployeeId(dto.getEmployeeId());
     }
 
     @Transactional
@@ -84,8 +119,9 @@ public class CommuteServiceImpl implements CommuteService {
     public void checkAbsence() {
         // TODO: 결근자 체크
         List<EmployeeDTO> employeeList = commuteDAO.selectAbsence();
+        List<EmployeeDTO> notVacationEmployeeList = vacationDAO.selectNotTodayVacation(employeeList);
 
-        List<SolderingDTO> solderingDTOList = employeeList.stream()
+        List<SolderingDTO> solderingDTOList = notVacationEmployeeList.stream()
                 .map((employee) -> SolderingDTO.builder()
                         .employeeId(employee.getId())
                         .state("ABSENCE")

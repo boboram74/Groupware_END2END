@@ -25,6 +25,7 @@
 
 .apDocumentControls {
     display: flex;
+    overflow-y: auto;
     justify-Content: flex-end;
     padding: 10px 20px;
 }

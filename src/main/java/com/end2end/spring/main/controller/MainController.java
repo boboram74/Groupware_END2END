@@ -18,7 +18,11 @@ public class MainController {
 	private EmployeeService employeeService;
 
 	@GetMapping("/")
-	public String home() {
+	public String home(HttpSession session) {
+		EmployeeDTO loginUser = (EmployeeDTO) session.getAttribute("employee");
+		if (loginUser == null) {
+			return "main/login";
+		}
 		return "main/index";
 	}
 
@@ -28,7 +32,6 @@ public class MainController {
 		if (loginUser == null || !loginUser.getId().equals(employeeId)) {
 			return "redirect:/";
 		}
-
 		EmployeeDetailDTO employee = employeeService.selectDetailById(employeeId);
 		model.addAttribute("employeeDetail", employee);
 		return "main/mypage";
@@ -44,5 +47,10 @@ public class MainController {
 	public String toWorktree() {
 		// TODO: 조직도 페이지 출력
 		return "main/worktree";
+	}
+
+	@RequestMapping("/test")
+	public String toTest() {
+		return "/template/exam";
 	}
 }

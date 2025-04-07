@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -41,7 +43,8 @@ public class HRController {
     @RequestMapping("/write")
     public String toWrite(Model model) {
         // TODO: 직원 추가 페이지로 이동
-        List<DepartmentDTO> departmentList = employeeService.selectAllDepartment();
+        System.out.println("호출!");
+        List<DepartmentDTO> departmentList = employeeService. selectAllDepartment();
         List<JobDTO> jobList = employeeService.selectAllJob();
 
         model.addAttribute("departmentList", departmentList);
@@ -57,9 +60,10 @@ public class HRController {
     }
 
     @RequestMapping("/idCheck")
-    public void idCheck(String id) {
+    @ResponseBody
+    public boolean idCheck(@RequestParam("loginId") String loginId) {
         // TODO: 아이디 중복 검사
-
+        return employeeService.idVali(loginId);
     }
 
     @RequestMapping("/update")

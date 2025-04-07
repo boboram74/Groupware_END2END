@@ -16,12 +16,7 @@ public class ProjectWorkDAO {
 
 
     public List<ProjectWorkDTO> selectAll() {
-        return null;
-    }
-
-
-    public List<ProjectWorkDTO> selectByEmployeeId(String employeeId) {
-        return null;
+        return   mybatis.selectList("works.selectAll");
     }
 
 
@@ -30,11 +25,11 @@ public class ProjectWorkDAO {
     }
 
     public void update(ProjectWorkDTO dto) {
-
+mybatis.update("works.update",dto);
     }
 
     public void deleteById(int id) {
-
+mybatis.delete("works.deleteById",id);
     }
 
     public void toggleState(int id) {

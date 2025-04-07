@@ -17,6 +17,7 @@
         VALUES (#{emailAddress},#{name})
     </insert>
 
+<<<<<<< HEAD
     <insert id="insertEmailAddressUser">
         INSERT INTO EMAIL_ADDRESS_USER(EMAIL_ADDRESS_USER_SEQ.NEXTVAL,employeeId, emailAddress)
         VALUES (${id},#{employeeId},#{emailAddress})
@@ -24,6 +25,10 @@
 
     <select id="selectDepartmentById" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
         SELECT * FROM DEPARETMENT WHERE ID = ${id};
+=======
+    <select id="selectDepartmentById" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
+        SELECT * FROM DEPARTMENT WHERE ID = ${id};
+>>>>>>> 2c31e4ad5e226eb33bbbe48f28d97373b529e18f
     </select>
 
     <insert id="insertEmailAddressUser">

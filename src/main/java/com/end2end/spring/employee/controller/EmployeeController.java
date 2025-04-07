@@ -32,8 +32,10 @@ public class EmployeeController {
         if (employee != null) {
             session.setAttribute("employee", employee);
 
-            boolean isWorkOn = commuteService.isWorkOn(employee.getId());
+            boolean isWorkOn = commuteService.isExistByState(employee.getId(), "WORK_ON");
             session.setAttribute("isWorkOn", isWorkOn);
+            boolean isWorkOff = commuteService.isExistByState(employee.getId(), "WORK_OFF");
+            session.setAttribute("isWorkOff", isWorkOff);
         }
         return "redirect:/";
     }

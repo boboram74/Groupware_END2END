@@ -18,20 +18,20 @@ public class CommuteDAO {
         return mybatis.selectOne("commute.selectById", id);
     }
 
-    public int isWorkOn(String employeeId) {
-        return mybatis.selectOne("commute.isWorkOn", employeeId);
+    public int countWorKOnThisWeekByEmployeeId(String employeeId) {
+        return mybatis.selectOne("commute.countWorKOnThisWeekByEmployeeId", employeeId);
+    }
+
+    public int isExistByState(CommuteDTO dto) {
+        return mybatis.selectOne("commute.isExistByState", dto);
     }
 
     public void insert(CommuteDTO dto) {
         mybatis.insert("commute.insert", dto);
     }
 
-    public CommuteDTO selectWorkOnByEmployeeId(String employeeId) {
-        return mybatis.selectOne("commute.selectWorkOnByEmployeeId", employeeId);
-    }
-
-    public CommuteDTO selectWorkOffByEmployeeId(String employeeId) {
-        return mybatis.selectOne("commute.selectWorkOffByEmployeeId", employeeId);
+    public CommuteDTO selectByStateAndEmployeeId(CommuteDTO dto) {
+        return mybatis.selectOne("commute.selectByStateAndEmployeeId", dto);
     }
 
     public List<CommuteDTO> selectLate() {

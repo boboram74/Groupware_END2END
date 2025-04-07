@@ -1,4 +1,4 @@
-package com.end2end.spring.works.dto;
+package com.end2end.spring.mail.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProjectUserDTO {
-
+public class EmailAddressUserDTO {
     private int id;
+    private String emailAddress;
     private String employeeId;
-    private int projectId;
     private Timestamp regDate;
 }

@@ -14,16 +14,16 @@ public class MailDAO {
     @Autowired
     private SqlSession mybatis;
 
-//    public void insert(emailAddressDTO) {
-//        return mybatis.insert("mail.insert", emailAddressDTO);
-//    }
-//    public int selectDepartmentById(int id) {
-//        return mybatis.selectOne("mail.selectDepartmentById",id);
-//    }
-//
-//    public void insertEmailAddressUser(emailAddressUserDTO) {
-//        mybatis.insert("mail.insertEmailAddressUser",emailAddressUserDTO);
-//    }
+    public int insert(String emailAddressDTO) {
+        return mybatis.insert("mail.insert", emailAddressDTO);
+    }
+    public int selectDepartmentById(int id) {
+        return mybatis.selectOne("mail.selectDepartmentById",id);
+    }
+
+    public void insertEmailAddressUser(String emailAddressUserDTO) {
+        mybatis.insert("mail.insertEmailAddressUser",emailAddressUserDTO);
+    }
 
     public List<MailPersonalListDTO> selectByEmployeeId(String employeeId) {
         return mybatis.selectList("mail.selectAll", employeeId);

@@ -1,4 +1,4 @@
-package com.end2end.spring.works.dto;
+package com.end2end.spring.board.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProjectUserDTO {
-
+public class BoardCtUserDTO {
     private int id;
+    private int boardCtId;
     private String employeeId;
-    private int projectId;
     private Timestamp regDate;
 }

@@ -36,4 +36,8 @@ public class VacationDAO {
     public double sumUsedThisMonthVacationDates(String employeeId){
         return mybatis.selectOne("vacation.sumUsedThisMonthVacationDates", employeeId);
     }
+
+    public int isOnVacation(String employeeId) {
+        return mybatis.selectOne("vacation.isOnVacation", employeeId);
+    }
 }

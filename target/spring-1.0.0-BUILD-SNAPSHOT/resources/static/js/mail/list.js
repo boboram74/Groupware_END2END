@@ -6,6 +6,8 @@ $(function () {
         data: { cpage: cpage }
     }).done(function (resp) {
         let list = resp.list;
+        $("#recordCount").text(resp.recordTotalCount);
+        $("#recordReadCount").text(resp.recordReadCount);
         for(let i = 0; i < list.length; i++) {
             let tr = $('<tr>');
             tr.append(
@@ -121,4 +123,38 @@ $(function () {
     });
 });
 
+$("#readBtn").on("click", function () {
+    let esids = [];
+    $('input.childCheckbox:checked').each(function () {
+        let esid = $(this).closest('tr').find('input.star-checkbox').data('esid');
+        if(esid !== undefined) {
+            esids.push(esid);
+        }
+    });
+    $.ajax({
+        url: "/mail/readAndTrashAll?action=read",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(esids),
+    }).done(function (resp) {
+        window.location.reload();
+    });
+});
 
+$("#trashBtn").on("click", function () {
+    let esids = [];
+    $('input.childCheckbox:checked').each(function () {
+        let esid = $(this).closest('tr').find('input.star-checkbox').data('esid');
+        if(esid !== undefined) {
+            esids.push(esid);
+        }
+    });
+    $.ajax({
+        url: "/mail/readAndTrashAll?action=trash",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(esids),
+    }).done(function (resp) {
+        window.location.reload();
+    });
+});

@@ -46,6 +46,12 @@
             TRUNC(regDate, 'MM') = TRUNC(SYSDATE, 'MM')
     </select>
 
+    <select id="isOnVacation" resultType="Integer">
+        SELECT COUNT(*)
+        FROM VACATION
+        WHERE regDate <= startDate + INTERVAL #{vacationDates} DAY
+    </select>
+
     <select id="selectNotCurrentVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">
         SELECT *
         FROM VACATION

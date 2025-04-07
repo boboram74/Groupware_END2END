@@ -12,7 +12,7 @@ public class ProjectUserDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public int insert(ProjectUserDTO dto)
+    public int insert(List<ProjectUserDTO> dto)
     {
         return  mybatis.insert("works.insertProjectUser",dto);
 

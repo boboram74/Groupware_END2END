@@ -1,17 +1,21 @@
 package com.end2end.spring.works.serviceImpl;
 
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.works.dao.ProjectDAO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
 import com.end2end.spring.works.dto.ProjectDTO;
+import com.end2end.spring.works.dto.ProjectInsertDTO;
 import com.end2end.spring.works.dto.ProjectUserDTO;
 import com.end2end.spring.works.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -63,11 +67,39 @@ public class ProjectServiceImpl implements ProjectService {
 //        return projectDTO;
 //
 //    }
-    @Override
-    public void insert(ProjectDTO dto, ProjectUserDTO udto) {
-        projectDao.insert(dto);
-        projectUserDao.insert(udto);
-    }
+//    @Transactional
+//    @Override
+//    public void insert(ProjectInsertDTO dto, List<String> employeeId) {
+//        projectDao.insert(dto);
+//
+//        for (String id : employeeId) {
+//            ProjectUserDTO udto = ProjectUserDTO.builder()
+//                    .employeeId(id)
+//                    .projectId(dto.getProjectId())
+//                    .build();
+//        projectUserDao.insert(udto);
+//
+//
+//        }
+//    }
+@Transactional
+@Override
+public void insert(ProjectInsertDTO dto) {
+    // 프로젝트 삽입
+    projectDao.insert(dto);
+
+    // ProjectUserDTO 리스트 생성
+    List<ProjectUserDTO> userList = dto.getEmployeeId().stream()
+            .map(id -> ProjectUserDTO.builder()
+                    .employeeId(id)
+                    .projectId(dto.getProjectId())
+                    .build())
+            .collect(Collectors.toList());
+
+    // 일괄 삽입
+    projectUserDao.insert(userList);
+}
+
 
 
 //    public void insert(ProjectDTO dto, ProjectUserDTO udto) {
@@ -86,11 +118,34 @@ public class ProjectServiceImpl implements ProjectService {
 //    }
 
     @Override
-    public List<ProjectDTO> selectByName(String name) {
+    public ProjectDTO selectById(int id) {
 
-        return  projectDao.selectByName(name);
+        return  projectDao.selectById(id);
+    }
+    @Override
+    public void deleteById(int id) {
+
+        projectDao.deleteById(id);
     }
 
+    @Override
+    public void update(ProjectDTO dto) {
+        // TODO: 프로젝트 수정
+    }
+
+    @Override
+    public List<ProjectDTO> selectByName(String name) {
+        // TODO: 이름으로 검색
+        return null;
+    }
+
+    @Override
+    public   List<EmployeeDTO> selectByUser(String name) {
+        // TODO: 이름으로 검색
+        String target = "%"+ name +"%";
+
+        return  projectDao.selectByUser(target);
+    }
 
 
 

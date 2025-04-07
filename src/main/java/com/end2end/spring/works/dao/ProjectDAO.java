@@ -1,6 +1,8 @@
 package com.end2end.spring.works.dao;
 
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.works.dto.ProjectDTO;
+import com.end2end.spring.works.dto.ProjectInsertDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,7 +17,7 @@ public class ProjectDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public int insert(ProjectDTO dto) {
+    public int insert(ProjectInsertDTO dto) {
         return mybatis.insert("project.insert", dto);
 
     }
@@ -28,11 +30,13 @@ public class ProjectDAO {
         return mybatis.delete("project.deleteBySeq",id);
     }
 
-    public  List<ProjectDTO> selectByName(String name){
+    public ProjectDTO selectById(int id){
 
-        return mybatis.selectList("project.selectByName",name);
+        return mybatis.selectOne("project.selectById",id);
     }
-
+ public List<EmployeeDTO>selectByUser(String target){
+        return mybatis.selectList("project.selectByUser",target);
+ }
 
 
 }

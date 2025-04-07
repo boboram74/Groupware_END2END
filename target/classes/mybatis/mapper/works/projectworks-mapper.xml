@@ -10,36 +10,58 @@
     <!-- 프로젝트 모아보기-->
 
 
-    <delete id="deleteById">
-        delete from project where id=${value}
+    <delete id="deleteById" parameterType="int">
+        delete from project where id=#{id}
     </delete>
     <!-- 프로젝트 삭제-->
 
-
-    <insert id="insert">
-        INSERT INTO project (id, name) values (Project_SEQ.NEXTVAL, #{name})
+    <insert id="insertProject">
+        INSERT INTO project (id, name, deadline, hideYn, regDate)
+        VALUES (Project_SEQ.NEXTVAL, #{name}, #{deadline}, 'N', SYSDATE)
     </insert>
     <!-- 프로젝트추가 -->
 
-    <insert id="insertProjectUser" parameterType="map">
-        INSERT INTO PROJECT_USER (project_id, employee_id)
-        SELECT #{projectId}, employee_id
-        FROM EMPLOYEE
-        WHERE employee_id IN
-        <foreach item="employeeId" collection="employeeIds" open="(" separator="," close=")">
-            #{employeeId}
-        </foreach>
-    </insert>
+<!--    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">-->
+<!--        INSERT INTO PROJECT_USER (id, projectId, employeeId, regDate)-->
+<!--        SELECT PROJECT_USER_SEQ.NEXTVAL, #{projectId}, e.employee_id, SYSDATE-->
+<!--        FROM EMPLOYEE e-->
+<!--        WHERE e.employee_id IN-->
+<!--        <foreach item="employeeId" collection="employeeIds" open="(" separator="," close=")">-->
+<!--            #{employeeId}-->
+<!--        </foreach>-->
+<!--    </insert>-->
 
+
+    <insert id="insertProjectUser">
+        INSERT INTO PROJECT_USER(id, employeeId, projectId)
+        SELECT PROJECT_USER_ID_SEQ.NEXTVAL, A.* FROM (
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT #{item.employeeId}, ${projectId} FROM DUAL
+        </foreach>
+        ) A
+    </insert>
     <update id="updateById">
         update project set
-        name=?,deadLine=? where id =${value}
+        name=?,deadLine=? where id =${id}
     </update>
     <!--프로젝트수정-->
 
-    <select id="selectByCon" resultType="com.end2end.spring.works.dto.ProjectDTO">
-        select * from project where
-        ${name} like '%'||#{deadLine}||'%'
+    <select id="selectById" resultType="int">
+        SELECT * FROM project
+        WHERE id =${id}
     </select>
+
     <!--프로젝트 찾기 -->
+
+<!--  모달창에서 추가할 프로젝트 인원 검색-->
+    <select id="selectByUser"  resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT EMPLOYEE.*, DEPARTMENT.NAME AS departmentName, job.name as jobName
+        FROM EMPLOYEE
+        JOIN DEPARTMENT
+        ON EMPLOYEE.DEPARTMENTID = DEPARTMENT.ID
+        JOIN JOB
+        ON EMPLOYEE.JOBID = JOB.ID
+        WHERE EMPLOYEE.NAME LIKE #{name}
+
+    </select>
 </mapper>

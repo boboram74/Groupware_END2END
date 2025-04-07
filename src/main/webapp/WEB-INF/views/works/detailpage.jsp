@@ -73,7 +73,9 @@
     <h2>${project.name}</h2>
     <div class="project-info">
         <span>기간: ${project.regDate} ~ ${project.deadLine}</span>
+        <
     </div>
+
 </div>
 
 <!-- 칸반보드 -->
@@ -147,6 +149,10 @@
         </div>
     </div>
 <script>
+
+
+
+
     // 프로젝트 기간 선택
     $('#projectPeriod').daterangepicker({
         locale: {

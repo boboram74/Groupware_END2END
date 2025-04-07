@@ -1,13 +1,16 @@
 package com.end2end.spring.works.controller;
 
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.works.dto.ProjectDTO;
-import com.end2end.spring.works.dto.ProjectUserDTO;
+
+import com.end2end.spring.works.dto.ProjectInsertDTO;
+
 import com.end2end.spring.works.service.ProjectService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -29,56 +32,55 @@ public class ProjectController {
             model.addAttribute("stats", projectStats);
             return "works/worksmain";
         }
-//        @RequestMapping("/insertpage")
-//        public String insertpage() {
-//                    return "/works/insertpage";
-//        }//프로젝트 생성 페이지로 이동 대신 모달창으로 대체
-
 
         @RequestMapping("/insert")
-        public void insert( ProjectDTO dto, ProjectUserDTO udto) {
+        public String insert(ProjectInsertDTO dto) {
 
-            projectService.insert(dto,udto);
+            projectService.insert(dto);
 
-            // TODO: 프로젝트 생성
+            // TODO: 프로젝트 생성, 폼으로 보낼 예정
+            return "redirect:/project/main";
         }
-
 
     @RequestMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model) {
-        ProjectDTO project = projectService.getProjectById(id);//프로젝트 아이디를 받아서 정보를 가져오도록
+            ProjectDTO project = projectService.selectById(id);//프로젝트 아이디를 받아서 정보를 가져오도록
         model.addAttribute("project", project);
         return "works/projectDetail";
     }//프로젝트의 디테일 누르면 works 페이지로 가도록
 
     // Update
+    @ResponseBody
     @RequestMapping("/update/{id}")
-    public String updateForm(@PathVariable Long id, Model model) {
-        ProjectDTO project = projectService.getProjectById(id);
-        model.addAttribute("project", project);
-        return "works/updateForm";
+    public ProjectDTO updateForm(@PathVariable int id) {
+        return projectService.selectById(id);
     }
 
     @RequestMapping("/update")
-    public String update(@ModelAttribute ProjectDTO dto) {
+    public String update(@ModelAttribute ProjectDTO dto, Model model) {
         projectService.update(dto);
         return "redirect:/project/detail/" + dto.getId();
     }
 
     // Delete
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable int id) {
         projectService.deleteById(id);
         return "redirect:/project/main";
     }
 
-    // Search
     @RequestMapping("/search")
-    public String searchByName(@RequestParam String name) {
-        List<ProjectDTO> result = projectService.searchByName(name);
+    public String selectByName(@RequestParam String name, Model model) {
+        List<ProjectDTO> result = projectService.selectByName(name);
         model.addAttribute("projects", result);
+        //jsp에서 검색해서 나오는 부분에 projects로 c:foreach로 풀어줘야됨
         return "works/worksmain";
     }
+    @ResponseBody
+    @RequestMapping("/searchUser")
+    public List<EmployeeDTO> selectByUser(@RequestParam String name) {
 
+        return    projectService.selectByUser(name);
+    }
 
 }

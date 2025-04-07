@@ -26,4 +26,7 @@ public class SolderingDAO {
     public List<EmployeeDTO> selectByState(String state) {
         return mybatis.selectList("soldering.selectByState", state);
     }
+    public List<EmployeeDTO> selectNotCheck() {
+        return mybatis.selectList("soldering.selectByNotCheck");
+    }
 }

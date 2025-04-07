@@ -33,4 +33,18 @@ public class SolderingServiceImpl implements SolderingService {
                 .collect(Collectors.toList());
         solderingDAO.insertList(solderingDTOList);
     }
+
+    @Transactional
+    @Override
+    public void insertNotCheck() {
+        List<EmployeeDTO> employeeDTOList = solderingDAO.selectNotCheck();
+
+        List<SolderingDTO> solderingDTOList = employeeDTOList.stream()
+                .map((employee) -> SolderingDTO.builder()
+                        .employeeId(employee.getId())
+                        .state("NOT_CHECK")
+                        .build())
+                .collect(Collectors.toList());
+        solderingDAO.insertList(solderingDTOList);
+    }
 }

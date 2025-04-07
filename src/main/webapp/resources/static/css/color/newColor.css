@@ -1,0 +1,412 @@
+/* color.css */
+
+/* ===== 색상 변수 정의 ===== */
+.light {
+    --md-sys-color-bg: #f5f5f5;
+    --md-sys-color-surface-bright: #ffffff;
+    --md-sys-color-surface: #202024;
+    --md-sys-color-sidebar-bg: #2c3e50;
+    --md-sys-color-sidebar-text: #ffffff;
+
+    /* Primary Colors */
+    --md-sys-color-primary: #2c3e50;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #d5e1f2;
+    --md-sys-color-on-primary-container: #1a2633;
+
+    /* Secondary Colors */
+    --md-sys-color-secondary: #666;
+    --md-sys-color-on-secondary: #ffffff;
+    --md-sys-color-secondary-container: #dae4e9;
+    --md-sys-color-on-secondary-container: #334954;
+
+    /* Tertiary Colors */
+    --md-sys-color-tertiary: #34495e;
+    --md-sys-color-on-tertiary: #ffffff;
+    --md-sys-color-tertiary-container: #d6e4f0;
+    --md-sys-color-on-tertiary-container: #1c2836;
+
+    /* Error Colors */
+    --md-sys-color-error: #c0392b;
+    --md-sys-color-on-error: #ffffff;
+    --md-sys-color-error-container: #fcd7d2;
+    --md-sys-color-on-error-container: #621b15;
+
+    --md-sys-color-primary-hover: #3d5266;        /* primary보다 약간 밝은 색 */
+    --md-sys-color-primary-container-hover: #c4d3e8; /* container보다 약간 어두운 색 */
+    --md-sys-color-secondary-hover: #647d89;
+    --md-sys-color-secondary-container-hover: #ccd8de;
+    --md-sys-color-tertiary-hover: #435c74;
+    --md-sys-color-tertiary-container-hover: #c5d6e6;
+    --md-sys-color-error-hover: #d44a3b;
+    --md-sys-color-error-container-hover: #ecc9c4;
+
+    /* Surface / Border Colors */
+    --md-sys-color-outline: #ddd;        /* 라이트 모드 테두리 색상 */
+    --md-sys-color-outline-variant: #e5e5e5;  /* 라이트 모드 보조 테두리 */
+    --md-sys-color-surface-variant: #f5f5f5;  /* 라이트 모드 표면 변형 */
+
+    --md-sys-color-surface-container: #f8f9fa;
+}
+
+/* Dark 테마 색상 */
+.dark {
+    --md-sys-color-bg: #202024;
+    --md-sys-color-surface-bright: rgb(54 57 62);
+    --md-sys-color-surface: #ffffff;
+
+    --md-sys-color-sidebar-bg: #3c4044;
+    --md-sys-color-sidebar-text: #ffffff;
+
+    /* Primary Colors */
+    --md-sys-color-primary: #a8c6ef;
+    --md-sys-color-on-primary: #0a1622;
+    --md-sys-color-primary-container: #1e2d3e;
+    --md-sys-color-on-primary-container: #e8f1fc;
+
+    /* Secondary Colors */
+    --md-sys-color-secondary: #b4c5ce;
+    --md-sys-color-on-secondary: #1e2930;
+    --md-sys-color-secondary-container: #3d4f58;
+    --md-sys-color-on-secondary-container: #e6eef2;
+
+    /* Tertiary Colors */
+    --md-sys-color-tertiary: #a8c1d9;
+    --md-sys-color-on-tertiary: #0d1824;
+    --md-sys-color-tertiary-container: #243242;
+    --md-sys-color-on-tertiary-container: #e6f0fa;
+
+    /* Error Colors */
+    --md-sys-color-error: #e6a8a1;
+    --md-sys-color-on-error: #2c0d0a;
+    --md-sys-color-error-container: #8c2a1f;
+    --md-sys-color-on-error-container: #fce8e6;
+
+    /* Hover Colors - Dark Theme */
+    --md-sys-color-primary-hover: #b9d1f4;        /* 더 밝은 색상 */
+    --md-sys-color-primary-container-hover: #2a3d52; /* 더 밝은 컨테이너 */
+    --md-sys-color-secondary-hover: #c5d2d9;
+    --md-sys-color-secondary-container-hover: #4b5f69;
+    --md-sys-color-tertiary-hover: #b9cee2;
+    --md-sys-color-tertiary-container-hover: #324254;
+    --md-sys-color-error-hover: #f0b9b3;
+    --md-sys-color-error-container-hover: #9c362a;
+
+    /* Surface / Border Colors */
+    --md-sys-color-outline: #2a2d31;         /* 메인 테두리 색상 */
+    --md-sys-color-outline-variant: #22252a;  /* 보조 테두리 (메인보다 약간 어두움) */
+    --md-sys-color-surface-variant: #1a1d22;  /* 표면 변형 (가장 어두움) */
+
+    --md-sys-color-surface-container: #3c4044;
+}
+
+.bg-color {
+    background-color: var(--md-sys-color-bg);
+}
+
+.sidebar-color {
+    background-color: var(--md-sys-color-sidebar-bg);
+    color: var(--md-sys-color-sidebar-text);
+}
+
+.surface-bright {
+    background-color: var(--md-sys-color-surface-bright);
+    color: var(--md-sys-color-surface);
+}
+
+/* ===== 배경색과 텍스트 색상 조합 ===== */
+.primary {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}
+
+.on-primary {
+    background-color: var(--md-sys-color-on-primary);
+    color: var(--md-sys-color-primary);
+}
+
+.primary-container {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.on-primary-container {
+    background-color: var(--md-sys-color-on-primary-container);
+    color: var(--md-sys-color-primary-container);
+}
+
+.secondary {
+    background-color: var(--md-sys-color-secondary);
+    color: var(--md-sys-color-on-secondary);
+}
+
+.on-secondary {
+    background-color: var(--md-sys-color-on-secondary);
+    color: var(--md-sys-color-secondary);
+}
+
+.secondary-container {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.on-secondary-container {
+    background-color: var(--md-sys-color-on-secondary-container);
+    color: var(--md-sys-color-secondary-container);
+}
+
+.tertiary {
+    background-color: var(--md-sys-color-tertiary);
+    color: var(--md-sys-color-on-tertiary);
+}
+
+.on-tertiary {
+    background-color: var(--md-sys-color-on-tertiary);
+    color: var(--md-sys-color-tertiary);
+}
+
+.tertiary-container {
+    background-color: var(--md-sys-color-tertiary-container);
+    color: var(--md-sys-color-on-tertiary-container);
+}
+
+.on-tertiary-container {
+    background-color: var(--md-sys-color-on-tertiary-container);
+    color: var(--md-sys-color-tertiary-container);
+}
+
+.error {
+    background-color: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
+}
+
+.on-error {
+    background-color: var(--md-sys-color-on-error);
+    color: var(--md-sys-color-error);
+}
+
+.error-container {
+    background-color: var(--md-sys-color-error-container);
+    color: var(--md-sys-color-on-error-container);
+}
+
+.on-error-container {
+    background-color: var(--md-sys-color-on-error-container);
+    color: var(--md-sys-color-error-container);
+}
+
+/* ===== 텍스트 전용 색상 ===== */
+.primary-text {
+    color: var(--md-sys-color-primary);
+}
+
+.on-primary-text {
+    color: var(--md-sys-color-on-primary);
+}
+
+.primary-container-text {
+    color: var(--md-sys-color-primary-container);
+}
+
+.on-primary-container-text {
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.secondary-text {
+    color: var(--md-sys-color-secondary);
+}
+
+.on-secondary-text {
+    color: var(--md-sys-color-on-secondary);
+}
+
+.secondary-container-text {
+    color: var(--md-sys-color-secondary-container);
+}
+
+.on-secondary-container-text {
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.tertiary-text {
+    color: var(--md-sys-color-tertiary);
+}
+
+.on-tertiary-text {
+    color: var(--md-sys-color-on-tertiary);
+}
+
+.tertiary-container-text {
+    color: var(--md-sys-color-tertiary-container);
+}
+
+.on-tertiary-container-text {
+    color: var(--md-sys-color-on-tertiary-container);
+}
+
+.error-text {
+    color: var(--md-sys-color-error);
+}
+
+.on-error-text {
+    color: var(--md-sys-color-on-error);
+}
+
+.error-container-text {
+    color: var(--md-sys-color-error-container);
+}
+
+.on-error-container-text {
+    color: var(--md-sys-color-on-error-container);
+}
+
+/* ===== 테두리 색상 ===== */
+.primary-border {
+    border-color: var(--md-sys-color-primary);
+}
+
+.on-primary-border {
+    border-color: var(--md-sys-color-on-primary);
+}
+
+.primary-container-border {
+    border-color: var(--md-sys-color-primary-container);
+}
+
+.on-primary-container-border {
+    border-color: var(--md-sys-color-on-primary-container);
+}
+
+.secondary-border {
+    border-color: var(--md-sys-color-secondary);
+}
+
+.on-secondary-border {
+    border-color: var(--md-sys-color-on-secondary);
+}
+
+.secondary-container-border {
+    border-color: var(--md-sys-color-secondary-container);
+}
+
+.on-secondary-container-border {
+    border-color: var(--md-sys-color-on-secondary-container);
+}
+
+.tertiary-border {
+    border-color: var(--md-sys-color-tertiary);
+}
+
+.on-tertiary-border {
+    border-color: var(--md-sys-color-on-tertiary);
+}
+
+.tertiary-container-border {
+    border-color: var(--md-sys-color-tertiary-container);
+}
+
+.on-tertiary-container-border {
+    border-color: var(--md-sys-color-on-tertiary-container);
+}
+
+.error-border {
+    border-color: var(--md-sys-color-error);
+}
+
+.on-error-border {
+    border-color: var(--md-sys-color-on-error);
+}
+
+.error-container-border {
+    border-color: var(--md-sys-color-error-container);
+}
+
+.on-error-container-border {
+    border-color: var(--md-sys-color-on-error-container);
+}
+
+/* Hover 효과 클래스들 */
+.primary-hover {
+    transition: background-color 0.3s ease;
+}
+.primary-hover:hover {
+    background-color: var(--md-sys-color-primary-hover);
+}
+
+.primary-container-hover {
+    transition: background-color 0.3s ease;
+}
+.primary-container-hover:hover {
+    background-color: var(--md-sys-color-primary-container-hover);
+}
+
+.secondary-hover {
+    transition: background-color 0.3s ease;
+}
+.secondary-hover:hover {
+    background-color: var(--md-sys-color-secondary-hover);
+}
+
+.secondary-container-hover {
+    transition: background-color 0.3s ease;
+}
+.secondary-container-hover:hover {
+    background-color: var(--md-sys-color-secondary-container-hover);
+}
+
+.tertiary-hover {
+    transition: background-color 0.3s ease;
+}
+.tertiary-hover:hover {
+    background-color: var(--md-sys-color-tertiary-hover);
+}
+
+.tertiary-container-hover {
+    transition: background-color 0.3s ease;
+}
+.tertiary-container-hover:hover {
+    background-color: var(--md-sys-color-tertiary-container-hover);
+}
+
+.error-hover {
+    transition: background-color 0.3s ease;
+}
+.error-hover:hover {
+    background-color: var(--md-sys-color-error-hover);
+}
+
+.error-container-hover {
+    transition: background-color 0.3s ease;
+}
+.error-container-hover:hover {
+    background-color: var(--md-sys-color-error-container-hover);
+}
+
+/* 텍스트 hover 효과 */
+.primary-text-hover {
+    transition: color 0.3s ease;
+}
+.primary-text-hover:hover {
+    color: var(--md-sys-color-primary-hover);
+}
+
+.secondary-text-hover {
+    transition: color 0.3s ease;
+}
+.secondary-text-hover:hover {
+    color: var(--md-sys-color-secondary-hover);
+}
+
+.tertiary-text-hover {
+    transition: color 0.3s ease;
+}
+.tertiary-text-hover:hover {
+    color: var(--md-sys-color-tertiary-hover);
+}
+
+.error-text-hover {
+    transition: color 0.3s ease;
+}
+.error-text-hover:hover {
+    color: var(--md-sys-color-error-hover);
+}

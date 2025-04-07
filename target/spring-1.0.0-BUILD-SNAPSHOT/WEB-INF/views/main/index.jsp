@@ -1,641 +1,790 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:choose>
-    <c:when test="${employee == null}">
-        <jsp:include page="login.jsp"/>
-    </c:when>
-    <c:otherwise>
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>Document</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-            <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
-            <script>
+<jsp:include page="/WEB-INF/views/template/header.jsp" />
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'ko',
+            headerToolbar: {
+                left: 'title',
+                right: 'prev,next',
+            },
+            initialView: 'dayGridMonth',
+            height: 300,
+            aspectRatio: 0.5,  // 캘린더의 가로/세로 비율 조정
+            // 헤더 스타일 설정
+            viewDidMount: function(arg) {
+                const header = document.querySelector('.fc-header-toolbar');
+                if (header) {
+                    header.style.padding = '5px';  // 헤더 패딩 축소
+                    header.style.marginBottom = '5px';  // 하단 여백 축소
 
-                document.addEventListener('DOMContentLoaded', function() {
-                    var calendarEl = document.getElementById('calendar');
-                    var calendar = new FullCalendar.Calendar(calendarEl, {
-                        initialView: 'dayGridMonth',
-                        width:350,
-                        height: 400,
-                        aspectRatio: 1, // 가로세로 비율을 1:1로 유지
-                        expandRows: true // 행의 개수에 따라 크기 자동 조정
-                    });
-                    calendar.render();
-                });
-
-            </script>
-            <style>
-                /**{border: 1px solid red;}*/
-                body {
-
-                    margin: 0;
-                    padding: 0;
-                    background-color: #f4f4f4;
+                    // 헤더의 폰트 크기 조정
+                    const title = header.querySelector('.fc-toolbar-title');
+                    if (title) {
+                        title.style.fontSize = '1em';
+                    }
                 }
-                /* div{   border: 1px solid red;
-                              } */
+            }
+        });
+        calendar.render();
+    });
 
-                html, body {
-                    margin: 0;
-                    padding: 0;
-                    width: 100%;
-                }
-                .container-fluid {
-                    overflow: hidden;
-                    display: flex;
-                    height: 100vh;
-                    width: 100%;
-                    background-color: #eef1f6;
-                    position: relative;
-                    padding: 0;
-                    overflow-y: scroll;
-                    position: relative;
-                }
+    // 창 크기 변경 시 자동 조절
+    window.addEventListener('resize', function() {
+        calendar.setOption('height', calendar.getEl().offsetWidth * 0.8);
+    });
+</script>
+<style>
+    .boxContents {
+        display: grid;
+        grid-template-columns: 2.5fr 10fr 2.5fr; /* 3:5:2 비율 설정 */
+        max-width: 2100px; /* 최대 너비 설정 */
+        margin: 60px auto 0;
+        gap: 20px;
+        padding: 35px;
+    }
+    /* 좌측 영역 */
+    .leftContents {
+        display: grid;
+        grid-template-rows: repeat(12, 1fr);
+        gap: 20px;
+    }
 
-                .main{
-                    width: 100%;
-                }
+    /* commuteBox 수정 - grid-row 값을 4에서 3으로 변경 */
+    .commuteBox {
+        grid-row: span 3;  /* 4에서 3으로 변경하여 높이 25% 감소 */
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
 
-                .logo {
-                    position: absolute;
-                    left:65px;
-                    width: 170px;
-                    height: 30px;
-                    overflow: hidden;
-                }
-                .logo>.fit{
-                    width:100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
+    /* 중앙 영역 */
+    .centerContents {
+        display: grid;
+        grid-template-rows: repeat(12, 1fr);
+        gap: 20px;
+    }
 
-                .boardBox{
-                    height: 60%;
-                    background-color: white;
-                }
-                .box{
-                    background-color: white;
-                ;
-                }
+    .boardBox {
+        grid-row: span 7;
+        border-radius: 10px;
+    }
 
-                .boxContents {
+    .approvalBox {
+        grid-row: span 5;
+        border-radius: 10px;
+    }
+    /* 우측 영역 */
+    .rightContents {
+        display: grid;
+        grid-template-rows: repeat(12, 1fr);
+        gap: 20px;
+    }
 
-                    display: flex;
-                    height: 100%;
-                    width: 100%;
-                    justify-content: space-between;
-                    gap: 20px;
-                    margin-top: 20px;
-                    left: 50px;
-                    position: absolute;
-                }
+    .btnBox {
+        grid-row: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 10px;
+        padding: 0;
+    }
 
-                .leftContents{
-                    min-width: 300px;
-                    width: 30vw;
+    .btnBox button {
+        width: 100%;
+        height: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        font-size: 25px;
+        font-weight: 600;
+        padding: 30px 20px; /* 패딩 증가로 버튼 크기 키움 */
+        word-break: keep-all;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        transition: all 0.2s ease-in-out;
+        line-height: 1.2; /* 줄 간격 조정 */
+    }
 
-                    display: flex;
-                    flex-grow: 1;
+    .btnBox button:hover {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        transform: translateY(-1px);
+    }
 
-                }
-                .centerContents {
+    /* imgBox 수정 */
+    .imgBox {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-bottom: 20px;
+        background-image: url("/image/defaultImg.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border: 1px solid #eee; /* 테두리 추가 */
+    }
 
-                    width: 60vw;
-                    min-width: 580px;
-                    padding: 15px;
-                    background-color: rgba(222, 229, 239, 0.5);
-                    flex-grow: 2.5;
-                    height: 100vh;
-                }
-                .rightContents{
-                    min-width: 210px;
-                    display: flex;
-                    flex-direction: column;
-                    flex-grow: 2;
+    /* logbox 수정 */
+    .logbox {
+        grid-row: span 4;
+        border-radius: 10px;
+        padding: 10px; /* 상하좌우 패딩 축소 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
 
-                }
+    /* information 수정 */
+    .information {
+        width: 90%;
+        height: 98px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+        background-color: var(--md-sys-color-surface-container);
+        border-radius: 8px;
+        box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+    }
 
-                .mainContent {
-                    flex: 1;
-                    padding: 20px;
-                    background: #fff;
-                    position: absolute;
+    .info-item {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        justify-content: center;
+        font-wieght: 600;
+    }
 
-                }
+    /* 이름 스타일 */
+    .info-item.name {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--md-sys-color-surface);
+    }
 
+    /* 부서 스타일 */
+    .info-item.department {
+        font-size: 14px;
+        color: var(--md-sys-color-secondary);
+    }
 
-                .header {
-                    background: #fff;
-                    padding: 10px;
-                    height: 50px;
-                    width: 100%;
-                    box-sizing: border-box;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: flex-end;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                    position: sticky;
-                    top: 0;
-                    z-index: 1;
+    .info-summary {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+        width: 100%; /* information 전체 너비만큼 확장 */
+        box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+    }
 
-                }
+    .summary-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* 양끝 정렬 */
+        padding: 5px 0;
+        font-size: 18px;
+        color: var(--md-sys-color-secondary);
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 
+    .summary-item .material-icons {
+        font-size: 18px;
+        color: var(--md-sys-color-primary);
+    }
 
-                .sidebar {
-                    text-align: left;
-                    margin: 0;
-                    width: 50px;
-                    overflow: hidden;
-                    background: #003465;
-                    height: 100vh;
-                    /*text-align: center;*/
-                    position:fixed;
-                    transition: width 0.3s ease;
-                    color: white;
-                    z-index: 3;
+    .summary-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-                }
+    .summary-count {
+        color: var(--md-sys-color-primary);
+        font-weight: 600;
+        font-size: 18px;
+    }
 
-                .sidebar ul {
-                    padding: 0;
-                    margin: 0;
-                    flex: 1;
-                    width: 100%;
+    .boxTitle {
+        padding: 15px;
+        font-size: 20px;
+        font-weight: 600;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+    }
 
-                }
+    .currentDate {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        color: var(--md-sys-color-secondary);
+    }
 
-                .sidebar:hover {
-                    width: 150px;
-                }
-                .sidebar ul li {
-                    list-style: none;
-                    padding: 10px;
-                    cursor: pointer;
-                    margin-top: 20px;
-                    text-align: left; /* 글씨 밀림 방지 */
-                    transition: opacity 0.3s ease;
-                    white-space: nowrap; /* 글씨 줄 바꿈 방지 */
-                    display: flex;
-                    align-items: center;
-                }
-                .sidebar a {
-                    text-decoration: none;
-                    color: #fff;
-                    padding-left: 10px;
-                }
-                .sidebar:hover ul li {
-                    opacity: 1; /* 메뉴 열릴 때 자연스럽게 표시 */
-                    align-items: center;
-                }
+    .currentTime {
+        font-size: 35px;
+        font-weight: 600;
+    }
 
-                /*.sidebar ul li:hover {*/
-                /*    background-color: whitesmoke;*/
-                /*    color: #003465;*/
-                /*}*/
-                .sidebar>.icon{
-                    display: flex;
-                    margin-top: 20px;
+    .commuteButtons {
+        display: flex;
+        justify-content: center; /* 가운데 정렬 추가 */
+        gap: 10px;
+        padding: 10px;
+    }
 
+    /* 출퇴근 버튼 스타일 수정 */
+    .commuteButtons button {
+        width: 120px; /* 버튼 너비 고정 */
+        padding: 12px;
+        font-size: 18px;
+        font-weight: 500;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
 
-                }
-                .sidebar>.icon:hover{
-                    background-color: whitesmoke;
-                    color: #003465;
-                }
-                .button {
-                    display: block;
-                    margin-bottom: 10px;
-                    padding: 10px;
-                    background: #fff;
+    /* timeDisplay 여백 조정 */
+    .timeDisplay {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;  /* 패딩 살짝 줄임 */
+    }
 
-                    border: none;
-                    cursor: pointer;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                }
+    .commuteButtons button:hover:not(.disabled) {
+        opacity: 0.9;
+    }
 
-                .chat-button {
-                    padding: 15px;
-                    border-radius: 50%;
-                }
+    .startWork.disabled {
+        opacity: 0.5;
+        pointer-events: none; /* 호버 효과 완전히 제거 */
+    }
 
-                profileimg{
-                    overflow: clip;
-                    height: 100px;
-                }
-                .imgBox{
-                    width: 180px;
-                    height: 180px;
-                    border-radius: 50%;
-                    overflow: hidden;
-                    background-image: url("./ㄴ.jpg");
-                    background-repeat: no-repeat;    background-position: center;
+    .calendarBox {
+        grid-row: span 5; /* 기존 값에서 5로 조정 */
+        border-radius: 10px;
+    }
 
-                }
-                .logbox{
+    #calendar {
+        max-height: 100px; /* 최대 높이 제한 */
+        padding: 10px;
+    }
 
-                    height: 30%;
-                    margin-left: 20px;
-                    background-color: white;
-                    align-items: center;
-                    display: flex;
-                    justify-content: center;
-                    flex-direction: column;
-                    border-radius: 10px;
-                    margin-top: 16px;
-                }
+    /* FullCalendar 커스텀 스타일 */
+    .fc {
+        height: 100% !important;
+    }
 
+    .fc .fc-toolbar {
+        font-size: 0.9em;  /* 툴바 전체 폰트 크기 축소 */
+    }
 
+    .fc .fc-button {
+        padding: 0.2em 0.4em;  /* 버튼 크기 축소 */
+    }
 
-                .calenderBox{
-                    margin-top: 30px;
-                    background-color: white;
-                    border-radius: 10px;
-                    margin-left: 20px;
+    .fc .fc-daygrid-day {
+        height: auto !important;  /* 날짜 셀 높이 자동 조정 */
+    }
 
-                }
+    .material-icons {
+        font-size: 20px;
+    }
 
-                #calendar {
-                    max-width: 350px; /* 최대 너비 설정 */
-                    max-height: 400px;
-                }
-                .loginlist{
-                    border-radius: 10px;
-                    margin-top: 30px;
-                    margin-left: 20px;
-                    background-color: white;
-                    height: 20%;
-                }
-                .birthBox{
+    .btn-text {
+        font-size: 14px;
+    }
 
-                    margin-top: 30px;
-                    height: 50%;
-                }
-                .myWaitingBox{
-                    margin-top: 30px;
-                    height: 35%;
-                    background-color: white;
-                }
-                .btnBox
-                .btn-primary{
-                    flex-direction: column;
-                    display: flex;
-                    width: 137px;
-                    height: 50px;
+    /* 게시판 컨테이너 스타일 */
+    .board-container {
+        padding: 20px;
+    }
 
-                }
-                .btn-primary {
-                    border: none;
-                    flex-direction: column;
-                    display: flex;
-                    width: 137px;
-                    height: 50px;
-                    /*border: 2px solid navy;*/
-                    background-color: white;
-                    color: navy;
-                    font-size: 16px;
-                    text-align: center;
-                    justify-content: center;
-                    align-items: center;
-                    transition: all 0.3s ease-in-out;
-                    cursor: pointer;
-                    border-radius: 8px;
-                }
-                .btn-primary:hover {
-                    background: #003465!important;
-                    color: white !important;
-                    transform: scale(1.05) !important;
-                }
+    /* 게시판 타입 버튼 스타일 */
+    .board-type-buttons {
+        display: flex;
+        gap: 0;
+        margin-bottom: 20px;
+        border-bottom: 2px solid var(--md-sys-color-outline);
+    }
 
-                .btnBox{
-                    display: flex;
-                    flex-direction: column;
-                }
-                button{
-                    margin-top: 15px;
-                }
-                .profileIcon{
-                    border-radius: 50%;
-                    width: 35px;
-                    height: 35px;
-                }
+    .board-type-btn {
+        padding: 15px 30px; /* 패딩 증가로 버튼 크기 증가 */
+        border: none;
+        border-top: 2px solid var(--md-sys-color-outline);
+        border-radius: 0; /* 모서리 둥글기 제거 */
+        background: none;
+        cursor: pointer;
+        font-size: 15px;
+        position: relative;
+        transition: all 0.2s;
+        min-width: 120px; /* 최소 너비 설정 */
+        text-align: center;
+        color: var(--md-sys-color-surface);
+    }
 
-                .menu {
-                    list-style: none;
-                    padding: 10px;
-                    opacity: 0;
-                    transition: opacity 0.3s ease-in-out;
-                }
+    /* hover 효과 - active와 동일한 스타일 적용 */
+    .board-type-btn:hover {
+        font-weight: 600;
+        border-top: 2px solid var(--md-sys-color-primary);
+        border-bottom: 2px solid var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-primary);
+        margin-bottom: -2px;
+    }
 
-                .material-icons{
-                    font-size: 30px;
-                }
-                /*
-                @media all and (max-width: 639px) {
-                  .SizeVisibleClass .ViWidthS { display: block; }
-                  .SizeVisibleClass .ViWidthM { display: none; }
-                  .SizeVisibleClass .ViWidthL { display: none; }
-                }
+    /* active 상태 */
+    .board-type-btn.active {
+        font-weight: 600;
+        border-bottom: 2px solid var(--md-sys-color-surface-bright);
+        border-top: 2px solid var(--md-sys-color-primary);
+        color: var(--md-sys-color-primary);
+        margin-bottom: -2px;
+    }
 
+    /* category-list-container 스타일 */
+    .category-list-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+    }
 
-                @media all and (min-width: 640px) and (max-width: 1200px) {
-                  .SizeVisibleClass .ViWidthS { display: none; }
-                  .SizeVisibleClass .ViWidthM { display: block; }
-                  .SizeVisibleClass .ViWidthL { display: none; }
-                }
+    /* 카테고리 목록 스타일 */
+    .category-list {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 
+    .category-btn {
+        padding: 6px 16px;
+        border: none; /* 테두리 제거 */
+        background: none; /* 배경 제거 */
+        cursor: pointer;
+        font-size: 13px;
+        color: 1px solid var(--md-sys-color-outline);
+        transition: all 0.2s;
+    }
 
-                @media all and (min-width: 1024px) {
-                  .SizeVisibleClass .ViWidthS { display: none; }
-                  .SizeVisibleClass .ViWidthM { display: none; }
-                  .SizeVisibleClass .ViWidthL { display: block; }
-                } */
+    .category-btn.active {
+        background: none; /* 활성화 상태에서도 배경 없음 */
+        color: var(--md-sys-color-primary);
+        font-weight: 600; /* 활성화 상태일 때 글자 굵기 증가 */
+    }
 
-                /* @media (max-width: 430px) {
-                  .header, .sidebar {
-                    display: none;
-                  }
+    .category-btn:hover {
+        background: none;
+        color: var(--md-sys-color-primary);
+    }
 
-                  .boxContents {
-                    flex-direction: column;
-                    align-items: center;
-                  }
+    /* 더보기 버튼 스타일 */
+    .more-btn {
+        font-size: 14px;
+        color: var(--md-sys-color-secondary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        padding: 6px 12px;
+        transition: all 0.2s;
+    }
 
-                  .logbox, .boardBox, .myWaitingBox {
-                    width: 90%;
-                    margin: 10px auto;
-                  }
+    .more-btn:hover {
+        color: var(--md-sys-color-primary);
+    }
 
+    /* 게시판 테이블 스타일 */
+    .board-table-container {
+        overflow-x: auto;
+    }
 
-                  .bottom-nav {
-                    display: flex;
-                    justify-content: space-around;
-                    position: fixed;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    background-color: #fff;
-                    padding: 10px 0;
-                    border-top: 1px solid #ddd;
-                  }
+    .board-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-                  .bottom-nav a {
-                    text-decoration: none;
-                    color: black;
-                    font-size: 18px;
-                  }
+    .board-table th {
+        background-color: var(--md-sys-color-surface-container);
+        padding: 12px;
+        font-weight: 600;
+        text-align: center;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+        border-top: 1px solid var(--md-sys-color-primary);
+    }
 
-                    .main > div:not(.logbox):not(.boardBox):not(.myWaitingBox) {
-                    display: none;
-                  }
-                  .bottom-nav a {
-                    text-decoration: none;
-                    color: black;
-                    font-size: 18px;
-                  }
-                } */
+    .board-table td {
+        padding: 10px;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+        text-align: center;
+        vertical-align: middle;
+    }
 
-            </style>
+    .board-table td.title {
+        text-align: left;
+        cursor: pointer;
+    }
 
+    .board-table td.title:hover {
+        text-decoration: underline;
+        color: var(--md-sys-color-primary);
+    }
 
-        </head>
+    /* 테이블 행 호버 효과 */
+    .board-table tbody tr:hover {
+        background-color: var(--md-sys-color-surface-container);
+    }
 
-        <body>
+    /* 기존 스타일에 추가 */
+    .writer-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
 
+    .profile-img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border: 1px solid #eee;
+    }
 
-        <div class="container-fluid">
-            <div class="sidebar d-xs-none .d-md-block">
-                <div class="icon">
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-                        </svg>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>홈
-                        </li>
-                    </ul>
+    .birthBox {
+        grid-row: span 10;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* 그리드 셀의 전체 높이 사용 */
+    }
+
+    .birth-list {
+        padding: 20px;
+        overflow-y: auto;
+        height: calc(100% - 53px); /* boxTitle 높이를 뺀 나머지 전체 */
+        min-height: 0; /* 스크롤 동작을 위해 필요 */
+    }
+
+    .birth-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+    }
+
+    .birth-item:last-child {
+        border-bottom: none;
+    }
+
+    .birth-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .birth-profile .profile-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .birth-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .birth-name {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .birth-dept {
+        font-size: 13px;
+        color: var(--md-sys-color-secondary);
+    }
+
+    .birth-date {
+        font-size: 14px;
+        color: var(--md-sys-color-primary);
+        font-weight: 500;
+    }
+
+    /* 반응형을 위한 미디어 쿼리 추가 */
+    @media screen and (max-width: 2140px) { /* 1700px + 좌우 패딩 고려 */
+        .boxContents {
+            padding: 20px;
+        }
+    }
+
+    @media screen and (max-width: 1024px) {
+        .leftContents,
+        .rightContents {
+            width: 250px;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .leftContents,
+        .rightContents {
+            width: 200px;
+        }
+    }
+</style>
+
+    <div class="leftContents">
+        <div class="logbox surface-bright">
+            <div class="imgBox" style="background-image: url(${employee.profileImg})"></div>
+            <div class="information">
+                <div class="info-item name">
+                    ${employee.name} ${employee.jobName}
                 </div>
-
-                <div class="icon">
-
-
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25" fill="currentColor" class="bi bi-clipboard2" viewBox="0 0 16 16">
-                            <path d="M3.5 2a.5.5 0 0 0-.5.5v12a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-12a.5.5 0 0 0-.5-.5H12a.5.5 0 0 1 0-1h.5A1.5 1.5 0 0 1 14 2.5v12a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-12A1.5 1.5 0 0 1 3.5 1H4a.5.5 0 0 1 0 1z"/>
-                            <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5"/>
-                        </svg>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>게시판
-                        </li>
-                    </ul>
-
-                </div>
-
-                <div class="icon">
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
-                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
-                        </svg>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>메일
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="icon">
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25"  fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
-                            <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
-                        </svg>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>전자결재
-                        </li>
-                    </ul>
-                </div>
-
-
-                <div class="icon">
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25"  fill="currentColor" class="bi bi-briefcase-fill" viewBox="0 0 16 16">
-                            <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"/>
-                            <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"/>
-                        </svg>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>업무보고
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="icon">
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
-                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
-                        </svg>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>일정/예약
-                        </li>
-                    </ul>
-                </div>
-
-
-                <div class="icon">
-                    <ul>
-                        <li><span class="material-icons">person</span>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>인사관리
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="icon">
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25"  fill="currentColor" class="bi bi-briefcase-fill" viewBox="0 0 16 16">
-                            <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"/>
-                            <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"/>
-                        </svg>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>조직도
-                        </li>
-                    </ul>
+                <div class="info-item department">
+                    ${employee.departmentName}
                 </div>
             </div>
-
-
-            <div class="main">
-
-                <div class="header">
-
-                    <div class="logo">
-                        <img src="image/로그인로고.PNG" class="fit"> </div>
-                    <div class="profile">
-         <span class="photo">
-              <a href="/mypage/{employeeId}">
-                <img class="profileIcon" src="${employee.profileImg}" />
-                  <!-- 세션에서 이미지 불러오기 -->
-              </a>
-            </span>
+            <div class="info-summary">
+                <div class="summary-item">
+                    <div class="summary-left">
+                        <span class="material-icons">mail</span>
+                        <span class="summary-text">새 메일</span>
                     </div>
+                    <span class="summary-count">5</span>
                 </div>
-                <div class="boxContents">
-                    <div class=leftContents">
-                        <div class="logbox">
-                            <div class="imgBox">
-
-                            </div>
-
-                            <div class="information">
-                                <!-- ${login.name} 사원
-      ${login.part} 부
-      ${login.mail}  -->
-                                홍길동 사원<br>
-                                인사부<br>
-                                test@gmail.com
-
-                            </div>
-
-                        </div>
-                        <div class="loginlist ViWidthL">최근 로그인 내역</div>
-                        <div class="calenderBox ViWidthL"  id='calendar'>캘린더
-
-
-
-                        </div>
+                <div class="summary-item">
+                    <div class="summary-left">
+                        <span class="material-icons">event</span>
+                        <span class="summary-text">오늘 일정</span>
                     </div>
-
-                    <div class="centerContents">
-                        <div class="boardBox">게시판 목록
-                            <div class="boardlist">
-                                <h3>최근 게시물 들어올 자리 !</h3>
-                                <table>
-                                    <thead>
-                                    <tr id="title">
-
-                                    </tr>
-                                    </thead>
-                                    <tbody id="latestboard">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="v">나의 결재 대기 문서함</div>
-                    </div>
-
-                    <div class="rightContents">
-                        <div class="btnBox">
-                            <button type="button" class="btn btn-primary"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color: #ffffff; color: black; display: inline-block; ">
-
-                                <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20" fill="currentColor" class="bi bi-clipboard2" viewBox="0 0 16 16">
-                                    <path d="M3.5 2a.5.5 0 0 0-.5.5v12a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-12a.5.5 0 0 0-.5-.5H12a.5.5 0 0 1 0-1h.5A1.5 1.5 0 0 1 14 2.5v12a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-12A1.5 1.5 0 0 1 3.5 1H4a.5.5 0 0 1 0 1z"/>
-                                    <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5"/>
-                                </svg>     게시글 작성
-                            </button>
-                            <a href="mail/write">
-                                <button type="button" class="btn btn-primary"
-                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color: #ffffff; color: black; display: inline-block; ">
-                                    <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
-                                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
-                                    </svg>
-                                    메일 작성
-                                </button></a>
-                            <button type="button" class="btn btn-primary"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color:  #ffffff; color: black; display:inline-block;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                </svg>
-                                결재 작성
-                            </button>
-                            <a href="work/write">
-                                <button type="button" class="btn btn-primary"
-                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1.1rem; background-color: #ffffff; color: black;display: inline-block;">
-
-                                    <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20"  fill="currentColor" class="bi bi-briefcase-fill" viewBox="0 0 16 16">
-                                        <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"/>
-                                        <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"/>
-                                    </svg>
-                                    보고서 작성
-                                </button>
-                            </a>
-
-                        </div>
-                        <div class="birthBox">
-                            생일
-                        </div>
-                    </div>
+                    <span class="summary-count">3</span>
                 </div>
-
             </div>
+        </div>
+        <div class="commuteBox surface-bright">
+            <div class="boxTitle">출퇴근 관리</div>
+            <div class="timeDisplay">
+                <div class="currentDate"></div>
+                <div class="currentTime"></div>
+            </div>
+            <div class="commuteButtons">
+                <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
+                ${isWorkOn ? 'disabled' : ''}>출근하기</button>
+                <button class="endWork primary">퇴근하기</button>
+            </div>
+        </div>
+        <div class="calendarBox surface-bright">
+            <div class="boxTitle">일정</div>
+            <div id="calendar"></div>
+        </div>
+    </div>
 
+    <div class="centerContents">
+
+        <div class="boardBox surface-bright">
+            <div class="boxTitle">게시글 목록</div>
+            <div class="board-container">
+                <!-- 게시판 타입 버튼 -->
+                <div class="board-type-buttons">
+                    <button class="board-type-btn active">공지 게시판</button>
+                    <button class="board-type-btn">전사 게시판</button>
+                    <button class="board-type-btn">그룹 게시판</button>
+                </div>
+
+                <div class="category-list-container">
+                    <div class="category-list">
+                        <button class="category-btn active">전체</button>
+                        <button class="category-btn">인사</button>
+                        <button class="category-btn">회계</button>
+                        <button class="category-btn">영업</button>
+                        <button class="category-btn">마케팅</button>
+                        <button class="category-btn">개발</button>
+                        <button class="category-btn">기타</button>
+                    </div>
+
+                    <a href="/board/list" class="more-btn">
+                        더보기 <span class="material-icons" style="font-size: 16px; vertical-align: middle;">chevron_right</span>
+                    </a>
+                </div>
+
+                <!-- 게시글 테이블 -->
+                <div class="board-table-container">
+                    <table class="board-table">
+                        <thead>
+                        <tr>
+                            <th width="8%">번호</th>
+                            <th width="52%">제목</th>
+                            <th width="20%">글쓴이</th>
+                            <th width="20%">등록일자</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach begin="1" end="8" var="i">
+                            <tr>
+                                <td>${11 - i}</td> <!-- 10부터 1까지 역순으로 표시 -->
+                                <td class="title">샘플 게시글 제목입니다 ${11 - i}</td>
+                                <td class="writer-info">
+                                    <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
+                                    <span>작성자${i}</span>
+                                </td>
+                                <td>2024-03-19</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="approvalBox surface-bright">
+            <div class="boxTitle">나의 결재 대기 문서함</div>
+            <div class="board-container">
+                <div class="board-table-container">
+                    <table class="board-table">
+                        <thead>
+                        <tr>
+                            <th width="10%">기안 번호</th>
+                            <th width="50%">제목</th>
+                            <th width="20%">기안자</th>
+                            <th width="20%">등록 일자</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach begin="1" end="7" var="i">
+                            <tr>
+                                <td>문서-${5 - i}</td>
+                                <td class="title">결재 문서 제목입니다 ${5 - i}</td>
+                                <td class="writer-info">
+                                    <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
+                                    <span>기안자${i}</span>
+                                </td>
+                                <td>2024-03-19</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="rightContents">
+        <div class="btnBox">
+            <button type="button" class="surface-bright">
+                <span class="material-icons">article</span>
+                <span class="btn-text">게시글 작성</span>
+            </button>
+            <button type="button" class="surface-bright">
+                <span class="material-icons">mail</span>
+                <span class="btn-text">메일 작성</span>
+            </button>
+            <button type="button" class="surface-bright">
+                <span class="material-icons">edit_note</span>
+                <span class="btn-text">결재 작성</span>
+            </button>
+            <button type="button" class="surface-bright">
+                <span class="material-icons">work</span>
+                <span class="btn-text">보고서 작성</span>
+            </button>
         </div>
 
-        </body>
-        </html>
+        <div class="birthBox surface-bright">
+            <div class="boxTitle">이달의 생일</div>
+            <div class="birth-list">
+                <c:forEach begin="1" end="3" var="i">
+                    <div class="birth-item">
+                        <div class="birth-profile">
+                            <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
+                            <div class="birth-info">
+                                <div class="birth-name">홍길동${i}</div>
+                                <div class="birth-dept">개발팀</div>
+                            </div>
+                        </div>
+                        <div class="birth-date">3월 ${i+20}일</div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function() {
+        // 날짜와 시간 표시 함수
+        function updateDateTime() {
+            const now = new Date();
 
-    </c:otherwise>
-</c:choose>
+            // 날짜 포맷팅
+            const dateOptions = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long'
+            };
+            const dateStr = now.toLocaleDateString('ko-KR', dateOptions);
 
+            // 시간 포맷팅
+            const timeOptions = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            const timeStr = now.toLocaleTimeString('ko-KR', timeOptions);
 
+            // jQuery로 HTML 업데이트
+            $('.currentDate').text(dateStr);
+            $('.currentTime').text(timeStr);
+        }
 
+        // 초기 실행
+        updateDateTime();
+
+        // 1초마다 업데이트
+        setInterval(updateDateTime, 1000);
+
+        // 출퇴근 버튼 클릭 이벤트 (필요한 경우)
+        $('.startWork').click(function() {
+            // 출근 버튼 클릭 시 동작
+            console.log('출근');
+
+            $.ajax({
+                url: '/commute/workOn'
+            }).done(function(data) {
+                if(data) {
+                    alert("출근하셨습니다.");
+                    $(this).attr('disabled', true);
+                }
+            })
+        });
+
+        $('.endWork').click(function() {
+            // 퇴근 버튼 클릭 시 동작
+            console.log('퇴근');
+        });
+
+        $('.board-type-btn').click(function() {
+            // 모든 버튼에서 active 클래스 제거
+            $('.board-type-btn').removeClass('active');
+            // 클릭된 버튼에만 active 클래스 추가
+            $(this).addClass('active');
+        });
+
+        $('.category-btn').click(function() {
+            // 모든 버튼에서 active 클래스 제거
+            $('.category-btn').removeClass('active');
+            // 클릭된 버튼에만 active 클래스 추가
+            $(this).addClass('active');
+        });
+    });
+</script>
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />

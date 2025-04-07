@@ -30,14 +30,18 @@
     </insert>
 
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT * FROM EMPLOYEE WHERE DEPARTMENTID = ${departmentId} ORDER BY DESC 1
+        SELECT * FROM EMPLOYEE WHERE departmentId = ${departmentId} ORDER BY desc 1
     </select>
 
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT EMPLOYEE.*
+        SELECT EMPLOYEE.*, JOB.NAME AS jobName, DEPARTMENT.NAME AS departmentName
         FROM EMPLOYEE_DETAIL
         JOIN EMPLOYEE
-        ON EMPLOYEE_DETAIL.ID = EMPLOYEE.ID
+            ON EMPLOYEE_DETAIL.ID = EMPLOYEE.ID
+        JOIN JOB
+            ON EMPLOYEE.jobId = JOB.id
+        JOIN DEPARTMENT
+            ON EMPLOYEE.departmentId = DEPARTMENT.id
         WHERE LOGINID = #{loginId} AND PASSWORD = #{password}
     </select>
 

@@ -2,12 +2,12 @@
 $(function () {
     let cpage = sessionStorage.getItem("page") || 1;
     $.ajax({
-        url: "/mail/listAll",
+        url: "/mail/listImportantAll",
         data: { cpage: cpage }
     }).done(function (resp) {
         let list = resp.list;
-        $("#recordCount").text(resp.recordTotalCount);
-        $("#recordReadCount").text(resp.recordReadCount);
+        $("#recordCount1").text(resp.recordTotalCount);
+        $("#recordCount2").text(resp.recordTotalCount);
         for(let i = 0; i < list.length; i++) {
             let tr = $('<tr>');
             tr.append(
@@ -73,7 +73,7 @@ $(function () {
         $(".paging").on("click", function() {
             let pageNum = $(this).attr("page");
             sessionStorage.setItem("page", pageNum);
-            location.href = "/mail/list?cpage=" + pageNum;
+            location.href = "/mail/important?cpage=" + pageNum;
         });
         // 상대적 날짜 표시
         let now = new Date();

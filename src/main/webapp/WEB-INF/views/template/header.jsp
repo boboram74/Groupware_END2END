@@ -495,7 +495,7 @@
             <div class="menu-item" id="mypage">마이페이지</div>
             <div class="menu-item" id="login-history">로그인 기록</div>
             <c:if test='${employee.role.equals("ADMIN")}'>
-              <div class="menu-item" id="admin">관리자 페이지로 이동</div>
+              <div class="menu-item" id="admin">관리자 페이지</div>
             </c:if>
             <div class="menu-item" id="logout">로그아웃</div>
           </div>

@@ -70,6 +70,4 @@
         JOIN JOB j ON e.jobId = j.id
         WHERE e.id = #{id}
     </select>
-
-    mailDTO -> id,
 </mapper>

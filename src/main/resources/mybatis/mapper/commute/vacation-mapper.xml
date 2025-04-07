@@ -50,8 +50,6 @@
         SELECT COUNT(*)
         FROM VACATION
         WHERE
-            SYSDATE < startDate + NUMTODSINTERVAL(VACATIONDATE, 'DAY')
-        AND
             employeeId = #{employeeId}
     </select>
 

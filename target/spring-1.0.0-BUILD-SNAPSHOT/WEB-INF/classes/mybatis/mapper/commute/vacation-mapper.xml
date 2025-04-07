@@ -49,7 +49,8 @@
     <select id="isOnVacation" resultType="Integer">
         SELECT COUNT(*)
         FROM VACATION
-        WHERE regDate <= startDate + INTERVAL #{vacationDates} DAY
+        WHERE
+            employeeId = #{employeeId}
     </select>
 
     <select id="selectNotCurrentVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">

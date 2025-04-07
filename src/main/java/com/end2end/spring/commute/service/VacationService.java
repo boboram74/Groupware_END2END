@@ -6,4 +6,5 @@ import com.end2end.spring.commute.dto.VacationManagementDTO;
 public interface VacationService {
     void insert(VacationDTO dto);
     void insertUsableVacation(VacationManagementDTO dto);
+    double sumTotalVacationDates(String employeeId);
 }

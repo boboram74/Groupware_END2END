@@ -4,6 +4,7 @@ import com.end2end.spring.commute.dto.CommuteDTO;
 import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.commute.service.SolderingService;
+import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import java.sql.Timestamp;
 public class CommuteController {
     @Autowired private CommuteService commuteService;
     @Autowired private SolderingService solderingService;
+    @Autowired private VacationService vacationService;
 
     @RequestMapping("/detail/{employeeId}")
     public String toDetail(@PathVariable int employeeId, HttpSession session, Model model) {
@@ -41,17 +43,21 @@ public class CommuteController {
             model.addAttribute("workOffTime", workOffTime.getRegDate());
         }
 
+        model.addAttribute("workOnCount", commuteService.countWorkOnThisWeekByEmployeeId(employee.getId()));
+
         SolderingDTO solderingDTO = SolderingDTO.builder()
                 .employeeId(employee.getId())
                 .build();
         solderingDTO.setState("ABSENCE");
-        //model.addAttribute("absenceCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+        model.addAttribute("absenceCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
 
         solderingDTO.setState("LATE");
-        //model.addAttribute("lateCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+        model.addAttribute("lateCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
 
         solderingDTO.setState("LEAVE_EARLY");
-        //model.addAttribute("leaveEarlyCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+        model.addAttribute("leaveEarlyCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+
+        model.addAttribute("totalVacationDates", vacationService.sumTotalVacationDates(employee.getId()));
 
         return "commute/detail";
     }
@@ -68,7 +74,7 @@ public class CommuteController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         CommuteDTO workOn = commuteService.workOn(employee.getId());
 
-        session.setAttribute("workOn", workOn);
+        session.setAttribute("isWorkOn", true);
         return workOn;
     }
 

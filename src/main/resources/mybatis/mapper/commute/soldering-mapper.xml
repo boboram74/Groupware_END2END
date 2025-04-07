@@ -12,7 +12,7 @@
         ) A
     </insert>
 
-    <select id="countTisWeekByStateAndEmployeeId" resultType="int">
+    <select id="countThisWeekByStateAndEmployeeId" resultType="Integer">
         SELECT COUNT(*)
         FROM SOLDERING
         WHERE

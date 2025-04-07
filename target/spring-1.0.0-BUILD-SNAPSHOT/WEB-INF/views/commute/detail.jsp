@@ -503,7 +503,7 @@
                     <div class="vacation-item">
                         <h4>총 휴가일</h4>
                         <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
+                            <span class="vacation-unit">${totalVacationDates}<small>일</small></span>
                         </div>
                     </div>
                     <div class="vacation-item">
@@ -537,25 +537,25 @@
                 <div class="status-item">
                     <h4>출근</h4>
                     <div class="status-display">
-                        <span class="status-unit">5<small>일</small></span>
+                        <span class="status-unit">${workOnCount}<small>일</small></span>
                     </div>
                 </div>
                 <div class="status-item">
                     <h4>지각</h4>
                     <div class="status-display">
-                        <span class="status-unit">0<small>회</small></span>
+                        <span class="status-unit">${lateCount}<small>회</small></span>
                     </div>
                 </div>
                 <div class="status-item">
                     <h4>조퇴</h4>
                     <div class="status-display">
-                        <span class="status-unit">0<small>회</small></span>
+                        <span class="status-unit">${leaveEarlyCount}<small>회</small></span>
                     </div>
                 </div>
                 <div class="status-item">
                     <h4>결근</h4>
                     <div class="status-display">
-                        <span class="status-unit">0<small>일</small></span>
+                        <span class="status-unit">${absenceCount}<small>일</small></span>
                     </div>
                 </div>
                 <div class="status-item">
@@ -614,7 +614,7 @@
         }
 
         function setTimeDisplay(className, time) {
-            $(className + ' .hours').html(time.hours + '<small>HH</small>');
+            $(className + ' .hour').html(time.hours + '<small>HH</small>');
             $(className + ' .min').html(time.minutes + '<small>mm</small>');
             $(className + ' .sec').html(time.seconds + '<small>ss</small>');
         }
@@ -676,6 +676,7 @@
                 if (data) {
                     alert("출근하셨습니다.");
                     $(this).attr('disabled', true);
+                    location.reload();
                 }
             })
         });
@@ -690,6 +691,7 @@
                         $(this).attr('disabled', true);
                         workOffTime = new Date(data.regDate).getTime();
                         setTimeDisplay('.work-off-time', formatDuration(workOffTime));
+                        location.reload();
                     }
                 })
             }

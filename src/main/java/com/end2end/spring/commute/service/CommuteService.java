@@ -7,6 +7,7 @@ public interface CommuteService {
     CommuteDTO workOn(String employeeId);
     CommuteDTO workOff(String employeeId);
     CommuteDTO selectByEmployeeIdAndState(CommuteDTO dto);
+    int countWorkOnThisWeekByEmployeeId(String employeeId);
     void checkLeaveEarly();
     void checkNotCheck();
     void checkLate();

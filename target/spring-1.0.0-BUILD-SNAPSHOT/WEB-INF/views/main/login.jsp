@@ -19,7 +19,7 @@
     <div class="mainBody">
       <input type="text" name="loginId" id="id" placeholder="아이디 입력"><br>
       <input type="password" name="password" id="pw" placeholder="패스워드 입력"><br>
-      <input type="checkbox" id="check">아이디 저장하기<br>
+      <input type="checkbox" id="rememberId">아이디 저장하기<br>
       <div class="btn">
         <button id="newBtn" type="button">사원 등록</button>
         <button id="loginBtn">Login</button>

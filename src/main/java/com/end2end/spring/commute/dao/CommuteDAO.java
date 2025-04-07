@@ -18,6 +18,10 @@ public class CommuteDAO {
         return mybatis.selectOne("commute.selectById", id);
     }
 
+    public int countWorKOnThisWeekByEmployeeId(String employeeId) {
+        return mybatis.selectOne("commute.countWorKOnThisWeekByEmployeeId", employeeId);
+    }
+
     public int isWorkOn(String employeeId) {
         return mybatis.selectOne("commute.isWorkOn", employeeId);
     }

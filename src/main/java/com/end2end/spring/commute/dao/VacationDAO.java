@@ -24,4 +24,8 @@ public class VacationDAO {
     public void insert(VacationDTO vacation) {
         mybatis.insert("commute.insertVacation", vacation);
     }
+
+    public double sumTotalVacationDates(String employeeId) {
+        return mybatis.selectOne("commute.sumTotalVacationDates", employeeId);
+    }
 }

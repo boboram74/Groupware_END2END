@@ -13,6 +13,7 @@ public class ProjectWorkDTO {
     private int projectId;
     private int projectUserId;
     private String title;
+    private String content;
     private String state;  // "ONGOING", "FINISH"
     private String priority; // "HIGH", "MIDDLE", "LOW"
     private Timestamp finishDate;

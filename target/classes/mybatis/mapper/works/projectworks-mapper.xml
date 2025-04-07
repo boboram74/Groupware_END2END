@@ -21,8 +21,7 @@
     </insert>
     <!-- 프로젝트추가 -->
 
-    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO
-">
+    <insert id="insertProjectUser" parameterType="map">
         INSERT INTO PROJECT_USER (project_id, employee_id)
         SELECT #{projectId}, employee_id
         FROM EMPLOYEE
@@ -38,10 +37,9 @@
     </update>
     <!--프로젝트수정-->
 
-    <select id="selectByName" resultType="com.end2end.spring.works.dto.ProjectDTO">
-        SELECT * FROM project
-        WHERE name LIKE '%' || #{name} || '%'
+    <select id="selectByCon" resultType="com.end2end.spring.works.dto.ProjectDTO">
+        select * from project where
+        ${name} like '%'||#{deadLine}||'%'
     </select>
-
     <!--프로젝트 찾기 -->
 </mapper>

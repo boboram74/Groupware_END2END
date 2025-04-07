@@ -30,6 +30,10 @@
 
 <!-- 프로젝트 진행중 보고된 게시물 수정-->
 
-
+    <select id="selectByCon" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        select * from project_work where
+        ${title} like '%'||#{contents}||'%'
+    </select>
+    <!--프로젝트 진행중 보고된 게시물 찾기 -->
 
 </mapper>

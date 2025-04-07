@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequestMapping("/work")
 @Controller
@@ -25,15 +26,11 @@ public class ProjectWorkController {
     ProjectWorkService wserv;
 
     @RequestMapping("/list")
-    public String toList(Model model) {
+    public List<ProjectWorkDTO> toList(Model model) {
         // TODO:모든게시물 리스트에 표시
-        return "/works/list";
-    }
-
-    @RequestMapping("/list/search")
-    public String toSearch(Model model) {
-        // TODO: 검색 태그를 통해 나온 결과를 list.jsp에 표시
-        return "/works/list";
+        List<ProjectWorkDTO>list =  wserv.selectAll();
+        model.addAttribute("list", list);
+        return list;
     }
 
     @RequestMapping("/write")
@@ -56,23 +53,26 @@ public class ProjectWorkController {
 
 
     @RequestMapping("/insert")
-    public void insert(ProjectWorkDTO wdto, FileDTO dto, MultipartFile[] files){
-    wserv.insert(wdto);
-        try {
-            fserv.insert(files, dto);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public String insert(@ModelAttribute ProjectWorkDTO wdto, @RequestParam("files") MultipartFile[] files) {
+        wserv.insert(wdto);
         // TODO: 게시글 등록
+        return "redirect:/worksmain";
     }
+//    리다이렉트 헷갈리지말것 !- 이유: 폼 중복 제출 방지
+//- 브라우저 새로고침 시 POST 요청이 중복되는 것을 방지
+
 
     @RequestMapping("/update")
-    public void update(ProjectWorkDTO dto) {
+    public String update(ProjectWorkDTO dto) {
         // TODO: 게시글 수정을 받음
+        wserv.update(dto);
+        return "redirect:/work/" + dto.getId();
+
     }
 
     @RequestMapping("/delete")
     public void deleteById(int id) {
+        wserv.deleteById(id);
         // TODO: 작업 번호로 작업게시글삭제
     }
 

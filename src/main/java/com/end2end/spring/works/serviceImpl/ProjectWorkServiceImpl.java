@@ -17,13 +17,9 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
 
     @Override
     public List<ProjectWorkDTO> selectAll() {
-        return null;
+        return dao.selectAll()  ;
     }
 
-    @Override
-    public List<ProjectWorkDTO> selectByEmployeeId(String employeeId) {
-        return null;
-    }
 
     @Override
     public void insert(ProjectWorkDTO dto) {
@@ -34,12 +30,12 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
 
     @Override
     public void update(ProjectWorkDTO dto) {
-
+dao.update(dto);
     }
 
     @Override
     public void deleteById(int id) {
-
+dao.deleteById(id);
     }
 
     @Override

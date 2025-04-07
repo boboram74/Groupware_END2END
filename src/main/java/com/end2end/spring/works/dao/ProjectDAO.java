@@ -15,11 +15,10 @@ public class ProjectDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public int insert(ProjectDTO dto)
-    {
-      return  mybatis.insert("project.insert",dto);
+    public int insert(ProjectDTO dto) {
+        return mybatis.insert("project.insert", dto);
 
-
+    }
 
     public List<ProjectDTO> selectAll(){
         return mybatis.selectList("project.selectAll");
@@ -29,13 +28,11 @@ public class ProjectDAO {
         return mybatis.delete("project.deleteBySeq",id);
     }
 
-    public  List<ProjectDTO> selectByCon(Map<String,Object> param){
+    public  List<ProjectDTO> selectByName(String name){
 
-        return mybatis.selectList("project.selectByCon",param);
+        return mybatis.selectList("project.selectByName",name);
     }
-    public List<ProjectDTO>detailSearch(Map<String,Object>param){
-        return mybatis.selectList("project.detailSearch",param);
-    }
+
 
 
 }

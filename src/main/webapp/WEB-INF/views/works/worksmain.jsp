@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -47,12 +48,10 @@
             >업무 통계
         </div>
         <div class="btnBox">
-            <a href="/project/insertpage">
-            <button class="projectBtn">프로젝트 생성</button>
-            </a>
-            <a href="/work/write">
-                <button class="writeBtn">보고서쓰기</button>
-            </a>
+
+            <button class="projectBtn" onclick="openProjectModal()"
+            >프로젝트 생성</button>
+
         </div>
 
         <div class="selectBox">
@@ -179,38 +178,75 @@
                 });
             </script>
         </div>
+<div class="projectList">
         <div class="tableBox">
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col-12 col-sm-4 order-sm-12">#</th>
-                    <th scope="col-12 col-sm-4 order-sm-12">First</th>
-                    <th scope="col-12 col-sm-4 order-sm-12">Last</th>
-                    <th scope="col-12 col-sm-4 order-sm-12">Handle</th>
+                    <th>제목</th>
+                    <th>등록일자</th>
+                    <th>프로젝트 기간</th>
+                    <th>참여 인원</th>
+                    <th>상태</th>
+
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
+                <c:forEach items="${list}" var="list">
+                    <tr onclick="location.href='/works/project/${list.id}'">
+                        <td>${list.name}</td>
+                        <td>${list.regDate}</td>
+                        <td>${list.regDate} ~ ${list.deadLine}</td>
+                        <td>
+                            <div class="member-profiles">
+                                <!-- 프로필 이미지 리스트 -->
+                            </div>
+                        </td>
+                        <td>${list.hideYn == 'N' ? '진행중' : '종료'}</td>
+                    </tr>
+
+                </c:forEach>
+
                 </tbody>
             </table>
         </div>
+        </div>
+<div class="modal fade" id="projectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">프로젝트 생성</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="projectForm">
+                    <div class="mb-3">
+                        <label class="form-label">프로젝트 제목</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">프로젝트 기간</label>
+                        <input type="text" class="form-control" id="projectPeriod">
+                        <input type="hidden" name="regDate">
+                        <input type="hidden" name="deadLine">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">프로젝트 인원</label>
+                        <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">
+                            인원 추가
+                        </button>
+                        <div id="selectedMembers" class="mt-2"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="createProject()">생성하기</button>
+            </div>
+        </div>
     </div>
 </div>
-</body>
-</html>
+
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />

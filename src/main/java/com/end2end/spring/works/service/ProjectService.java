@@ -6,11 +6,13 @@ import com.end2end.spring.works.dto.ProjectUserDTO;
 
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProjectService {
 
     List<ProjectDTO> selectAll();
- List<ProjectDTO> selectByEmployeeId(String employeeId);
+    Map<String, Integer> getProjectStatistics();
+    List<ProjectDTO> selectByName(String name);
  void insert(ProjectDTO dto, ProjectUserDTO udto);
 
 }

@@ -1,9 +1,15 @@
 package com.end2end.spring.employee.serviceImpl;
 
+import com.end2end.spring.board.dao.BoardDAO;
+import com.end2end.spring.board.dto.BoardCategoryDTO;
+import com.end2end.spring.board.dto.BoardCtUserDTO;
+import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.*;
 import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.mail.dao.MailDAO;
+import com.end2end.spring.mail.dto.EmailAddressDTO;
+import com.end2end.spring.mail.dto.EmailAddressUserDTO;
 import com.end2end.spring.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +23,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeDAO employeeDAO;
-
     @Autowired
     private MailDAO mailDAO;
+    @Autowired
+    private BoardDAO boardDAO;
+    @Autowired
+    private CommuteDAO commuteDAO;
 
     @Override
     public EmployeeDTO selectById(String id) {
@@ -49,8 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     public void insert(EmployeeDetailDTO dto, MultipartFile file) {
-        // TODO: 사원 등록
-        // employee insert 사원 테이블 추가
+        // 1. 사원 기본 정보 저장
         String hashedPassword = SecurityUtil.hashPassword(dto.getPassword());
         dto.setPassword(hashedPassword);
         EmployeeDTO employeeDTO = EmployeeDTO.builder()
@@ -64,13 +72,38 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeDAO.insert(employeeDTO);
         String employeeId = employeeDTO.getId();
 
-        // employee_detail insert 사원 상세 테이블 추가
+        // 2. 사원 상세 정보 저장
         dto.setId(employeeId);
         employeeDAO.insertDetail(dto);
 
-        // email_addreses 사원의 이메일을 추가
+        // 3. 이메일 주소 등록
+        EmailAddressDTO emailAddressDTO = EmailAddressDTO.builder()
+                .emailAddress(dto.getEmail())
+                .name(dto.getName())
+                .build();
+        mailDAO.insert(emailAddressDTO);
 
+        // 4. 본인 이메일 사용 등록
+        EmailAddressUserDTO emailAddressUserDTO = EmailAddressUserDTO.builder()
+                .employeeId(employeeId)
+                .emailAddress(dto.getEmail())
+                .build();
+        mailDAO.insertEmailAddressUser(emailAddressUserDTO);
 
+        // 5. 부서 이메일 등록
+        DepartmentDTO departmentDTO = employeeDAO.selectDepartmentById(dto.getDepartmentId());
+        // SELECT * FROM DEPARETMENT WHERE ID = 2;
+        emailAddressUserDTO.setEmailAddress(departmentDTO.getEmail());
+        // email_address_user 팀 이메일 사용 가능하게 사원 추가
+        mailDAO.insertEmailAddressUser(emailAddressUserDTO);
+
+        // 6. 전사 게시판 접근 권한 부여
+        BoardCategoryDTO boardCategoryDTO = boardDAO.selectCategoryByName("전사 게시판");
+        BoardCtUserDTO boardCtUserDTO = BoardCtUserDTO.builder()
+                .employeeId(employeeId)
+                .boardCtId(boardCategoryDTO.getId())
+                .build();
+        boardDAO.insertBoardCtUser(boardCtUserDTO);
     }
 
     @Override

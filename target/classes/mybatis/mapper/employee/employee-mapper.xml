@@ -33,12 +33,6 @@
         SELECT * FROM EMPLOYEE WHERE departmentId = ${departmentId} ORDER BY desc 1
     </select>
 
-    <select id="idVali" resultType="int">
-        SELECT COUNT(*)
-        FROM EMPLOYEE_DETAIL
-        WHERE LOGINID = #{loginId}
-    </select>
-
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT EMPLOYEE.*
         FROM EMPLOYEE_DETAIL

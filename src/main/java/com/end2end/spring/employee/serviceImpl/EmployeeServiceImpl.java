@@ -91,8 +91,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         mailDAO.insertEmailAddressUser(emailAddressUserDTO);
 
         // 5. 부서 이메일 등록
-        DepartmentDTO departmentDTO = employeeDAO.selectDepartmentById(dto.getDepartmentId());
-        // SELECT * FROM DEPARETMENT WHERE ID = 2;
+        DepartmentDTO departmentDTO = mailDAO.selectDepartmentById(dto.getDepartmentId());
         emailAddressUserDTO.setEmailAddress(departmentDTO.getEmail());
         // email_address_user 팀 이메일 사용 가능하게 사원 추가
         mailDAO.insertEmailAddressUser(emailAddressUserDTO);

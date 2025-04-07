@@ -692,6 +692,7 @@
             $.ajax({
                 url: '/commute/workOn'
             }).done(function (data) {
+                console.log(data);
                 if (data) {
                     alert("출근하셨습니다.");
                     location.reload();

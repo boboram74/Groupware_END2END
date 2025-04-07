@@ -13,7 +13,7 @@
     </insert>
 
     <insert id="insert">
-        INSERT INTO SOLDERING(id, empoloyeeId, state)
+        INSERT INTO SOLDERING(id, employeeId, state)
         VALUES (SOLDERING_ID_SEQ.nextval, #{employeeId}, #{state})
     </insert>
 

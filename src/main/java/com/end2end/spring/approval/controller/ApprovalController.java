@@ -81,24 +81,32 @@ public class ApprovalController {
 
     @RequestMapping("/detail/{id}")
     public String toDetail(Model model, @PathVariable String id, HttpSession session) {
-        ApprovalDTO approvalDTO = approvalService.selectById(id);
+        try {
+            EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+            System.out.println(employee);
+            if (employee == null) {
+                return "redirect:/login"; // 세션 만료시 로그인으로
+            }
 
-        EmployeeDTO employeeId = (EmployeeDTO) session.getAttribute("employee");
-        System.out.println(employeeId);
+            ApprovalDTO approvalDTO = approvalService.selectById(id);
+            System.out.println(approvalDTO);
+            if (approvalDTO == null) {
+                model.addAttribute("error", "존재하지 않는 문서입니다.");
+                return "error/404";
+            }
 
+            List<String> nextId = approvalService.nextId(id);
 
-        List<String> nextId = approvalService.nextId(id);
+            model.addAttribute("approval", approvalDTO);
+            model.addAttribute("nextId", nextId);
+            model.addAttribute("employee", employee);
 
-
-        model.addAttribute("approval", approvalDTO);
-        model.addAttribute("nextId", nextId);
-        model.addAttribute("employee",employeeId);
-
-        System.out.println("ApprovalDTO: " + approvalService.selectById(id));
-        System.out.println("Next ID: " + approvalService.nextId(id));
-        System.out.println("Employee ID: " + employeeId);
-
-        return "approval/detail";
+            return "approval/detail";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "문서를 불러오는 도중 오류가 발생했습니다.");
+            return "error/500"; // 예외 시 에러 페이지
+        }
     }
 
 

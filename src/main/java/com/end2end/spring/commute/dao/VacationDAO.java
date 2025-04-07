@@ -14,14 +14,30 @@ public class VacationDAO {
     private SqlSession mybatis;
 
     public List<EmployeeDTO> selectNotCurrentVacation(List<EmployeeDTO> employeeIds) {
-        return mybatis.selectList("commute.selectNotCurrentVacation", employeeIds);
+        return mybatis.selectList("vacation.selectNotCurrentVacation", employeeIds);
     }
 
     public List<EmployeeDTO> selectNotTodayVacation(List<EmployeeDTO> employeeIds) {
-        return mybatis.selectList("commute.selectNotTodayVacation", employeeIds);
+        return mybatis.selectList("vacation.selectNotTodayVacation", employeeIds);
     }
 
     public void insert(VacationDTO vacation) {
-        mybatis.insert("commute.insertVacation", vacation);
+        mybatis.insert("vacation.insertVacation", vacation);
+    }
+
+    public double sumTotalVacationDates(String employeeId) {
+        return mybatis.selectOne("vacation.sumTotalVacationDates", employeeId);
+    }
+
+    public double sumTotalUsedVacationDates(String employeeId) {
+        return mybatis.selectOne("vacation.sumTotalUsedVacationDates", employeeId);
+    }
+
+    public double sumUsedThisMonthVacationDates(String employeeId){
+        return mybatis.selectOne("vacation.sumUsedThisMonthVacationDates", employeeId);
+    }
+
+    public int isOnVacation(String employeeId) {
+        return mybatis.selectOne("vacation.isOnVacation", employeeId);
     }
 }

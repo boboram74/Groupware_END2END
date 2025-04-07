@@ -8,6 +8,24 @@
         update email_state SET readyn = 'Y' WHERE id = #{value}
     </update>
 
+    <update id="insertTrashCanYn">
+        update email_state SET TRASHCANYN = 'Y' WHERE id = #{value}
+    </update>
+
+    <insert id="insert">
+        INSERT INTO EMAIL_ADDRESS(emailaddress, name)
+        VALUES (#{emailAddress},#{name})
+    </insert>
+
+    <select id="selectDepartmentById" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
+        SELECT * FROM DEPARTMENT WHERE ID = ${id};
+    </select>
+
+    <insert id="insertEmailAddressUser">
+        INSERT INTO EMAIL_ADDRESS_USER(EMAIL_ADDRESS_USER_SEQ.NEXTVAL,employeeId, emailAddress)
+        VALUES (${id},#{employeeId},#{emailAddress})
+    </insert>
+
     <update id="updateImportant" >
         update email_state
         set importantyn = #{importantYn}
@@ -51,6 +69,46 @@
         AND es.TRASHCANYN = 'N'
     </select>
 
+    <select id="getRecordImportantTotalCount" resultType="int" >
+        SELECT COUNT(*)
+        FROM EMAIL e
+        JOIN EMAIL_STATE es
+        ON e.ID = es.EMAILID
+        WHERE es.EMAILUSERID IN (
+        SELECT id
+        FROM EMAIL_ADDRESS_USER
+        WHERE EMPLOYEEID = #{employeeId}
+        )
+        AND es.HIDEYN = 'N'
+        AND es.TRASHCANYN = 'N'
+        AND es.IMPORTANTYN = 'Y'
+    </select>
+
+    <select id="getRecordReadCount" resultType="int">
+        SELECT COUNT(*)
+        FROM EMAIL e
+        JOIN EMAIL_STATE es
+        ON e.ID = es.EMAILID
+        WHERE es.EMAILUSERID IN (
+        SELECT id
+        FROM EMAIL_ADDRESS_USER
+        WHERE EMPLOYEEID = #{employeeId}
+        )
+        AND es.HIDEYN = 'N'
+        AND es.TRASHCANYN = 'N'
+        AND es.READYN = 'N'
+    </select>
+
+    <select id="getRecordSendTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM email
+        WHERE senderEmailAddress IN (
+        SELECT emailAddress
+        FROM email_address_user
+        WHERE employeeId = #{employeeId}
+        )
+    </select>
+
     <select id="selectFromto" parameterType="map" resultType="com.end2end.spring.mail.dto.MailTeamListDTO">
         SELECT
         id,
@@ -91,6 +149,72 @@
         AND es.TRASHCANYN = 'N'
         )
         WHERE rnum BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="selectFromtoImportant" parameterType="map" resultType="com.end2end.spring.mail.dto.MailTeamListDTO">
+        SELECT
+        id,
+        fileCount,
+        emailAddress,
+        title,
+        regdate,
+        esId,
+        readYn,
+        importantYn
+        FROM (
+        SELECT
+        e.id as id,
+        fe.fileCount AS fileCount,
+        e.SENDEREMAILADDRESS as emailAddress,
+        e.title as title,
+        e.regdate as regdate,
+        es.id as esId,
+        es.readYn as readYn,
+        es.importantYn as importantYn,
+        ROW_NUMBER() OVER (ORDER BY e.id DESC) AS rnum
+        FROM EMAIL e
+        LEFT JOIN (
+        select COUNT(*) AS fileCount, Email.ID
+        from email
+        join files
+        on email.id = files.emailId
+        GROUP BY Email.ID) fe
+        ON E.ID = fe.ID
+        JOIN EMAIL_STATE es
+        ON e.ID = es.EMAILID
+        WHERE es.EMAILUSERID IN (
+        SELECT id
+        FROM EMAIL_ADDRESS_USER
+        WHERE EMPLOYEEID = #{employeeId}
+        )
+        AND es.HIDEYN = 'N'
+        AND es.TRASHCANYN = 'N'
+        AND es.IMPORTANTYN = 'Y'
+        )
+        WHERE rnum BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="selectFromtoSendList" parameterType="map" resultType="com.end2end.spring.mail.dto.SendMailListDTO">
+        SELECT id, filecount, RECIPIENTEMAILADDRESS, title, regdate, rnum
+        FROM (
+        SELECT
+        email.*,
+        fileCount,
+        ROW_NUMBER() OVER (ORDER BY email.id DESC) AS rnum
+        FROM email
+        LEFT JOIN (
+        SELECT emailId, COUNT(*) AS fileCount
+        FROM files
+        GROUP BY emailId
+        ) e ON email.id = e.emailId
+        WHERE senderEmailAddress IN (
+        SELECT emailAddress
+        FROM email_address_user
+        WHERE employeeId = #{employeeId}
+        )
+        )
+        WHERE rnum BETWEEN #{start} AND #{end}
+
     </select>
 
     <select id="selectByEmail" resultType="com.end2end.spring.mail.dto.MailDetailDTO">

@@ -4,8 +4,54 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="vacation">
     <insert id="insert">
-
+        INSERT INTO VACATION_MANAGEMENT(id, employeeId, dates, reason)
+        VALUES (VACATION_MENAGEMENT_ID_SEQ.nextval, #{employeeId}, ${dates}, #{reason})
     </insert>
+
+    <insert id="requestVacation">
+        INSERT INTO VACATION(id, employeeId, vacationDate, approvalId, startDate, reason, type)
+        VALUES (VACATION_ID_SEQ.nextval, #{employeeId}, ${vacationDate}, #{approvalId}, #{startDate}, #{reason}, #{type})
+    </insert>
+
+    <select id="sumTotalVacationDates" resultType="Double">
+        SELECT
+            CASE
+                WHEN SUM(dates) IS NULL THEN 0
+                ELSE SUM(dates)
+            END
+        FROM VACATION_MANAGEMENT
+        WHERE employeeId = #{employeeId}
+    </select>
+
+    <select id="sumTotalUsedVacationDates" resultType="Double">
+        SELECT
+            CASE
+                WHEN SUM(vacationDate) IS NULL THEN 0
+                ELSE SUM(vacationDate)
+            END
+        FROM VACATION
+        WHERE employeeId = #{employeeId}
+    </select>
+
+    <select id="sumUsedThisMonthVacationDates" resultType="Double">
+        SELECT
+            CASE
+                WHEN SUM(vacationDate) IS NULL THEN 0
+                ELSE SUM(vacationDate)
+            END
+        FROM VACATION
+        WHERE
+            employeeId = #{employeeId}
+        AND
+            TRUNC(regDate, 'MM') = TRUNC(SYSDATE, 'MM')
+    </select>
+
+    <select id="isOnVacation" resultType="Integer">
+        SELECT COUNT(*)
+        FROM VACATION
+        WHERE
+            employeeId = #{employeeId}
+    </select>
 
     <select id="selectNotCurrentVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">
         SELECT *

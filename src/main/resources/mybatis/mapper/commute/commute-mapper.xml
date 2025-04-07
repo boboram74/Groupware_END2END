@@ -154,4 +154,15 @@
             AND
                 employeeId = #{employeeId})
     </select>
+
+    <select id="countWorKOnThisWeekByEmployeeId" resultType="Integer">
+        SELECT COUNT(*)
+        FROM COMMUTE
+        WHERE
+            state = 'WORK_ON'
+        AND
+            TRUNC(regDate) BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE)
+        AND
+            employeeId = #{employeeId}
+    </select>
 </mapper>

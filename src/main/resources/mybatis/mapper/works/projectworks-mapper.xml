@@ -21,6 +21,7 @@
     </insert>
     <!-- 프로젝트추가 -->
 
+
 <!--    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">-->
 <!--        INSERT INTO PROJECT_USER (id, projectId, employeeId, regDate)-->
 <!--        SELECT PROJECT_USER_SEQ.NEXTVAL, #{projectId}, e.employee_id, SYSDATE-->
@@ -30,6 +31,13 @@
 <!--            #{employeeId}-->
 <!--        </foreach>-->
 <!--    </insert>-->
+
+    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">
+        INSERT INTO PROJECT_USER (projectId, employeeId)
+        VALUES (#{projectId}, #{employeeId})
+    </insert>
+    <!-- 프로젝트인원추가 -->
+
 
 
     <insert id="insertProjectUser">

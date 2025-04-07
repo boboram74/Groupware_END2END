@@ -208,6 +208,34 @@
     color: #666;
 }
 
+.button-container {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+
+/* 기본 버튼 스타일 */
+.button-container button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.button-container .primary:hover {
+    opacity: 0.9;
+}
+
+.button-container .secondary:hover {
+    opacity: 0.9;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
     .mainHeader {
@@ -266,7 +294,6 @@
         display: block;
     }
 }
-
 /* 미디어 쿼리 추가 */
 @media screen and (max-width: 768px) {
     .mainHeader {

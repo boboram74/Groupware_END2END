@@ -67,6 +67,11 @@ public class CommuteServiceImpl implements CommuteService {
                 commuteDAO.selectWorkOnByEmployeeId(dto.getEmployeeId()) : commuteDAO.selectWorkOffByEmployeeId(dto.getEmployeeId());
     }
 
+    @Override
+    public int countWorkOnThisWeekByEmployeeId(String employeeId) {
+        return commuteDAO.countWorKOnThisWeekByEmployeeId(employeeId);
+    }
+
     @Transactional
     @Override
     public void checkLate() {

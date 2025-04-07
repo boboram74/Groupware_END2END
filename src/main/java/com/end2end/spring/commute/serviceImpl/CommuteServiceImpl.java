@@ -45,12 +45,18 @@ public class CommuteServiceImpl implements CommuteService {
             return false;
         }
 
+        commuteDAO.insert(dto);
+
         Date date = new Date();
         if (date.getHours() > Statics.WORK_HOUR) {
-
+            if (vacationDAO.isOnVacation(employeeId) == 0) {
+                SolderingDTO solderingDTO = SolderingDTO.builder()
+                        .employeeId(employeeId)
+                        .state("LATE")
+                        .build();
+                solderingDAO.insert(solderingDTO);
+            }
         }
-
-        commuteDAO.insert(dto);
 
         return true;
     }

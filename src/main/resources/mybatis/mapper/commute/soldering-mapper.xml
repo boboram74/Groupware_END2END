@@ -3,13 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="soldering">
-    <insert id="insert" parameterType="java.util.List">
+    <insert id="insertList" parameterType="java.util.List">
         INSERT INTO SOLDERING(id, employeeId, state)
         SELECT SOLDERING_ID_SEQ.NEXTVAL, A.* FROM (
         <foreach collection="list" item="item" separator="UNION ALL">
             SELECT #{item.employeeId}, #{item.state} FROM DUAL
         </foreach>
         ) A
+    </insert>
+
+    <insert id="insert">
+        INSERT INTO SOLDERING(id, empoloyeeId, state)
+        VALUES (SOLDERING_ID_SEQ.nextval, #{employeeId}, #{state})
     </insert>
 
     <select id="countThisWeekByStateAndEmployeeId" resultType="Integer">

@@ -13,7 +13,10 @@ public class SolderingDAO {
     private SqlSession mybatis;
 
     public void insertList(List<SolderingDTO> dtoList) {
-        mybatis.insert("soldering.insert", dtoList);
+        mybatis.insert("soldering.insertList", dtoList);
+    }
+    public void insert(SolderingDTO dto) {
+        mybatis.insert("soldering.insert", dto);
     }
     public int countThisWeekByStateAndEmployeeId(SolderingDTO dto) {
         return mybatis.selectOne("soldering.countThisWeekByStateAndEmployeeId", dto);

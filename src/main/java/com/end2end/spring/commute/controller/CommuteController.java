@@ -75,7 +75,7 @@ public class CommuteController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         boolean workOn = commuteService.workOn(employee.getId());
 
-        session.setAttribute("isWorkOn", workOn);
+        session.setAttribute("isWorkOn", !workOn);
         return workOn;
     }
 
@@ -85,7 +85,7 @@ public class CommuteController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         boolean workOff = commuteService.workOff(employee.getId());
 
-        session.setAttribute("isWorkOff", workOff);
+        session.setAttribute("isWorkOff", !workOff);
         return workOff;
     }
 

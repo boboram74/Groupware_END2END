@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<link rel="stylesheet" href="/css/mail/list.css" />
+<link rel="stylesheet" href="/css/mail/important.css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <style>
     * {
@@ -317,17 +317,15 @@
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
             <li class="detail-menu-item">
-                <a href="/mail/important">
-                    <span class="material-icons">star</span>
-                    <span>중요 메일함</span>
-                    <span class="detail-badge">5</span>
-                </a>
+                <span class="material-icons">star</span>
+                <span>중요 메일함</span>
+                <span class="detail-badge"><span id="recordCount1"></span></span>
             </li>
             <li class="detail-menu-item">
                 <a href="/mail/list">
                     <span class="material-icons">all_inbox</span>
                     <span>전체 메일함</span>
-                    <span class="detail-badge">10</span>
+                    <span class="detail-badge">32</span>
                 </a>
             </li>
             <li class="detail-menu-item">
@@ -344,17 +342,13 @@
                 </a>
             </li>
             <li class="detail-menu-item">
-                <a href="/mail/temp">
-                    <span class="material-icons">drafts</span>
-                    <span>임시 저장함</span>
-                    <span class="detail-badge">2</span>
-                </a>
+                <span class="material-icons">drafts</span>
+                <span>임시 저장함</span>
+                <span class="detail-badge">2</span>
             </li>
             <li class="detail-menu-item">
-                <a href="/mail/trash">
-                    <span class="material-icons">delete</span>
-                    <span>휴지통</span>
-                </a>
+                <span class="material-icons">delete</span>
+                <span>휴지통</span>
             </li>
         </ul>
         <button class="detail-modal-close">
@@ -373,15 +367,14 @@
                 </select>
             </div>
             <div class="searchInput">
-                <input id="input" type="text" name="keyword" placeholder="전체 메일함">
+                <input id="input" type="text" name="keyword" placeholder="중요메일함">
             </div>
             <div>
                 <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
             </div>
         </div>
         <div class="titleArea">
-            <h4>전체 메일 (<span id="recordCount"></span>)</h4>
-            <h4>안읽은 메일 (<span id="recordReadCount"></span>)</h4>
+            <h4>전체 메일 (<span id="recordCount2"></span>)</h4>
         </div>
         <div class="content">
             <table class="mailList">
@@ -437,5 +430,5 @@
         });
     });
 </script>
-<script src="/js/mail/list.js" type="text/javascript"></script>
+<script src="/js/mail/important.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

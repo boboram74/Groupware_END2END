@@ -33,16 +33,6 @@ public class MailController {
 
     @RequestMapping("/list")
     public String list(HttpSession session) {
-        EmployeeDTO employee = EmployeeDTO.builder()
-                .id("2307276")
-                .name("유민기")
-                .email("employee6@end2end.site")
-                .role("USER")
-                .profileImg("https://picsum.photos/200/200")
-                .departmentId(5)
-                .jobId(3)
-                .build();
-        session.setAttribute("employee", employee);
         return "mail/list";
     }
     @ResponseBody
@@ -51,22 +41,23 @@ public class MailController {
         EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
         String scpage = request.getParameter("cpage");
         int cpage = (scpage == null) ? 1 : Integer.parseInt(scpage);
-        return mailService.getPageList(cpage, EmployeeDTO.getId());
-    }
-    @RequestMapping("/inbox")
-    public String inbox() {
-        return "mail/inbox";
-    }
-    @RequestMapping("/write")
-    public String write() {
-        return "mail/write";
+        return mailService.getPageList(cpage, EmployeeDTO.getId(),"listAll");
     }
 
     @RequestMapping("/{email}/{esId}")
     public String email(@PathVariable("email") String email, @PathVariable("esId") int esId, Model model) {
-        System.out.println("넘어온 esid:"+esId);
         MailDetailDTO result = mailService.selectByEmail(email);
         mailService.insertReadYn(esId);
+        List<FileDetailDTO> fileDetailDTO = fileService.selectByEmail(email);
+        model.addAttribute("fileList", fileDetailDTO);
+        model.addAttribute("list", result);
+        model.addAttribute("email", email);
+        return "mail/detail";
+    }
+
+    @RequestMapping("/detailSent/{email}")
+    public String detailSent(@PathVariable("email") String email, Model model) {
+        MailDetailDTO result = mailService.selectByEmail(email);
         List<FileDetailDTO> fileDetailDTO = fileService.selectByEmail(email);
         model.addAttribute("fileList", fileDetailDTO);
         model.addAttribute("list", result);
@@ -86,9 +77,81 @@ public class MailController {
 
     @RequestMapping("/updateImportant")
     public ResponseEntity<Void> updateImportant(@RequestBody ImportYnDTO dto) {
-        System.out.println(dto.getImportantYn() + " " + dto.getEsId());
         mailService.updateImportant(dto);
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping("/readAndTrashAll")
+    public ResponseEntity<Void> readYnAll(String action, @RequestBody List<Integer> esids) {
+        if(action.equals("read")) {
+            mailService.insertReadYnAll(esids);
+        } else if(action.equals("trash")) {
+            mailService.trashAll(esids);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping("/write")
+    public String write() {
+        return "mail/write";
+    }
+
+    @RequestMapping("/important")
+    public String important() {
+        return "mail/important";
+    }
+
+    @ResponseBody
+    @RequestMapping("/listImportantAll")
+    public Map<String, Object> listImportantAll(HttpServletRequest request, HttpSession session, Model model) {
+        EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
+        String scpage = request.getParameter("cpage");
+        int cpage = (scpage == null) ? 1 : Integer.parseInt(scpage);
+        return mailService.getPageList(cpage, EmployeeDTO.getId(),"important");
+    }
+
+    @RequestMapping("/sendList")
+    public String sendList() {
+        return "mail/sendList";
+    }
+
+    @ResponseBody
+    @RequestMapping("/sendListAll")
+    public Map<String, Object> listSendAll(HttpServletRequest request, HttpSession session, Model model) {
+        try {
+            EmployeeDTO EmployeeDTO = (EmployeeDTO) session.getAttribute("employee");
+            String scpage = request.getParameter("cpage");
+            int cpage = (scpage == null) ? 1 : Integer.parseInt(scpage);
+            return mailService.getPageList(cpage, EmployeeDTO.getId(), "sendList");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequestMapping("/alertList")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> alertList() {
+        Map<String, Object> data = new HashMap<>();
+//        int All = mailService.getRecordTotalCount();
+
+        return ResponseEntity.ok(data);
+    }
+
+    @RequestMapping("/inbox")
+    public String inbox() {
+        return "mail/inbox";
+    }
+
+    @RequestMapping("/temp")
+    public String temp() {
+        return "mail/temp";
+    }
+
+    @RequestMapping("/trash")
+    public String trash() {
+        return "mail/trash";
     }
     
     @RequestMapping("/insert")

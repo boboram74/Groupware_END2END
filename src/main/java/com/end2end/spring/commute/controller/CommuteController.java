@@ -1,7 +1,9 @@
 package com.end2end.spring.commute.controller;
 
 import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.service.CommuteService;
+import com.end2end.spring.commute.service.SolderingService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,16 +13,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 
 @RequestMapping("/commute")
 @Controller
 public class CommuteController {
-    @Autowired
-    private CommuteService commuteService;
+    @Autowired private CommuteService commuteService;
+    @Autowired private SolderingService solderingService;
 
     @RequestMapping("/detail/{employeeId}")
-    public String toDetail(@PathVariable int employeeId, Model model) {
+    public String toDetail(@PathVariable int employeeId, HttpSession session, Model model) {
         // TODO: 해당 id의 사원의 detail.jsp로 이동
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        CommuteDTO commuteDTO = CommuteDTO.builder()
+                .employeeId(employee.getId())
+                .build();
+
+        commuteDTO.setState("WORK_ON");
+        CommuteDTO workOnTime = commuteService.selectByEmployeeIdAndState(commuteDTO);
+        if(workOnTime != null) {
+            model.addAttribute("workOnTime", workOnTime.getRegDate());
+        }
+
+        commuteDTO.setState("WORK_OFF");
+        CommuteDTO workOffTime = commuteService.selectByEmployeeIdAndState(commuteDTO);
+        if(workOffTime != null) {
+            model.addAttribute("workOffTime", workOffTime.getRegDate());
+        }
+
+        SolderingDTO solderingDTO = SolderingDTO.builder()
+                .employeeId(employee.getId())
+                .build();
+        solderingDTO.setState("ABSENCE");
+        //model.addAttribute("absenceCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+
+        solderingDTO.setState("LATE");
+        //model.addAttribute("lateCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+
+        solderingDTO.setState("LEAVE_EARLY");
+        //model.addAttribute("leaveEarlyCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+
         return "commute/detail";
     }
 
@@ -32,21 +64,24 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/workOn")
-    public void workOn(HttpSession session) {
+    public CommuteDTO workOn(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        commuteService.workOn(employee.getId());
+        CommuteDTO workOn = commuteService.workOn(employee.getId());
+
+        session.setAttribute("workOn", workOn);
+        return workOn;
     }
 
     @ResponseBody
     @RequestMapping("/workOff")
-    public void workOff(HttpSession session) {
+    public CommuteDTO workOff(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        commuteService.workOff(employee.getId());
+        return commuteService.workOff(employee.getId());
     }
 
     @ResponseBody
     @RequestMapping("/leaveEarly/test")
     public void leaveEarly(HttpSession session) {
-        commuteService.checkLeaveEarly();
+        commuteService.checkAbsence();
     }
 }

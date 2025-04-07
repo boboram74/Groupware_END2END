@@ -14,8 +14,24 @@ public class CommuteDAO {
     @Autowired
     private SqlSession mybatis;
 
+    public CommuteDTO selectById(int id) {
+        return mybatis.selectOne("commute.selectById", id);
+    }
+
+    public int isWorkOn(String employeeId) {
+        return mybatis.selectOne("commute.isWorkOn", employeeId);
+    }
+
     public void insert(CommuteDTO dto) {
         mybatis.insert("commute.insert", dto);
+    }
+
+    public CommuteDTO selectWorkOnByEmployeeId(String employeeId) {
+        return mybatis.selectOne("commute.selectWorkOnByEmployeeId", employeeId);
+    }
+
+    public CommuteDTO selectWorkOffByEmployeeId(String employeeId) {
+        return mybatis.selectOne("commute.selectWorkOffByEmployeeId", employeeId);
     }
 
     public List<CommuteDTO> selectLate() {

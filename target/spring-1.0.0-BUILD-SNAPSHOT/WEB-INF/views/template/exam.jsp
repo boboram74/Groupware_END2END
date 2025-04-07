@@ -13,10 +13,9 @@
         top: 0;
         width: 200px;
         height: 100vh;
-        background-color: #fff;
-        border-right: 1px solid #e0e0e0;
+        border-right: 1px solid var(--md-sys-color-outline);
         z-index: 100;
-        margin-top: 50px;
+        margin-top: 60px;
         transition: none;
     }
 
@@ -48,7 +47,7 @@
         justify-content: space-between;
         padding: 10px 10px 0 10px;
         width: 100%;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solid var(--md-sys-color-outline);
     }
 
 
@@ -81,6 +80,7 @@
         cursor: pointer;
         transition: background-color 0.2s;
         border-radius: 4px;
+        color: var(--md-sys-color-secondary);
     }
 
     .detail-menu-item:hover {
@@ -93,7 +93,7 @@
 
     .detail-menu-item>.material-icons {
         font-size: 18px;
-        color: #757575;
+        color: var(--md-sys-color-secondary);
     }
 
     .detail-menu-item span:not(.material-icons):not(.detail-badge) {
@@ -288,7 +288,7 @@
         }
     }
 </style>
-<div class="mainHeader">
+<div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
             <span class="material-icons">mail</span>
@@ -355,10 +355,17 @@
         <div class="content">
             출력 공간(높이 주지말고 컨텐츠 내용에 따라 유동적으로 증가하게 두세요)
         </div>
-        <div class="pageNavi">
-            1123
-        </div>
-    </div>
+        <!-- 배경색 hover 효과 -->
+        <button class="primary primary-hover">호버 효과가 있는 기본 버튼</button>
+        <div class="primary-container primary-container-hover">호버 효과가 있는 컨테이너</div>
+
+        <!-- 텍스트 hover 효과 -->
+        <a class="primary-text primary-text-hover">호버 효과가 있는 링크</a>
+
+        <!-- 여러 효과 조합 -->
+        <button class="secondary secondary-hover">
+            <span class="primary-text primary-text-hover">혼합된 호버 효과</span>
+        </button>
 </div>
 <script>
     $(document).ready(function() {

@@ -3,6 +3,35 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/commute/commute-header.jsp"/>
 <style>
+    /* 기본 버튼 스타일 */
+    .button-container button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .button-container .primary:hover {
+        /*
+        background-color: var(--md-sys-color-on-primary);
+        color: var(--md-sys-color-primary);
+        */
+        opacity: 0.9;
+
+
+    }
+
+    .button-container .secondary:hover {
+        opacity: 0.9;
+    }
+</style>
+<style>
     .commute-detail-wrapper {
         display: grid;
         grid-template-rows: repeat(11, 1fr);
@@ -169,7 +198,7 @@
     .vacation-grid::after {
         left: 66%;
     }
-    
+
     .vacation-item {
         display: flex;
         flex-direction: column;
@@ -377,9 +406,9 @@
     }
 </style>
 <div class="button-container">
-    <button class="extended-button">연장근무 신청</button>
-    <button class="vacation-button">휴가 신청</button>
-    <button class="vacation-list-button">휴가 조회</button>
+    <button class="extended-button primary">연장근무 신청</button>
+    <button class="vacation-button primary">휴가 신청</button>
+    <button class="vacation-list-button secondary">휴가 조회</button>
 </div>
 <div class="commute-detail-wrapper">
     <!-- 첫 번째 컨테이너: 출퇴근 현황 -->
@@ -399,7 +428,6 @@
                 </div>
             </div>
         </div>
-
         <!-- 2. 근무시간 현황 박스 -->
         <div class="box work-time-box surface-bright">
             <div class="box-title">근무 시간</div>

@@ -1,4 +1,4 @@
-package com.end2end.spring.board.dto;
+package com.end2end.spring.mail.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BoardCategoryDTO {
+public class EmailAddressUserDTO {
     private int id;
-    private String name;
-    private String category;
+    private String emailAddress;
+    private String employeeId;
     private Timestamp regDate;
 }

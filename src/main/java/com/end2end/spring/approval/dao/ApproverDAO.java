@@ -5,6 +5,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ApproverDAO {
 
@@ -15,7 +17,7 @@ public class ApproverDAO {
         mybatis.insert("approver.insertApprover", approverDTO);
     }
 
-    public String nextId(String approvalId) {
-        return mybatis.selectOne("approver.nextId", approvalId);
+    public List<String> nextId(String approvalId) {
+        return mybatis.selectList("approver.nextId", approvalId);
     }
 }

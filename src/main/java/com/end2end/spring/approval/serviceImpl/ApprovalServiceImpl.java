@@ -75,8 +75,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public String nextId(String approvalId) {
-        // TODO: 해당 id의 결재를 출력
+    public List<String> nextId(String approvalId) {
         return approverDAO.nextId(approvalId);
     }
 

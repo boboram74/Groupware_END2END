@@ -1,5 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/approval/draft.css">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>

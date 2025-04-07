@@ -46,7 +46,7 @@
                     <c:forEach var="i" items="${waitingList}">
                         <tr>
                             <td class="apColStar">★</td>
-                            <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
+                            <td class="apColTitle"><a href="/approval/detail/${i.id}">${i.title}</a></td>
                             <td class="apColStatus">결재 대기중</td>
                             <td class="apColWriter">${i.employeeId}</td>
                             <td class="apColDate">${i.regDate}</td>
@@ -84,7 +84,7 @@
                     <c:forEach var="i" items="${goingList}">
                         <tr>
                             <td class="apColStar">★</td>
-                            <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
+                            <td class="apColTitle"><a href="/approval/detail/${i.id}">${i.title}</a></td>
                             <td class="apColStatus">결재 진행중</td>
                             <td class="apColWriter">${i.employeeId}</td>
                             <td class="apColDate">${i.regDate}</td>
@@ -122,7 +122,7 @@
                     <c:forEach var="i" items="${completedList}">
                         <tr>
                             <td class="apColStar">★</td>
-                            <td class="apColTitle"><a href="/approval/${i.id}">${i.title}</a></td>
+                            <td class="apColTitle"><a href="/approval/detail/${i.id}">${i.title}</a></td>
                             <td class="apColStatus">결재 완료</td>
                             <td class="apColWriter">${i.employeeName}</td>
                             <td class="apColDate">${i.regDate}</td>

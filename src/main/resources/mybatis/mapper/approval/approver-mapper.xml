@@ -8,7 +8,7 @@
     </select>
 
     <select id="nextId" resultType="com.end2end.spring.approval.dto.ApproverDTO">
-        SELECT employeeId FROM approver WHERE approvalId = #{approvalId} AND submitYn = 'N' ORDER BY orders
+        SELECT employeeId FROM approver WHERE approvalId = #{approvalId} AND submitYn is null ORDER BY orders
     </select>
 
 </mapper>

@@ -78,15 +78,13 @@ public class ApprovalController {
         return "approval/write";
     }
 
-    @RequestMapping("/{id}")
+    @RequestMapping("/detail/{id}")
     public String toDetail(Model model, @PathVariable String id, HttpSession session) {
         ApprovalDTO approvalDTO = approvalService.selectById(id);
 
         EmployeeDTO employeeId = (EmployeeDTO) session.getAttribute("employee");
         System.out.println(employeeId);
-        if (employeeId == null) {
-            return "redirect:/";
-        }
+
 
         String nextId = approvalService.nextId(id);
 

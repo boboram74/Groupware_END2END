@@ -21,7 +21,7 @@ public interface ApprovalService {
     List<ApprovalDTO> selectByState(String state, String employeeId);
     ApprovalDTO selectById(String id);
 
-    String nextId(String approvalId);
+    List<String> nextId(String approvalId);
 
     void insert(MultipartFile[] files, ApprovalInsertDTO dto);
 

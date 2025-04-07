@@ -8,4 +8,11 @@ import org.springframework.stereotype.Repository;
 public class BoardDAO {
     @Autowired
     private SqlSession mybatis;
+
+    public void selectCategoryByName(String name) {
+        return mybatis.selectList("board.selectCategoryByName", name);
+    }
+    public void insertBoardCtUser(boardCtUserDTO) {
+        mybatis.insert("board.insertBoardCtUser",boardCtUserDTO);
+    }
 }

@@ -145,7 +145,7 @@
 
     .vacation-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         position: relative;
         height: 100%; /* box-content의 전체 높이 사용 */
@@ -163,17 +163,13 @@
     }
 
     .vacation-grid::before {
-        left: 25%;
+        left: 33%;
     }
 
     .vacation-grid::after {
-        left: 50%;
+        left: 66%;
     }
-
-    .vacation-grid::after:last-child {
-        left: 75%;
-    }
-
+    
     .vacation-item {
         display: flex;
         flex-direction: column;
@@ -515,13 +511,7 @@
                     <div class="vacation-item">
                         <h4>이번달 사용일</h4>
                         <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
-                        </div>
-                    </div>
-                    <div class="vacation-item">
-                        <h4>잔여 휴가</h4>
-                        <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
+                            <span class="vacation-unit">${thisMonthUsedVacationDates}<small>일</small></span>
                         </div>
                     </div>
                 </div>

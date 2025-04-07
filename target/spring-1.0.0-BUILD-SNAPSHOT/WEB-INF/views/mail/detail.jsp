@@ -26,7 +26,13 @@
             <label>파일 첨부</label>
             <div class="dragDropArea" id="dropArea">
                 <c:forEach var="i" items="${fileList}">
-                    <a href="http://34.70.179.192/mail/files?path=${i.path}">${i.originFileName}</a>
+                    <div class="fileItem">
+                        <span class="material-icons">attachment</span>
+                        <a href="http://34.70.179.192/mail/files?path=${i.path}">
+                                ${i.originFileName}
+                        </a>&nbsp;
+                        <span class="fileItemSize" data-size="${i.fileSize}"></span>
+                    </div>
                 </c:forEach>
             </div>
             <input type="file" id="fileInput" style="display:none;" multiple>

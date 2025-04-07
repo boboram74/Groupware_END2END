@@ -52,10 +52,10 @@
                 </div>
                 <div class="email">이메일 : <input type="text" name="email"></div>
                 <div class="contact">연락처 : <input type="text" name="contact"></div>
-                <div class="postCode">우편번호 : <input type="text" name="postCode" id="postcode">
+                <div class="postCode">우편번호 : <input type="text" name="postCode" id="postcode" readonly>
                     <button type="button" class="postBtn" id="postBtn">우편번호 검색</button>
                 </div>
-                <div class="address">주소 : <input type="text" name="address"></div>
+                <div class="address">주소 : <input type="text" name="address" readonly></div>
                 <div class="detailAddress">상세주소 : <input type="text" name="detailAddress"></div>
             </div>
             <div class="btn">

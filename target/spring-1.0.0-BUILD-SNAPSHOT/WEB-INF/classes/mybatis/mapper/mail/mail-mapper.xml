@@ -4,6 +4,16 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mail">
 
+    <update id="insertReadYn">
+        update email_state SET readyn = 'Y' WHERE id = #{value}
+    </update>
+
+    <update id="updateImportant" >
+        update email_state
+        set importantyn = #{importantYn}
+        where id = #{esId}
+    </update>
+
     <!--  현재 로그인한 계정의 부서이메일 조회 -->
     <select id="selectDepartmentName" resultType="string">
         SELECT d.email
@@ -39,32 +49,9 @@
         )
         AND es.HIDEYN = 'N'
         AND es.TRASHCANYN = 'N'
-        AND es.IMPORTANTYN = 'N'
     </select>
 
     <select id="selectFromto" parameterType="map" resultType="com.end2end.spring.mail.dto.MailTeamListDTO">
-<!--        SELECT id, SENDEREMAILADDRESS, title, regdate-->
-<!--        FROM (-->
-<!--        SELECT-->
-<!--        e.id,-->
-<!--        e.SENDEREMAILADDRESS,-->
-<!--        e.title,-->
-<!--        e.regdate,-->
-<!--        ROW_NUMBER() OVER (ORDER BY e.id DESC) AS rnum-->
-<!--        FROM EMAIL e-->
-<!--        JOIN EMAIL_STATE es-->
-<!--            ON e.ID = es.EMAILID-->
-<!--        WHERE es.EMAILUSERID IN (-->
-<!--            SELECT id-->
-<!--            FROM EMAIL_ADDRESS_USER-->
-<!--            WHERE EMPLOYEEID = #{employeeId}-->
-<!--        )-->
-<!--            AND es.HIDEYN = 'N'-->
-<!--            AND es.TRASHCANYN = 'N'-->
-<!--            AND es.IMPORTANTYN = 'N'-->
-<!--        )-->
-<!--        WHERE rnum BETWEEN #{start} AND #{end}-->
-
         SELECT
         id,
         fileCount,
@@ -102,7 +89,6 @@
         )
         AND es.HIDEYN = 'N'
         AND es.TRASHCANYN = 'N'
-        AND es.IMPORTANTYN = 'N'
         )
         WHERE rnum BETWEEN #{start} AND #{end}
     </select>

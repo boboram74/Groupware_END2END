@@ -12,30 +12,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class InboxController {
     @RequestMapping("/list")
     public void toListByEmployee(String employeeId, Model model) {
-        // TODO: 해당 사원의 모든 메일을 출력하는 list.jsp
+        // TODO: 해당 사원의 모든 메일을 출력하는 list3.jsp
     }
 
     @RequestMapping("/list/{email}")
     public String toListByEmail(@PathVariable String email, Model model) {
-        // TODO: 해당 이메일의 모든 메일을 출력하는 list.jsp
+        // TODO: 해당 이메일의 모든 메일을 출력하는 list3.jsp
         return "/mail/list";
     }
 
     @RequestMapping("/list/search")
     public String toSearch(String email, Model model) {
-        // TODO: 해당 이메일의 검색내용의 메일을 출력하는 list.jsp
+        // TODO: 해당 이메일의 검색내용의 메일을 출력하는 list3.jsp
         return "/mail/list";
     }
 
     @RequestMapping("/list/important")
     public String toImportant(int employeeId, Model model) {
-        // TODO: 해당 사원의 중요 메일을 출력하는 list.jsp
+        // TODO: 해당 사원의 중요 메일을 출력하는 list3.jsp
         return "/mail/list";
     }
 
     @RequestMapping("/list/temp")
     public String toTemp(Model model) {
-        // TODO: 해당 사원의 임시 저장된 메일을 출력하는 list.jsp
+        // TODO: 해당 사원의 임시 저장된 메일을 출력하는 list3.jsp
         return "/mail/list";
     }
 

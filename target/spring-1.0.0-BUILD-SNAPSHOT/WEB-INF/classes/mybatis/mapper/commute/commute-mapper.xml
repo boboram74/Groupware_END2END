@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="commute">
+    <select id="selectById" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT * FROM COMMUTE WHERE id = ${id}
+    </select>
+
     <select id="checkLate" resultType="com.end2end.spring.commute.dto.CommuteDTO">
         SELECT *
         FROM COMMUTE
@@ -108,6 +112,46 @@
     </insert>
 
     <insert id="insert">
-        INSERT INTO COMMUTE(id, state, employeeId) VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{state}', #{employeeId})
+        INSERT INTO COMMUTE(id, state, employeeId) VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{state}, #{employeeId})
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT COMMUTE_ID_SEQ.CURRVAL FROM DUAL
+        </selectKey>
     </insert>
+
+    <select id="isWorkOn" resultType="Integer">
+        SELECT COUNT(*)
+        FROM COMMUTE
+        WHERE
+            employeeId = #{employeeId}
+        AND
+            state = 'WORK_ON'
+        AND
+            TRUNC(regDate) = TRUNC(SYSDATE)
+    </select>
+
+    <select id="selectWorkOnByEmployeeId" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT *
+        FROM COMMUTE
+        WHERE
+            employeeId = #{employeeId}
+        AND
+            state = 'WORK_ON'
+        AND
+            TRUNC(regDate) = TRUNC(SYSDATE)
+    </select>
+
+    <select id="selectWorkOffByEmployeeId" resultType="com.end2end.spring.commute.dto.CommuteDTO">
+        SELECT *
+        FROM COMMUTE
+        WHERE
+            regDate = (
+            SELECT MAX(regDate)
+            FROM COMMUTE
+            WHERE
+                state = 'WORK_OFF'
+            AND
+                TRUNC(regDate) = TRUNC(SYSDATE)
+            AND
+                employeeId = #{employeeId})
+    </select>
 </mapper>

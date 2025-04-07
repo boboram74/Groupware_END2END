@@ -15,4 +15,7 @@ public class SolderingDAO {
     public void insertList(List<SolderingDTO> dtoList) {
         mybatis.insert("soldering.insert", dtoList);
     }
+    public int countThisWeekByStateAndEmployeeId(SolderingDTO dto) {
+        return mybatis.selectOne("soldering.countThisWeekByStateAndEmployeeId", dto);
+    }
 }

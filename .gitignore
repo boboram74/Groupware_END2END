@@ -16,6 +16,7 @@ local.properties
 .classpath
 .project
 .smarttomcat
+.SmartTomcat
 logs
 conf
 work

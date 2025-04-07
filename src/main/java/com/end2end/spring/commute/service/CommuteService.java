@@ -3,9 +3,9 @@ package com.end2end.spring.commute.service;
 import com.end2end.spring.commute.dto.CommuteDTO;
 
 public interface CommuteService {
-    boolean isWorkOn(String employeeId);
-    CommuteDTO workOn(String employeeId);
-    CommuteDTO workOff(String employeeId);
+    boolean isExistByState(String employeeId, String state);
+    boolean workOn(String employeeId);
+    boolean workOff(String employeeId);
     CommuteDTO selectByEmployeeIdAndState(CommuteDTO dto);
     int countWorkOnThisWeekByEmployeeId(String employeeId);
     void checkLeaveEarly();

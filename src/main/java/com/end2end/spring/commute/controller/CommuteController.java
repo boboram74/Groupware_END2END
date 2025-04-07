@@ -6,7 +6,6 @@ import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.commute.service.SolderingService;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
-import com.end2end.spring.works.dto.ProjectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,19 +71,22 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/workOn")
-    public CommuteDTO workOn(HttpSession session) {
+    public boolean workOn(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        CommuteDTO workOn = commuteService.workOn(employee.getId());
+        boolean workOn = commuteService.workOn(employee.getId());
 
-        session.setAttribute("isWorkOn", true);
+        session.setAttribute("isWorkOn", workOn);
         return workOn;
     }
 
     @ResponseBody
     @RequestMapping("/workOff")
-    public CommuteDTO workOff(HttpSession session) {
+    public boolean workOff(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        return commuteService.workOff(employee.getId());
+        boolean workOff = commuteService.workOff(employee.getId());
+
+        session.setAttribute("isWorkOff", workOff);
+        return workOff;
     }
 
     @ResponseBody

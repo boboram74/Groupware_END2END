@@ -424,7 +424,8 @@
                 <div class="commuteButtons">
                     <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
                     ${isWorkOn ? 'disabled' : ''}>출근하기</button>
-                    <button class="endWork primary">퇴근하기</button>
+                    <button class="endWork primary ${isWorkOff ? 'disabled' : ''}"
+                    ${isWorkOff ? 'disabled' : ''}>퇴근하기</button>
                 </div>
             </div>
         </div>
@@ -693,7 +694,6 @@
             }).done(function (data) {
                 if (data) {
                     alert("출근하셨습니다.");
-                    $(this).attr('disabled', true);
                     location.reload();
                 }
             })
@@ -706,9 +706,6 @@
                 }).done(function (data) {
                     if (data) {
                         alert("퇴근했습니다.");
-                        $(this).attr('disabled', true);
-                        workOffTime = new Date(data.regDate).getTime();
-                        setTimeDisplay('.work-off-time', formatDuration(workOffTime));
                         location.reload();
                     }
                 })

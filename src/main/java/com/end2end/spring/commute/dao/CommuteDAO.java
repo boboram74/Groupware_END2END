@@ -22,8 +22,8 @@ public class CommuteDAO {
         return mybatis.selectOne("commute.countWorKOnThisWeekByEmployeeId", employeeId);
     }
 
-    public int isWorkOn(String employeeId) {
-        return mybatis.selectOne("commute.isWorkOn", employeeId);
+    public int isExistByState(CommuteDTO dto) {
+        return mybatis.selectOne("commute.isExistByState", dto);
     }
 
     public void insert(CommuteDTO dto) {

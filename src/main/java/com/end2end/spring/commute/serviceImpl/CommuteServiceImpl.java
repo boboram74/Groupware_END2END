@@ -9,10 +9,12 @@ import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,39 +27,52 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public boolean isWorkOn(String employeeId) {
-        return commuteDAO.isWorkOn(employeeId) > 0;
+    public boolean isExistByState(String employeeId, String state) {
+        return commuteDAO.isExistByState(CommuteDTO.builder()
+                .employeeId(employeeId)
+                .state(state)
+                .build()) > 0;
     }
 
     @Transactional
     @Override
-    public CommuteDTO workOn(String employeeId) {
-        if (commuteDAO.isWorkOn(employeeId) > 0) {
-            return null;
-        }
+    public boolean workOn(String employeeId) {
         CommuteDTO dto = CommuteDTO.builder()
                 .employeeId(employeeId)
                 .state("WORK_ON")
                 .build();
+        if (commuteDAO.isExistByState(dto) > 0) {
+            return false;
+        }
+
+        Date date = new Date();
+        if (date.getHours() > Statics.WORK_HOUR) {
+
+        }
+
         commuteDAO.insert(dto);
 
-        return commuteDAO.selectById(dto.getId());
+        return true;
     }
 
     @Transactional
     @Override
-    public CommuteDTO workOff(String employeeId) {
-        if (commuteDAO.isWorkOn(employeeId) == 0) {
-            return null;
-        }
-
+    public boolean workOff(String employeeId) {
         CommuteDTO dto = CommuteDTO.builder()
                 .employeeId(employeeId)
-                .state("WORK_OFF")
+                .state("WORK_ON")
                 .build();
+        if (commuteDAO.isExistByState(dto) == 0) {
+            return false;
+        }
+
+        dto.setState("WORK_OFF");
+        if (commuteDAO.isExistByState(dto) > 0) {
+            return false;
+        }
         commuteDAO.insert(dto);
 
-        return commuteDAO.selectById(dto.getId());
+        return true;
 
     }
 

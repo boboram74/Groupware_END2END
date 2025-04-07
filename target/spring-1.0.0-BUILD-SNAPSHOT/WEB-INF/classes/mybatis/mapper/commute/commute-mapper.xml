@@ -118,15 +118,36 @@
         </selectKey>
     </insert>
 
-    <select id="isWorkOn" resultType="Integer">
+    <select id="isExistByState" resultType="Integer">
         SELECT COUNT(*)
         FROM COMMUTE
         WHERE
             employeeId = #{employeeId}
         AND
-            state = 'WORK_ON'
+            state = #{state}
         AND
             TRUNC(regDate) = TRUNC(SYSDATE)
+    </select>
+
+    <select id="selectThisWeekWorkTime" resultType="com.end2end.spring.commute.dto.TodayWorkTimeDTO">
+        SELECT wo.workTime, (wf.REGDATE - wo.REGDATE) as todayWorkTime
+        FROM (
+            SELECT TRUNC(regdate) as workTime, workOff.*
+            FROM COMMUTE workOff
+            WHERE
+                employeeId = #{employeeId}
+            AND
+                state = 'WORK_OFF') wf
+        JOIN (
+            SELECT TRUNC(regDate) as workTime, workOn.*
+            FROM COMMUTE workOn
+            WHERE
+        employeeId = #{employeeId}
+            AND
+                state = 'WORK_ON') wo
+        ON wo.workTime = wf.workTime
+        WHERE
+            wf.workTime BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE);
     </select>
 
     <select id="selectWorkOnByEmployeeId" resultType="com.end2end.spring.commute.dto.CommuteDTO">

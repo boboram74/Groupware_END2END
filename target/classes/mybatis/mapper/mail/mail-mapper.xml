@@ -12,6 +12,25 @@
         update email_state SET TRASHCANYN = 'Y' WHERE id = #{value}
     </update>
 
+    <insert id="insert">
+        INSERT INTO EMAIL_ADDRESS(emailaddress, name)
+        VALUES (#{emailAddress},#{name})
+    </insert>
+
+    <insert id="insertEmailAddressUser">
+        INSERT INTO EMAIL_ADDRESS_USER(EMAIL_ADDRESS_USER_SEQ.NEXTVAL,employeeId, emailAddress)
+        VALUES (${id},#{employeeId},#{emailAddress})
+    </insert>
+
+    <select id="selectDepartmentById" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
+        SELECT * FROM DEPARETMENT WHERE ID = ${id};
+    </select>
+
+    <insert id="insertEmailAddressUser">
+        INSERT INTO EMAIL_ADDRESS_USER(EMAIL_ADDRESS_USER_SEQ.NEXTVAL,employeeId, emailAddress)
+        VALUES (${id},#{employeeId},#{emailAddress})
+    </insert>
+
     <update id="updateImportant" >
         update email_state
         set importantyn = #{importantYn}

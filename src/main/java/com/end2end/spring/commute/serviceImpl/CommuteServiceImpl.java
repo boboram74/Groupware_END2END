@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,12 +81,15 @@ public class CommuteServiceImpl implements CommuteService {
         commuteDAO.insert(dto);
         CommuteDTO workOnDTO = commuteDAO.selectByStateAndEmployeeId(dto);
 
-        if(workOnDTO.getRegDate().getHours() < Statics.WORK_HOUR) {
-            SolderingDTO solderingDTO = SolderingDTO.builder()
-                    .employeeId(employeeId)
-                    .state("LEAVE_EARLY")
-                    .build();
-            solderingDAO.insert(solderingDTO);
+        long workHour = Duration.between(workOnDTO.getRegDate().toLocalDateTime(), LocalDateTime.now()).toHours();
+        if(workHour < Statics.WORK_HOUR) {
+            if ( vacationDAO.isOnVacation(employeeId) == 0) {
+                SolderingDTO solderingDTO = SolderingDTO.builder()
+                        .employeeId(employeeId)
+                        .state("LEAVE_EARLY")
+                        .build();
+                solderingDAO.insert(solderingDTO);
+            }
         }
 
         return true;
@@ -99,68 +104,5 @@ public class CommuteServiceImpl implements CommuteService {
     @Override
     public int countWorkOnThisWeekByEmployeeId(String employeeId) {
         return commuteDAO.countWorKOnThisWeekByEmployeeId(employeeId);
-    }
-
-    @Transactional
-    @Override
-    public void checkLate() {
-        List<CommuteDTO> lateList = commuteDAO.selectLate();
-
-        List<SolderingDTO> solderingDTOList = lateList.stream()
-                .map((commuteDTO) -> SolderingDTO.builder()
-                        .employeeId(commuteDTO.getEmployeeId())
-                        .state("LATE")
-                        .build())
-                .collect(Collectors.toList());
-        solderingDAO.insertList(solderingDTOList);
-    }
-
-    @Transactional
-    @Override
-    public void checkLeaveEarly() {
-        // TODO: 조퇴자 체크
-        List<TodayWorkTimeDTO> todayWorkTimeList = commuteDAO.selectTodayWorkTimeList();
-
-        List<SolderingDTO> leaveEarlyList = todayWorkTimeList.stream()
-                .filter((leaveEarlyDTO) ->
-                        leaveEarlyDTO.todayWorkTime().toHours() < 2)
-                .map((leaveEarlyDTO) ->
-                        SolderingDTO.builder()
-                            .employeeId(leaveEarlyDTO.getEmployeeId())
-                            .state("LEAVE_EARLY")
-                        .build())
-                .collect(Collectors.toList());
-        solderingDAO.insertList(leaveEarlyList);
-    }
-
-    @Transactional
-    @Override
-    public void checkNotCheck() {
-        // TODO: 미체크 체크
-        List<EmployeeDTO> employeeList = commuteDAO.selectNotCheck();
-
-        List<SolderingDTO> solderingDTOList = employeeList.stream()
-                .map((employee) -> SolderingDTO.builder()
-                        .employeeId(employee.getId())
-                        .state("NOT_CHECK")
-                        .build())
-                .collect(Collectors.toList());
-        solderingDAO.insertList(solderingDTOList);
-    }
-
-    @Transactional
-    @Override
-    public void checkAbsence() {
-        // TODO: 결근자 체크
-        List<EmployeeDTO> employeeList = commuteDAO.selectAbsence();
-        List<EmployeeDTO> notVacationEmployeeList = vacationDAO.selectNotTodayVacation(employeeList);
-
-        List<SolderingDTO> solderingDTOList = notVacationEmployeeList.stream()
-                .map((employee) -> SolderingDTO.builder()
-                        .employeeId(employee.getId())
-                        .state("ABSENCE")
-                        .build())
-                .collect(Collectors.toList());
-        solderingDAO.insertList(solderingDTOList);
     }
 }

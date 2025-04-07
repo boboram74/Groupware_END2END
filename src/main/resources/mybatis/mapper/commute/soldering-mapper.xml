@@ -27,4 +27,27 @@
         AND
             TRUNC(regDate) BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE)
     </select>
+
+    <select id="selectByState" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT *
+        FROM EMPLOYEE
+        WHERE
+            ID NOT IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_ON'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+        AND
+            ID NOT IN (
+                SELECT employeeId
+                FROM VACATION
+                WHERE
+                    startDate + NUMTODSINTERVAL(vacationDate, 'DAY') > SYSDATE
+        <if test="state.equals('ABSENCE')">
+            AND vacationDate > 1
+        </if>
+        )
+    </select>
 </mapper>

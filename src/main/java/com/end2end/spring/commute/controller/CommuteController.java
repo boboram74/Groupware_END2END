@@ -92,6 +92,6 @@ public class CommuteController {
     @ResponseBody
     @RequestMapping("/leaveEarly/test")
     public void leaveEarly(HttpSession session) {
-        commuteService.checkAbsence();
+        solderingService.insertByState("LATE");
     }
 }

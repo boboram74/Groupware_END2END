@@ -30,13 +30,7 @@
 
         <div class="approvalBox">
             <div class="lineBox" id="lineBox">
-                <c:forEach var="approver" items="${approvers}">
-                    <div class="line">
-                        <div class="linePositions">${approver.jobName}</div>
-                        <div class="lineEmployeeName">${approver.employeeName}</div>
-                        <div class="date"></div>
-                    </div>
-                </c:forEach>
+
             </div>
         </div>
     </div>
@@ -50,11 +44,19 @@
         </div>
 
         <div class="signInform" id="signButtons">
-            <c:if test="${nextId}">
-                <input type="file" name="files">
-                <button id="signOk">승인</button>
-                <button type="button" onclick="location.href='/approval/list'" class="cancle">반려</button>
-            </c:if>
+            <c:forEach var="nextId" items="${nextId}">
+                <c:if test="${nextId eq employee.id}">
+                    <input type="file" name="files">
+                    <form action="/approval/approve" method="post" style="display:inline;">
+                        <input type="hidden" name="approvalId" value="${approval.id}" />
+                        <button type="submit" id="signOk">승인</button>
+                    </form>
+                    <form action="/approval/reject" method="post" style="display:inline;">
+                        <input type="hidden" name="approvalId" value="${approval.id}" />
+                        <button type="submit" class="cancle">반려</button>
+                    </form>
+                </c:if>
+            </c:forEach>
         </div>
     </div>
 </div>

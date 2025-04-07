@@ -226,8 +226,8 @@
             const formData = new FormData(document.getElementById('form'));
             formData.append('content', $('#contents').summernote('code'));
 
-            approvalList.forEach((employee, index) => {
-                formData.append('approverIds[${index}]', employee.id);
+            approvalList.forEach(employee => {
+                formData.append('approverId', employee.id);
             });
             $.ajax({
                 url: '/approval/insert',

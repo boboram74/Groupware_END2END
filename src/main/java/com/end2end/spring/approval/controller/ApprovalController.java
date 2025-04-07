@@ -2,6 +2,7 @@ package com.end2end.spring.approval.controller;
 
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.approval.dto.ApprovalInsertDTO;
+import com.end2end.spring.approval.dto.ApproverDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.dto.TempApprovalDTO;
@@ -86,12 +87,12 @@ public class ApprovalController {
         System.out.println(employeeId);
 
 
-        String nextId = approvalService.nextId(id);
+        List<String> nextId = approvalService.nextId(id);
 
 
         model.addAttribute("approval", approvalDTO);
         model.addAttribute("nextId", nextId);
-        model.addAttribute("employee", approvalService.selectById(id));
+        model.addAttribute("employee",employeeId);
 
         System.out.println("ApprovalDTO: " + approvalService.selectById(id));
         System.out.println("Next ID: " + approvalService.nextId(id));
@@ -104,7 +105,7 @@ public class ApprovalController {
     @ResponseBody
     @RequestMapping("/insert")
     public void insert(MultipartFile[] files, ApprovalInsertDTO dto, HttpSession session, Model model) {
-        // TODO: 전재 결재 입력
+        System.out.println("Approver ID 리스트: " + dto.getApproverId());
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         dto.setEmployeeId(employee.getId());
 

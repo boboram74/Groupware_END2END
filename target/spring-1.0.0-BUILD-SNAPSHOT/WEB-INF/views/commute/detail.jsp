@@ -3,12 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/commute/commute-header.jsp"/>
 <style>
-    .button-container {
-        display: flex;
-        justify-content: end;
-        gap: 10px;
-    }
-
     .commute-detail-wrapper {
         display: grid;
         grid-template-rows: repeat(11, 1fr);

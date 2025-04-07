@@ -77,15 +77,23 @@ public class CommuteServiceImpl implements CommuteService {
             return false;
         }
         commuteDAO.insert(dto);
+        CommuteDTO workOnDTO = commuteDAO.selectByStateAndEmployeeId(dto);
+
+        if(workOnDTO.getRegDate().getHours() < Statics.WORK_HOUR) {
+            SolderingDTO solderingDTO = SolderingDTO.builder()
+                    .employeeId(employeeId)
+                    .state("LEAVE_EARLY")
+                    .build();
+            solderingDAO.insert(solderingDTO);
+        }
 
         return true;
 
     }
 
     @Override
-    public CommuteDTO selectByEmployeeIdAndState(CommuteDTO dto) {
-        return  (dto.getState().equals("WORK_ON")) ?
-                commuteDAO.selectWorkOnByEmployeeId(dto.getEmployeeId()) : commuteDAO.selectWorkOffByEmployeeId(dto.getEmployeeId());
+    public CommuteDTO selectByStateAndEmployeeId(CommuteDTO dto) {
+        return  commuteDAO.selectByStateAndEmployeeId(dto);
     }
 
     @Override
@@ -154,18 +162,5 @@ public class CommuteServiceImpl implements CommuteService {
                         .build())
                 .collect(Collectors.toList());
         solderingDAO.insertList(solderingDTOList);
-    }
-
-    @Transactional
-    @Override
-    public void insertAll() {
-        List<EmployeeDTO> employeeDTOList = employeeDAO.selectAll();
-
-        List<CommuteDTO> commuteDTOList = employeeDTOList.stream()
-                .map(employeeDTO ->
-                        CommuteDTO.builder().employeeId(employeeDTO.getId()).build())
-                .collect(Collectors.toList());
-
-        //commuteDAO.insertAll(commuteDTOList);
     }
 }

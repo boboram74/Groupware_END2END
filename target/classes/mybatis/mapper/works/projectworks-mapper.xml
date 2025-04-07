@@ -10,7 +10,6 @@
     <!-- 프로젝트 모아보기-->
 
 
-<<<<<<< HEAD
     <delete id="deleteById" parameterType="int">
         delete from project where id=#{id}
     </delete>
@@ -22,6 +21,7 @@
     </insert>
     <!-- 프로젝트추가 -->
 
+
 <!--    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">-->
 <!--        INSERT INTO PROJECT_USER (id, projectId, employeeId, regDate)-->
 <!--        SELECT PROJECT_USER_SEQ.NEXTVAL, #{projectId}, e.employee_id, SYSDATE-->
@@ -32,8 +32,15 @@
 <!--        </foreach>-->
 <!--    </insert>-->
 
+    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">
+        INSERT INTO PROJECT_USER (projectId, employeeId)
+        VALUES (#{projectId}, #{employeeId})
+    </insert>
+    <!-- 프로젝트인원추가 -->
 
-    <insert id="insertProjectUser">
+
+
+    <insert id="insertAllProjectUser">
         INSERT INTO PROJECT_USER(id, employeeId, projectId)
         SELECT PROJECT_USER_ID_SEQ.NEXTVAL, A.* FROM (
         <foreach collection="list" item="item" separator="UNION ALL">
@@ -42,8 +49,7 @@
         ) A
     </insert>
     <update id="updateById">
-        update project set
-        name=?,deadLine=? where id =${id}
+        update project set name=${name}, deadLine=${deadLine} where id =${id}
     </update>
     <!--프로젝트수정-->
 
@@ -65,34 +71,4 @@
         WHERE EMPLOYEE.NAME LIKE #{name}
 
     </select>
-=======
-    <delete id="deleteById">
-        delete from project where id=${value}
-    </delete>
-    <!-- 프로젝트 삭제-->
-
-
-    <insert id="insert">
-        INSERT INTO project (id, name) values (Project_SEQ.NEXTVAL, #{name})
-    </insert>
-    <!-- 프로젝트추가 -->
-
-    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">
-        INSERT INTO PROJECT_USER (projectId, employeeId)
-        VALUES (#{projectId}, #{employeeId})
-    </insert>
-    <!-- 프로젝트인원추가 -->
-
-    <update id="updateById">
-        update project set
-        name=?,deadLine=? where id =${value}
-    </update>
-    <!--프로젝트수정-->
-
-    <select id="selectByCon" resultType="com.end2end.spring.works.dto.ProjectDTO">
-        select * from project where
-        ${name} like '%'||#{deadLine}||'%'
-    </select>
-    <!--프로젝트 찾기 -->
->>>>>>> 886d14293f63c7fa45ff47b4086fe5f5343528d9
 </mapper>

@@ -30,12 +30,8 @@ public class CommuteDAO {
         mybatis.insert("commute.insert", dto);
     }
 
-    public CommuteDTO selectWorkOnByEmployeeId(String employeeId) {
-        return mybatis.selectOne("commute.selectWorkOnByEmployeeId", employeeId);
-    }
-
-    public CommuteDTO selectWorkOffByEmployeeId(String employeeId) {
-        return mybatis.selectOne("commute.selectWorkOffByEmployeeId", employeeId);
+    public CommuteDTO selectByStateAndEmployeeId(CommuteDTO dto) {
+        return mybatis.selectOne("commute.selectByStateAndEmployeeId", dto);
     }
 
     public List<CommuteDTO> selectLate() {

@@ -31,13 +31,13 @@ public class CommuteController {
                 .build();
 
         commuteDTO.setState("WORK_ON");
-        CommuteDTO workOnTime = commuteService.selectByEmployeeIdAndState(commuteDTO);
+        CommuteDTO workOnTime = commuteService.selectByStateAndEmployeeId(commuteDTO);
         if(workOnTime != null) {
             model.addAttribute("workOnTime", workOnTime.getRegDate());
         }
 
         commuteDTO.setState("WORK_OFF");
-        CommuteDTO workOffTime = commuteService.selectByEmployeeIdAndState(commuteDTO);
+        CommuteDTO workOffTime = commuteService.selectByStateAndEmployeeId(commuteDTO);
         if(workOffTime != null) {
             model.addAttribute("workOffTime", workOffTime.getRegDate());
         }

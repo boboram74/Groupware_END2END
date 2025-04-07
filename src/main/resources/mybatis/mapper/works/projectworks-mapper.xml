@@ -40,7 +40,7 @@
 
 
 
-    <insert id="insertProjectUser">
+    <insert id="insertAllProjectUser">
         INSERT INTO PROJECT_USER(id, employeeId, projectId)
         SELECT PROJECT_USER_ID_SEQ.NEXTVAL, A.* FROM (
         <foreach collection="list" item="item" separator="UNION ALL">
@@ -49,8 +49,7 @@
         ) A
     </insert>
     <update id="updateById">
-        update project set
-        name=?,deadLine=? where id =${id}
+        update project set name=${name}, deadLine=${deadLine} where id =${id}
     </update>
     <!--프로젝트수정-->
 

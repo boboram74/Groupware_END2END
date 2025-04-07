@@ -7,4 +7,6 @@ public interface VacationService {
     void insert(VacationDTO dto);
     void insertUsableVacation(VacationManagementDTO dto);
     double sumTotalVacationDates(String employeeId);
+    double sumTotalUsedVacationDates(String employeeId);
+    double sumThisMonthUsedVacationDates(String employeeId);
 }

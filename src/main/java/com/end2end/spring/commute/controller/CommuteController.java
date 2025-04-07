@@ -58,6 +58,8 @@ public class CommuteController {
         model.addAttribute("leaveEarlyCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
 
         model.addAttribute("totalVacationDates", vacationService.sumTotalVacationDates(employee.getId()));
+        model.addAttribute("totalUsedVacationDates", vacationService.sumTotalUsedVacationDates(employee.getId()));
+        model.addAttribute("thisMonthUsedVacationDates", vacationService.sumThisMonthUsedVacationDates(employee.getId()));
 
         return "commute/detail";
     }

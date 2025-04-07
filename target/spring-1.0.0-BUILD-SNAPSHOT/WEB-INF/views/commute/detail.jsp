@@ -509,7 +509,7 @@
                     <div class="vacation-item">
                         <h4>총 사용일</h4>
                         <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
+                            <span class="vacation-unit">${totalUsedVacationDates}<small>일</small></span>
                         </div>
                     </div>
                     <div class="vacation-item">

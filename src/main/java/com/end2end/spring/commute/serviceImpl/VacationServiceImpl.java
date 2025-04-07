@@ -25,8 +25,24 @@ public class VacationServiceImpl implements VacationService {
     @Override
     public double sumTotalVacationDates(String employeeId) {
         double totalVacationDates = vacationDAO.sumTotalVacationDates(employeeId);
-        totalVacationDates = Math.round(totalVacationDates * 100.0) / 100.0;
+        totalVacationDates = Math.round(totalVacationDates * 10.0) / 10.0;
 
         return totalVacationDates;
+    }
+
+    @Override
+    public double sumTotalUsedVacationDates(String employeeId) {
+        double totalUsedVacationDates = vacationDAO.sumTotalUsedVacationDates(employeeId);
+        totalUsedVacationDates = Math.round(totalUsedVacationDates * 10.0) / 10.0;
+
+        return totalUsedVacationDates;
+    }
+
+    @Override
+    public double sumThisMonthUsedVacationDates(String employeeId) {
+        double thisMonthUsedVacationDates = vacationDAO.sumUsedThisMonthVacationDates(employeeId);
+        thisMonthUsedVacationDates = Math.round(thisMonthUsedVacationDates * 10.0) / 10.0;
+
+        return thisMonthUsedVacationDates;
     }
 }

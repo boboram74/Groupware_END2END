@@ -1,5 +1,6 @@
 package com.end2end.spring.mail.dao;
 
+import com.end2end.spring.employee.dto.DepartmentDTO;
 import com.end2end.spring.mail.dto.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ public class MailDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public void insert(emailAddressDTO) {
-        return mybatis.insert("mail.insert", emailAddressDTO);
+    public void insert(EmailAddressDTO emailAddressDTO) {
+        mybatis.insert("mail.insert", emailAddressDTO);
     }
-    public int selectDepartmentById(int id) {
+    public DepartmentDTO selectDepartmentById(int id) {
         return mybatis.selectOne("mail.selectDepartmentById",id);
     }
 
-    public void insertEmailAddressUser(emailAddressUserDTO) {
+    public void insertEmailAddressUser(EmailAddressUserDTO emailAddressUserDTO) {
         mybatis.insert("mail.insertEmailAddressUser",emailAddressUserDTO);
     }
 

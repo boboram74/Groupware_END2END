@@ -11,9 +11,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BoardCategoryDTO {
+public class BoardCtUserDTO {
     private int id;
-    private String name;
-    private String category;
+    private int boardCtId;
+    private String employeeId;
     private Timestamp regDate;
 }

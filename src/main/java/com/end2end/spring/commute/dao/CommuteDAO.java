@@ -34,17 +34,5 @@ public class CommuteDAO {
         return mybatis.selectOne("commute.selectByStateAndEmployeeId", dto);
     }
 
-    public List<CommuteDTO> selectLate() {
-        return mybatis.selectList("commute.checkLate");
-    }
-
-    public List<EmployeeDTO> selectNotCheck() {
-        return mybatis.selectList("commute.selectByNotCheck");
-    }
-
-    public List<EmployeeDTO> selectAbsence() {
-        return mybatis.selectList("commute.selectAbsence");
-    }
-
     public List<TodayWorkTimeDTO> selectTodayWorkTimeList() { return mybatis.selectList("commute.selectTodayWorkTimeList"); }
 }

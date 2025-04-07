@@ -48,7 +48,7 @@
                             <td class="apColStar">★</td>
                             <td class="apColTitle"><a href="/approval/detail/${i.id}">${i.title}</a></td>
                             <td class="apColStatus">결재 대기중</td>
-                            <td class="apColWriter">${i.employeeId}</td>
+                            <td class="apColWriter">${i.employeeName}</td>
                             <td class="apColDate">${i.regDate}</td>
                         </tr>
                     </c:forEach>
@@ -86,7 +86,7 @@
                             <td class="apColStar">★</td>
                             <td class="apColTitle"><a href="/approval/detail/${i.id}">${i.title}</a></td>
                             <td class="apColStatus">결재 진행중</td>
-                            <td class="apColWriter">${i.employeeId}</td>
+                            <td class="apColWriter">${i.employeeName}</td>
                             <td class="apColDate">${i.regDate}</td>
                         </tr>
                     </c:forEach>

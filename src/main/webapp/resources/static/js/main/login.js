@@ -1,7 +1,6 @@
 $("#newBtn").on("click",function(){
     location.href="hr/write";
 })
-
 // 저장된 아이디 불러오기
 const savedId = localStorage.getItem("savedId");
 if (savedId) {

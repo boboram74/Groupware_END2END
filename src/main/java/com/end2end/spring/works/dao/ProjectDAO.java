@@ -1,10 +1,13 @@
 package com.end2end.spring.works.dao;
 
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.works.dto.ProjectDTO;
+import com.end2end.spring.works.dto.ProjectInsertDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +17,11 @@ public class ProjectDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public int insert(String name)
-    {
-      return  mybatis.insert("project.insert",name);
+    public int insert(ProjectInsertDTO dto) {
+        return mybatis.insert("project.insert", dto);
 
     }
+
     public List<ProjectDTO> selectAll(){
         return mybatis.selectList("project.selectAll");
     }
@@ -27,13 +30,13 @@ public class ProjectDAO {
         return mybatis.delete("project.deleteBySeq",id);
     }
 
-    public  List<ProjectDTO> selectByCon(Map<String,Object> param){
+    public ProjectDTO selectById(int id){
 
-        return mybatis.selectList("project.selectByCon",param);
+        return mybatis.selectOne("project.selectById",id);
     }
-    public List<ProjectDTO>detailSearch(Map<String,Object>param){
-        return mybatis.selectList("project.detailSearch",param);
-    }
+ public List<EmployeeDTO>selectByUser(String target){
+        return mybatis.selectList("project.selectByUser",target);
+ }
 
 
 }

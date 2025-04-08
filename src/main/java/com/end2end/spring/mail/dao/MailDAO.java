@@ -15,8 +15,8 @@ public class MailDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public void insert(EmailAddressDTO emailAddressDTO) {
-        mybatis.insert("mail.insert", emailAddressDTO);
+    public int insert(EmailAddressDTO emailAddressDTO) {
+        return mybatis.insert("mail.insert", emailAddressDTO);
     }
     public DepartmentDTO selectDepartmentById(int id) {
         return mybatis.selectOne("mail.selectDepartmentById",id);
@@ -43,6 +43,14 @@ public class MailDAO {
 
     public int getRecordReadCount(String employeeId) {
         return mybatis.selectOne("mail.getRecordReadCount",employeeId);
+    }
+
+    public int getRecordReceiveReadCount(String employeeId) {
+        return mybatis.selectOne("mail.getRecordReceiveReadCount",employeeId);
+    }
+
+    public int getRecordReceiveCount(String employeeId) {
+        return mybatis.selectOne("mail.getRecordReceiveCount",employeeId);
     }
 
     public String selectDepartment(String employeeId) {
@@ -74,6 +82,15 @@ public class MailDAO {
         param.put("end", end);
         return mybatis.selectList("mail.selectFromtoSendList", param);
     }
+
+    public List<MailTeamListDTO> selectFromtoReceiveList(int start, int end, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("employeeId", employeeId);
+        param.put("start", start);
+        param.put("end", end);
+        return mybatis.selectList("mail.selectFromtoReciveList", param);
+    }
+
 
     public MailDetailDTO selectByEmail(String email) {
         return mybatis.selectOne("mail.selectByEmail", email);

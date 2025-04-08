@@ -1,6 +1,7 @@
 package com.end2end.spring.mail.service;
 
 import com.end2end.spring.mail.dto.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,16 @@ public interface MailService {
     int getRecordImportantTotalCount(String employeeId);
     int getRecordSendTotalCount(String employeeId);
     int getRecordReadCount(String employeeId);
+    int getRecordReceiveReadCount(String employeeId);
+
+    @Transactional
+    int getRecordReceiveCount(String employeeId);
+
     String selectDepartment(String employeeId);
     List<MailTeamListDTO> selectFromto(int start, int end, String employeeId);
     List<MailTeamListDTO> selectFromtoImportant(int start, int end, String employeeId);
     List<SendMailListDTO> selectFromtoSendList(int start, int end, String employeeId);
-
+    List<MailTeamListDTO> selectFromtoReceiveList(int start, int end, String employeeId);
     int insertReadYn(int esId);
     int updateImportant(ImportYnDTO dto);
 

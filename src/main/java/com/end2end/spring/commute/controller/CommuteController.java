@@ -7,6 +7,7 @@ import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.commute.service.SolderingService;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.util.HolidayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -109,14 +112,25 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/test")
-    public List<Map<String, Object>> leaveEarly(HttpSession session) {
-        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        SelectPeriodDTO dto = SelectPeriodDTO.builder()
-                .employeeId(employee.getId())
-                .startDate(Date.valueOf("2025-04-07"))
-                .endDate(Date.valueOf("2025-04-08"))
-                .build();
+    public List<Map<String, Object>> leaveEarly(HttpSession session, String year, String month) throws IOException {
+        Map<String, Object> result = HolidayUtil.getHolidayApi(year, month);
 
-        return commuteService.selectPeriodWorkState(dto);
+        System.out.println("get : " + result.get("response"));
+        Map<String, Object> response = (Map<String, Object>) result.get("response");
+        System.out.println("status : " + response.get("body"));
+        Map<String, Object> body = (Map<String, Object>) response.get("body");
+        Map<String, Object> items = (Map<String, Object>) body.get("items");
+        List<Map<String, Object>> item = (List<Map<String, Object>>) items.get("item");
+
+        for (Map<String, Object> map : item) {
+            Object dateValue = map.get("locdate");
+            if (dateValue instanceof Number) {
+                String formattedDate = String.format("%.0f", ((Number) dateValue).doubleValue());
+                map.put("locdate", formattedDate);
+            }
+
+        }
+
+        return item;
     }
 }

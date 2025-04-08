@@ -1,5 +1,4 @@
 *{
-    /*border: 1px solid red;*/
     box-sizing: border-box;
 }
 .mainContainer{
@@ -59,7 +58,6 @@
     align-items: center;
     justify-content: center;
 }
-
 #searchBtn span {
     font-size: 20px;
 }
@@ -75,14 +73,16 @@
     align-items: center;
 }
 .list{
-    width: 70%;
+    width: 60%;
     margin-right: 10px;
     background-color: white;
+    border: 2px solid dimgray;
 }
+
 .new{
-    width: 30%;
+    width: 40%;
     background-color: white;
-    border: 4px solid dimgray;
+    border: 2px solid dimgray;
 }
 .pageNavi{
     width: 100%;

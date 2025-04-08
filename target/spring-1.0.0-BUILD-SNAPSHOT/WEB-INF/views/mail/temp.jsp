@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<link rel="stylesheet" href="/css/mail/list.css" />
+<link rel="stylesheet" href="/css/mail/temp.css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <style>
     * {
@@ -350,12 +350,12 @@
                     <span class="detail-badge">2</span>
                 </li>
             </a>
-                <a href="/mail/trash">
-                    <li class="detail-menu-item">
-                        <span class="material-icons">delete</span>
-                        <span>휴지통</span>
-                    </li>
-                </a>
+            <a href="/mail/trash">
+                <li class="detail-menu-item">
+                    <span class="material-icons">delete</span>
+                    <span>휴지통</span>
+                </li>
+            </a>
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>
@@ -384,15 +384,13 @@
         </div>
         <div class="titleArea">
             <h4>전체 메일 (<span id="recordCount"></span>)</h4>
-            <h4>안읽은 메일 (<span id="recordReadCount"></span>)</h4>
         </div>
         <div class="content">
             <table class="mailList">
                 <thead>
                 <tr>
                     <th style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox" id="checkAll"></th>
-                    <th style="width: 5%">중요</th>
-                    <th style="width: 20%">보낸사람</th>
+                    <th style="width: 25%">받는사람</th>
                     <th style="width: 5%"></th>
                     <th style="width: 50%">제목</th>
                     <th style="width: 15%">발송 일자</th>
@@ -404,10 +402,6 @@
             </table>
         </div>
         <div class="pageNavi">
-        </div>
-        <div class="buttonsArea">
-            <button type="button" id="readBtn">읽음</button>
-            <button type="button" id="trashBtn">휴지통</button>
         </div>
     </div>
 </div>
@@ -455,8 +449,7 @@
             $("#allMailBox").text(resp.allMailBox);
             $("#receiveMailBox").text(resp.receiveMailBox);
         });
-
     });
 </script>
-<script src="/js/mail/list.js" type="text/javascript"></script>
+<script src="/js/mail/temp.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

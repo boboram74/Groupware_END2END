@@ -820,6 +820,16 @@
         }
 
         calendar.render();
+
+        let resizeTimer;
+        $(window).resize(function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                const dimensions = calculateAvailableDimensions();
+                calendar.setOption('height', dimensions.height);
+                adjustCalendarSize();
+            }, 100);
+        });
     });
 </script>
 <jsp:include page="/WEB-INF/views/commute/commute-footer.jsp"/>

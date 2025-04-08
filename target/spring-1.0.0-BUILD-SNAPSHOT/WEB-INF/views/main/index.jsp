@@ -54,8 +54,14 @@
     });
 
     // 창 크기 변경 시 자동 조절
-    window.addEventListener('resize', function() {
-        calendar.setOption('height', calendar.getEl().offsetWidth * 0.8);
+    let resizeTimer;
+    $(window).resize(function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            const dimensions = calculateAvailableDimensions();
+            calendar.setOption('height', dimensions.height);
+            adjustCalendarSize();
+        }, 100);
     });
 </script>
 <style>

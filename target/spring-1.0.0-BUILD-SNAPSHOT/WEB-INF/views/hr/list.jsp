@@ -3,7 +3,7 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/hr/list.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
@@ -28,17 +28,21 @@
     <div class="mainBody">
         <div class="content">
             <div class="list">
-                <table border="1">
+                <table class="listTable">
                     <tr>
+                        <th>사번</th>
                         <th>이름</th>
                         <th>부서</th>
                         <th>직급</th>
+                        <th>권한 상태</th>
                     </tr>
-                    <c:forEach items="${employeeList}" var="item">
+                    <c:forEach items="${employee}" var="item">
                         <c:if test="${!item.role.equals('NO_AUTH')}">
                         <tr>
                             <td>${item.id}</td>
-                            <td>${item.name}</td>
+                            <td onclick="location.href='/mypage/${item.id}'" style="cursor:pointer;">${item.name}</td>
+                            <td>${item.departmentName}</td>
+                            <td>${item.jobName}</td>
                             <td>${item.role}</td>
                         </tr>
                         </c:if>
@@ -46,32 +50,34 @@
                 </table>
             </div>
             <div class="new">
-                <table border="1">
+                <table class="newTable">
                     <tr>
                         <th>이름</th>
                         <th>부서</th>
                         <th>직급</th>
-                        <th>승인</th>
-                        <th>반려</th>
+                        <th>권한</th>
+                        <th>확인</th>
                     </tr>
-                    <c:forEach items="${employeeList}" var="item">
+                    <c:forEach items="${employee}" var="item">
                         <c:if test="${item.role.equals('NO_AUTH')}">
                             <tr>
-                                <td>${item.id}</td>
                                 <td>${item.name}</td>
+                                <td>${item.departmentName}</td>
+                                <td>${item.jobName}</td>
                                 <td>${item.role}</td>
-                                <td><button id="approveBtn">O</button></td>
-                                <td><button id="rejectBtn">X</button></td>
+                                <td class="btn">
+                                    <button id="approveBtn">승인</button>
+                                    <button id="rejectBtn">반려</button>
+                                </td>
                             </tr>
                         </c:if>
                     </c:forEach>
                 </table>
             </div>
+            <div class="pageNavi">
+                1 2 3 4 5
+            </div>
         </div>
-        <div class="pageNavi">
-            1 2 3 4 5
-        </div>
-
     </div>
 
     <script src="/js/hr/list.js" type="text/javascript"></script>

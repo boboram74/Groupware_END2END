@@ -1,6 +1,8 @@
 package com.end2end.spring.commute.dao;
 
 import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.dto.CommuteStateDTO;
+import com.end2end.spring.commute.dto.SelectPeriodDTO;
 import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.apache.ibatis.session.SqlSession;
@@ -28,5 +30,9 @@ public class SolderingDAO {
     }
     public List<EmployeeDTO> selectNotCheck() {
         return mybatis.selectList("soldering.selectByNotCheck");
+    }
+
+    public List<CommuteStateDTO> selectByPeriod(SelectPeriodDTO dto) {
+        return mybatis.selectList("soldering.selectByPeriod", dto);
     }
 }

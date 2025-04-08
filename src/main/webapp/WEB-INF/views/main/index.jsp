@@ -1,6 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
+<style>
+    :root {
+        --fc-border-color: var(--md-sys-color-outline);
+        --fc-button-text-color: var(--md-sys-color-on-primary);
+        --fc-button-bg-color: var(--md-sys-color-primary);
+        --fc-button-hover-bg-color: var(--md-sys-color-primary-hover);
+        --fc-page-bg-color: var(--md-sys-color-outline);
+        --fc-button-border-color: none;
+        --fc-today-bg-color: var(--md-sys-color-outline-variant);
+    }
+</style>
 <script>
     function calculateAvailableDimensions() {
         const $container = $('.calendarBox');
@@ -54,8 +65,14 @@
     });
 
     // 창 크기 변경 시 자동 조절
-    window.addEventListener('resize', function() {
-        calendar.setOption('height', calendar.getEl().offsetWidth * 0.8);
+    let resizeTimer;
+    $(window).resize(function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            const dimensions = calculateAvailableDimensions();
+            calendar.setOption('height', dimensions.height);
+            adjustCalendarSize();
+        }, 100);
     });
 </script>
 <style>
@@ -291,6 +308,11 @@
         pointer-events: none; /* 호버 효과 완전히 제거 */
     }
 
+    .endWork.disabled {
+        opacity: 0.5;
+        pointer-events: none; /* 호버 효과 완전히 제거 */
+    }
+
     .calendarBox {
         grid-row: span 5; /* 기존 값에서 5로 조정 */
         border-radius: 10px;
@@ -315,6 +337,14 @@
 
     .fc .fc-daygrid-day {
         height: auto !important;  /* 날짜 셀 높이 자동 조정 */
+    }
+
+    .fc th {
+        background-color: var(--md-sys-color-outline);
+    }
+
+    .fc-theme-standard td, .fc-theme-standard th {
+        border-color: var(--md-sys-color-outline);
     }
 
     .material-icons {
@@ -603,7 +633,8 @@
             <div class="commuteButtons">
                 <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
                 ${isWorkOn ? 'disabled' : ''}>출근하기</button>
-                <button class="endWork primary">퇴근하기</button>
+                <button class="endWork primary ${isWorkOff ? 'disabled' : ''}"
+                ${isWorkOff ? 'disabled' : ''}>퇴근하기</button>
             </div>
         </div>
         <div class="calendarBox surface-bright">

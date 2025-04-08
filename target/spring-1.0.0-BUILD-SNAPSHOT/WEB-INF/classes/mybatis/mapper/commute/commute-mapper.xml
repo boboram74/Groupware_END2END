@@ -112,7 +112,7 @@
             employeeId = #{employeeId}
     </select>
 
-    <select id="selectByPeriodAndState" resultType="com.end2end.spring.commute.dto.CommuteStateDTO">
+    <select id="selectByPeriod" resultType="com.end2end.spring.commute.dto.CommuteStateDTO">
         SELECT employeeId, TRUNC(regDate) AS dates, state, regDate
         FROM COMMUTE
         WHERE

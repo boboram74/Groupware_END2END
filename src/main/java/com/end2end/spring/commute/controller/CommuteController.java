@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/commute")
 @Controller
@@ -96,7 +99,7 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/test")
-    public void leaveEarly(HttpSession session) {
+    public List<Map<LocalDate, Object>> leaveEarly(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         SelectPeriodDTO dto = SelectPeriodDTO.builder()
                 .employeeId(employee.getId())
@@ -104,6 +107,6 @@ public class CommuteController {
                 .endDate(Date.valueOf("2025-04-08"))
                 .build();
 
-        commuteService.selectPeriodWorkState(dto);
+        return commuteService.selectPeriodWorkState(dto);
     }
 }

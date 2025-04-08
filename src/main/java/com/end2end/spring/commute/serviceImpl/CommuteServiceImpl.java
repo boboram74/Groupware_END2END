@@ -157,13 +157,13 @@ public class CommuteServiceImpl implements CommuteService {
 
             List<CommuteStateDTO> commuteLocalDateList = commutePeriodList.stream()
                     .filter(commuteStateDTO ->
-                        commuteStateDTO.getDates().equals(finalDate))
+                        commuteStateDTO.getDates().toLocalDate().equals(finalDate))
                     .collect(Collectors.toList());
             list.addAll(commuteLocalDateList);
 
             List<CommuteStateDTO> solderingLocalDateList = solderingPeriodList.stream()
                     .filter(commuteStateDTO ->
-                            commuteStateDTO.getDates().equals(finalDate))
+                            commuteStateDTO.getDates().toLocalDate().equals(finalDate))
                     .collect(Collectors.toList());
             list.addAll(solderingLocalDateList);
 

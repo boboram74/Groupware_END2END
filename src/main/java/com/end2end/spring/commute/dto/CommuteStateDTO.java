@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.sql.Date;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Builder
 public class CommuteStateDTO {
     private String employeeId;
-    private LocalDate dates;
+    private Date dates;
     private Timestamp regDate;
     private String state;
 }

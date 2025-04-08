@@ -28,7 +28,7 @@ public class HRController {
     public String toList(Model model) {
         // TODO: 직원 관리 페이지로 이동
         List<EmployeeDTO> list = employeeService.selectAll();
-        model.addAttribute("employee", list);
+        model.addAttribute("employeeList", list);
         return "hr/list";
     }
 

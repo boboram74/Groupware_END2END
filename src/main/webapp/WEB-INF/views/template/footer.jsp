@@ -298,9 +298,16 @@
 
         <!-- 채팅방 영역 (처음에는 숨겨져 있음) -->
         <div class="chat-room" style="display: none;">
+            <div class="chat-header">
+                <button class="back-button">
+                    <span class="material-icons">arrow_back</span>
+                </button>
+                <h3 id="chat-user-title"></h3>
+            </div>
+
             <div class="chat-messages"></div>
             <div class="chat-input-area">
-                <input type="text" placeholder="메시지를 입력하세요...">
+                <input type="text" placeholder="메시지를 입력하세요..." id="chat-input">
                 <button>
                     <span class="material-icons">send</span>
                 </button>
@@ -308,16 +315,48 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="selected-employee-id" value="">
 <script>
-    // 채팅 기능 관련 스크립트
     $(document).ready(function() {
+        let ws = new WebSocket("ws://10.10.55.9/chat");
+        ws.onmessage = function (e) {
+            let msg = JSON.parse(e.data);
+            let chat = $("<div>").addClass("chat").html(msg.sender + " : " + msg.message);
+            $(".chat-area").append(chat);
+        }
+
+        let employees = [];
+        $.ajax({
+            url:"/messenger/employeeListAll"
+        }).done(function (resp) {
+            let list = resp.employeeListAll;
+            for (let i = 0; i < list.length; i++) {
+                let position = list[i].teamName + " " + list[i].jobName;
+                employees.push ({
+                    id: list[i].id,
+                    name: list[i].name,
+                    position: position
+                });
+            }
+            renderEmployeeList();
+        });
+
+        // 임시 사원 데이터
+        // const employees = [
+        //     { id: 1, name: '김철수', position: '개발팀장' },
+        //     { id: 2, name: '이영희', position: '선임개발자' },
+        //     { id: 3, name: '이영희', position: '선임개발자' },
+        //     { id: 4, name: '이영희', position: '선임개발자' },
+        //     { id: 5, name: '이영희', position: '선임개발자' },
+        //     { id: 6, name: '이영희', position: '선임개발자' },
+        // ];
+
         const chatButton = $('#chatButton');
         const chatModal = $('#chatModal');
         const closeChat = $('.close-chat');
         const employeeList = $('.employee-list');
         const chatContent = $('.chat-content');
-        const chatInput = $('.chat-input-area input');
+        const chatInput = $('#chat-input');
         const sendButton = $('.chat-input-area button');
 
         let isModalOpen = true; // 모달 상태를 추적하는 변수
@@ -340,69 +379,58 @@
         });
 
         function sendMessage() {
-            const message = chatInput.value.trim();
+            const message = chatInput.val().trim();
             if (message) {
-                chatInput.value = '';
+                chatInput.val('');
             }
+            const selectedId = $('#selected-employee-id').val();
+            const payload = {
+                id: selectedId,
+                message: message
+            };
+            ws.send(JSON.stringify(payload));
         }
 
         sendButton.on('click', sendMessage);
 
-        chatInput.on('keypress', function(e) {
+        chatInput.on('keydown', function(e) {
             if (e.key === 'Enter') {
                 sendMessage();
             }
         });
 
-        // 임시 사원 데이터
-        const employees = [
-            { id: 1, name: '김철수', position: '개발팀장' },
-            { id: 2, name: '이영희', position: '선임개발자' },
-            // ... 더 많은 사원 데이터
-        ];
-
-        const makeChatEmployeeList = (employee) => {
-            const div = $('<div>').addClass('employee-item').attr('data-id', employee.id);
-            const avatar = $('<div>').addClass('employee-avatar');
+        const makeChatEmployeeList = (employee, index) => {
+            const div = $('<div>').addClass('employee-item').attr('data-id', employee.id).attr('data-name', employee.name);
+            const avatar = $('<div>')
+                .addClass('employee-avatar')
+                .css('background-image', "url('https://picsum.photos/200/" + (index + 1) + "')");
             const info = $('<div>').addClass('employee-info');
             const name = $('<div>').addClass('employee-name').html(employee.name);
             const position = $('<div>').addClass('employee-position').text(employee.position);
 
             info.append(name, position);
             div.append(avatar, info);
-
             return div;
         }
 
         // 사원 목록 렌더링
-        function renderEmployeeList() {
-            employeeList.append(employees.map(makeChatEmployeeList))
+        function renderEmployeeList(data) {
+            const listData = data || employees;
+            employeeList.empty();
+            listData.forEach((employee, index) => {
+                employeeList.append(makeChatEmployeeList(employee, index));
+            });
         }
 
         // 사원 클릭 이벤트 처리
-        employeeList.on('click', function(e) {
-            const employeeItem = e.target.closest('.employee-item');
-            if (employeeItem) {
-                const employeeId = employeeItem.dataset.id;
-                showChatRoom(employeeId);
-            }
-        });
+        // employeeList.on('click', function(e) {
+        //     const employeeItem = e.target.closest('.employee-item');
+        //     if (employeeItem) {
+        //         const employeeId = employeeItem.dataset.id;
+        //         showChatRoom(employeeId);
+        //     }
+        // });
 
-        function showChatRoom(employeeId) {
-            // 모바일에서는 사이드바를 숨기고 채팅창만 표시
-            if (window.innerWidth <= 768) {
-                $('.chat-sidebar').style.display = 'none';
-            }
-            chatContent.style.display = 'flex';
-
-            // 선택된 사원 하이라이트
-            $('.employee-item').forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.id === employeeId) {
-                    item.classList.add('active');
-                }
-            });
-        }
 
         // 검색 기능
         const searchInput = $('.search-box input');
@@ -412,7 +440,6 @@
                 emp.name.toLowerCase().includes(searchTerm) ||
                 emp.position.toLowerCase().includes(searchTerm)
             );
-
             // 필터링된 결과로 목록 다시 렌더링
             renderEmployeeList(filteredEmployees);
         });
@@ -436,32 +463,30 @@
 
         $(document).on('click', '.employee-item', function() {
             const employeeId = $(this).data('id');
-            const employeeName = $(this).find('.employee-name').text();
+            const employeeName = $(this).data('name');
+            $('#selected-employee-id').val(employeeId);
             showChatRoom(employeeId, employeeName);
         });
 
         function showChatRoom(employeeId, employeeName) {
             // 채팅방 헤더 생성
-            const chatRoomHeader = `
-            <div class="chat-header">
-                <button class="back-button">
-                    <span class="material-icons">arrow_back</span>
-                </button>
-                <h3>12</h3>
-            </div>
-        `;
+            if (window.innerWidth <= 768) {
+                $('.chat-sidebar').css('display', 'none');
+            }
+            chatContent.css('display', 'flex');
+            // 선택된 사원 하이라이트
+            $('.employee-item').each(function() {
+                $(this).removeClass('active');
+                if ($(this).data('id') === employeeId) {
+                    $(this).addClass('active');
+                }
+            });
+
+            $('#chat-user-title').text(employeeName);
 
             // 채팅방 표시
             $('.chat-content, .chat-nav').hide();
-            $('.chat-room')
-                .html(chatRoomHeader + `
-                <div class="chat-messages"></div>
-                <div class="chat-input-area">
-                    <input type="text" placeholder="메시지를 입력하세요...">
-                    <button><span class="material-icons">send</span></button>
-                </div>
-            `)
-                .show();
+            $('.chat-room').show();
 
             // 뒤로가기 버튼 이벤트
             $('.back-button').on('click', function() {
@@ -469,7 +494,6 @@
                 $('.chat-content, .chat-nav').show();
             });
         }
-
         // 네비게이션 아이콘 클릭 이벤트
         $('.nav-icon').on('click', function() {
             $('.nav-icon').removeClass('active');
@@ -478,9 +502,8 @@
             const view = $(this).data('view');
             // 여기에 각 뷰에 따른 컨텐츠 전환 로직 추가
         });
-
         // 초기 렌더링
-        renderEmployeeList();
+        // renderEmployeeList();
     });
 </script>
 </div>

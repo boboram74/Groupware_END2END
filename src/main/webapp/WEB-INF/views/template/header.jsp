@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko" class="light">
@@ -250,7 +250,6 @@
       transition: all 0.3s ease-in-out;
       opacity: 0;
     }
-
 
     .full-menu-modal.show {
       left: 0;

@@ -798,26 +798,22 @@
             dayHeaders: true,  // 요일 표시
             dayHeaderFormat: {weekday: 'short', month: 'numeric', day: 'numeric'}, // 날짜 포맷
             weekNumbers: false,  // 주차 숨기기
-            load: function(info) {
-                // 현재 보여지는 달력의 시작일과 종료일
-                const view = calendar.view;
-                const start = view.activeStart;
-                const end = view.activeEnd;
-ㅋ``
-                console.log('시작일:', start.toISOString());
-                console.log('종료일:', end.toISOString());
+            // 캘린더가 처음 마운트되고 이벤트를 로드할 때
+            events: function(info, successCallback, failureCallback) {
+                const startDate = info.start;
+                const endDate = info.end;
 
-                //loadEvents(start, end);
-            },
-            // 날짜 범위가 변경될 때마다 실행
-            datesSet: function(info) {
-                var startDate = info.start;
-                var endDate = info.end;
+                console.log('현재 보이는 범위 시작일:', startDate);
+                console.log('현재 보이는 범위 종료일:', endDate);
 
-                //loadEvents(startDate, endDate);
+                //loadEvents(startDate, endDate, successCallback, failureCallback);
             },
-            viewDidMount: function() {
+            viewDidMount: function(info) {
                 adjustCalendarSize();
+
+                console.log('뷰 시작일:', info.view.activeStart);
+                console.log('뷰 종료일:', info.view.activeEnd);
+
             }
         });
 

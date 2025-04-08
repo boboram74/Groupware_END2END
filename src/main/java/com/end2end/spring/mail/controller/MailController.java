@@ -88,7 +88,6 @@ public class MailController {
         } else if(action.equals("trash")) {
             mailService.trashAll(esids);
         }
-
         return ResponseEntity.ok().build();
     }
 
@@ -130,18 +129,32 @@ public class MailController {
         return null;
     }
 
-    @RequestMapping("/alertList")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> alertList() {
+    @RequestMapping("/alertList")
+    public ResponseEntity<Map<String, Object>> alertList(String employeeId) {
+        int allMailBox =  mailService.getRecordReadCount(employeeId);
+        int importantMailBox =  mailService.getRecordImportantTotalCount(employeeId);
+        int receiveMailBox =  mailService.getRecordReceiveReadCount(employeeId);
+        System.out.println(receiveMailBox + "받은 메일함 알림 갯수");
         Map<String, Object> data = new HashMap<>();
-//        int All = mailService.getRecordTotalCount();
-
+        data.put("allMailBox", allMailBox);
+        data.put("importantMailBox", importantMailBox);
+        data.put("receiveMailBox", receiveMailBox);
         return ResponseEntity.ok(data);
     }
 
     @RequestMapping("/inbox")
     public String inbox() {
         return "mail/inbox";
+    }
+
+    @ResponseBody
+    @RequestMapping("/listReceiveAll")
+    public Map<String, Object> listReceiveAll(HttpServletRequest request, HttpSession session, Model model) {
+        EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
+        String scpage = request.getParameter("cpage");
+        int cpage = (scpage == null) ? 1 : Integer.parseInt(scpage);
+        return mailService.getPageList(cpage, EmployeeDTO.getId(),"receiveList");
     }
 
     @RequestMapping("/temp")

@@ -2,7 +2,7 @@
 $(function () {
     let cpage = sessionStorage.getItem("page") || 1;
     $.ajax({
-        url: "/mail/listAll",
+        url: "/mail/listReceiveAll",
         data: { cpage: cpage }
     }).done(function (resp) {
         let list = resp.list;
@@ -73,7 +73,7 @@ $(function () {
         $(".paging").on("click", function() {
             let pageNum = $(this).attr("page");
             sessionStorage.setItem("page", pageNum);
-            location.href = "/mail/list?cpage=" + pageNum;
+            location.href = "/mail/inbox?cpage=" + pageNum;
         });
         // 상대적 날짜 표시
         let now = new Date();

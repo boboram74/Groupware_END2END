@@ -788,9 +788,9 @@
             initialView: 'dayGridWeek'
             ,  // 일주일 보기로 초기 설정
             headerToolbar: {
-                left: 'prev,next today',
+                left: 'prev today',
                 center: 'title',
-                right: ''  // 주간 보기만 표시
+                right: 'next'  // 주간 보기만 표시
             },
             locale: 'ko',
             height: calculateAvailableDimensions().height,

@@ -1,6 +1,7 @@
 package com.end2end.spring.employee.controller;
 
 import com.end2end.spring.employee.dto.DepartmentDTO;
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.dto.JobDTO;
 import com.end2end.spring.employee.service.EmployeeService;

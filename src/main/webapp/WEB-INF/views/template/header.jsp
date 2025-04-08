@@ -403,9 +403,45 @@
         display: block;
       }
     }
+
+
+    /* CSS */
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .loading-img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;  /* 원하는 너비 */
+      height: 100px; /* 원하는 높이 */
+      background-image: url('/image/loading.gif');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain; /* 또는 20% */
+
+    }
   </style>
 </head>
 <body>
+<div id="loading" style="display: none">
+  <div class="loading-overlay"></div>
+  <div class="loading-img"></div>
+</div>
 <div class="container-fluid bg-color">
   <!-- 사이드바 -->
   <div class="sidebar sidebar-color">
@@ -638,4 +674,39 @@
       }
     });
   });
+
+  $(document).ready(function() {
+    // 페이지 로드 시작할 때 로딩 표시
+    showLoading();
+
+    // 모든 Ajax 요청 시작 시 로딩 표시
+    $(document).ajaxStart(function() {
+      showLoading();
+    });
+
+    // 모든 Ajax 요청 완료 시 로딩 숨김
+    $(document).ajaxStop(function() {
+      hideLoading();
+    });
+
+    function showLoading() {
+      $('#loading').show();
+    }
+
+    function hideLoading() {
+      $('#loading').hide();
+    }
+
+    // 모든 초기 데이터 로딩이 완료되면
+    Promise.all([
+      // 필요한 다른 초기 데이터 로딩
+      // 예: 사용자 정보, 설정 등
+    ]).finally(() => {
+      hideLoading();
+    });
+    // 페이지를 떠날 때 로딩 표시
+    $(window).on('beforeunload', function() {
+      showLoading();
+    });
+  })
 </script>

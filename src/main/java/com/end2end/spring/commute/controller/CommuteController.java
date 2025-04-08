@@ -98,8 +98,17 @@ public class CommuteController {
     }
 
     @ResponseBody
+    @RequestMapping("/select/period")
+    public List<Map<String, Object>> selectPeriodWorkState(HttpSession session, SelectPeriodDTO dto) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        dto.setEmployeeId(employee.getId());
+
+        return commuteService.selectPeriodWorkState(dto);
+    }
+
+    @ResponseBody
     @RequestMapping("/test")
-    public List<Map<LocalDate, Object>> leaveEarly(HttpSession session) {
+    public List<Map<String, Object>> leaveEarly(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         SelectPeriodDTO dto = SelectPeriodDTO.builder()
                 .employeeId(employee.getId())

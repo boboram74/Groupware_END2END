@@ -15,5 +15,5 @@ public interface CommuteService {
     int countWorkOnThisWeekByEmployeeId(String employeeId);
     int rateWorkOnThisWeekByEmployeeId(String employeeId);
     long sumTotalWorkTimeThisWeekByEmployeeId(String employeeId);
-    List<Map<LocalDate, Object>> selectPeriodWorkState(SelectPeriodDTO dto);
+    List<Map<String, Object>> selectPeriodWorkState(SelectPeriodDTO dto);
 }

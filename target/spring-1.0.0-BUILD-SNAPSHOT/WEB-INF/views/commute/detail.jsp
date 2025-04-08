@@ -747,7 +747,6 @@
             $.ajax({
                 url: '/commute/workOn'
             }).done(function (data) {
-                console.log(data);
                 if (data) {
                     alert("출근하셨습니다.");
                     location.reload();
@@ -799,23 +798,73 @@
             dayHeaderFormat: {weekday: 'short', month: 'numeric', day: 'numeric'}, // 날짜 포맷
             weekNumbers: false,  // 주차 숨기기
             // 캘린더가 처음 마운트되고 이벤트를 로드할 때
-            events: function(info, successCallback, failureCallback) {
-                const startDate = info.start;
-                const endDate = info.end;
-
-                console.log('현재 보이는 범위 시작일:', startDate);
-                console.log('현재 보이는 범위 종료일:', endDate);
-
-                //loadEvents(startDate, endDate, successCallback, failureCallback);
+            events: function(info, successCallback) {
+                const startDate = parseDate(info.start);
+                const endDate = parseDate(info.end);
+                loadEvents(startDate, endDate, successCallback);
             },
-            viewDidMount: function(info) {
+            viewDidMount: function() {
                 adjustCalendarSize();
-
-                console.log('뷰 시작일:', info.view.activeStart);
-                console.log('뷰 종료일:', info.view.activeEnd);
-
+            },
+            eventDisplay: 'block',
+            displayEventTime: false,
+            eventTimeFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            },
+            // 날짜 범위 변경 시 호출
+            datesSet: function(info) {
+                console.log('보여지는 날짜 범위:', {
+                    start: info.start,
+                    end: info.end
+                });
             }
+
         });
+
+        function parseDate(dates) {
+            return dates.getFullYear() + '-' + (dates.getMonth() + 1) + '-' + dates.getDate();
+        }
+
+        function toStringDate(date) {
+            try {
+                // LocalDate 객체인 경우
+                if (date && typeof date === 'object' && 'year' in date && 'month' in date && 'day' in date) {
+                    const year = date.year;
+                    const month = String(date.month).padStart(2, '0');
+                    const day = String(date.day).padStart(2, '0');
+
+                    return year + '-' + month + '-' + day;
+                }
+
+                throw new Error('유효하지 않은 LocalDate 형식');
+
+            } catch(e) {
+                return null;
+            }
+        }
+
+        function loadEvents(startDate, endDate, successCallback) {
+            $.ajax({
+                url: '/commute/select/period?startDate=' + startDate + '&endDate=' + endDate,
+                type: 'GET'
+            }).done(function(data) {
+                calendar.removeAllEvents();
+                const events = data.map(function(event) {
+                    console.log(event);
+                    const date = toStringDate(event.date);
+                    console.log(date);
+                    return {
+                        title: '1',
+                        start: new Date(date),
+                        allDay: true,
+                        display: 'block'
+                    }
+                })
+                successCallback(events);
+            })
+        }
 
         function adjustCalendarSize() {
             const dimensions = calculateAvailableDimensions();

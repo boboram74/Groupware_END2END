@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,16 +140,16 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public List<Map<LocalDate, Object>> selectPeriodWorkState(SelectPeriodDTO dto) {
+    public List<Map<String, Object>> selectPeriodWorkState(SelectPeriodDTO dto) {
         List<CommuteStateDTO> commutePeriodList = commuteDAO.selectByPeriod(dto);
         List<CommuteStateDTO> solderingPeriodList = solderingDAO.selectByPeriod(dto);
 
         LocalDate start = dto.getStartDate().toLocalDate();
         LocalDate end = dto.getEndDate().toLocalDate();
 
-        List<Map<LocalDate, Object>> mapList = new ArrayList<>();
+        List<Map<String, Object>> mapList = new ArrayList<>();
         for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
-            Map<LocalDate, Object> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
 
             LocalDate finalDate = date;
             List<CommuteStateDTO> list = new ArrayList<>();
@@ -167,9 +166,11 @@ public class CommuteServiceImpl implements CommuteService {
                     .collect(Collectors.toList());
             list.addAll(solderingLocalDateList);
 
-            map.put(date, list);
+            map.put("date", date);
+            map.put("events", list);
             mapList.add(map);
         }
+
 
 
         return mapList;

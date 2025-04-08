@@ -30,13 +30,7 @@
     </insert>
 
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT * FROM EMPLOYEE WHERE departmentId = ${departmentId} ORDER BY desc 1
-    </select>
-
-    <select id="idVali" resultType="int">
-        SELECT COUNT(*)
-        FROM EMPLOYEE_DETAIL
-        WHERE LOGINID = #{loginId}
+        SELECT e.id, e.name , j.name as jobName FROM EMPLOYEE e join job j on e.jobid = j.id WHERE departmentId = ${departmentId}
     </select>
 
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">

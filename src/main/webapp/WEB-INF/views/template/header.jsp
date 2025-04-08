@@ -17,23 +17,18 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       font-family: "Arial", sans-serif;
       overflow-x: hidden;
     }
-
     ul {
       list-style-type: none;
     }
-
     .container-fluid {
       display: flex;
       min-height: 100vh;
       padding: 0;
     }
-
-    /* 사이드바 스타일 */
     .sidebar {
       width: 60px;
       height: 100vh;
@@ -44,11 +39,9 @@
       overflow: hidden;
       transition: width 0.3s ease;
     }
-
     .sidebar:hover {
       width: 240px;
     }
-
     .logo {
       padding: 20px;
       text-align: center;
@@ -105,7 +98,6 @@
       opacity: 1;
     }
 
-    /* main-wrapper 스타일 */
     .main-wrapper {
       flex: 1;
       margin-left: 60px;
@@ -116,7 +108,6 @@
       width: calc(100% - 60px);
     }
 
-    /* 헤더 스타일 */
     .header {
       height: 70px;
       background-color: #fff;
@@ -124,7 +115,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 30px;  /* 좌우 패딩 증가 */
+      padding: 0 30px;
       z-index: 999;
       position: fixed;
       top: 0;
@@ -148,10 +139,9 @@
     }
 
     header .profile img {
-      display: none; /* 기존 img 태그 숨김 */
+      display: none;
     }
 
-    /* CSS 코드 */
     .profile-container {
       position: relative;
     }
@@ -159,7 +149,7 @@
     .profile-menu {
       display: none;
       position: absolute;
-      top: 45px;  /* header height(50px) + 약간의 여백 */
+      top: 45px;
       right: 0;
       width: 160px;
       border: 1px solid var(--md-sys-color-outline);
@@ -192,11 +182,10 @@
       cursor: pointer;
     }
 
-    /* 헤더 아이콘 관련 스타일 추가 */
     .header-icons {
       display: flex;
       align-items: center;
-      gap: 15px;  /* 아이콘 간격 */
+      gap: 15px;
     }
 
     .icon-button {
@@ -217,10 +206,10 @@
     }
 
     .icon-button .material-symbols-outlined {
-      font-size: 28px;  /* 아이콘 크기 증가 */
+      font-size: 28px;
       color: var(--md-sys-color-secondary);
     }
-    /* 알림 배지 스타일 */
+
     .notification-badge {
       position: absolute;
       top: 0;
@@ -234,7 +223,7 @@
       text-align: center;
     }
 
-    /* 다크모드일 때의 스타일 */
+
     html.dark .icon-button i {
       color: #eee;
     }
@@ -243,14 +232,12 @@
       background-color: rgba(255, 255, 255, 0.1);
     }
 
-    /* boxContents 스타일 */
     .boxContents {
       flex: 1;
       padding: 20px;
       margin-top: 60px;
     }
 
-    /* 모바일 메뉴 모달 스타일 */
     .full-menu-modal {
       position: fixed;
       top: 0;
@@ -273,8 +260,8 @@
     .full-menu-content {
       position: fixed;
       top: 0;
-      left: -100%; /* 300px에서 100%로 변경 */
-      width: 100%; /* 300px에서 100%로 변경 */
+      left: -100%;
+      width: 100%;
       height: 100vh;
       transition: all 0.3s ease-in-out;
     }
@@ -292,9 +279,9 @@
       height: calc(100% - 60px);
       overflow-y: auto;
       padding: 20px;
-      display: flex; /* 추가 */
-      flex-direction: column; /* 추가 */
-      gap: 10px; /* 추가 - 메뉴 항목 간 간격 */
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
 
     }
 
@@ -314,7 +301,7 @@
     .full-menu-list li i {
       width: 24px;
       text-align: center;
-      margin-right: 20px; /* 여백 증가 */
+      margin-right: 20px;
       font-size: 32px;
     }
 
@@ -334,7 +321,6 @@
       color: #e74c3c;
     }
 
-    /* 모바일 하단 네비게이션 바 */
     .mobile-nav {
       display: none;
       position: fixed;
@@ -379,7 +365,6 @@
       margin-bottom: 5px;
     }
 
-    /* menu-item 관련 스타일 - !important 제거하고 선택자 구체성 높임 */
     .menu-items .menu-item a,
     .menu-items .menu-item a:link,
     .menu-items .menu-item a:visited,
@@ -388,7 +373,6 @@
       color: white;
       text-decoration: none;
     }
-
 
     /* 모바일 반응형 */
     @media (max-width: 768px) {

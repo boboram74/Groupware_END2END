@@ -17,8 +17,8 @@ public class ProjectDAO {
     @Autowired
     private SqlSession mybatis;
 
-    public int insert(ProjectInsertDTO dto) {
-        return mybatis.insert("project.insert", dto);
+    public int insert(ProjectDTO dto) {
+        return mybatis.insert("project.insertProject", dto);
 
     }
 

@@ -30,26 +30,26 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.selectAll();
     }
 
-    @Override
-    public Map<String, Integer> getProjectStatistics() {
-        List<ProjectDTO> projects = selectAll();
-        Map<String, Integer> stats = new HashMap<>();
-        // 실제로 projects 데이터를 사용해서 통계 계산
-        int ongoing = 0;
-        int completed = 0;
-
-        for (ProjectDTO project : projects) {
-            if ("진행중".equals(project.getStatus())) {
-                ongoing++;
-            } else if ("완료".equals(project.getStatus())) {
-                completed++;
-            }
-        }
-        stats.put("진행중", ongoing);
-        stats.put("완료", completed);
-        stats.put("전체", projects.size());
-        return stats;
-    }
+//    @Override
+//    public Map<String, Integer> getProjectStatistics() {
+//        List<ProjectDTO> projects = selectAll();
+//        Map<String, Integer> stats = new HashMap<>();
+//        // 실제로 projects 데이터를 사용해서 통계 계산
+//        int ongoing = 0;
+//        int completed = 0;
+//
+//        for (ProjectDTO project : projects) {
+//            if ("진행중".equals(project.getStatus())) {
+//                ongoing++;
+//            } else if ("완료".equals(project.getStatus())) {
+//                completed++;
+//            }
+//        }
+//        stats.put("진행중", ongoing);
+//        stats.put("완료", completed);
+//        stats.put("전체", projects.size());
+//        return stats;
+//    }
 //    @Override
 //    public ProjectDTO getProjectById(int id) {
 //        // 프로젝트 정보를 데이터베이스에서 조회
@@ -85,19 +85,23 @@ public class ProjectServiceImpl implements ProjectService {
 @Transactional
 @Override
 public void insert(ProjectInsertDTO dto) {
+        ProjectDTO projectDTO = ProjectDTO.builder()
+                .name(dto.getTitle())
+                .deadLine(dto.getDeadLine())
+                .build();
     // 프로젝트 삽입
-    projectDao.insert(dto);
-
-    // ProjectUserDTO 리스트 생성
-    List<ProjectUserDTO> userList = dto.getEmployeeId().stream()
-            .map(id -> ProjectUserDTO.builder()
-                    .employeeId(id)
-                    .projectId(dto.getProjectId())
-                    .build())
-            .collect(Collectors.toList());
-
-    // 일괄 삽입
-    projectUserDao.insert(userList);
+    projectDao.insert(projectDTO);
+//    for(int i = 0 ; i < dto.getEmployeeId().size() ; i++) {
+//        ProjectUserDTO projectUserDTO = new ProjectUserDTO(dto.getEmployeeId().get(i), projectDTO.getId());
+//        projectUserDao.insert(projectUserDTO);
+//    }
+    for(String employeeId : dto.getEmployeeId()){
+        ProjectUserDTO projectUserDTO = ProjectUserDTO.builder()
+                .employeeId(employeeId)
+                .projectId(projectDTO.getId())
+                .build();
+        projectUserDao.insert(projectUserDTO);
+    }
 }
 
 

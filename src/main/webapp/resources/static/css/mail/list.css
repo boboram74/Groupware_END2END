@@ -210,3 +210,25 @@ input.star-checkbox:checked {
     background-color: #1565c0;
     transform: translateY(-2px);
 }
+
+.mailWriteBtnContainer {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.mailWriteBtnContainer button {
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.mailWriteBtnContainer button:hover {
+    background-color: #1565c0;
+    transform: translateY(-2px);
+}

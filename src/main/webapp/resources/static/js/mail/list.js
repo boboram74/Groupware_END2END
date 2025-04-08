@@ -118,9 +118,9 @@ $(function () {
                 importantYn: isImportant
             })
         }).done(function (resp) {
-
         });
     });
+
 });
 
 $("#readBtn").on("click", function () {

@@ -2,38 +2,25 @@
 $(function () {
     let cpage = sessionStorage.getItem("page") || 1;
     $.ajax({
-        url: "/mail/listAll",
+        url: "/mail/sendListAll",
         data: { cpage: cpage }
     }).done(function (resp) {
         let list = resp.list;
         $("#recordCount").text(resp.recordTotalCount);
-        $("#recordReadCount").text(resp.recordReadCount);
         for(let i = 0; i < list.length; i++) {
             let tr = $('<tr>');
             tr.append(
                 $('<td style="width: 5%; text-align: center;">').html('<input class="childCheckbox" style="zoom: 1.5;" type="checkbox">')
             );
-            if (list[i].importantYn === "Y") {
-                tr.append(
-                    $('<td>').html('<input type="checkbox" class="star-checkbox" data-esid="'+ list[i].esId +'" checked>')
-                );
-            } else {
-                tr.append(
-                    $('<td>').html('<input type="checkbox" class="star-checkbox" data-esid="'+ list[i].esId +'">')
-                );
-            }
 
-            tr.append($('<td>').html(list[i].emailAddress));
+            tr.append($('<td>').html(list[i].recipientemailaddress));
 
             if (list[i].fileCount && list[i].fileCount != 0) {
                 tr.append($('<td>').html('<span class="material-icons">attachment</span>'));
             } else {
                 tr.append($('<td>'));
             }
-            let a = $('<a>').attr('href', '/mail/' + list[i].id + '/' + list[i].esId).text(list[i].title);
-            if (list[i].readYn === "Y") {
-                a.css("color", "#ccc");
-            }
+            let a = $('<a>').attr('href', '/mail/detailSent/' + list[i].id).text(list[i].title);
             tr.append($('<td>').append(a).addClass('contents').attr('id', list[i].id));
 
             let rawDate = list[i].regdate;
@@ -73,7 +60,7 @@ $(function () {
         $(".paging").on("click", function() {
             let pageNum = $(this).attr("page");
             sessionStorage.setItem("page", pageNum);
-            location.href = "/mail/list?cpage=" + pageNum;
+            location.href = "/mail/sendList?cpage=" + pageNum;
         });
         // 상대적 날짜 표시
         let now = new Date();
@@ -118,9 +105,9 @@ $(function () {
                 importantYn: isImportant
             })
         }).done(function (resp) {
+
         });
     });
-
 });
 
 $("#readBtn").on("click", function () {

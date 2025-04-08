@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<link rel="stylesheet" href="/css/mail/sendList.css" />
+<link rel="stylesheet" href="/css/mail/trash.css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <style>
     * {
@@ -316,46 +316,46 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item">
-                <a href="/mail/important">
+            <a href="/mail/important">
+                <li class="detail-menu-item">
                     <span class="material-icons">star</span>
                     <span>중요 메일함</span>
                     <span class="detail-badge"><span id="importantMailBox"></span></span>
-                </a>
-            </li>
-            <li class="detail-menu-item">
-                <a href="/mail/list">
+                </li>
+            </a>
+            <a href="/mail/list">
+                <li class="detail-menu-item">
                     <span class="material-icons">all_inbox</span>
                     <span>전체 메일함</span>
                     <span class="detail-badge"><span id="allMailBox"></span></span>
-                </a>
-            </li>
-            <li class="detail-menu-item">
-                <a href="/mail/sendList">
+                </li>
+            </a>
+            <a href="/mail/sendList">
+                <li class="detail-menu-item">
                     <span class="material-icons">send</span>
                     <span>보낸 메일함</span>
-                </a>
-            </li>
-            <li class="detail-menu-item">
-                <a href="/mail/inbox">
+                </li>
+            </a>
+            <a href="/mail/inbox">
+                <li class="detail-menu-item">
                     <span class="material-icons">move_to_inbox</span>
                     <span class="detail-menu-disc">받은 메일함</span>
                     <span class="detail-badge"><span id="receiveMailBox"></span></span>
-                </a>
-            </li>
-            <li class="detail-menu-item">
-                <a href="/mail/temp">
+                </li>
+            </a>
+            <a href="/mail/temp">
+                <li class="detail-menu-item">
                     <span class="material-icons">drafts</span>
                     <span>임시 저장함</span>
                     <span class="detail-badge">2</span>
-                </a>
-            </li>
-            <li class="detail-menu-item">
-                <a href="/mail/trash">
+                </li>
+            </a>
+            <a href="/mail/trash">
+                <li class="detail-menu-item">
                     <span class="material-icons">delete</span>
                     <span>휴지통</span>
-                </a>
-            </li>
+                </li>
+            </a>
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>
@@ -390,7 +390,7 @@
                 <thead>
                 <tr>
                     <th style="width: 5%; text-align: center"><input style="zoom: 1.5;" type="checkbox" id="checkAll"></th>
-                    <th style="width: 25%">받는사람</th>
+                    <th style="width: 25%">보낸사람</th>
                     <th style="width: 5%"></th>
                     <th style="width: 50%">제목</th>
                     <th style="width: 15%">발송 일자</th>
@@ -402,6 +402,9 @@
             </table>
         </div>
         <div class="pageNavi">
+        </div>
+        <div class="buttonsArea">
+            <button type="button" id="deleteBtn">삭제</button>
         </div>
     </div>
 </div>
@@ -451,5 +454,5 @@
         });
     });
 </script>
-<script src="/js/mail/sendList.js" type="text/javascript"></script>
+<script src="/js/mail/trash.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

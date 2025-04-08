@@ -87,8 +87,9 @@ public class MailController {
             mailService.insertReadYnAll(esids);
         } else if(action.equals("trash")) {
             mailService.trashAll(esids);
+        } else if(action.equals("delete")) {
+            mailService.deleteAll(esids);
         }
-
         return ResponseEntity.ok().build();
     }
 
@@ -130,12 +131,21 @@ public class MailController {
         return null;
     }
 
-    @RequestMapping("/alertList")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> alertList() {
-        Map<String, Object> data = new HashMap<>();
-//        int All = mailService.getRecordTotalCount();
+    @RequestMapping("/temp")
+    public String temp() {
+        return "mail/temp";
+    }
 
+    @ResponseBody
+    @RequestMapping("/alertList")
+    public ResponseEntity<Map<String, Object>> alertList(String employeeId) {
+        int allMailBox =  mailService.getRecordReadCount(employeeId);
+        int importantMailBox =  mailService.getRecordImportantTotalCount(employeeId);
+        int receiveMailBox =  mailService.getRecordReceiveReadCount(employeeId);
+        Map<String, Object> data = new HashMap<>();
+        data.put("allMailBox", allMailBox);
+        data.put("importantMailBox", importantMailBox);
+        data.put("receiveMailBox", receiveMailBox);
         return ResponseEntity.ok(data);
     }
 
@@ -144,14 +154,28 @@ public class MailController {
         return "mail/inbox";
     }
 
-    @RequestMapping("/temp")
-    public String temp() {
-        return "mail/temp";
+    @ResponseBody
+    @RequestMapping("/listReceiveAll")
+    public Map<String, Object> listReceiveAll(HttpServletRequest request, HttpSession session, Model model) {
+        EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
+        String scpage = request.getParameter("cpage");
+        int cpage = (scpage == null) ? 1 : Integer.parseInt(scpage);
+        return mailService.getPageList(cpage, EmployeeDTO.getId(),"receiveList");
     }
+
 
     @RequestMapping("/trash")
     public String trash() {
         return "mail/trash";
+    }
+
+    @ResponseBody
+    @RequestMapping("/trashListAll")
+    public Map<String, Object> trashList(HttpServletRequest request, HttpSession session, Model model) {
+        EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
+        String scpage = request.getParameter("cpage");
+        int cpage = (scpage == null) ? 1 : Integer.parseInt(scpage);
+        return mailService.getPageList(cpage, EmployeeDTO.getId(),"trashList");
     }
     
     @RequestMapping("/insert")

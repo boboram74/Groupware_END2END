@@ -14,11 +14,6 @@ import java.time.LocalDateTime;
 public class CommuteScheduler {
     @Autowired private SolderingService solderingService;
 
-    @Scheduled(cron="0 0 10 * * 1-5")
-    public void insertLate() {
-        solderingService.insertByState("LATE");
-    }
-
     @Scheduled(cron="0 59 23 * * 1-5")
     public void insertSoldering() {
         solderingService.insertByState("ABSENCE");

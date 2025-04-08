@@ -11,7 +11,7 @@ import java.util.Map;
 public interface ProjectService {
 
     List<ProjectDTO> selectAll();
-    Map<String, Integer> getProjectStatistics();
+//    Map<String, Integer> getProjectStatistics();
     ProjectDTO selectById(int id);
     void insert(ProjectInsertDTO dto);
     void deleteById(int id);

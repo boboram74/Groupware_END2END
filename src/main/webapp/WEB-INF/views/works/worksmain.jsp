@@ -202,7 +202,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${list}" var="list">
+                <c:forEach items="${projects}" var="list">
                     <tr onclick="location.href='/works/project/${list.id}'">
                         <td>${list.name}</td>
                         <td>${list.regDate}</td>
@@ -232,16 +232,19 @@
 <%--프로젝트 생성모달 --%>
 <div class="modal fade" id="projectModal" tabindex="-1">
     <div class="modal-dialog">
+
         <div class="modal-content">
+
             <div class="modal-header">
                 <h5 class="modal-title">프로젝트 생성</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+            <form id="projectForm" action="/project/insert" method="post" enctype="multipart/form-data">
             <div class="modal-body">
-                <form id="projectForm">
+
                     <div class="mb-3">
                         <label class="form-label">프로젝트 제목</label>
-                        <input type="text" class="form-control" name="name" required>
+                        <input type="text" class="form-control" name="title" required>
                     </div>
 
                     <div class="mb-3">
@@ -255,32 +258,22 @@
                         <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">
                             인원 추가
                         </button>
-                        <div id="selectedMembers" class="mt-2">
-                            <ul>
-                                <li>
-                                    <div>아무개 사원</div>
-                                    <div>인사과</div>
-                                    <input type="hidden" name="employeeId" value="134">
-                                </li>
-                                <li>
-                                    <div>아무개 사원</div>
-                                    <div>인사과</div>
-                                    <input type="hidden" name="employeeId" value="134">
-                                </li>
-                                <li>
-                                    <div>아무개 사원</div>
-                                    <div>인사과</div>
-                                    <input type="hidden" name="employeeId" value="134">
-                                </li>
-                            </ul>
+                        <div id="selectedMembers" class="mt-2" >
+                            <div class="selectedUser" data-id="">
+                           <div >선택된 멤버가 없습니다</div>
+                            </div>
                         </div>
                     </div>
-                </form>
+
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="createProject()">생성하기</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" onclick="createProject()">생성하기</button>
+                </div>
+
+            </form>
+
         </div>
+
     </div>
 </div>
 
@@ -347,11 +340,7 @@
                 <div>
                     <h6 class="mt-3">선택된 멤버</h6>
                     <div id="selectedMembersList" class="d-flex flex-wrap">
-<%--                        <c:forEach var="member" items="${user}">--%>
-<%--                            <div class="memberBox" data-id="${member.id}">--%>
-<%--                                <span>${member.name}</span>--%>
-<%--                            </div>--%>
-<%--                        </c:forEach>--%>
+
 
                     </div>
 
@@ -390,7 +379,6 @@
     function openProjectModal() {
         $('#projectModal').modal('show');
     }
-
 
     function openUpdateProjectModal(id) {
         $('#updateProjectModal').modal('show');
@@ -431,22 +419,25 @@ function searchMembers() {
                 console.log(userId, userName);
                 // 이미 선택된 사용자인지 확인
                 if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
+
+                    console.log('추가한 새로운 멤버:', userId, userName);
+
                     // selectedMembersList에 사용자 추가
                     $('#selectedMembersList').append(
                         $('<div>').addClass('selected-user').attr('data-id', userId)
                             .append($('<span>').html(userName))
-                            .append($('<button>').addClass("remove-user").html('삭제'))
+                            .append($('<button>').addClass("remove-user").html('삭제').click(function() {
+                                    $(this).parent().remove();
+                                })
+                            )
                             .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
                     );
                 }
             });
 
-
-
         }
     })
 }
-
 
     function confirmSelectedMembers() {
 
@@ -459,45 +450,53 @@ function searchMembers() {
     }
 
     // 프로젝트 생성 함수
-    function createProject() {
-        const formData = {
-            name: $('#projectForm input[name="name"]').val(),
-            deadline: $('#projectForm input[type="date"]').val(),
-            employeeId: getSelectedMembers()
-        };
+    function createProject(e) {
+        console.log('#projectForm');
+        $('#projectForm').submit();
 
-        $.ajax({
-            url: '/project/insert',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(formData),
-            success: function (response) {
-                alert('프로젝트가 성공적으로 생성되었습니다.');
-                $('#projectModal').modal('hide');
+    }
 
-                // 테이블에 게시물 추가 함수 만들어야됨
-                addProjectToTable(response);
-            },
-            error: function (error) {
-                alert('프로젝트 생성 중 오류가 발생했습니다.');
-                console.error(error);
+        // 선택한 멤버 수집 함수
+        function getSelectedMembers() {
+            let selectedMembers = [];
+
+            $('#selectedMembers .selectedUser').each(function() {
+
+                const id = $(this).attr('data-id');
+                console.log(id);
+
+                if (id) {
+                    console.log(id);
+                    selectedMembers.push(id[1]);
+                }
+            });
+            console.log(selectedMembers);
+
+            if (selectedMembers.length === 0) {
+                console.warn("선택된 멤버가 없습니다. 선택자를 확인하세요.");
             }
-        });
+            return selectedMembers;
+        }
+
+        function addProjectToTable(response) {
+            const tableHtml = `
+        <tr onClick="location.href='/works/work/${response.id}'">
+            <td>${response.name}</td>
+            <td>${response.regDate}</td>
+            <td>${response.regDate} ~ ${response.deadLine}</td>
+            <td><div class="memberProfile"></div></td>
+            <td>${response.hideYn == 'N' ? '진행중' : '종료'}</td>
+
+                <button class="updateProjectBtn" onClick=" openUpdateProjectModal(${response.id})">수정</button>
+
+                <button class="deleteProjectBtn" onClick="deleteProject(${response.id})">삭제</button>
+        </tr>
+    `;
+            $('.table tbody').append(tableHtml);
+
     }
-
-    // 선택된 멤버를 수집하는 함수
-    function getSelectedMembers() {
-        let selectedMembers = [];
-        $('#selectedMembers .memberBox').each(function () {
-            selectedMembers.push($(this).data('member-id')); // memberBox에 멤버 ID가 포함되어 있다고 가정
-        });
-        return selectedMembers;
-    }
-
-
 
 </script>
-
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />

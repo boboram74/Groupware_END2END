@@ -75,6 +75,7 @@ public class MailServiceImpl implements MailService {
         return mailDAO.getRecordReadCount(employeeId);
     }
 
+    @Transactional
     @Override
     public int getRecordReceiveReadCount(String employeeId) {
         return mailDAO.getRecordReceiveReadCount(employeeId);
@@ -88,19 +89,25 @@ public class MailServiceImpl implements MailService {
 
     @Transactional
     @Override
+    public int getRecordTrashCount(String employeeId) {
+        return mailDAO.getRecordTrashCount(employeeId);
+    }
+
+    @Transactional
+    @Override
     public String selectDepartment(String employeeId) {
         return mailDAO.selectDepartment(employeeId);
     }
 
     @Transactional
     @Override
-    public List<MailTeamListDTO> selectFromto(int start, int end, String employeeId) {
+    public List<MailListDTO> selectFromto(int start, int end, String employeeId) {
         return mailDAO.selectFromto(start, end, employeeId);
     }
 
     @Transactional
     @Override
-    public List<MailTeamListDTO> selectFromtoImportant(int start, int end, String employeeId) {
+    public List<MailListDTO> selectFromtoImportant(int start, int end, String employeeId) {
         return mailDAO.selectFromtoImportant(start, end, employeeId);
     }
 
@@ -112,8 +119,14 @@ public class MailServiceImpl implements MailService {
 
     @Transactional
     @Override
-    public List<MailTeamListDTO> selectFromtoReceiveList(int start, int end, String employeeId) {
+    public List<MailListDTO> selectFromtoReceiveList(int start, int end, String employeeId) {
         return mailDAO.selectFromtoReceiveList(start, end, employeeId);
+    }
+
+    @Transactional
+    @Override
+    public List<MailListDTO> selectFromtoTrashList(int start, int end, String employeeId) {
+        return mailDAO.selectFromtoTrashList(start, end, employeeId);
     }
 
     @Transactional
@@ -144,7 +157,16 @@ public class MailServiceImpl implements MailService {
         int totalUpdated = 0;
         for (Integer esid : esids) {
             totalUpdated += mailDAO.insertTrashCan(esid);
-            System.out.println("휴지통 : " + esid);
+        }
+        return totalUpdated;
+    }
+
+    @Transactional
+    @Override
+    public int deleteAll(List<Integer> esids) {
+        int totalUpdated = 0;
+        for (Integer esid : esids) {
+            totalUpdated += mailDAO.insertDelete(esid);
         }
         return totalUpdated;
     }
@@ -170,7 +192,7 @@ public class MailServiceImpl implements MailService {
             if (endNavi > pageTotalCount) endNavi = pageTotalCount;
             boolean needPrev = startNavi != 1;
             boolean needNext = endNavi != pageTotalCount;
-            List<MailTeamListDTO> teamMail = this.selectFromto(start, end, employeeId);
+            List<MailListDTO> teamMail = this.selectFromto(start, end, employeeId);
             result.put("list", teamMail);
             result.put("startNavi", startNavi);
             result.put("endNavi", endNavi);
@@ -192,7 +214,7 @@ public class MailServiceImpl implements MailService {
             if (endNavi > pageTotalCount) endNavi = pageTotalCount;
             boolean needPrev = startNavi != 1;
             boolean needNext = endNavi != pageTotalCount;
-            List<MailTeamListDTO> teamMail = this.selectFromtoImportant(start, end, employeeId);
+            List<MailListDTO> teamMail = this.selectFromtoImportant(start, end, employeeId);
             result.put("list", teamMail);
             result.put("startNavi", startNavi);
             result.put("endNavi", endNavi);
@@ -236,7 +258,29 @@ public class MailServiceImpl implements MailService {
             if (endNavi > pageTotalCount) endNavi = pageTotalCount;
             boolean needPrev = startNavi != 1;
             boolean needNext = endNavi != pageTotalCount;
-            List<MailTeamListDTO> teamMail = this.selectFromtoReceiveList(start, end, employeeId);
+            List<MailListDTO> teamMail = this.selectFromtoReceiveList(start, end, employeeId);
+            result.put("list", teamMail);
+            result.put("startNavi", startNavi);
+            result.put("endNavi", endNavi);
+            result.put("needPrev", needPrev);
+            result.put("needNext", needNext);
+            result.put("recordTotalCount",recordTotalCount);
+            result.put("recordReadCount",recordReadCount);
+        } else if(action.equals("trashList")) {
+            int recordTotalCount = this.getRecordTrashCount(employeeId);
+            int pageTotalCount = (recordTotalCount % Statics.recordCountPerPage > 0)
+                    ? recordTotalCount / Statics.recordCountPerPage + 1
+                    : recordTotalCount / Statics.recordCountPerPage;
+            if (cpage < 1) cpage = 1;
+            else if (cpage > pageTotalCount) cpage = pageTotalCount;
+            int end = cpage * Statics.recordCountPerPage;
+            int start = end - (Statics.recordCountPerPage - 1);
+            int startNavi = (cpage - 1) / Statics.naaviCountPerPage * Statics.naaviCountPerPage + 1;
+            int endNavi = startNavi + Statics.naaviCountPerPage - 1;
+            if (endNavi > pageTotalCount) endNavi = pageTotalCount;
+            boolean needPrev = startNavi != 1;
+            boolean needNext = endNavi != pageTotalCount;
+            List<MailListDTO> teamMail = this.selectFromtoTrashList(start, end, employeeId);
             result.put("list", teamMail);
             result.put("startNavi", startNavi);
             result.put("endNavi", endNavi);

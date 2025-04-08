@@ -87,6 +87,8 @@ public class MailController {
             mailService.insertReadYnAll(esids);
         } else if(action.equals("trash")) {
             mailService.trashAll(esids);
+        } else if(action.equals("delete")) {
+            mailService.deleteAll(esids);
         }
         return ResponseEntity.ok().build();
     }
@@ -129,13 +131,17 @@ public class MailController {
         return null;
     }
 
+    @RequestMapping("/temp")
+    public String temp() {
+        return "mail/temp";
+    }
+
     @ResponseBody
     @RequestMapping("/alertList")
     public ResponseEntity<Map<String, Object>> alertList(String employeeId) {
         int allMailBox =  mailService.getRecordReadCount(employeeId);
         int importantMailBox =  mailService.getRecordImportantTotalCount(employeeId);
         int receiveMailBox =  mailService.getRecordReceiveReadCount(employeeId);
-        System.out.println(receiveMailBox + "받은 메일함 알림 갯수");
         Map<String, Object> data = new HashMap<>();
         data.put("allMailBox", allMailBox);
         data.put("importantMailBox", importantMailBox);
@@ -157,14 +163,19 @@ public class MailController {
         return mailService.getPageList(cpage, EmployeeDTO.getId(),"receiveList");
     }
 
-    @RequestMapping("/temp")
-    public String temp() {
-        return "mail/temp";
-    }
 
     @RequestMapping("/trash")
     public String trash() {
         return "mail/trash";
+    }
+
+    @ResponseBody
+    @RequestMapping("/trashListAll")
+    public Map<String, Object> trashList(HttpServletRequest request, HttpSession session, Model model) {
+        EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
+        String scpage = request.getParameter("cpage");
+        int cpage = (scpage == null) ? 1 : Integer.parseInt(scpage);
+        return mailService.getPageList(cpage, EmployeeDTO.getId(),"trashList");
     }
     
     @RequestMapping("/insert")

@@ -53,13 +53,17 @@ public class MailDAO {
         return mybatis.selectOne("mail.getRecordReceiveCount",employeeId);
     }
 
+    public int getRecordTrashCount(String employeeId) {
+        return mybatis.selectOne("mail.getRecordTrashCount",employeeId);
+    }
+
     public String selectDepartment(String employeeId) {
         return mybatis.selectOne("mail.selectDepartmentName", employeeId);
     }
-    public List<MailTeamListDTO> selectDepartEmail(String teamEmail) {
+    public List<MailListDTO> selectDepartEmail(String teamEmail) {
         return mybatis.selectList("mail.selectDepartEmail",teamEmail);
     }
-    public List<MailTeamListDTO> selectFromto(int start, int end, String employeeId) {
+    public List<MailListDTO> selectFromto(int start, int end, String employeeId) {
         Map<String, Object> param = new HashMap<>();
         param.put("employeeId", employeeId);
         param.put("start", start);
@@ -67,7 +71,7 @@ public class MailDAO {
         return mybatis.selectList("mail.selectFromto", param);
     }
 
-    public List<MailTeamListDTO> selectFromtoImportant(int start, int end, String employeeId) {
+    public List<MailListDTO> selectFromtoImportant(int start, int end, String employeeId) {
         Map<String, Object> param = new HashMap<>();
         param.put("employeeId", employeeId);
         param.put("start", start);
@@ -83,7 +87,7 @@ public class MailDAO {
         return mybatis.selectList("mail.selectFromtoSendList", param);
     }
 
-    public List<MailTeamListDTO> selectFromtoReceiveList(int start, int end, String employeeId) {
+    public List<MailListDTO> selectFromtoReceiveList(int start, int end, String employeeId) {
         Map<String, Object> param = new HashMap<>();
         param.put("employeeId", employeeId);
         param.put("start", start);
@@ -91,6 +95,13 @@ public class MailDAO {
         return mybatis.selectList("mail.selectFromtoReciveList", param);
     }
 
+    public List<MailListDTO> selectFromtoTrashList(int start, int end, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("employeeId", employeeId);
+        param.put("start", start);
+        param.put("end", end);
+        return mybatis.selectList("mail.selectFromtoTrashList", param);
+    }
 
     public MailDetailDTO selectByEmail(String email) {
         return mybatis.selectOne("mail.selectByEmail", email);
@@ -99,13 +110,14 @@ public class MailDAO {
     public int insertReadYn(int esId) {
         return mybatis.update("mail.insertReadYn", esId);
     }
-
     public int insertTrashCan(int esId) {
         return mybatis.update("mail.insertTrashCanYn", esId);
     }
-
     public int updateImportant(ImportYnDTO dto) {
         return mybatis.update("mail.updateImportant", dto);
+    }
+    public int insertDelete(int esId) {
+        return mybatis.update("mail.insertDelete", esId);
     }
 
 }

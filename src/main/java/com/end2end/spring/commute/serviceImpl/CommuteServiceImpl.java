@@ -8,13 +8,17 @@ import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
-import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CommuteServiceImpl implements CommuteService {
@@ -25,121 +29,111 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public boolean isWorkOn(String employeeId) {
-        return commuteDAO.isWorkOn(employeeId) > 0;
+    public boolean isExistByState(String employeeId, String state) {
+        return commuteDAO.isExistByState(CommuteDTO.builder()
+                .employeeId(employeeId)
+                .state(state)
+                .build()) > 0;
     }
 
     @Transactional
     @Override
-    public CommuteDTO workOn(String employeeId) {
-        if (commuteDAO.isWorkOn(employeeId) > 0) {
-            return null;
-        }
+    public boolean workOn(String employeeId) {
         CommuteDTO dto = CommuteDTO.builder()
                 .employeeId(employeeId)
                 .state("WORK_ON")
                 .build();
-        commuteDAO.insert(dto);
-
-        return commuteDAO.selectById(dto.getId());
-    }
-
-    @Transactional
-    @Override
-    public CommuteDTO workOff(String employeeId) {
-        if (commuteDAO.isWorkOn(employeeId) == 0) {
-            return null;
+        if (commuteDAO.isExistByState(dto) > 0) {
+            return false;
         }
 
-        CommuteDTO dto = CommuteDTO.builder()
-                .employeeId(employeeId)
-                .state("WORK_OFF")
-                .build();
         commuteDAO.insert(dto);
 
-        return commuteDAO.selectById(dto.getId());
-
-    }
-
-    @Override
-    public CommuteDTO selectByEmployeeIdAndState(CommuteDTO dto) {
-        return  (dto.getState().equals("WORK_ON")) ?
-                commuteDAO.selectWorkOnByEmployeeId(dto.getEmployeeId()) : commuteDAO.selectWorkOffByEmployeeId(dto.getEmployeeId());
-    }
-
-    @Transactional
-    @Override
-    public void checkLate() {
-        List<CommuteDTO> lateList = commuteDAO.selectLate();
-
-        List<SolderingDTO> solderingDTOList = lateList.stream()
-                .map((commuteDTO) -> SolderingDTO.builder()
-                        .employeeId(commuteDTO.getEmployeeId())
+        Date date = new Date();
+        if (date.getHours() > Statics.WORK_HOUR) {
+            if (vacationDAO.isOnVacation(employeeId) == 0) {
+                SolderingDTO solderingDTO = SolderingDTO.builder()
+                        .employeeId(employeeId)
                         .state("LATE")
-                        .build())
-                .collect(Collectors.toList());
-        solderingDAO.insertList(solderingDTOList);
+                        .build();
+                solderingDAO.insert(solderingDTO);
+            }
+        }
+
+        return true;
     }
 
     @Transactional
     @Override
-    public void checkLeaveEarly() {
-        // TODO: 조퇴자 체크
-        List<TodayWorkTimeDTO> todayWorkTimeList = commuteDAO.selectTodayWorkTimeList();
+    public boolean workOff(String employeeId) {
+        CommuteDTO dto = CommuteDTO.builder()
+                .employeeId(employeeId)
+                .state("WORK_ON")
+                .build();
+        if (commuteDAO.isExistByState(dto) == 0) {
+            return false;
+        }
 
-        List<SolderingDTO> leaveEarlyList = todayWorkTimeList.stream()
-                .filter((leaveEarlyDTO) ->
-                        leaveEarlyDTO.todayWorkTime().toHours() < 2)
-                .map((leaveEarlyDTO) ->
-                        SolderingDTO.builder()
-                            .employeeId(leaveEarlyDTO.getEmployeeId())
-                            .state("LEAVE_EARLY")
-                        .build())
-                .collect(Collectors.toList());
-        solderingDAO.insertList(leaveEarlyList);
+        dto.setState("WORK_OFF");
+        if (commuteDAO.isExistByState(dto) > 0) {
+            return false;
+        }
+        commuteDAO.insert(dto);
+        CommuteDTO workOnDTO = commuteDAO.selectByStateAndEmployeeId(dto);
+
+        long workHour = Duration.between(workOnDTO.getRegDate().toLocalDateTime(), LocalDateTime.now()).toHours();
+        if(workHour < Statics.WORK_HOUR) {
+            if ( vacationDAO.isOnVacation(employeeId) == 0) {
+                SolderingDTO solderingDTO = SolderingDTO.builder()
+                        .employeeId(employeeId)
+                        .state("LEAVE_EARLY")
+                        .build();
+                solderingDAO.insert(solderingDTO);
+            }
+        }
+
+        return true;
+
     }
 
-    @Transactional
     @Override
-    public void checkNotCheck() {
-        // TODO: 미체크 체크
-        List<EmployeeDTO> employeeList = commuteDAO.selectNotCheck();
-
-        List<SolderingDTO> solderingDTOList = employeeList.stream()
-                .map((employee) -> SolderingDTO.builder()
-                        .employeeId(employee.getId())
-                        .state("NOT_CHECK")
-                        .build())
-                .collect(Collectors.toList());
-        solderingDAO.insertList(solderingDTOList);
+    public CommuteDTO selectByStateAndEmployeeId(CommuteDTO dto) {
+        return  commuteDAO.selectByStateAndEmployeeId(dto);
     }
 
-    @Transactional
     @Override
-    public void checkAbsence() {
-        // TODO: 결근자 체크
-        List<EmployeeDTO> employeeList = commuteDAO.selectAbsence();
-        List<EmployeeDTO> notVacationEmployeeList = vacationDAO.selectNotTodayVacation(employeeList);
-
-        List<SolderingDTO> solderingDTOList = notVacationEmployeeList.stream()
-                .map((employee) -> SolderingDTO.builder()
-                        .employeeId(employee.getId())
-                        .state("ABSENCE")
-                        .build())
-                .collect(Collectors.toList());
-        solderingDAO.insertList(solderingDTOList);
+    public int countWorkOnThisWeekByEmployeeId(String employeeId) {
+        return commuteDAO.countWorKOnThisWeekByEmployeeId(employeeId);
     }
 
-    @Transactional
     @Override
-    public void insertAll() {
-        List<EmployeeDTO> employeeDTOList = employeeDAO.selectAll();
+    public int rateWorkOnThisWeekByEmployeeId(String employeeId) {
+        int workOnThisWeek = commuteDAO.countWorKOnThisWeekByEmployeeId(employeeId);
 
-        List<CommuteDTO> commuteDTOList = employeeDTOList.stream()
-                .map(employeeDTO ->
-                        CommuteDTO.builder().employeeId(employeeDTO.getId()).build())
-                .collect(Collectors.toList());
+        LocalDate today = LocalDate.now();
+        LocalDate hiredDate = employeeDAO.selectDetailById(employeeId).getHireDate()
+                .toLocalDateTime().toLocalDate();
+        long daysBetween = ChronoUnit.DAYS.between(hiredDate, today);
 
-        //commuteDAO.insertAll(commuteDTOList);
+        int dayValue;
+        if (daysBetween > 7) {
+            dayValue = today.getDayOfWeek().getValue();
+        } else {
+            dayValue = (int) daysBetween + 1;
+        }
+
+        return (int) ((double) workOnThisWeek / dayValue * 100);
+    }
+
+    @Override
+    public long sumTotalWorkTimeThisWeekByEmployeeId(String employeeId) {
+        List<TodayWorkTimeDTO> workTimeList = commuteDAO.selectTodayWorkTimeList(employeeId);
+
+        long totalDuration = 0;
+        for (TodayWorkTimeDTO dto : workTimeList) {
+            totalDuration += dto.todayWorkTime();
+        }
+
+        return totalDuration;
     }
 }

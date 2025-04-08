@@ -3,6 +3,35 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/commute/commute-header.jsp"/>
 <style>
+    /* 기본 버튼 스타일 */
+    .button-container button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .button-container .primary:hover {
+        /*
+        background-color: var(--md-sys-color-on-primary);
+        color: var(--md-sys-color-primary);
+        */
+        opacity: 0.9;
+
+
+    }
+
+    .button-container .secondary:hover {
+        opacity: 0.9;
+    }
+</style>
+<style>
     .commute-detail-wrapper {
         display: grid;
         grid-template-rows: repeat(11, 1fr);
@@ -145,7 +174,7 @@
 
     .vacation-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         position: relative;
         height: 100%; /* box-content의 전체 높이 사용 */
@@ -163,15 +192,11 @@
     }
 
     .vacation-grid::before {
-        left: 25%;
+        left: 33%;
     }
 
     .vacation-grid::after {
-        left: 50%;
-    }
-
-    .vacation-grid::after:last-child {
-        left: 75%;
+        left: 66%;
     }
 
     .vacation-item {
@@ -322,8 +347,46 @@
     .weekly-calendar-container {
         grid-row: span 5;
         border-radius: 8px;
+        height: 500px;
         min-height: 400px; /* 캘린더를 위한 임시 높이 */
     }
+
+    #calendar {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .fc-view {
+        border: none !important;
+    }
+
+    .fc-daygrid-day {
+        border: none !important;
+        height: 60px !important;
+    }
+
+    .custom-date {
+        text-align: center;
+        padding: 5px;
+    }
+
+    .day-name {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .day-number {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+
+    /* 주말 색상 */
+    .fc-day-sat .day-name { color: blue; }
+    .fc-day-sun .day-name { color: red; }
+
+
 </style>
 <style>
     .commuteBox {
@@ -379,11 +442,17 @@
         opacity: 0.5;
         pointer-events: none; /* 호버 효과 완전히 제거 */
     }
+
+    .endWork.disabled {
+        opacity: 0.5;
+        pointer-events: none; /* 호버 효과 완전히 제거 */
+    }
 </style>
 <div class="button-container">
-    <button class="extended-button">연장근무 신청</button>
-    <button class="vacation-button">휴가 신청</button>
-    <button class="vacation-list-button">휴가 조회</button>
+    <button class="extended-button primary">연장근무 신청</button>
+    <button class="vacation-button primary">휴가 신청</button>
+    <button class="vacation-list-button secondary">휴가 조회</button>
+
 </div>
 <div class="commute-detail-wrapper">
     <!-- 첫 번째 컨테이너: 출퇴근 현황 -->
@@ -399,11 +468,11 @@
                 <div class="commuteButtons">
                     <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
                     ${isWorkOn ? 'disabled' : ''}>출근하기</button>
-                    <button class="endWork primary">퇴근하기</button>
+                    <button class="endWork primary ${isWorkOff ? 'disabled' : ''}"
+                    ${isWorkOff ? 'disabled' : ''}>퇴근하기</button>
                 </div>
             </div>
         </div>
-
         <!-- 2. 근무시간 현황 박스 -->
         <div class="box work-time-box surface-bright">
             <div class="box-title">근무 시간</div>
@@ -503,25 +572,19 @@
                     <div class="vacation-item">
                         <h4>총 휴가일</h4>
                         <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
+                            <span class="vacation-unit">${totalVacationDates}<small>일</small></span>
                         </div>
                     </div>
                     <div class="vacation-item">
                         <h4>총 사용일</h4>
                         <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
+                            <span class="vacation-unit">${totalUsedVacationDates}<small>일</small></span>
                         </div>
                     </div>
                     <div class="vacation-item">
                         <h4>이번달 사용일</h4>
                         <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
-                        </div>
-                    </div>
-                    <div class="vacation-item">
-                        <h4>잔여 휴가</h4>
-                        <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
+                            <span class="vacation-unit">${thisMonthUsedVacationDates}<small>일</small></span>
                         </div>
                     </div>
                 </div>
@@ -537,25 +600,25 @@
                 <div class="status-item">
                     <h4>출근</h4>
                     <div class="status-display">
-                        <span class="status-unit">5<small>일</small></span>
+                        <span class="status-unit">${workOnCount}<small>일</small></span>
                     </div>
                 </div>
                 <div class="status-item">
                     <h4>지각</h4>
                     <div class="status-display">
-                        <span class="status-unit">0<small>회</small></span>
+                        <span class="status-unit">${lateCount}<small>회</small></span>
                     </div>
                 </div>
                 <div class="status-item">
                     <h4>조퇴</h4>
                     <div class="status-display">
-                        <span class="status-unit">0<small>회</small></span>
+                        <span class="status-unit">${leaveEarlyCount}<small>회</small></span>
                     </div>
                 </div>
                 <div class="status-item">
                     <h4>결근</h4>
                     <div class="status-display">
-                        <span class="status-unit">0<small>일</small></span>
+                        <span class="status-unit">${absenceCount}<small>일</small></span>
                     </div>
                 </div>
                 <div class="status-item">
@@ -575,7 +638,7 @@
                 <div class="status-item">
                     <h4>출석률</h4>
                     <div class="status-display">
-                        <span class="status-unit">100<small>%</small></span>
+                        <span class="status-unit">${workOnRate}<small>%</small></span>
                     </div>
                 </div>
             </div>
@@ -583,9 +646,9 @@
     </div>
 
     <!-- 세 번째 컨테이너: 주간 캘린더 -->
-    <div class="weekly-calendar-container surface-bright">
+    <div class="box weekly-calendar-container surface-bright">
         <div class="box-title">이번 주 근무 상세</div>
-        <div class="calendar-content">
+        <div class="calendar-content" id="calendar">
             <!-- 캘린더가 들어갈 자리 -->
         </div>
     </div>
@@ -594,9 +657,9 @@
     $(document).ready(function() {
         let workOnTime = ${workOnTime != null ? workOnTime.getTime() : "null"};
         let workOffTime = ${workOffTime != null ? workOffTime.getTime() : "null"};
+        let totalWorkTimeThisWeek = ${totalWorkTimeThisWeek};
 
         function formatDuration(ms) {
-            // 음수 처리
             const millisec = Math.abs(ms);
 
             const hours = (Math.floor(millisec / (60 * 60 * 1000)) >= 10)
@@ -614,7 +677,7 @@
         }
 
         function setTimeDisplay(className, time) {
-            $(className + ' .hours').html(time.hours + '<small>HH</small>');
+            $(className + ' .hour').html(time.hours + '<small>HH</small>');
             $(className + ' .min').html(time.minutes + '<small>mm</small>');
             $(className + ' .sec').html(time.seconds + '<small>ss</small>');
         }
@@ -629,11 +692,22 @@
             return workTime;
         }
 
+        function getTotalWorkTimeThisWeek(workTime) {
+            if (workOffTime == null) {
+                return totalWorkTimeThisWeek + workTime;
+            }
+
+            return totalWorkTimeThisWeek;
+        }
+
         workTime = getWorkTime();
-        setTimeDisplay('.total', formatDuration(workTime));
+        setTimeDisplay('.total', formatDuration(getWorkTime()));
+        setTimeDisplay('.weekly-total', formatDuration(getTotalWorkTimeThisWeek(workTime)));
         setInterval(function () {
             workTime = getWorkTime();
+            const displayTotalWorkTimeThisWeek = getTotalWorkTimeThisWeek(workTime);
             setTimeDisplay('.total', formatDuration(workTime));
+            setTimeDisplay('.weekly-total', formatDuration(displayTotalWorkTimeThisWeek));
         }, 1000);
 
 
@@ -673,9 +747,10 @@
             $.ajax({
                 url: '/commute/workOn'
             }).done(function (data) {
+                console.log(data);
                 if (data) {
                     alert("출근하셨습니다.");
-                    $(this).attr('disabled', true);
+                    location.reload();
                 }
             })
         });
@@ -687,13 +762,64 @@
                 }).done(function (data) {
                     if (data) {
                         alert("퇴근했습니다.");
-                        $(this).attr('disabled', true);
-                        workOffTime = new Date(data.regDate).getTime();
-                        setTimeDisplay('.work-off-time', formatDuration(workOffTime));
+                        location.reload();
                     }
                 })
             }
         });
+    });
+
+    $(function() {
+        function calculateAvailableDimensions() {
+            const $container = $('#calendar').closest('.box');
+            const totalHeight = $container.height();
+            const totalWidth = $container.width();
+            const titleHeight = $('.box-title').outerHeight(true);
+            const padding = 40; // 상하/좌우 padding 20px * 2
+
+            return {
+                height: totalHeight - titleHeight - padding,
+                width: totalWidth - padding
+            };
+        }
+
+
+        const calendar = new FullCalendar.Calendar($('#calendar')[0], {
+            initialView: 'dayGridWeek'
+            ,  // 일주일 보기로 초기 설정
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''  // 주간 보기만 표시
+            },
+            locale: 'ko',
+            height: calculateAvailableDimensions().height,
+            width: calculateAvailableDimensions().width,
+            dayHeaders: true,  // 요일 표시
+            dayHeaderFormat: {weekday: 'short', month: 'numeric', day: 'numeric'}, // 날짜 포맷
+            weekNumbers: false,  // 주차 숨기기
+            viewDidMount: function() {
+                adjustCalendarSize();
+            }
+        });
+
+        function adjustCalendarSize() {
+            const dimensions = calculateAvailableDimensions();
+
+            // 캘린더 컨테이너에 크기 적용
+            $('#calendar').css({
+                'width': dimensions.width + 'px',
+                'max-width': '100%'
+            });
+
+            // FullCalendar 내부 요소 조정
+            $('.fc').css({
+                'width': '100%',
+                'font-size': dimensions.width < 500 ? '0.8em' : '1em' // 작은 화면에서 폰트 크기 조정
+            });
+        }
+
+        calendar.render();
     });
 </script>
 <jsp:include page="/WEB-INF/views/commute/commute-footer.jsp"/>

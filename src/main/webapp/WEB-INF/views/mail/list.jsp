@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <style>
     * {
-        border: 1px solid red;
+        /*border: 1px solid red;*/
         box-sizing: border-box;
     }
     .mainHeader {
@@ -126,32 +126,51 @@
         color: white;
     }
 
+    .detail-menu-item a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: inherit;
+        width: 100%;
+        height: 100%;
+    }
+
+    .detail-menu-item a .material-icons {
+        font-size: 18px;
+        color: #757575;
+    }
+
+    .detail-menu-item a:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+
     .search {
         display: flex;
-        justify-content: flex-end;  /* 오른쪽 정렬 */
+        justify-content: flex-end;
         align-items: center;
-        gap: 20px;  /* search 내부 자식 요소들 간의 간격 */
+        gap: 5px;
     }
 
-    .search * {  /* search의 모든 자식 요소 */
-        height: 25px !important;  /* 모든 자식 요소 높이 통일 */
+    .search * {
+        height: 25px !important;
     }
 
-    /* 입력 필드나 버튼 등의 추가 스타일 필요시 */
     .search input,
     .search button,
     .search select {
         height: 25px;
         line-height: 25px;
-        padding: 0 8px;  /* 좌우 여백 추가 */
+        padding: 0 8px;
     }
 
     #searchBtn {
-        font-size: 13px;  /* 글자 크기 조정 */
+        font-size: 13px;
         display: flex;
-        align-items: center;  /* 수직 가운데 정렬 */
-        justify-content: center;  /* 수평 가운데 정렬 */
-        padding: 0 12px;  /* 좌우 여백 */
+        align-items: center;
+        justify-content: center;
+        padding: 0 12px;
     }
 
 
@@ -297,34 +316,46 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item">
-                <span class="material-icons">star</span>
-                <span>중요 메일함</span>
-                <span class="detail-badge">5</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">all_inbox</span>
-                <span>전체 메일함</span>
-                <span class="detail-badge">32</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">send</span>
-                <span>보낸 메일함</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">move_to_inbox</span>
-                <span class="detail-menu-disc">받은 메일함</span>
-                <span class="detail-badge">12</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">drafts</span>
-                <span>임시 저장함</span>
-                <span class="detail-badge">2</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">delete</span>
-                <span>휴지통</span>
-            </li>
+            <a href="/mail/important">
+                <li class="detail-menu-item">
+                    <span class="material-icons">star</span>
+                    <span>중요 메일함</span>
+                    <span class="detail-badge"><span id="importantMailBox"></span></span>
+                </li>
+            </a>
+            <a href="/mail/list">
+                <li class="detail-menu-item">
+                    <span class="material-icons">all_inbox</span>
+                    <span>전체 메일함</span>
+                    <span class="detail-badge"><span id="allMailBox"></span></span>
+                </li>
+            </a>
+            <a href="/mail/sendList">
+                <li class="detail-menu-item">
+                    <span class="material-icons">send</span>
+                    <span>보낸 메일함</span>
+                </li>
+            </a>
+            <a href="/mail/inbox">
+                <li class="detail-menu-item">
+                    <span class="material-icons">move_to_inbox</span>
+                    <span class="detail-menu-disc">받은 메일함</span>
+                    <span class="detail-badge"><span id="receiveMailBox"></span></span>
+                </li>
+            </a>
+            <a href="/mail/temp">
+                <li class="detail-menu-item">
+                    <span class="material-icons">drafts</span>
+                    <span>임시 저장함</span>
+                    <span class="detail-badge">2</span>
+                </li>
+            </a>
+                <a href="/mail/trash">
+                    <li class="detail-menu-item">
+                        <span class="material-icons">delete</span>
+                        <span>휴지통</span>
+                    </li>
+                </a>
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>
@@ -333,9 +364,6 @@
 </div>
 <div class="mainContainer">
     <div class="mainBody">
-        <div class="titleArea">
-            <h4>전체 메일 (0)</h4> <h4>안읽은 메일 (0)</h4>
-        </div>
         <div class="search">
             <div>
                 <select id="searchOption">
@@ -345,11 +373,18 @@
                 </select>
             </div>
             <div class="searchInput">
-                <input id="input" type="text" name="keyword" placeholder="검색어 입력">
+                <input id="input" type="text" name="keyword" placeholder="전체 메일함">
             </div>
             <div>
                 <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
             </div>
+        </div>
+        <div class="mailWriteBtnContainer">
+            <button onclick="location.href='/mail/write'">메일쓰기</button>
+        </div>
+        <div class="titleArea">
+            <h4>전체 메일 (<span id="recordCount"></span>)</h4>
+            <h4>안읽은 메일 (<span id="recordReadCount"></span>)</h4>
         </div>
         <div class="content">
             <table class="mailList">
@@ -359,8 +394,8 @@
                     <th style="width: 5%">중요</th>
                     <th style="width: 20%">보낸사람</th>
                     <th style="width: 5%"></th>
-                    <th style="width: 55%">제목</th>
-                    <th style="width: 10%">발송 일자</th>
+                    <th style="width: 50%">제목</th>
+                    <th style="width: 15%">발송 일자</th>
                 </tr>
                 </thead>
                 <tbody id="mailBody">
@@ -370,39 +405,57 @@
         </div>
         <div class="pageNavi">
         </div>
+        <div class="buttonsArea">
+            <button type="button" id="readBtn">읽음</button>
+            <button type="button" id="trashBtn">휴지통</button>
+        </div>
     </div>
 </div>
+<input type="hidden" id="employeeId" value=${employee.id}>
 <script>
     $(document).ready(function() {
+        var activeIndex = localStorage.getItem("activeMenuIndex");
+        if (activeIndex !== null) {
+            $('.detail-menu-item').eq(activeIndex).addClass('active');
+        }
+
         $('.detail-menu-item').on('click', function() {
             $('.detail-menu-item').removeClass('active');
             $(this).addClass('active');
-            // 클릭 이벤트 처리 로직
+            var index = $('.detail-menu-item').index(this);
+            localStorage.setItem("activeMenuIndex", index);
         });
 
         const $menuBtn = $('.detail-menu-toggle-btn');
         const $detailMenuModal = $('.detail-menu-modal');
         const $closeBtn = $('.detail-modal-close');
 
-        // 메뉴 버튼 클릭 시 모달 열기
         $menuBtn.on('click', function() {
             $detailMenuModal.addClass('active');
             $('body').css('overflow', 'hidden');
         });
 
-        // 닫기 버튼 클릭 시 모달 닫기
         $closeBtn.on('click', function() {
             $detailMenuModal.removeClass('active');
             $('body').css('overflow', '');
         });
 
-        // 모달 외부 클릭 시 닫기
         $(window).on('click', function(e) {
             if ($(e.target).is($detailMenuModal)) {
                 $detailMenuModal.removeClass('active');
                 $('body').css('overflow', '');
             }
         });
+        $.ajax({
+            url: "/mail/alertList",
+            method: "POST",
+            data: { employeeId: $("#employeeId").val() }
+        }).done(function (resp) {
+            $("#importantMailBox").text(resp.importantMailBox);
+            $("#allMailBox").text(resp.allMailBox);
+            $("#receiveMailBox").text(resp.receiveMailBox);
+        });
+
     });
 </script>
 <script src="/js/mail/list.js" type="text/javascript"></script>

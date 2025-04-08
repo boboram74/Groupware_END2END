@@ -18,33 +18,22 @@ public class CommuteDAO {
         return mybatis.selectOne("commute.selectById", id);
     }
 
-    public int isWorkOn(String employeeId) {
-        return mybatis.selectOne("commute.isWorkOn", employeeId);
+    public int countWorKOnThisWeekByEmployeeId(String employeeId) {
+        return mybatis.selectOne("commute.countWorKOnThisWeekByEmployeeId", employeeId);
+    }
+
+    public int isExistByState(CommuteDTO dto) {
+        return mybatis.selectOne("commute.isExistByState", dto);
     }
 
     public void insert(CommuteDTO dto) {
         mybatis.insert("commute.insert", dto);
     }
 
-    public CommuteDTO selectWorkOnByEmployeeId(String employeeId) {
-        return mybatis.selectOne("commute.selectWorkOnByEmployeeId", employeeId);
+    public CommuteDTO selectByStateAndEmployeeId(CommuteDTO dto) {
+        return mybatis.selectOne("commute.selectByStateAndEmployeeId", dto);
     }
 
-    public CommuteDTO selectWorkOffByEmployeeId(String employeeId) {
-        return mybatis.selectOne("commute.selectWorkOffByEmployeeId", employeeId);
-    }
-
-    public List<CommuteDTO> selectLate() {
-        return mybatis.selectList("commute.checkLate");
-    }
-
-    public List<EmployeeDTO> selectNotCheck() {
-        return mybatis.selectList("commute.selectByNotCheck");
-    }
-
-    public List<EmployeeDTO> selectAbsence() {
-        return mybatis.selectList("commute.selectAbsence");
-    }
-
-    public List<TodayWorkTimeDTO> selectTodayWorkTimeList() { return mybatis.selectList("commute.selectTodayWorkTimeList"); }
+    public List<TodayWorkTimeDTO> selectTodayWorkTimeList(String employeeId) {
+        return mybatis.selectList("commute.selectThisWeekWorkTime", employeeId); }
 }

@@ -2,6 +2,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
 <script>
+    function calculateAvailableDimensions() {
+        const $container = $('.calendarBox');
+        const totalHeight = $container.height();
+        const totalWidth = $container.width();
+        const titleHeight = $('.boxTitle').outerHeight(true);
+        const padding = 40; // 상하/좌우 padding 20px * 2
+
+        console.log(totalHeight - titleHeight - padding);
+        console.log(totalWidth - padding);
+        return {
+            height: totalHeight - titleHeight - padding,
+            width: totalWidth - padding
+        };
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -11,23 +26,30 @@
                 right: 'prev,next',
             },
             initialView: 'dayGridMonth',
-            height: 300,
-            aspectRatio: 0.5,  // 캘린더의 가로/세로 비율 조정
+            width: '100%',
+            height: 'auto',
             // 헤더 스타일 설정
-            viewDidMount: function(arg) {
-                const header = document.querySelector('.fc-header-toolbar');
-                if (header) {
-                    header.style.padding = '5px';  // 헤더 패딩 축소
-                    header.style.marginBottom = '5px';  // 하단 여백 축소
-
-                    // 헤더의 폰트 크기 조정
-                    const title = header.querySelector('.fc-toolbar-title');
-                    if (title) {
-                        title.style.fontSize = '1em';
-                    }
-                }
+            viewDidMount: function() {
+                adjustCalendarSize();
             }
         });
+
+        function adjustCalendarSize() {
+            const dimensions = calculateAvailableDimensions();
+
+            // 캘린더 컨테이너에 크기 적용
+            $('#calendar').css({
+                'width': dimensions.width + 'px',
+                'max-width': '100%'
+            });
+
+            // FullCalendar 내부 요소 조정
+            $('.fc').css({
+                'width': '100%',
+                'font-size': dimensions.width < 500 ? '0.8em' : '1em' // 작은 화면에서 폰트 크기 조정
+            });
+        }
+
         calendar.render();
     });
 
@@ -275,13 +297,12 @@
     }
 
     #calendar {
-        max-height: 100px; /* 최대 높이 제한 */
         padding: 10px;
     }
 
     /* FullCalendar 커스텀 스타일 */
     .fc {
-        height: 100% !important;
+        aspect-ratio: 1;!important;
     }
 
     .fc .fc-toolbar {

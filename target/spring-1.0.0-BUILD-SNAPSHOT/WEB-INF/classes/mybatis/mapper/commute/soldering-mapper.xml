@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="soldering">
-    <insert id="insert" parameterType="java.util.List">
+    <insert id="insertList" parameterType="java.util.List">
         INSERT INTO SOLDERING(id, employeeId, state)
         SELECT SOLDERING_ID_SEQ.NEXTVAL, A.* FROM (
         <foreach collection="list" item="item" separator="UNION ALL">
@@ -12,7 +12,12 @@
         ) A
     </insert>
 
-    <select id="countTisWeekByStateAndEmployeeId" resultType="int">
+    <insert id="insert">
+        INSERT INTO SOLDERING(id, employeeId, state)
+        VALUES (SOLDERING_ID_SEQ.nextval, #{employeeId}, #{state})
+    </insert>
+
+    <select id="countThisWeekByStateAndEmployeeId" resultType="Integer">
         SELECT COUNT(*)
         FROM SOLDERING
         WHERE
@@ -21,5 +26,49 @@
             state = #{state}
         AND
             TRUNC(regDate) BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE)
+    </select>
+
+    <select id="selectByState" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT *
+        FROM EMPLOYEE
+        WHERE
+            ID NOT IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    STATE = 'WORK_ON'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+        AND
+            ID NOT IN (
+                SELECT employeeId
+                FROM VACATION
+                WHERE
+                    startDate + NUMTODSINTERVAL(vacationDate, 'DAY') > SYSDATE
+        <if test="state.equals('ABSENCE')">
+            AND vacationDate > 1
+        </if>
+        )
+    </select>
+
+    <select id="selectNotCheck" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT *
+        FROM EMPLOYEE
+        WHERE
+            ID IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    state = 'WORK_ON'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
+        AND
+            ID NOT IN (
+                SELECT employeeId
+                FROM COMMUTE
+                WHERE
+                    state = 'WORK_OFF'
+                AND
+                    TRUNC(regDate) = TRUNC(SYSDATE))
     </select>
 </mapper>

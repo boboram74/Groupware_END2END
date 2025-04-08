@@ -1,8 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="/css/template/exam.css">
+    <jsp:include page="/WEB-INF/views/template/header.jsp" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     <link
@@ -16,10 +17,11 @@
 </head>
 <body>
 <script
-        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"
 ></script>
+
 <script
         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -30,384 +32,14 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"
 ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<link rel="stylesheet" href="/css/worksmain.css">
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
 
-    .container-fluid {
-        overflow: hidden;
-        display: flex;
-        height: 100vh;
-        width: 100%;
-        background-color: #eef1f6;
-        position: relative;
-        padding: 0;
-        overflow-y: scroll;
-    }
-
-    .main {
-        display: flex;
-        width: 100%;
-        display: block;
-    }
-
-    .logo {
-        position: absolute;
-        left: 0;
-        width: 30px;
-        height: 30px;
-    }
-
-    div {
-        border: 1px solid red;
-    }
-
-    .boxContents {
-        margin-left: 50px;
-    }
-
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-    }
-
-    .header {
-        position: relative;
-        background: #fff;
-        padding: 10px;
-        height: 50px;
-        width: 100%;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        position: sticky;
-        top: 0;
-        z-index: 1;
-    }
-
-    input {
-        /* width: 50vw; */
-        margin-right: 50px;
-    }
-
-    .bellBtn {
-        /* display: block; */
-        background: #fff;
-        border: none;
-    }
-
-    .profileIcon {
-        border-radius: 50%;
-        width: 35px;
-        height: 35px;
-    }
-
-    .icon {
-        display: flex;
-        padding-top: 20px;
-    }
-    .menu {
-        list-style: none;
-        padding: 10px;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-    }
-    .boxContents {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-
-        /* gap: 50px; */
-        margin-bottom: 20px;
-    }
-    .btnBox {
-        margin-top: 10px;
-        display: flex;
-        margin-left: 50px;
-        justify-content: flex-end;
-    }
-    .selectBox {
-        display: flex;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        justify-content: flex-end;
-    }
-    .pageName {
-        font-size: 30px;
-        margin-left: 100px;
-    }
-    .sidebar {
-        text-align: left;
-        margin: 0;
-        width: 50px;
-        overflow: hidden;
-        background: #003465;
-        height: 100vh;
-        /*text-align: center;*/
-        position:fixed;
-        transition: width 0.3s ease;
-        color: white;
-        z-index: 3;
-
-    }
-
-    .sidebar ul {
-        padding: 0;
-        margin: 0;
-        flex: 1;
-        width: 100%;
-
-    }
-
-    .sidebar:hover {
-        width: 150px;
-    }
-    .sidebar ul li {
-        list-style: none;
-        padding: 10px;
-        cursor: pointer;
-
-        text-align: left; /* 글씨 밀림 방지 */
-
-        transition: opacity 0.3s ease;
-        white-space: nowrap; /* 글씨 줄 바꿈 방지 */
-        display: flex;
-        align-items: center;
-    }
-    .sidebar a {
-        text-decoration: none;
-        color: #fff;
-        padding-left: 10px;
-    }
-    .sidebar:hover ul li {
-        opacity: 1; /* 메뉴 열릴 때 자연스럽게 표시 */
-        align-items: center;
-    }
-
-    /*.sidebar ul li:hover {*/
-    /*    background-color: whitesmoke;*/
-    /*    color: #003465;*/
-    /*}*/
-    .sidebar>.icon{
-        display: flex;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-    .sidebar>.icon:hover{
-        background-color: whitesmoke;
-        color: #003465;
-    }
-    .selectBtn{
-        margin-left: 10px;
-    }
 </style>
-<div class="container-fluid">
-    <div class="sidebar">
-        <div class="icon">
-            <ul>
-                <li>
-                    <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            fill="currentColor"
-                            class="bi bi-list"
-                            viewBox="0 0 16 16"
-                    >
-                        <path
-                                fill-rule="evenodd"
-                                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                        />
-                    </svg>
-                </li>
-            </ul>
-            <ul>
-                <li>홈</li>
-            </ul>
-        </div>
 
-        <div class="icon">
-            <ul>
-                <li>
-                    <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            fill="currentColor"
-                            class="bi bi-clipboard2"
-                            viewBox="0 0 16 16"
-                    >
-                        <path
-                                d="M3.5 2a.5.5 0 0 0-.5.5v12a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-12a.5.5 0 0 0-.5-.5H12a.5.5 0 0 1 0-1h.5A1.5 1.5 0 0 1 14 2.5v12a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-12A1.5 1.5 0 0 1 3.5 1H4a.5.5 0 0 1 0 1z"
-                        />
-                        <path
-                                d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5"
-                        />
-                    </svg>
-                </li>
-            </ul>
-            <ul>
-                <li>홈</li>
-            </ul>
-        </div>
-
-        <div class="icon">
-            <ul>
-                <li>
-                    <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            fill="currentColor"
-                            class="bi bi-envelope"
-                            viewBox="0 0 16 16"
-                    >
-                        <path
-                                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"
-                        />
-                    </svg>
-                </li>
-            </ul>
-            <ul>
-                <li>홈</li>
-            </ul>
-        </div>
-
-        <div class="icon">
-            <ul>
-                <li>
-                    <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            fill="currentColor"
-                            class="bi bi-archive"
-                            viewBox="0 0 16 16"
-                    >
-                        <path
-                                d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"
-                        />
-                    </svg>
-                </li>
-            </ul>
-            <ul>
-                <li>홈</li>
-            </ul>
-        </div>
-
-        <div class="icon">
-            <ul>
-                <li>
-                    <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            fill="currentColor"
-                            class="bi bi-briefcase-fill"
-                            viewBox="0 0 16 16"
-                    >
-                        <path
-                                d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"
-                        />
-                        <path
-                                d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"
-                        />
-                    </svg>
-                </li>
-            </ul>
-            <ul>
-                <li>홈</li>
-            </ul>
-        </div>
-
-        <div class="icon">
-            <ul>
-                <li>
-                    <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            fill="currentColor"
-                            class="bi bi-clock"
-                            viewBox="0 0 16 16"
-                    >
-                        <path
-                                d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"
-                        />
-                        <path
-                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"
-                        />
-                    </svg>
-                </li>
-            </ul>
-            <ul>
-                <li>홈</li>
-            </ul>
-        </div>
-
-        <div class="icon">
-            <ul>
-                <li>
-                    <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            fill="currentColor"
-                            class="bi bi-briefcase-fill"
-                            viewBox="0 0 16 16"
-                    >
-                        <path
-                                d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"
-                        />
-                        <path
-                                d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"
-                        />
-                    </svg>
-                </li>
-            </ul>
-            <ul>
-                <li>홈</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="main">
-        <div class="header">
-            <div class="logo"></div>
-            <button class="bellBtn">
-                <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="18"
-                        fill="currentColor"
-                        class="bi bi-bell"
-                        viewBox="0 0 16 16"
-                >
-                    <path
-                            d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"
-                    />
-                </svg>
-            </button>
-            <input type="text" placeholder="검색" />
-            <div class="profile">
-            <span class="photo">
-              <a
-              >' '
-                <img class="profileIcon" src="ㄴ.jpg" />
-                  <!-- 세션에서 이미지 불러오기 -->
-              </a>
-            </span>
-            </div>
-        </div>
         <div class="pageName">
             <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -423,10 +55,12 @@
             >업무 통계
         </div>
         <div class="btnBox">
-            <a href="/work/write">
-            <button>보고서쓰기</button>
-            </a>
+
+            <button class="projectBtn" onclick="openProjectModal()"
+            >프로젝트 생성</button>
+
         </div>
+
         <div class="selectBox">
             <select>
                 <option>선택하십시오</option>
@@ -551,38 +185,318 @@
                 });
             </script>
         </div>
+<div class="projectList">
         <div class="tableBox">
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col-12 col-sm-4 order-sm-12">#</th>
-                    <th scope="col-12 col-sm-4 order-sm-12">First</th>
-                    <th scope="col-12 col-sm-4 order-sm-12">Last</th>
-                    <th scope="col-12 col-sm-4 order-sm-12">Handle</th>
+                    <th>제목</th>
+                    <th>등록일자</th>
+                    <th>프로젝트 기간</th>
+                    <th>참여 인원</th>
+                    <th>상태</th>
+                    <c:if test="${isTeamLeader}">
+                        <th>관리</th>
+                    </c:if>
+
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
+                <c:forEach items="${projects}" var="list">
+                    <tr onclick="location.href='/works/project/${list.id}'">
+                        <td>${list.name}</td>
+                        <td>${list.regDate}</td>
+                        <td>${list.regDate} ~ ${list.deadLine}</td>
+                        <td>
+                            <div class="member-profiles">
+                                <!-- 프로필 이미지 리스트 -->
+                            </div>
+                        </td>
+                        <td>${list.hideYn == 'N' ? '진행중' : '종료'}</td>
+                        <c:if test="${isTeamLeader}">
+                            <td>
+                                <button class="updateProjectBtn" onclick="updateProject(${list.id})">수정</button>
+                                <button  onclick="deleteProject(${list.id})">삭제</button>
+                            </td>
+                        </c:if>
+
+                    </tr>
+
+                </c:forEach>
+
                 </tbody>
             </table>
         </div>
+        </div>
+
+<%--프로젝트 생성모달 --%>
+<div class="modal fade" id="projectModal" tabindex="-1">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">프로젝트 생성</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="projectForm" action="/project/insert" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">프로젝트 제목</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <!-- 프로젝트 기간 설정 버튼 -->
+                        프로젝트 기간 설정
+                        <input type="date" name="deadLine" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">프로젝트 인원</label>
+                        <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">
+                            인원 추가
+                        </button>
+                        <div id="selectedMembers" class="mt-2" >
+                            <div class="selectedUser" data-id="">
+                           <div >선택된 멤버가 없습니다</div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" onclick="createProject()">생성하기</button>
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
 </div>
-</body>
-</html>
+
+
+<%--프로젝트수정모달--%>
+<div class="modal fade" id="updateProjectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">프로젝트 수정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateProjectForm">
+                    <!-- 수정할 데이터를 담는 입력 필드 -->
+                    <div class="mb-3">
+                        <label class="form-label">프로젝트 제목</label>
+                        <input type="text" class="form-control" name="name" id="updateProjectName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">프로젝트 기간</label>
+                        <input type="text" class="form-control" id="updateProjectPeriod">
+                        <input type="hidden" name="regDate" id="updateRegDate">
+                        <input type="hidden" name="deadLine" id="updateDeadLine">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">프로젝트 인원</label>
+                        <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">
+                            인원 추가
+                        </button>
+                        <div id="updateSelectedMembers" class="mt-2"></div>
+                    </div>
+                    <input type="hidden" name="id" id="updateProjectId"> <!-- 프로젝트 ID 숨김 필드 -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updateProject()">수정하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%--프로젝트 수정에서 인원변경모달라인--%>
+<div class="modal fade" id="memberSearchModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">멤버 검색</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 멤버이름 검색 -->
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="memberSearchInput" placeholder="멤버 이름 검색" onkeyup="searchMembers()">
+                </div>
+
+                <!-- 검색 결과 리스트 -->
+                <div id="memberSearchResults" class="mb-3">
+                    <p>검색 결과가 표시됩니다.</p>
+                </div>
+
+                <!-- 선택된 멤버 리스트 -->
+                <div>
+                    <h6 class="mt-3">선택된 멤버</h6>
+                    <div id="selectedMembersList" class="d-flex flex-wrap">
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="closeBtn" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class=inputMemberBtn" onclick="confirmSelectedMembers()">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<%--프로젝트 기간 선택--%>
+<div class="modal" id="deadlineModal">
+    <div class="modalContent">
+        <span class="close">&times;</span>
+        <h3>마감일자 선택</h3>
+        <div class="dateSelectWrapper">
+            <input type="datetime-local" id="deadlineDate" class="dateInput">
+            <div class="buttonWrapper">
+                <button type="button" id="cancelDate" class="modalBtn cancelBtn">취소</button>
+                <button type="button" id="confirmDate" class="modalBtn confirmBtn">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // function  updateProject(id) {
+    //     location.href = '/project/update/' + id;
+    // }
+
+    function deleteProject(id) {
+        if(confirm("정말 프로젝트를 삭제 하시겠습니까?"))
+        location.href = '/project/delete/' + id;
+    }
+    function openProjectModal() {
+        $('#projectModal').modal('show');
+    }
+
+    function openUpdateProjectModal(id) {
+        $('#updateProjectModal').modal('show');
+        $('#updateProjectId').val(id);
+    }
+    function openMemberSearch() {
+        $('#memberSearchModal').modal('show');
+    }
+    function closeMemberSearch() {
+        $('#memberSearchModal').modal('hide');}
+
+
+function searchMembers() {
+    console.log($('#memberSearchInput').val());
+    $.ajax({
+        url: '/project/searchUser/',
+        type: 'GET',
+        data: {
+            name: $('#memberSearchInput').val()
+        },
+        success: function (data) {
+            console.log(data);
+
+            let memberList = '';
+            for(let i = 0; i < data.length; i++){
+                console.log(data[i]);
+                memberList += '<div class="user-item" data-id="' + data[i].id + '" data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].jobName + ' ' + data[i].departmentName + '</div>'
+                console.log(memberList);
+            }
+            console.log($('#memberSearchResults'));
+            console.log($('#memberSearchResults').html());
+            $('#memberSearchResults').html(memberList);
+
+            // 사용자 선택 시 selectedMembersList에 추가하는 이벤트 처리
+            $('#memberSearchResults .user-item').click(function() {
+                var userId = $(this).data('id');
+                var userName = $(this).data('name');
+                console.log(userId, userName);
+                // 이미 선택된 사용자인지 확인
+                if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
+
+                    console.log('추가한 새로운 멤버:', userId, userName);
+
+                    // selectedMembersList에 사용자 추가
+                    $('#selectedMembersList').append(
+                        $('<div>').addClass('selected-user').attr('data-id', userId)
+                            .append($('<span>').html(userName))
+                            .append($('<button>').addClass("remove-user").html('삭제').click(function() {
+                                    $(this).parent().remove();
+                                })
+                            )
+                            .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
+                    );
+                }
+            });
+
+        }
+    })
+}
+
+    function confirmSelectedMembers() {
+
+        $("#selectedMembers").html("");
+        console.log($("#selectedMembersList").html());
+        $("#selectedMembers").html($("#selectedMembersList").html());
+        document.activeElement.blur();
+        $("#memberSearchModal").modal('hide');
+
+    }
+
+    // 프로젝트 생성 함수
+    function createProject(e) {
+        console.log('#projectForm');
+        $('#projectForm').submit();
+
+    }
+
+        // 선택한 멤버 수집 함수
+        function getSelectedMembers() {
+            let selectedMembers = [];
+
+            $('#selectedMembers .selectedUser').each(function() {
+
+                const id = $(this).attr('data-id');
+                console.log(id);
+
+                if (id) {
+                    console.log(id);
+                    selectedMembers.push(id[1]);
+                }
+            });
+            console.log(selectedMembers);
+
+            if (selectedMembers.length === 0) {
+                console.warn("선택된 멤버가 없습니다. 선택자를 확인하세요.");
+            }
+            return selectedMembers;
+        }
+
+        function addProjectToTable(response) {
+            const tableHtml = `
+        <tr onClick="location.href='/works/work/${response.id}'">
+            <td>${response.name}</td>
+            <td>${response.regDate}</td>
+            <td>${response.regDate} ~ ${response.deadLine}</td>
+            <td><div class="memberProfile"></div></td>
+            <td>${response.hideYn == 'N' ? '진행중' : '종료'}</td>
+
+                <button class="updateProjectBtn" onClick=" openUpdateProjectModal(${response.id})">수정</button>
+
+                <button class="deleteProjectBtn" onClick="deleteProject(${response.id})">삭제</button>
+        </tr>
+    `;
+            $('.table tbody').append(tableHtml);
+
+    }
+
+</script>
+
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />

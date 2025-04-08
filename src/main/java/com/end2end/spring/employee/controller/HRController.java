@@ -1,6 +1,7 @@
 package com.end2end.spring.employee.controller;
 
 import com.end2end.spring.employee.dto.DepartmentDTO;
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.dto.JobDTO;
 import com.end2end.spring.employee.service.EmployeeService;
@@ -19,12 +20,15 @@ import java.util.List;
 @RequestMapping("/hr")
 @Controller
 public class HRController {
+
     @Autowired
     private EmployeeService employeeService;
 
     @RequestMapping("/list")
     public String toList(Model model) {
         // TODO: 직원 관리 페이지로 이동
+        List<EmployeeDTO> list = employeeService.selectAll();
+        model.addAttribute("employee", list);
         return "hr/list";
     }
 

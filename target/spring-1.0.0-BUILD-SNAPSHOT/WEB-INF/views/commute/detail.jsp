@@ -3,6 +3,35 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/commute/commute-header.jsp"/>
 <style>
+    /* 기본 버튼 스타일 */
+    .button-container button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .button-container .primary:hover {
+        /*
+        background-color: var(--md-sys-color-on-primary);
+        color: var(--md-sys-color-primary);
+        */
+        opacity: 0.9;
+
+
+    }
+
+    .button-container .secondary:hover {
+        opacity: 0.9;
+    }
+</style>
+<style>
     .commute-detail-wrapper {
         display: grid;
         grid-template-rows: repeat(11, 1fr);
@@ -145,7 +174,7 @@
 
     .vacation-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         position: relative;
         height: 100%; /* box-content의 전체 높이 사용 */
@@ -163,15 +192,11 @@
     }
 
     .vacation-grid::before {
-        left: 25%;
+        left: 33%;
     }
 
     .vacation-grid::after {
-        left: 50%;
-    }
-
-    .vacation-grid::after:last-child {
-        left: 75%;
+        left: 66%;
     }
 
     .vacation-item {
@@ -381,9 +406,9 @@
     }
 </style>
 <div class="button-container">
-    <button class="extended-button">연장근무 신청</button>
-    <button class="vacation-button">휴가 신청</button>
-    <button class="vacation-list-button">휴가 조회</button>
+    <button class="extended-button primary">연장근무 신청</button>
+    <button class="vacation-button primary">휴가 신청</button>
+    <button class="vacation-list-button secondary">휴가 조회</button>
 </div>
 <div class="commute-detail-wrapper">
     <!-- 첫 번째 컨테이너: 출퇴근 현황 -->
@@ -399,11 +424,11 @@
                 <div class="commuteButtons">
                     <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
                     ${isWorkOn ? 'disabled' : ''}>출근하기</button>
-                    <button class="endWork primary">퇴근하기</button>
+                    <button class="endWork primary ${isWorkOff ? 'disabled' : ''}"
+                    ${isWorkOff ? 'disabled' : ''}>퇴근하기</button>
                 </div>
             </div>
         </div>
-
         <!-- 2. 근무시간 현황 박스 -->
         <div class="box work-time-box surface-bright">
             <div class="box-title">근무 시간</div>
@@ -503,25 +528,19 @@
                     <div class="vacation-item">
                         <h4>총 휴가일</h4>
                         <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
+                            <span class="vacation-unit">${totalVacationDates}<small>일</small></span>
                         </div>
                     </div>
                     <div class="vacation-item">
                         <h4>총 사용일</h4>
                         <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
+                            <span class="vacation-unit">${totalUsedVacationDates}<small>일</small></span>
                         </div>
                     </div>
                     <div class="vacation-item">
                         <h4>이번달 사용일</h4>
                         <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
-                        </div>
-                    </div>
-                    <div class="vacation-item">
-                        <h4>잔여 휴가</h4>
-                        <div class="vacation-display">
-                            <span class="vacation-unit">0<small>일</small></span>
+                            <span class="vacation-unit">${thisMonthUsedVacationDates}<small>일</small></span>
                         </div>
                     </div>
                 </div>
@@ -537,25 +556,25 @@
                 <div class="status-item">
                     <h4>출근</h4>
                     <div class="status-display">
-                        <span class="status-unit">5<small>일</small></span>
+                        <span class="status-unit">${workOnCount}<small>일</small></span>
                     </div>
                 </div>
                 <div class="status-item">
                     <h4>지각</h4>
                     <div class="status-display">
-                        <span class="status-unit">0<small>회</small></span>
+                        <span class="status-unit">${lateCount}<small>회</small></span>
                     </div>
                 </div>
                 <div class="status-item">
                     <h4>조퇴</h4>
                     <div class="status-display">
-                        <span class="status-unit">0<small>회</small></span>
+                        <span class="status-unit">${leaveEarlyCount}<small>회</small></span>
                     </div>
                 </div>
                 <div class="status-item">
                     <h4>결근</h4>
                     <div class="status-display">
-                        <span class="status-unit">0<small>일</small></span>
+                        <span class="status-unit">${absenceCount}<small>일</small></span>
                     </div>
                 </div>
                 <div class="status-item">
@@ -614,7 +633,7 @@
         }
 
         function setTimeDisplay(className, time) {
-            $(className + ' .hours').html(time.hours + '<small>HH</small>');
+            $(className + ' .hour').html(time.hours + '<small>HH</small>');
             $(className + ' .min').html(time.minutes + '<small>mm</small>');
             $(className + ' .sec').html(time.seconds + '<small>ss</small>');
         }
@@ -673,9 +692,10 @@
             $.ajax({
                 url: '/commute/workOn'
             }).done(function (data) {
+                console.log(data);
                 if (data) {
                     alert("출근하셨습니다.");
-                    $(this).attr('disabled', true);
+                    location.reload();
                 }
             })
         });
@@ -687,9 +707,7 @@
                 }).done(function (data) {
                     if (data) {
                         alert("퇴근했습니다.");
-                        $(this).attr('disabled', true);
-                        workOffTime = new Date(data.regDate).getTime();
-                        setTimeDisplay('.work-off-time', formatDuration(workOffTime));
+                        location.reload();
                     }
                 })
             }

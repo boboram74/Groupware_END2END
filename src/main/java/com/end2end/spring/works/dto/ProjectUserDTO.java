@@ -1,13 +1,16 @@
 package com.end2end.spring.works.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ProjectUserDTO {
 
     private int id;

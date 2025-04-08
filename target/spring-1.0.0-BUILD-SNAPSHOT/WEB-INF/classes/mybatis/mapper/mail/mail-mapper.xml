@@ -22,8 +22,8 @@
     </select>
 
     <insert id="insertEmailAddressUser">
-        INSERT INTO EMAIL_ADDRESS_USER(EMAIL_ADDRESS_USER_SEQ.NEXTVAL,employeeId, emailAddress)
-        VALUES (${id},#{employeeId},#{emailAddress})
+        INSERT INTO EMAIL_ADDRESS_USER(id, employeeId, emailAddress)
+        VALUES (EMAIL_ADDRESS_USER_SEQ.NEXTVAL, #{employeeId}, #{emailAddress})
     </insert>
 
     <update id="updateImportant" >

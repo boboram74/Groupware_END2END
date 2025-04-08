@@ -465,6 +465,18 @@
           <span>예약</span>
         </a>
       </div>
+      <div class="menu-item">
+      <a href="/hr/list">
+        <i class="material-icons">people</i>
+        <span>인사관리</span>
+      </a>
+    </div>
+      <div class="menu-item">
+        <a href="/project/main">
+          <i class="material-icons">description</i>
+          <span>Works</span>
+        </a>
+      </div>
     </div>
   </div>
   <div class="main-wrapper">

@@ -3,13 +3,16 @@ package com.end2end.spring.main.controller;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.service.EmployeeService;
+import com.end2end.spring.util.HolidayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -53,6 +56,16 @@ public class MainController {
 	public String toWorktree() {
 		// TODO: 조직도 페이지 출력
 		return "main/worktree";
+	}
+
+	@ResponseBody
+	@RequestMapping("/holiday")
+	public List<Map<String, Object>> getHoliday(String year, String month) {
+		try {
+			return HolidayUtil.generateHolidayList(year, month);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@RequestMapping("/test")

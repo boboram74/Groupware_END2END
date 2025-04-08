@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,10 +59,19 @@ public class HolidayUtil {
         return g.fromJson(sb.toString(), new TypeToken<Map<String, Object>>(){}.getType());
     }
 
-    public static List<Map<String, Object>> generateHolidayList(Map<String, Object> json) {
+    public static List<Map<String, Object>> generateHolidayList(String year, String month) throws IOException {
+        Map<String, Object> json = getHolidayApi(year, month);
+
         Map<String, Object> response = (Map<String, Object>) json.get("response");
         Map<String, Object> body = (Map<String, Object>) response.get("body");
         Map<String, Object> items = (Map<String, Object>) body.get("items");
+
+        int totalCount = (int) body.get("totalCount");
+
+        if (totalCount == 0) {
+            return new ArrayList<>();
+        }
+
         List<Map<String, Object>> item = (List<Map<String, Object>>) items.get("item");
 
         for (Map<String, Object> map : item) {

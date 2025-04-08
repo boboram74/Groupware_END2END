@@ -1,17 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
-<style>
-    :root {
-        --fc-border-color: var(--md-sys-color-outline);
-        --fc-button-text-color: var(--md-sys-color-on-primary);
-        --fc-button-bg-color: var(--md-sys-color-primary);
-        --fc-button-hover-bg-color: var(--md-sys-color-primary-hover);
-        --fc-page-bg-color: var(--md-sys-color-outline);
-        --fc-button-border-color: none;
-        --fc-today-bg-color: var(--md-sys-color-outline-variant);
-    }
-</style>
 <script>
     function calculateAvailableDimensions() {
         const $container = $('.calendarBox');
@@ -29,18 +18,29 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'ko',
             headerToolbar: {
                 left: 'title',
                 right: 'prev,next',
             },
             initialView: 'dayGridMonth',
+            initialDate: new Date(),
             width: '100%',
             height: 'auto',
+            events: function(info, successCallback) {
+                const view = info.view;
+                const visibleStart = info.start;
+                const visibleEnd = info.end;
+
+                console.log(visibleStart);
+                console.log(visibleEnd);
+              //  loadEvents(startDate, endDate, successCallback);
+            },
+            eventDisplay: 'block',
             // 헤더 스타일 설정
-            viewDidMount: function() {
+            viewDidMount: function () {
                 adjustCalendarSize();
             }
         });
@@ -59,6 +59,26 @@
                 'width': '100%',
                 'font-size': dimensions.width < 500 ? '0.8em' : '1em' // 작은 화면에서 폰트 크기 조정
             });
+        }
+
+        function loadEvents(startDate, endDate, successCallback) {
+            const currentYear = startDate.getFullYear();
+            const currentMonth = startDate.getMonth();
+            console.log(currentMonth, currentYear);
+
+            $.ajax({
+                url: '/holiday?year=' + currentYear + '&month=' + currentMonth,
+                type: 'GET',
+                dataType: 'application/json',
+                success: function (data) {
+                    console.log(data);
+                    // successCallback(data);
+                }, errors: function(xhr, status, error) {
+                    console.log(xhr.status);
+                    console.log(xhr.responseText);
+                    console.log(error);
+                }
+            })
         }
 
         calendar.render();

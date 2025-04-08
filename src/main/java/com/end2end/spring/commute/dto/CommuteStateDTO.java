@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Builder
 public class CommuteStateDTO {
     private String employeeId;
-    private LocalDate date;
+    private LocalDate dates;
     private Timestamp regDate;
     private String state;
 }

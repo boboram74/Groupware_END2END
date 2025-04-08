@@ -119,5 +119,6 @@
             employeeId = #{employeeId}
         AND
             TRUNC(regDate) BETWEEN #{startDate} AND #{endDate}
+        ORDER BY dates
     </select>
 </mapper>

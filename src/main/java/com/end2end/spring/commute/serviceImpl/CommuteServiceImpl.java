@@ -3,10 +3,7 @@ package com.end2end.spring.commute.serviceImpl;
 import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.commute.dao.SolderingDAO;
 import com.end2end.spring.commute.dao.VacationDAO;
-import com.end2end.spring.commute.dto.CommuteDTO;
-import com.end2end.spring.commute.dto.SelectPeriodDTO;
-import com.end2end.spring.commute.dto.SolderingDTO;
-import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
+import com.end2end.spring.commute.dto.*;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.util.Statics;
@@ -17,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CommuteServiceImpl implements CommuteService {
@@ -51,8 +51,8 @@ public class CommuteServiceImpl implements CommuteService {
 
         commuteDAO.insert(dto);
 
-        Date date = new Date();
-        if (date.getHours() > Statics.WORK_HOUR) {
+        LocalDateTime date = LocalDateTime.now();
+        if (date.getHour() > Statics.WORK_ON_CHECK_TIME) {
             if (vacationDAO.isOnVacation(employeeId) == 0) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
@@ -141,8 +141,37 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public List<Map<String, Object>> selectPeriodWorkState(SelectPeriodDTO dto) {
+    public List<Map<LocalDate, Object>> selectPeriodWorkState(SelectPeriodDTO dto) {
+        List<CommuteStateDTO> commutePeriodList = commuteDAO.selectByPeriod(dto);
+        List<CommuteStateDTO> solderingPeriodList = solderingDAO.selectByPeriod(dto);
 
-        return null;
+        LocalDate start = dto.getStartDate().toLocalDate();
+        LocalDate end = dto.getEndDate().toLocalDate();
+
+        List<Map<LocalDate, Object>> mapList = new ArrayList<>();
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+            Map<LocalDate, Object> map = new HashMap<>();
+
+            LocalDate finalDate = date;
+            List<CommuteStateDTO> list = new ArrayList<>();
+
+            List<CommuteStateDTO> commuteLocalDateList = commutePeriodList.stream()
+                    .filter(commuteStateDTO ->
+                        commuteStateDTO.getDates().equals(finalDate))
+                    .collect(Collectors.toList());
+            list.addAll(commuteLocalDateList);
+
+            List<CommuteStateDTO> solderingLocalDateList = solderingPeriodList.stream()
+                    .filter(commuteStateDTO ->
+                            commuteStateDTO.getDates().equals(finalDate))
+                    .collect(Collectors.toList());
+            list.addAll(solderingLocalDateList);
+
+            map.put(date, list);
+            mapList.add(map);
+        }
+
+
+        return mapList;
     }
 }

@@ -1,6 +1,7 @@
 package com.end2end.spring.commute.controller;
 
 import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.dto.SelectPeriodDTO;
 import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.commute.service.SolderingService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 
 @RequestMapping("/commute")
 @Controller
@@ -96,6 +98,12 @@ public class CommuteController {
     @RequestMapping("/test")
     public void leaveEarly(HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        commuteService.sumTotalWorkTimeThisWeekByEmployeeId(employee.getId());
+        SelectPeriodDTO dto = SelectPeriodDTO.builder()
+                .employeeId(employee.getId())
+                .startDate(Date.valueOf("2025-04-07"))
+                .endDate(Date.valueOf("2025-04-08"))
+                .build();
+
+        commuteService.selectPeriodWorkState(dto);
     }
 }

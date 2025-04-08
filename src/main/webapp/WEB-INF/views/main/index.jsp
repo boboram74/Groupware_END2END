@@ -1,6 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
+<style>
+    :root {
+        --fc-border-color: var(--md-sys-color-outline);
+        --fc-button-text-color: var(--md-sys-color-on-primary);
+        --fc-button-bg-color: var(--md-sys-color-primary);
+        --fc-button-hover-bg-color: var(--md-sys-color-primary-hover);
+        --fc-page-bg-color: var(--md-sys-color-outline);
+        --fc-button-border-color: none;
+        --fc-today-bg-color: var(--md-sys-color-outline-variant);
+    }
+</style>
 <script>
     function calculateAvailableDimensions() {
         const $container = $('.calendarBox');
@@ -321,6 +332,14 @@
 
     .fc .fc-daygrid-day {
         height: auto !important;  /* 날짜 셀 높이 자동 조정 */
+    }
+
+    .fc th {
+        background-color: var(--md-sys-color-outline);
+    }
+
+    .fc-theme-standard td, .fc-theme-standard th {
+        border-color: var(--md-sys-color-outline);
     }
 
     .material-icons {

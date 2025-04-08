@@ -40,7 +40,7 @@
                         <c:if test="${!item.role.equals('NO_AUTH')}">
                         <tr>
                             <td>${item.id}</td>
-                            <td>${item.name}</td>
+                            <td onclick="location.href='/mypage/${item.id}'" style="cursor:pointer;">${item.name}</td>
                             <td>${item.departmentName}</td>
                             <td>${item.jobName}</td>
                             <td>${item.role}</td>

@@ -29,7 +29,13 @@ public class MainController {
 	@RequestMapping("/mypage/{employeeId}")
 	public String toMyPage(@PathVariable String employeeId, HttpSession session, Model model) {
 		EmployeeDTO loginUser = (EmployeeDTO) session.getAttribute("employee");
-		if (loginUser == null || !loginUser.getId().equals(employeeId)) {
+		if (loginUser == null) {
+			return "redirect:/";
+		}
+		// 만약 로그인한 사용자가 자신의 마이페이지가 아니면서 HR 권한이 없는 경우
+		if (!loginUser.getId().equals(employeeId)
+			&& !loginUser.getDepartmentName().equals("인사팀")
+			&& !loginUser.getRole().equals("ADMIN")) {
 			return "redirect:/";
 		}
 		EmployeeDetailDTO employee = employeeService.selectDetailById(employeeId);

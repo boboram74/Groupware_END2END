@@ -28,36 +28,47 @@
     <div class="mainBody">
         <div class="content">
             <div class="list">
-                <table border="1">
+                <table class="listTable">
                     <tr>
+                        <th>사번</th>
                         <th>이름</th>
                         <th>부서</th>
                         <th>직급</th>
+                        <th>권한 상태</th>
                     </tr>
                     <c:forEach items="${employee}" var="item">
                         <c:if test="${!item.role.equals('NO_AUTH')}">
-                            <tr>
-                                <td>${item.id}</td>
-                                <td>${item.name}</td>
-                                <td>${item.role}</td>
-                            </tr>
+                        <tr>
+                            <td>${item.id}</td>
+                            <td onclick="location.href='/mypage/${item.id}'" style="cursor:pointer;">${item.name}</td>
+                            <td>${item.departmentName}</td>
+                            <td>${item.jobName}</td>
+                            <td>${item.role}</td>
+                        </tr>
                         </c:if>
                     </c:forEach>
                 </table>
             </div>
             <div class="new">
-                <table border="1">
+                <table class="newTable">
                     <tr>
                         <th>이름</th>
                         <th>부서</th>
                         <th>직급</th>
+                        <th>권한</th>
+                        <th>확인</th>
                     </tr>
                     <c:forEach items="${employee}" var="item">
                         <c:if test="${item.role.equals('NO_AUTH')}">
                             <tr>
-                                <td>${item.id}</td>
                                 <td>${item.name}</td>
+                                <td>${item.departmentName}</td>
+                                <td>${item.jobName}</td>
                                 <td>${item.role}</td>
+                                <td class="btn">
+                                    <button id="approveBtn">승인</button>
+                                    <button id="rejectBtn">반려</button>
+                                </td>
                             </tr>
                         </c:if>
                     </c:forEach>

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +66,8 @@ public class CommuteController {
         model.addAttribute("totalVacationDates", vacationService.sumTotalVacationDates(employee.getId()));
         model.addAttribute("totalUsedVacationDates", vacationService.sumTotalUsedVacationDates(employee.getId()));
         model.addAttribute("thisMonthUsedVacationDates", vacationService.sumThisMonthUsedVacationDates(employee.getId()));
+
+        model.addAttribute("active", 0);
 
         return "commute/detail";
     }

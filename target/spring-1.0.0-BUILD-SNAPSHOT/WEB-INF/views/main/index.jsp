@@ -308,6 +308,11 @@
         pointer-events: none; /* 호버 효과 완전히 제거 */
     }
 
+    .endWork.disabled {
+        opacity: 0.5;
+        pointer-events: none; /* 호버 효과 완전히 제거 */
+    }
+
     .calendarBox {
         grid-row: span 5; /* 기존 값에서 5로 조정 */
         border-radius: 10px;

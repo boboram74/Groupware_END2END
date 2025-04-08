@@ -248,3 +248,56 @@ select {
     margin-left: 10px;
     height: fit-content;
 }
+.approverCardContainer {
+     display: flex;
+     gap: 10px;
+     padding: 10px;
+     border: 1px solid #ccc;
+     border-radius: 8px;
+     background: #f9f9f9;
+     align-items: flex-end; /* 추가: 컨테이너 내 항목들을 오른쪽 정렬 */
+ }
+
+.approverCard {
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+}
+
+.approverInfo {
+    flex-direction: column;
+    flex: 1;
+    text-align: right; /* 추가: 승인자 정보 텍스트 오른쪽 정렬 */
+}
+
+.approvalBox {
+    float: right;
+    width: 35%;
+    height: 100%;
+    display: flex; /* 추가: flex 컨테이너로 변경 */
+    justify-content: flex-end; /* 추가: 내용을 오른쪽으로 정렬 */
+}
+
+.approverInfo div {
+    margin-bottom: 2px;
+}
+
+.approverActions {
+    display: flex;
+    gap: 8px;
+}
+
+.approverStatus {
+    font-weight: bold;
+}
+
+.approverStatus.waiting {
+    color: #c0392b;
+}
+
+.approverStatus.done {
+    color: #27ae60;
+}

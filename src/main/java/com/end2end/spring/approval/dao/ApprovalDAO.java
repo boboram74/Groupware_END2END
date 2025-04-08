@@ -25,18 +25,23 @@ public class ApprovalDAO {
         mybatis.insert("approval.insert", dto);
 
     }
+    public List<Map<String, Object>> selectByState(String state, String employeeId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("state", state);
+        map.put("employeeId", employeeId);
 
-    public List<ApprovalDTO> selectByStateAndEmployeeId(String state, String employeeId) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("state",state);
-        map.put("employeeId",employeeId);
-
-        return  mybatis.selectList("approval.selectByStateAndEmployeeId", map);
+        return mybatis.selectList("approval.selectByState", map);
     }
-
-    public ApprovalDTO selectById(String id) {
+    public Map<String, Object> selectById(String id) {
         return mybatis.selectOne("approval.selectById", id);
     }
 
+
+    public void updateState(String id, String state) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("state", state);
+        mybatis.update("approval.updateState", map);
+    }
 
 }

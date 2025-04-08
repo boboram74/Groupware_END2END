@@ -14,6 +14,7 @@ import com.end2end.spring.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -34,6 +35,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO selectById(String id) {
         // TODO: 해당 id의 사원 출력
         return null;
+    }
+
+    @Override
+    public List<EmployeeDTO> selectAll() {
+        return employeeDAO.selectAll();
     }
 
     @Override

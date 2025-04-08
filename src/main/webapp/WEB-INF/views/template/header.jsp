@@ -501,7 +501,7 @@
 
         <div class="profile-container">
           <div class="profile"
-               style="background-image: url('${(employee.profileImg == null) ? '/images/defaultImg.jpg' : employee.profileImg}')">
+               style="background-image: url('${(employee.profileImg == null) ? '/image/defaultImg.jpg' : employee.profileImg}')">
           </div>
           <div class="profile-menu surface-bright" id="profileMenu">
             <div class="menu-item" id="mypage">마이페이지</div>
@@ -601,6 +601,7 @@
 
 <script>
   $(document).ready(function() {
+
     // 모바일 메뉴 열기
     $('.mobile-menu-item').click(function(e) {
       e.preventDefault();

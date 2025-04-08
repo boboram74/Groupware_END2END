@@ -8,7 +8,6 @@ import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
-import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CommuteServiceImpl implements CommuteService {
@@ -104,5 +104,36 @@ public class CommuteServiceImpl implements CommuteService {
     @Override
     public int countWorkOnThisWeekByEmployeeId(String employeeId) {
         return commuteDAO.countWorKOnThisWeekByEmployeeId(employeeId);
+    }
+
+    @Override
+    public int rateWorkOnThisWeekByEmployeeId(String employeeId) {
+        int workOnThisWeek = commuteDAO.countWorKOnThisWeekByEmployeeId(employeeId);
+
+        LocalDate today = LocalDate.now();
+        LocalDate hiredDate = employeeDAO.selectDetailById(employeeId).getHireDate()
+                .toLocalDateTime().toLocalDate();
+        long daysBetween = ChronoUnit.DAYS.between(hiredDate, today);
+
+        int dayValue;
+        if (daysBetween > 7) {
+            dayValue = today.getDayOfWeek().getValue();
+        } else {
+            dayValue = (int) daysBetween + 1;
+        }
+
+        return (int) ((double) workOnThisWeek / dayValue * 100);
+    }
+
+    @Override
+    public long sumTotalWorkTimeThisWeekByEmployeeId(String employeeId) {
+        List<TodayWorkTimeDTO> workTimeList = commuteDAO.selectTodayWorkTimeList(employeeId);
+
+        long totalDuration = 0;
+        for (TodayWorkTimeDTO dto : workTimeList) {
+            totalDuration += dto.todayWorkTime();
+        }
+
+        return totalDuration;
     }
 }

@@ -589,9 +589,6 @@
 
 <script>
   $(document).ready(function() {
-    const getMode = ()  => {
-      
-    }
 
     // 모바일 메뉴 열기
     $('.mobile-menu-item').click(function(e) {
@@ -643,10 +640,6 @@
       } else if (id === 'logout') {
         window.location.href = '/employee/logout';
       }
-    });
-
-    $('.dark-mode-btn').on('click', function() {
-
     });
   });
 </script>

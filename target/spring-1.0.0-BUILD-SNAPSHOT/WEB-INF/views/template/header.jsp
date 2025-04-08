@@ -704,9 +704,5 @@
     ]).finally(() => {
       hideLoading();
     });
-    // 페이지를 떠날 때 로딩 표시
-    $(window).on('beforeunload', function() {
-      showLoading();
-    });
   })
 </script>

@@ -203,18 +203,39 @@
                 }
             });
         }
-        function makeEmployee(employee){
-            const div = $('<div>').addClass("employee").attr('draggable', true).attr('id', employee.id);
-            div.append($("<span>").addClass("jobName").html(employee.jobName));
-            console.log(employee.id);
-            console.log(employee.jobName);
+        function makeEmployee(employee) {
+            const div = $('<div>')
+                .addClass("employee")
+                .attr('draggable', true)
+                .attr('id', employee.id);
 
-            $("<span>").html(" : ")
+            div.append($("<span>").addClass("jobName").html(employee.jobName));
+            div.append($("<span>").html(" : "));
             div.append($("<span>").addClass("name").html(employee.name));
 
-            div.on('dragstart', function(event) {
+            // 삭제 버튼 추가
+            const removeBtn = $('<button>')
+                .addClass("removeBtn")
+                .text("❌")
+                .css({
+                    marginLeft: '10px',
+                    color: 'red',
+                    cursor: 'pointer',
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '14px'
+                })
+                .on('click', function () {
+                    div.remove(); // DOM에서 제거
+                    const index = approvalList.findIndex(emp => emp.id === employee.id);
+                    if (index > -1) approvalList.splice(index, 1); // 배열에서 제거
+                });
+
+            div.append(removeBtn);
+
+            div.on('dragstart', function (event) {
                 event.originalEvent.dataTransfer.setData("application/json", JSON.stringify(employee));
-            })
+            });
 
             return div;
         }
@@ -243,8 +264,13 @@
                 }
             }).done(function(resp) {
                 console.log('전송됨');
-                location.href = '/approval/list'
-            })
+                if (window.opener) {
+                    window.opener.location.reload(); // 부모 창 새로고침
+                    window.close(); // 현재 창 닫기
+                } else {
+                    location.href = '/approval/list'; // 단일 창에서 작성한 경우 fallback
+                }
+            });
         });
     </script>
 

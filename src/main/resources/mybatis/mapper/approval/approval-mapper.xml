@@ -16,17 +16,12 @@
     </select>
 
     <select id="selectByState" resultType="map">
-        SELECT
-            a.id,
-            a.title,
-            a.state,
-            a.regDate,
-            e.name AS drafterName -- 작성자 이름은 항상 동일
+        SELECT DISTINCT a.*, e.name AS drafterName
         FROM approval a
-                 JOIN employee e ON a.employeeid = e.id -- 작성자 정보 고정
-                 JOIN approver ap ON ap.employeeid = #{employeeId} AND ap.approvalid = a.id
-        WHERE a.state = #{state}
-        ORDER BY a.regDate DESC
+                 JOIN approver ap ON a.id = ap.approvalid
+                 JOIN employee e ON a.employeeid = e.id
+        WHERE ap.employeeid = #{employeeId}
+          AND a.state = #{state}
     </select>
 
     <insert id="insert">
@@ -36,4 +31,10 @@
         INSERT INTO APPROVAL(ID, EMPLOYEEID, APPROVALFORMID, DEPARTMENTID, TITLE, CONTENT)
                VALUES (#{id}, #{employeeId}, ${approvalFormId}, ${departmentId}, #{title}, #{content})
     </insert>
+
+    <update id="updateState">
+        UPDATE approval
+        SET state = #{state}
+        WHERE id = #{id}
+    </update>
 </mapper>

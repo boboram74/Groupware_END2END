@@ -8,13 +8,14 @@ import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.dto.TempApprovalDTO;
 import com.end2end.spring.approval.service.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -93,7 +94,6 @@ public class ApprovalController {
             }
 
             Map<String, Object> approval = approvalService.selectById(id);
-            System.out.println(approval);
             if (approval == null) {
                 model.addAttribute("error", "존재하지 않는 문서입니다.");
                 return "error/404";
@@ -101,15 +101,20 @@ public class ApprovalController {
 
             List<String> nextId = approvalService.nextId(id);
 
+
+            List<Map<String, Object>> approvers = approvalService.selectApproversList(id);
+
+
             model.addAttribute("approval", approval);
             model.addAttribute("nextId", nextId);
+            model.addAttribute("approvers", approvers);
             model.addAttribute("employee", employee);
 
             return "approval/detail";
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "문서를 불러오는 도중 오류가 발생했습니다.");
-            return "error/500"; // 예외 시 에러 페이지
+            return "error/500";
         }
     }
 
@@ -120,6 +125,7 @@ public class ApprovalController {
         System.out.println("Approver ID 리스트: " + dto.getApproverId());
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         dto.setEmployeeId(employee.getId());
+
 
         approvalService.insert(files, dto);
     }
@@ -149,8 +155,12 @@ public class ApprovalController {
         // TODO: 임지 저장 전자 결재 삭제
     }
 
-    @RequestMapping("/submit/{id}")
-    public void submit(@PathVariable String id, String result) {
-        //  TODO: 해당 id의 문서를 승인/반려
+    @PostMapping("/submit/approve/{approvalId}")
+    @ResponseBody
+    public String approve(@PathVariable String approvalId, @RequestParam int approverId) {
+        approvalService.approve(approvalId, approverId);
+        return "success";
     }
+
+
 }

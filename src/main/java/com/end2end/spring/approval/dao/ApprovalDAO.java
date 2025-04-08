@@ -37,4 +37,11 @@ public class ApprovalDAO {
     }
 
 
+    public void updateState(String id, String state) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("state", state);
+        mybatis.update("approval.updateState", map);
+    }
+
 }

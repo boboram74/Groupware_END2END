@@ -34,5 +34,6 @@ public class CommuteDAO {
         return mybatis.selectOne("commute.selectByStateAndEmployeeId", dto);
     }
 
-    public List<TodayWorkTimeDTO> selectTodayWorkTimeList() { return mybatis.selectList("commute.selectTodayWorkTimeList"); }
+    public List<TodayWorkTimeDTO> selectTodayWorkTimeList(String employeeId) {
+        return mybatis.selectList("commute.selectThisWeekWorkTime", employeeId); }
 }

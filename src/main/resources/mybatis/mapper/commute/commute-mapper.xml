@@ -70,24 +70,24 @@
     </select>
 
     <select id="selectThisWeekWorkTime" resultType="com.end2end.spring.commute.dto.TodayWorkTimeDTO">
-        SELECT wo.workTime, wf.regDate AS workOffTime, wo.regDate AS workOnTime
+        SELECT wo.workDay as workDay, wf.regDate AS workOffTime, wo.regDate AS workOnTime
         FROM (
-            SELECT TRUNC(regdate) as workTime, workOff.*
+            SELECT TRUNC(regDate) as workDay, workOff.*
             FROM COMMUTE workOff
             WHERE
                 employeeId = #{employeeId}
             AND
                 state = 'WORK_OFF') wf
         JOIN (
-            SELECT TRUNC(regDate) as workTime, workOn.*
+            SELECT TRUNC(regDate) as workDay, workOn.*
             FROM COMMUTE workOn
             WHERE
         employeeId = #{employeeId}
             AND
                 state = 'WORK_ON') wo
-        ON wo.workTime = wf.workTime
+        ON wo.workDay = wf.workDay
         WHERE
-            wf.workTime BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE);
+            wf.workDay BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE)
     </select>
 
     <select id="selectByStateAndEmployeeId" resultType="com.end2end.spring.commute.dto.CommuteDTO">

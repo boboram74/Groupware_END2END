@@ -14,8 +14,7 @@
     </delete>
 <!-- 프로젝트 진행중 보고된 게시물 삭제-->
 
-    <insert id="insert" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO"
-    >
+    <insert id="insert" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO">
         INSERT INTO project_work(id, title, state, priority,content,deadLine)
         VALUES
         (Project_Work_SEQ.NEXTVAL,

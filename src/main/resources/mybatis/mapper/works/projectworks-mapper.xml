@@ -10,7 +10,7 @@
     <!-- 프로젝트 모아보기-->
 
 
-    <delete id="deleteById" parameterType="int">
+    <delete id="deleteById" parameterType="Integer">
         delete from project where id=#{id}
     </delete>
     <!-- 프로젝트 삭제-->

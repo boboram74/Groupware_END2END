@@ -61,9 +61,10 @@ public class ProjectController {
 
     @RequestMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model) {
+            System.out.println("디테일 프젝 컨트롤러 도착");
             ProjectDTO project = projectService.selectById(id);//프로젝트 아이디를 받아서 정보를 가져오도록
         model.addAttribute("project", project);
-        return "works/projectDetail";
+        return "works/detailpage";
     }//프로젝트의 디테일 누르면 works 페이지로 가도록
 
     // Update

@@ -57,9 +57,9 @@
     </update>
     <!--프로젝트수정-->
 
-    <select id="selectById" resultType="int">
+    <select id="selectById" resultType="com.end2end.spring.works.dto.ProjectDTO">
         SELECT * FROM project
-        WHERE id =${id}
+        WHERE id = #{id}
     </select>
 
     <!--프로젝트 찾기 -->

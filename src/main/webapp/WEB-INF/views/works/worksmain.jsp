@@ -37,6 +37,9 @@
 <link rel="stylesheet" href="/css/worksmain.css">
 
 <style>
+    tbody tr:hover {
+        background-color: #f0f8ff;
+    }
 
 </style>
 
@@ -203,8 +206,11 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${projects}" var="list">
-                    <tr onclick="location.href='/works/project/${list.id}'">
+
+                    <tr onclick="location.href='/project/detail/${list.id}'">
+
                         <td>${list.name}</td>
+
                         <td>${list.regDate}</td>
                         <td>${list.regDate} ~ ${list.deadLine}</td>
                         <td>
@@ -221,6 +227,7 @@
                         </c:if>
 
                     </tr>
+
 
                 </c:forEach>
 
@@ -371,6 +378,9 @@
     // function  updateProject(id) {
     //     location.href = '/project/update/' + id;
     // }
+
+
+
 
     function deleteProject(id) {
         if(confirm("정말 프로젝트를 삭제 하시겠습니까?"))

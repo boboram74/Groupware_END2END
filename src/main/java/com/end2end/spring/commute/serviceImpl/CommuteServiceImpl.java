@@ -4,6 +4,7 @@ import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.commute.dao.SolderingDAO;
 import com.end2end.spring.commute.dao.VacationDAO;
 import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.dto.SelectPeriodDTO;
 import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
 import com.end2end.spring.commute.service.CommuteService;
@@ -19,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommuteServiceImpl implements CommuteService {
@@ -135,5 +137,12 @@ public class CommuteServiceImpl implements CommuteService {
         }
 
         return totalDuration;
+    }
+
+    @Transactional
+    @Override
+    public List<Map<String, Object>> selectPeriodWorkState(SelectPeriodDTO dto) {
+
+        return null;
     }
 }

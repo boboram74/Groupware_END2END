@@ -111,4 +111,14 @@
         AND
             employeeId = #{employeeId}
     </select>
+
+    <select id="selectByPeriodAndState" resultType="com.end2end.spring.commute.dto.CommuteStateDTO">
+        SELECT employeeId, TRUNC(regDate) AS dates, state, regDate
+        FROM COMMUTE
+        WHERE
+            employeeId = #{employeeId}
+        AND
+            TRUNC(regDate) BETWEEN #{startDate} AND #{endDate}
+        ORDER BY dates
+    </select>
 </mapper>

@@ -1,13 +1,18 @@
 package com.end2end.spring.commute.dao;
 
 import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.dto.CommuteStateDTO;
+import com.end2end.spring.commute.dto.SelectPeriodDTO;
 import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class CommuteDAO {
@@ -36,4 +41,8 @@ public class CommuteDAO {
 
     public List<TodayWorkTimeDTO> selectTodayWorkTimeList(String employeeId) {
         return mybatis.selectList("commute.selectThisWeekWorkTime", employeeId); }
+
+    public List<CommuteStateDTO> selectByPeriod(SelectPeriodDTO dto) {
+        return mybatis.selectList("commute.selectByPeriod", dto);
+    }
 }

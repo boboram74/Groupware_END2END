@@ -16,16 +16,15 @@
         <div class="informBox">
             <div class="employeeNameBox">
                 <div class="employee">작성자</div>
-                <div id="name">${approval.employeeId}</div>
+                <div id="name">${approval.NAME}</div>
             </div>
             <div class="sysdateBox">
                 <div class="sysdate">기안 일자</div>
-                <div class="date">${approval.regDate}</div>
+                <div class="date">${approval.REGDATE}</div>
             </div>
             <div class="positionsBox">
                 <div class="employeePosition">직위</div>
-
-                <%--   <div id="positions">${approval.jobName}</div>--%>
+                <div id="positions">${approval.JOBNAME}</div>
             </div>
         </div>
 
@@ -38,10 +37,10 @@
 
     <div class="body">
         <div class="titleBox">
-            <input type="text" id="title" name="title" value="${approval.title}" readonly>
+            <input type="text" id="title" name="title" value="${approval.TITLE}" readonly>
         </div>
         <div class="contentsBox">
-            <textarea readonly>${approval.content}</textarea>
+            <textarea readonly>${approval.CONTENT}</textarea>
         </div>
 
         <div class="signInform" id="signButtons">

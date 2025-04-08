@@ -69,8 +69,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public ApprovalDTO selectById(String id) {
-        // TODO: 해당 id의 결재를 출력
+    public Map<String, Object> selectById(String id) {
         return approvalDAO.selectById(id);
     }
 

@@ -32,7 +32,7 @@ public class ApprovalDAO {
 
         return mybatis.selectList("approval.selectByState", map);
     }
-    public ApprovalDTO selectById(String id) {
+    public Map<String, Object> selectById(String id) {
         return mybatis.selectOne("approval.selectById", id);
     }
 

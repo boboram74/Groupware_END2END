@@ -9,8 +9,10 @@
     </select>
 
 
-    <select id="selectById" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
-        SELECT * FROM approval WHERE id = #{id}
+    <select id="selectById" resultType="map">
+        SELECT a.* , e.*, j.name AS jobName FROM approval a
+            join employee e on a.employeeid = e.id
+            JOIN job j ON e.jobid = j.id WHERE a.id = #{id}
     </select>
 
     <select id="selectByState" resultType="map">

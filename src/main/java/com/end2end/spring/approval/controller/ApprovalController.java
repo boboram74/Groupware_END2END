@@ -88,21 +88,20 @@ public class ApprovalController {
     public String toDetail(Model model, @PathVariable String id, HttpSession session) {
         try {
             EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-            System.out.println(employee);
             if (employee == null) {
-                return "redirect:/login"; // 세션 만료시 로그인으로
+                return "redirect:/login";
             }
 
-            ApprovalDTO approvalDTO = approvalService.selectById(id);
-            System.out.println(approvalDTO);
-            if (approvalDTO == null) {
+            Map<String, Object> approval = approvalService.selectById(id);
+            System.out.println(approval);
+            if (approval == null) {
                 model.addAttribute("error", "존재하지 않는 문서입니다.");
                 return "error/404";
             }
 
             List<String> nextId = approvalService.nextId(id);
 
-            model.addAttribute("approval", approvalDTO);
+            model.addAttribute("approval", approval);
             model.addAttribute("nextId", nextId);
             model.addAttribute("employee", employee);
 

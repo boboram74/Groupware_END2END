@@ -10,14 +10,18 @@
     <!-- 프로젝트 모아보기-->
 
 
-    <delete id="deleteById" parameterType="int">
+    <delete id="deleteById" parameterType="Integer">
         delete from project where id=#{id}
     </delete>
     <!-- 프로젝트 삭제-->
 
-    <insert id="insertProject">
+    <insert id="insertProject" parameterType="com.end2end.spring.works.dto.ProjectDTO">
         INSERT INTO project (id, name, deadline, hideYn, regDate)
-        VALUES (Project_SEQ.NEXTVAL, #{name}, #{deadline}, 'N', SYSDATE)
+        VALUES (PROJECT_ID_SEQ.NEXTVAL, #{name}, #{deadLine}, 'N', SYSDATE)
+
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT PROJECT_ID_SEQ.currval FROM DUAL
+        </selectKey>
     </insert>
     <!-- 프로젝트추가 -->
 
@@ -33,8 +37,8 @@
 <!--    </insert>-->
 
     <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">
-        INSERT INTO PROJECT_USER (projectId, employeeId)
-        VALUES (#{projectId}, #{employeeId})
+        INSERT INTO PROJECT_USER (id,projectId, employeeId)
+        VALUES (PROJECT_USER_ID_SEQ.NEXTVAL,#{projectId}, #{employeeId})
     </insert>
     <!-- 프로젝트인원추가 -->
 
@@ -53,9 +57,9 @@
     </update>
     <!--프로젝트수정-->
 
-    <select id="selectById" resultType="int">
+    <select id="selectById" resultType="com.end2end.spring.works.dto.ProjectDTO">
         SELECT * FROM project
-        WHERE id =${id}
+        WHERE id = #{id}
     </select>
 
     <!--프로젝트 찾기 -->

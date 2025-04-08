@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -57,53 +59,67 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public List<ApprovalDTO> selectByState(String state) {
-        // TODO: 결재 상태(진행중, 완료)으로 결재 리스트 출력
-        return null;
+    public List<Map<String, Object>> selectByState(String state, String employeeId) {
+        return approvalDAO.selectByState(state, employeeId);
     }
 
     @Override
-    public List<ApprovalDTO> selectByState(String state, String employeeId) {
-        // TODO: 해당 id의 사원이 볼 수 있는 결재 상태(진행중, 완료)으로 결재 리스트 출력
-        return approvalDAO.selectByStateAndEmployeeId(state, employeeId);
-    }
-
-    @Override
-    public ApprovalDTO selectById(String id) {
-        // TODO: 해당 id의 결재를 출력
+    public Map<String, Object> selectById(String id) {
         return approvalDAO.selectById(id);
     }
 
     @Override
-    public String nextId(String approvalId) {
-        // TODO: 해당 id의 결재를 출력
+    public List<String> nextId(String approvalId) {
         return approverDAO.nextId(approvalId);
     }
 
     @Transactional
     @Override
     public void insert(MultipartFile[] files, ApprovalInsertDTO dto) {
+
         ApprovalDTO approvalDTO = ApprovalDTO.builder()
                 .employeeId(dto.getEmployeeId())
                 .approvalFormId(dto.getApprovalFormId())
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .build();
+
         approvalDAO.insert(approvalDTO);
 
-        int order = 1;
+        ApproverDTO writer = ApproverDTO.builder()
+                .approvalId(approvalDTO.getId())
+                .employeeId(dto.getEmployeeId())
+                .orders(0)
+                .submitYn("Y")
+                .submitDate(new Timestamp(System.currentTimeMillis()))
+                .build();
+        approverDAO.insertApprover(writer);
+
+        int order = 0;
         for (String approverId : dto.getApproverId()) {
             ApproverDTO approverDTO = ApproverDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(approverId)
-                    .orders(order)
+                    .orders(order++)
                     .build();
-
             approverDAO.insertApprover(approverDTO);
-            order++;
         }
     }
 
+    @Transactional
+    @Override
+    public void approve(String approvalId, int approverId) {
+        approverDAO.updateSubmitYn(approverId, "Y", new Timestamp(System.currentTimeMillis()));
+        System.out.println("도착");
+        List<String> nextApprovers = approverDAO.nextId(approvalId);
+        System.out.println("도착2"+ " : " + nextApprovers+ " : " + approverId);
+        if (nextApprovers == null || nextApprovers.isEmpty()) {
+            approvalDAO.updateState(approvalId, "submit");
+        } else {
+            approvalDAO.updateState(approvalId, "진행중");
+        }
+        System.out.println("도착3");
+    }
 
     @Override
     public void update(ApprovalDTO dto) {
@@ -118,5 +134,10 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public void submit(boolean isSubmit) {
         // TODO: 들어온 값에 따라 결재 승인/반려
+    }
+
+    @Override
+    public List<Map<String, Object>> selectApproversList(String approvalId) {
+        return approverDAO.selectApproversList(approvalId);
     }
 }

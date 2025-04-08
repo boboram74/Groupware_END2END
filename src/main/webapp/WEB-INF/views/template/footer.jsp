@@ -1,5 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 </div>
 <style>
     /* 채팅 버튼 스타일 */
@@ -32,7 +31,7 @@
     .chat-modal {
         display: none;
         position: fixed;
-        bottom: 90px; /* 채팅 버튼 위로 */
+        bottom: 90px;
         right: 20px;
         width: 100%;
         max-width: 360px; /* 모바일 화면 기준 */
@@ -44,7 +43,6 @@
         overflow: hidden;
     }
 
-    /* flex 관련 스타일을 별도의 클래스로 분리 */
     .chat-modal.active {
         display: flex;
         flex-direction: column;
@@ -115,7 +113,7 @@
 
     .chat-container {
         display: flex;
-        height: calc(100% - 60px); /* 헤더 높이 제외 */
+        height: calc(100% - 60px);
         position: relative;
     }
 
@@ -185,7 +183,6 @@
         margin-right: 10px;
     }
 
-    /* 채팅 컨텐츠 영역 조정 */
     .chat-content {
         flex: 1;
         display: flex;

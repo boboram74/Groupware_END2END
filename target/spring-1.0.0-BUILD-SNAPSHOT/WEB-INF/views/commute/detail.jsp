@@ -594,7 +594,7 @@
                 <div class="status-item">
                     <h4>출석률</h4>
                     <div class="status-display">
-                        <span class="status-unit">100<small>%</small></span>
+                        <span class="status-unit">${workOnRate}<small>%</small></span>
                     </div>
                 </div>
             </div>

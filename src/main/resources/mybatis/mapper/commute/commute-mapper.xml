@@ -70,7 +70,7 @@
     </select>
 
     <select id="selectThisWeekWorkTime" resultType="com.end2end.spring.commute.dto.TodayWorkTimeDTO">
-        SELECT wo.workTime, (wf.REGDATE - wo.REGDATE) as todayWorkTime
+        SELECT wo.workTime, wf.regDate AS workOffTime, wo.regDate AS workOnTime
         FROM (
             SELECT TRUNC(regdate) as workTime, workOff.*
             FROM COMMUTE workOff

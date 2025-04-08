@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class CommuteScheduler {
     @Autowired private SolderingService solderingService;
 
-    @Scheduled(cron="0 0 10 * * 1-5")
+    @Scheduled(cron=Statics.WORK_ON_CHECK_TIME)
     public void insertLate() {
         solderingService.insertByState("LATE");
     }

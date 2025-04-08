@@ -43,6 +43,7 @@ public class CommuteController {
         }
 
         model.addAttribute("workOnCount", commuteService.countWorkOnThisWeekByEmployeeId(employee.getId()));
+        model.addAttribute("workOnRate", commuteService.rateWorkOnThisWeekByEmployeeId(employee.getId()));
 
         SolderingDTO solderingDTO = SolderingDTO.builder()
                 .employeeId(employee.getId())

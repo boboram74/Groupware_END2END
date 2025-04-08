@@ -19,19 +19,19 @@ public interface MailService {
     int getRecordSendTotalCount(String employeeId);
     int getRecordReadCount(String employeeId);
     int getRecordReceiveReadCount(String employeeId);
-
-    @Transactional
     int getRecordReceiveCount(String employeeId);
+    int getRecordTrashCount(String employeeId);
 
     String selectDepartment(String employeeId);
-    List<MailTeamListDTO> selectFromto(int start, int end, String employeeId);
-    List<MailTeamListDTO> selectFromtoImportant(int start, int end, String employeeId);
+    List<MailListDTO> selectFromto(int start, int end, String employeeId);
+    List<MailListDTO> selectFromtoImportant(int start, int end, String employeeId);
     List<SendMailListDTO> selectFromtoSendList(int start, int end, String employeeId);
-    List<MailTeamListDTO> selectFromtoReceiveList(int start, int end, String employeeId);
+    List<MailListDTO> selectFromtoReceiveList(int start, int end, String employeeId);
+    List<MailListDTO> selectFromtoTrashList(int start, int end, String employeeId);
+
     int insertReadYn(int esId);
     int updateImportant(ImportYnDTO dto);
-
     int insertReadYnAll(List<Integer> esids);
     int trashAll(List<Integer> esids);
-
+    int deleteAll(List<Integer> esids);
 }

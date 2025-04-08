@@ -4,11 +4,16 @@ import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
 import com.end2end.spring.board.service.BoardService;
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequestMapping("/board")
 @Controller
@@ -17,21 +22,38 @@ public class BoardController {
     private BoardService boardService;
 
     @RequestMapping("/list")
-    public String list() {
-        // TODO: 모든 리스트
-        return "/board/list";
-    }
-
-    @RequestMapping("/detail")
     public String list(Model model) {
-        return "board/detail";
-    }
+        List<BoardDTO> boardList = boardService.selectAll();
+        System.out.println(boardList);
+        model.addAttribute("boardList", boardList);
+        // TODO: 모든 리스트
 
-    @RequestMapping("/list/{categoryId}")
-    public String toList(@PathVariable int categoryId, Model model) {
-        // TODO: 카테고리 id를 받아 해당 카테고리의 모든 게시글을 list.jsp에 표시
         return "/board/list";
     }
+    @RequestMapping("/delete")
+    public String deleteById(int id){
+        int deleteId = boardService.deleteById(id);
+        System.out.println(deleteId);
+        return "redirect:/board/list";
+}
+//    @RequestMapping("/detail")
+//    public String list(Model model) {
+//        return "board/detail";
+//    }
+
+//    @RequestMapping("/list/{categoryId}")
+//    public String toList(@PathVariable int categoryId, HttpSession session, Model model) {
+//        // TODO: 카테고리 id를 받아 해당 카테고리의 모든 게시글을 list.jsp에 표시
+//        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employeeDTO");
+//        if (employee == null) {
+//            return "redirect:/login";
+//        }
+//        List<BoardDTO> boardList = boardService.selectByCategoryId(categoryId, employee.getId());
+//
+//        model.addAttribute("employeeDTO", employee);
+//
+//        return "/board/list";
+//    }
 
     @RequestMapping("/list/search")
     public String toSearch(Model model) {
@@ -53,12 +75,14 @@ public class BoardController {
 
     @RequestMapping("/write/update")
     public String toUpdate(Model model) {
+
         // TODO: 게시글 수정 폼으로 이동
         return "/board/write";
     }
 
     @RequestMapping("/detail/{id}")
     public String toDetail(@PathVariable int id, Model model) {
+        model.addAttribute("board", boardService.selectById(id));
         // TODO: 게시글 상세글로 이동
         return "/board/detail";
     }
@@ -70,8 +94,12 @@ public class BoardController {
     }
 
     @RequestMapping("/insert")
-    public void insert(BoardDTO dto) {
+    public String insert(HttpSession session, BoardDTO dto) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employeeId");
+        System.out.println(employee);
+        boardService.insert(dto);
         // TODO: 게시글 입력을 받음
+        return "/board/list";
     }
 
     @RequestMapping("/update")
@@ -79,10 +107,10 @@ public class BoardController {
         // TODO: 게시글 수정을 받음
     }
 
-    @RequestMapping("/delete")
-    public void deleteById(int id) {
-        // TODO: 게시글 번호로 삭제
-    }
+//    @RequestMapping("/delete")
+//    public void deleteById(int id) {
+//        // TODO: 게시글 번호로 삭제
+//    }
 
     @RequestMapping("/category/insert")
     public void insertCategory(BoardCategoryDTO dto) {

@@ -1,27 +1,112 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    .label {
+        background-color: #f8f8f8;
+        width: 15%;
+        border-right: 1px solid #ddd;
+    }
+    .contents {
+        width: 60%;
+    }
+    .meta {
+        width: 15%;
+        text-align: center;
+        border-left: 1px solid #ddd;
+    }
+    .date {
+        width: 20%;
+        text-align: center;
+        border-left: 1px solid #ddd;
+    }
+    .btnGroup {
+        margin-top: 10px;
+        text-align: center;
+    }
+    .editBtn, .deleteBtn, .replyBtn, .backBtn {
+        padding: 6px 12px;
+        margin: 0 2px;
+        border: 1px solid #ccc;
+        background-color: white;
+        cursor: pointer;
+    }
+    .editBtn {
+        background-color: #e8f4f8;
+        color: #333;
+    }
+    .deleteBtn {
+        background-color: #f8e8e8;
+        color: #333;
+    }
+    .replyBtn {
+        background-color: #f8f8f8;
+        color: #333;
+    }
+    .backBtn{
+        background-color: #f8f8f8;
+        color: #333;
+    }
+</style>
+<div class="content">
+
+</div>
 <div class="button-container">
     <button class="extended-button">연장근무 신청</button>
     <button class="vacation-button">휴가 신청</button>
-    <button class="vacation-list-button">휴가 조회</button>
 </div>
-<div class="search">
-    <div>
-        <select id="searchOption">
-            <option>선택</option>
-            <option>선택</option>
-            <option>선택</option>
-        </select>
-    </div>
-    <div class="searchInput">
-        <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-    </div>
-    <div>
-        <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
-    </div>
+<table>
+    <tr>
+        <td class="label">글유형</td>
+        <td class="contents">공지</td>
+        <td class="meta">등록일</td>
+        <td class="date">${board.regDate}</td>
+    </tr>
+    <tr>
+        <td class="label">제목</td>
+        <td class="contents">${board.title}</td>
+        <td class="meta">조회</td>
+        <td class="date">${board.viewCount}</td>
+    </tr>
+    <tr>
+        <td class="label">이름</td>
+        <td colspan="3">${board.employeeId}</td>
+    </tr>
+    <tr>
+        <td class="label">내용</td>
+        <td colspan="3">${board.content}</td>
+    </tr>
+</table>
+<div class="btnGroup">
+    <button class="editBtn">수정</button>
+    <button class="deleteBtn">삭제</button>
+    <button class="replyBtn">답변</button>
+    <a href="/board/list">
+    <button class="backBtn">뒤로</button></a>
 </div>
-<div class="content">
-</div>
+
+<script>
+
+</script>
+
+
+
+
+
+
+
+
 <script src="/js/main/contact.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/board/board-footer.jsp"/>

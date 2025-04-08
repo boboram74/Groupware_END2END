@@ -86,7 +86,6 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
-
 .sidebar {
     text-align: left;
     margin: 0;
@@ -94,7 +93,6 @@ body {
     overflow: hidden;
     background: #003465;
     height: 100vh;
-    /*text-align: center;*/
     position:fixed;
     transition: width 0.3s ease;
     color: white;
@@ -115,9 +113,7 @@ body {
     list-style: none;
     padding: 10px;
     cursor: pointer;
-
     text-align: left;
-
     transition: opacity 0.3s ease;
     white-space: nowrap;
     display: flex;

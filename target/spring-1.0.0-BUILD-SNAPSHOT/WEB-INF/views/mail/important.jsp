@@ -319,13 +319,13 @@
             <li class="detail-menu-item">
                 <span class="material-icons">star</span>
                 <span>중요 메일함</span>
-                <span class="detail-badge"><span id="recordCount1"></span></span>
+                <span class="detail-badge"><span id="importantMailBox"></span></span>
             </li>
             <li class="detail-menu-item">
                 <a href="/mail/list">
                     <span class="material-icons">all_inbox</span>
                     <span>전체 메일함</span>
-                    <span class="detail-badge">32</span>
+                    <span class="detail-badge"><span id="allMailBox"></span></span>
                 </a>
             </li>
             <li class="detail-menu-item">
@@ -338,7 +338,7 @@
                 <a href="/mail/inbox">
                     <span class="material-icons">move_to_inbox</span>
                     <span class="detail-menu-disc">받은 메일함</span>
-                    <span class="detail-badge">12</span>
+                    <span class="detail-badge"><span id="receiveMailBox"></span></span>
                 </a>
             </li>
             <li class="detail-menu-item">
@@ -373,6 +373,9 @@
                 <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
             </div>
         </div>
+        <div class="mailWriteBtnContainer">
+            <button onclick="location.href='/mail/write'">메일쓰기</button>
+        </div>
         <div class="titleArea">
             <h4>전체 메일 (<span id="recordCount2"></span>)</h4>
         </div>
@@ -401,11 +404,19 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="employeeId" value=${employee.id}>
 <script>
     $(document).ready(function() {
+        var activeIndex = localStorage.getItem("activeMenuIndex");
+        if (activeIndex !== null) {
+            $('.detail-menu-item').eq(activeIndex).addClass('active');
+        }
+
         $('.detail-menu-item').on('click', function() {
             $('.detail-menu-item').removeClass('active');
             $(this).addClass('active');
+            var index = $('.detail-menu-item').index(this);
+            localStorage.setItem("activeMenuIndex", index);
         });
 
         const $menuBtn = $('.detail-menu-toggle-btn');
@@ -427,6 +438,15 @@
                 $detailMenuModal.removeClass('active');
                 $('body').css('overflow', '');
             }
+        });
+        $.ajax({
+            url: "/mail/alertList",
+            method: "POST",
+            data: { employeeId: $("#employeeId").val() }
+        }).done(function (resp) {
+            $("#importantMailBox").text(resp.importantMailBox);
+            $("#allMailBox").text(resp.allMailBox);
+            $("#receiveMailBox").text(resp.receiveMailBox);
         });
     });
 </script>

@@ -6,7 +6,10 @@
     width: 90%;
     height: 100vh;
     margin: auto;
-    padding: 10px;
+    padding: 30px;
+    background-color: #f5f5f5;
+    align-items: flex-start;
+
 }
 .mainHeader{
     width: 100%;
@@ -14,31 +17,64 @@
     margin: 10px;
 }
 .formContainer {
-    width: 100%;
+    background-color: #f5f5f5;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 .formGroup {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
+    gap: 20px;
 }
 .formGroup label {
-    width: 100px;
-    font-weight: bold;
-    margin-right: 100px;
+    min-width: 80px;
+    font-weight: 500;
+    color: #495057;
+    text-align: right;
 }
 .formGroup input {
     width: 70%;
+    border: none;
+}
+
+.formGroup input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.formGroup input[type="text"] {
+    flex: 1;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+}
+
+.formGroup input[type="text"]:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
 }
 
 .addressBtn {
-    margin-left: 20px;
-    padding: 8px 12px;
-    background-color: #ccc;
-    border: none;
+    background-color: #e3f2fd;
+    border: 1px solid #1976d2;
+    color: #1976d2;
     border-radius: 4px;
+    padding: 8px 12px;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
+
+.addressBtn:hover {
+    background-color: #bbdefb;
+}
+
 .fileSize {
     margin-left: 10px;
     color: #666;
@@ -95,26 +131,32 @@
     font-size: 20px;
 }
 .mainBody{
-    width: 100%;
-    height: 80%;
+    width: 100vh;
+    max-width: 1200px;
     margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 .content { /* 높이 설정 X */
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
     padding: 20px;
+    border-radius: 8px;
 }
-
-.content textarea {
+.mainBody textarea {
     border: none;
     resize: none;
     width: 100%;
     min-height: 20vh;
 }
+.content textarea:focus{
+    outline: none;
+    box-shadow: none;
 
+}
 .dragDropArea {
     width: 70%;
     min-height: 100px;
@@ -143,6 +185,7 @@
     background-color: #f0f8ff;
     border-color: #00bfff;
 }
+
 .fileSize {
     margin-left: 10px;
     color: #666;
@@ -170,4 +213,68 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+    color: inherit;
+    background-color: transparent;
+}
+.fileItem {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.fileItem .material-icons {
+    margin-right: 5px;
+    color: #757575;
+}
+
+.fileItem .fileSize {
+    margin-left: 8px;
+    color: #888;
+    font-size: 0.9em;
+}
+
+#mailContent {
+    width: 100%;
+    min-height: 200px;
+    padding: 20px;
+    resize: vertical;
+    background-color: #f5f5f5;
+    color: #333;
+    resize: none;
+}
+#mailContent:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 1px rgba(25, 118, 210, 0.2);
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.buttons button {
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.buttons button:hover {
+    background-color: #1565c0;
+    transform: translateY(-2px);
 }

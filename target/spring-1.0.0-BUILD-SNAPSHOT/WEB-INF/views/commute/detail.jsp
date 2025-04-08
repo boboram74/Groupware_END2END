@@ -347,8 +347,46 @@
     .weekly-calendar-container {
         grid-row: span 5;
         border-radius: 8px;
+        height: 500px;
         min-height: 400px; /* 캘린더를 위한 임시 높이 */
     }
+
+    #calendar {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .fc-view {
+        border: none !important;
+    }
+
+    .fc-daygrid-day {
+        border: none !important;
+        height: 60px !important;
+    }
+
+    .custom-date {
+        text-align: center;
+        padding: 5px;
+    }
+
+    .day-name {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .day-number {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+
+    /* 주말 색상 */
+    .fc-day-sat .day-name { color: blue; }
+    .fc-day-sun .day-name { color: red; }
+
+
 </style>
 <style>
     .commuteBox {
@@ -414,6 +452,7 @@
     <button class="extended-button primary">연장근무 신청</button>
     <button class="vacation-button primary">휴가 신청</button>
     <button class="vacation-list-button secondary">휴가 조회</button>
+
 </div>
 <div class="commute-detail-wrapper">
     <!-- 첫 번째 컨테이너: 출퇴근 현황 -->
@@ -607,9 +646,9 @@
     </div>
 
     <!-- 세 번째 컨테이너: 주간 캘린더 -->
-    <div class="weekly-calendar-container surface-bright">
+    <div class="box weekly-calendar-container surface-bright">
         <div class="box-title">이번 주 근무 상세</div>
-        <div class="calendar-content">
+        <div class="calendar-content" id="calendar">
             <!-- 캘린더가 들어갈 자리 -->
         </div>
     </div>
@@ -728,6 +767,59 @@
                 })
             }
         });
+    });
+
+    $(function() {
+        function calculateAvailableDimensions() {
+            const $container = $('#calendar').closest('.box');
+            const totalHeight = $container.height();
+            const totalWidth = $container.width();
+            const titleHeight = $('.box-title').outerHeight(true);
+            const padding = 40; // 상하/좌우 padding 20px * 2
+
+            return {
+                height: totalHeight - titleHeight - padding,
+                width: totalWidth - padding
+            };
+        }
+
+
+        const calendar = new FullCalendar.Calendar($('#calendar')[0], {
+            initialView: 'dayGridWeek'
+            ,  // 일주일 보기로 초기 설정
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''  // 주간 보기만 표시
+            },
+            locale: 'ko',
+            height: calculateAvailableDimensions().height,
+            width: calculateAvailableDimensions().width,
+            dayHeaders: true,  // 요일 표시
+            dayHeaderFormat: {weekday: 'short', month: 'numeric', day: 'numeric'}, // 날짜 포맷
+            weekNumbers: false,  // 주차 숨기기
+            viewDidMount: function() {
+                adjustCalendarSize();
+            }
+        });
+
+        function adjustCalendarSize() {
+            const dimensions = calculateAvailableDimensions();
+
+            // 캘린더 컨테이너에 크기 적용
+            $('#calendar').css({
+                'width': dimensions.width + 'px',
+                'max-width': '100%'
+            });
+
+            // FullCalendar 내부 요소 조정
+            $('.fc').css({
+                'width': '100%',
+                'font-size': dimensions.width < 500 ? '0.8em' : '1em' // 작은 화면에서 폰트 크기 조정
+            });
+        }
+
+        calendar.render();
     });
 </script>
 <jsp:include page="/WEB-INF/views/commute/commute-footer.jsp"/>

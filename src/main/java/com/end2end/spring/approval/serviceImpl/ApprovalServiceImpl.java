@@ -110,14 +110,15 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public void approve(String approvalId, int approverId) {
         approverDAO.updateSubmitYn(approverId, "Y", new Timestamp(System.currentTimeMillis()));
-
+        System.out.println("도착");
         List<String> nextApprovers = approverDAO.nextId(approvalId);
-
+        System.out.println("도착2"+ " : " + nextApprovers+ " : " + approverId);
         if (nextApprovers == null || nextApprovers.isEmpty()) {
-            approvalDAO.updateState(approvalId, "완료");
+            approvalDAO.updateState(approvalId, "submit");
         } else {
             approvalDAO.updateState(approvalId, "진행중");
         }
+        System.out.println("도착3");
     }
 
     @Override

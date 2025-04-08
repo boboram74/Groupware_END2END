@@ -35,10 +35,6 @@ public class ApprovalController {
         List<Map<String, Object>> goingList = approvalService.selectByState("ONGOING", employeeId);
         List<Map<String, Object>> completedList = approvalService.selectByState("SUBMIT", employeeId);
 
-
-        System.out.println(waitingList);
-        System.out.println(goingList);
-        System.out.println(completedList);
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);
@@ -159,6 +155,7 @@ public class ApprovalController {
     @ResponseBody
     public String approve(@PathVariable String approvalId, @RequestParam int approverId) {
         approvalService.approve(approvalId, approverId);
+        System.out.println(approvalId+" : "+ approverId);
         return "success";
     }
 

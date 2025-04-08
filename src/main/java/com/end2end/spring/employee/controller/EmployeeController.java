@@ -31,7 +31,6 @@ public class EmployeeController {
          EmployeeDTO employee = employeeService.login(dto);
         if (employee != null) {
             session.setAttribute("employee", employee);
-
             boolean isWorkOn = commuteService.isExistByState(employee.getId(), "WORK_ON");
             session.setAttribute("isWorkOn", isWorkOn);
             boolean isWorkOff = commuteService.isExistByState(employee.getId(), "WORK_OFF");

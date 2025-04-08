@@ -5,18 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.time.Duration;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TodayWorkTimeDTO {
-    private String employeeId;
+    private LocalDate workDay;
     private Timestamp workOnTime;
     private Timestamp workOffTime;
 
-    public Duration todayWorkTime(){
-        long dateTime = workOffTime.getTime() - workOnTime.getTime();
-        return Duration.between(workOnTime.toInstant(), workOffTime.toInstant());
+    public long todayWorkTime(){
+        return workOffTime.getTime() - workOnTime.getTime();
     }
 }

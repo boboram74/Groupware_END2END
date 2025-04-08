@@ -8,4 +8,6 @@ public interface CommuteService {
     boolean workOff(String employeeId);
     CommuteDTO selectByStateAndEmployeeId(CommuteDTO dto);
     int countWorkOnThisWeekByEmployeeId(String employeeId);
+    int rateWorkOnThisWeekByEmployeeId(String employeeId);
+    long sumTotalWorkTimeThisWeekByEmployeeId(String employeeId);
 }

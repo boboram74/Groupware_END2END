@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/approval")
 @Controller
@@ -29,10 +30,14 @@ public class ApprovalController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
 
-        List<ApprovalDTO> waitingList = approvalService.selectByState("ONGOING",employeeId);
-        List<ApprovalDTO> goingList = approvalService.selectByState("ONGOING",employeeId);
-        List<ApprovalDTO> completedList = approvalService.selectByState("SUBMIT",employeeId);
+        List<Map<String, Object>> waitingList = approvalService.selectByState("ONGOING", employeeId);
+        List<Map<String, Object>> goingList = approvalService.selectByState("ONGOING", employeeId);
+        List<Map<String, Object>> completedList = approvalService.selectByState("SUBMIT", employeeId);
 
+
+        System.out.println(waitingList);
+        System.out.println(goingList);
+        System.out.println(completedList);
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);

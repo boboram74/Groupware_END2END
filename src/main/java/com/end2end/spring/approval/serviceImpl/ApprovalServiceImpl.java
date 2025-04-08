@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -63,9 +64,8 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public List<ApprovalDTO> selectByState(String state, String employeeId) {
-        // TODO: 해당 id의 사원이 볼 수 있는 결재 상태(진행중, 완료)으로 결재 리스트 출력
-        return approvalDAO.selectByStateAndEmployeeId(state, employeeId);
+    public List<Map<String, Object>> selectByState(String state, String employeeId) {
+        return approvalDAO.selectByState(state, employeeId);
     }
 
     @Override
@@ -90,6 +90,15 @@ public class ApprovalServiceImpl implements ApprovalService {
                 .build();
         approvalDAO.insert(approvalDTO);
 
+
+        ApproverDTO writer = ApproverDTO.builder()
+                .approvalId(approvalDTO.getId())
+                .employeeId(dto.getEmployeeId())
+                .orders(0)
+                .build();
+        approverDAO.insertApprover(writer);
+
+
         int order = 1;
         for (String approverId : dto.getApproverId()) {
             ApproverDTO approverDTO = ApproverDTO.builder()
@@ -97,7 +106,6 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .employeeId(approverId)
                     .orders(order)
                     .build();
-
             approverDAO.insertApprover(approverDTO);
             order++;
         }

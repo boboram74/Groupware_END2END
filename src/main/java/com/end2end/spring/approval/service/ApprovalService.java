@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
+import java.util.Map;
 
 public interface ApprovalService {
     List<ApprovalDTO> selectAll();
@@ -18,11 +19,11 @@ public interface ApprovalService {
     List<ApprovalDTO> search();
     List<ApprovalDTO> search(String employeeId);
     List<ApprovalDTO> selectByState(String state);
-    List<ApprovalDTO> selectByState(String state, String employeeId);
+//    List<ApprovalDTO> selectByState(String state, String employeeId);
     ApprovalDTO selectById(String id);
 
     List<String> nextId(String approvalId);
-
+    List<Map<String, Object>> selectByState(String state, String employeeId);
     void insert(MultipartFile[] files, ApprovalInsertDTO dto);
 
     void update(ApprovalDTO dto);

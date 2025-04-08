@@ -8,14 +8,24 @@
         SELECT * FROM approval WHERE state = #{state} ORDER BY regDate DESC
     </select>
 
-    <select id="selectByStateAndEmployeeId" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
-        SELECT * FROM approval WHERE state = #{state} AND EmployeeId = #{employeeId} ORDER BY regDate DESC
-    </select>
 
     <select id="selectById" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
         SELECT * FROM approval WHERE id = #{id}
     </select>
 
+    <select id="selectByState" resultType="map">
+        SELECT
+            a.id,
+            a.title,
+            a.state,
+            a.regDate,
+            e.name AS drafterName -- 작성자 이름은 항상 동일
+        FROM approval a
+                 JOIN employee e ON a.employeeid = e.id -- 작성자 정보 고정
+                 JOIN approver ap ON ap.employeeid = #{employeeId} AND ap.approvalid = a.id
+        WHERE a.state = #{state}
+        ORDER BY a.regDate DESC
+    </select>
 
     <insert id="insert">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">

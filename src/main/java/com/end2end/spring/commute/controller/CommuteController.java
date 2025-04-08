@@ -43,6 +43,7 @@ public class CommuteController {
         }
 
         model.addAttribute("workOnCount", commuteService.countWorkOnThisWeekByEmployeeId(employee.getId()));
+        model.addAttribute("workOnRate", commuteService.rateWorkOnThisWeekByEmployeeId(employee.getId()));
 
         SolderingDTO solderingDTO = SolderingDTO.builder()
                 .employeeId(employee.getId())
@@ -55,6 +56,8 @@ public class CommuteController {
 
         solderingDTO.setState("LEAVE_EARLY");
         model.addAttribute("leaveEarlyCount", solderingService.countTisWeekByStateAndEmployeeId(solderingDTO));
+
+        model.addAttribute("totalWorkTimeThisWeek", commuteService.sumTotalWorkTimeThisWeekByEmployeeId(employee.getId()));
 
         model.addAttribute("totalVacationDates", vacationService.sumTotalVacationDates(employee.getId()));
         model.addAttribute("totalUsedVacationDates", vacationService.sumTotalUsedVacationDates(employee.getId()));
@@ -90,8 +93,9 @@ public class CommuteController {
     }
 
     @ResponseBody
-    @RequestMapping("/leaveEarly/test")
+    @RequestMapping("/test")
     public void leaveEarly(HttpSession session) {
-        solderingService.insertByState("LATE");
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        commuteService.sumTotalWorkTimeThisWeekByEmployeeId(employee.getId());
     }
 }

@@ -404,6 +404,11 @@
         opacity: 0.5;
         pointer-events: none; /* 호버 효과 완전히 제거 */
     }
+
+    .endWork.disabled {
+        opacity: 0.5;
+        pointer-events: none; /* 호버 효과 완전히 제거 */
+    }
 </style>
 <div class="button-container">
     <button class="extended-button primary">연장근무 신청</button>
@@ -594,7 +599,7 @@
                 <div class="status-item">
                     <h4>출석률</h4>
                     <div class="status-display">
-                        <span class="status-unit">100<small>%</small></span>
+                        <span class="status-unit">${workOnRate}<small>%</small></span>
                     </div>
                 </div>
             </div>
@@ -613,9 +618,9 @@
     $(document).ready(function() {
         let workOnTime = ${workOnTime != null ? workOnTime.getTime() : "null"};
         let workOffTime = ${workOffTime != null ? workOffTime.getTime() : "null"};
+        let totalWorkTimeThisWeek = ${totalWorkTimeThisWeek};
 
         function formatDuration(ms) {
-            // 음수 처리
             const millisec = Math.abs(ms);
 
             const hours = (Math.floor(millisec / (60 * 60 * 1000)) >= 10)
@@ -648,11 +653,22 @@
             return workTime;
         }
 
+        function getTotalWorkTimeThisWeek(workTime) {
+            if (workOffTime == null) {
+                return totalWorkTimeThisWeek + workTime;
+            }
+
+            return totalWorkTimeThisWeek;
+        }
+
         workTime = getWorkTime();
-        setTimeDisplay('.total', formatDuration(workTime));
+        setTimeDisplay('.total', formatDuration(getWorkTime()));
+        setTimeDisplay('.weekly-total', formatDuration(getTotalWorkTimeThisWeek(workTime)));
         setInterval(function () {
             workTime = getWorkTime();
+            const displayTotalWorkTimeThisWeek = getTotalWorkTimeThisWeek(workTime);
             setTimeDisplay('.total', formatDuration(workTime));
+            setTimeDisplay('.weekly-total', formatDuration(displayTotalWorkTimeThisWeek));
         }, 1000);
 
 

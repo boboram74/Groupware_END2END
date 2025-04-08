@@ -8,14 +8,21 @@
         SELECT * FROM approval WHERE state = #{state} ORDER BY regDate DESC
     </select>
 
-    <select id="selectByStateAndEmployeeId" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
-        SELECT * FROM approval WHERE state = #{state} AND EmployeeId = #{employeeId} ORDER BY regDate DESC
+
+    <select id="selectById" resultType="map">
+        SELECT a.* , e.*, j.name AS jobName FROM approval a
+            join employee e on a.employeeid = e.id
+            JOIN job j ON e.jobid = j.id WHERE a.id = #{id}
     </select>
 
-    <select id="selectById" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
-        SELECT * FROM approval WHERE id = #{id}
+    <select id="selectByState" resultType="map">
+        SELECT DISTINCT a.*, e.name AS drafterName
+        FROM approval a
+                 JOIN approver ap ON a.id = ap.approvalid
+                 JOIN employee e ON a.employeeid = e.id
+        WHERE ap.employeeid = #{employeeId}
+          AND a.state = #{state}
     </select>
-
 
     <insert id="insert">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">
@@ -24,4 +31,10 @@
         INSERT INTO APPROVAL(ID, EMPLOYEEID, APPROVALFORMID, DEPARTMENTID, TITLE, CONTENT)
                VALUES (#{id}, #{employeeId}, ${approvalFormId}, ${departmentId}, #{title}, #{content})
     </insert>
+
+    <update id="updateState">
+        UPDATE approval
+        SET state = #{state}
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -41,7 +41,7 @@
     </insert>
 
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT * FROM EMPLOYEE WHERE departmentId = ${departmentId} ORDER BY desc 1
+        SELECT e.id, e.name , j.name as jobName FROM EMPLOYEE e join job j on e.jobid = j.id WHERE departmentId = ${departmentId}
     </select>
 
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">

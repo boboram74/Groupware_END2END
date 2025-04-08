@@ -5,6 +5,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public class ApproverDAO {
 
@@ -15,7 +19,17 @@ public class ApproverDAO {
         mybatis.insert("approver.insertApprover", approverDTO);
     }
 
-    public String nextId(String approvalId) {
-        return mybatis.selectOne("approver.nextId", approvalId);
+    public List<String> nextId(String approvalId) {
+        return mybatis.selectList("approver.nextId", approvalId);
+    }
+    public List<Map<String, Object>> selectApproversList(String approvalId) {
+        return mybatis.selectList("approver.selectApproversList", approvalId);
+    }
+    public void updateSubmitYn(int id, String submitYn, Timestamp submitDate) {
+        ApproverDTO approverDTO = new ApproverDTO();
+        approverDTO.setId(id);
+        approverDTO.setSubmitYn(submitYn);
+        approverDTO.setSubmitDate(submitDate);
+        mybatis.update("approver.updateSubmitYn", approverDTO);
     }
 }

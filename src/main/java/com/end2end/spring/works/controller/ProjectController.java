@@ -8,11 +8,15 @@ import com.end2end.spring.works.dto.ProjectInsertDTO;
 import com.end2end.spring.works.service.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,21 +28,34 @@ public class ProjectController {
     private ProjectService projectService;
 
         @RequestMapping("/main")
-        public String main(Model model) {
+        public String main(HttpSession session,Model model) {
+            EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
+
             List<ProjectDTO> projects = projectService.selectAll();
             //진행상태별 프로젝트 수
-            Map<String, Integer> projectStats = projectService.getProjectStatistics();
+
             model.addAttribute("projects", projects);
-            model.addAttribute("stats", projectStats);
-            return "works/worksmain";
+//            model.addAttribute("stats", projectStats);
+            return   "works/worksmain";
         }
+//        @RequestMapping("list")
+//            public String list(HttpSession session,Model model ){
+//            EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
+//
+//            model.addAttribute("projects",  projectService.selectAll());
+//
+////            employeedto에 role 에서 권한부분에 팀리더만 버튼 보이도록 설정
+//            return     "works/worksmain";
+//        }
 
         @RequestMapping("/insert")
-        public String insert(ProjectInsertDTO dto) {
+        public String insert(@ModelAttribute ProjectInsertDTO dto) {
+            System.out.println(dto);
+            System.out.println("프로젝트컨트롤러도착");
 
             projectService.insert(dto);
 
-            // TODO: 프로젝트 생성, 폼으로 보낼 예정
+            // TODO: 프로젝트 생성
             return "redirect:/project/main";
         }
 

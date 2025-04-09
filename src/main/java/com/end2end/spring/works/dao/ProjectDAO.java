@@ -2,14 +2,11 @@ package com.end2end.spring.works.dao;
 
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.works.dto.ProjectDTO;
-import com.end2end.spring.works.dto.ProjectInsertDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class ProjectDAO {
@@ -21,9 +18,16 @@ public class ProjectDAO {
         return mybatis.insert("project.insertProject", dto);
 
     }
+//    public List<EmployeeDTO>
+//    selectProjectMemberProfiles(int id) {
+//        return mybatis.selectList("project.selectProjectMemberProfiles",id);
+//
+//    }
 
     public List<ProjectDTO> selectAll(){
+
         return mybatis.selectList("project.selectAll");
+
     }
 
     public int deleteById(int id){

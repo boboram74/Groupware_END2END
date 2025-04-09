@@ -5,20 +5,17 @@ import com.end2end.spring.works.dto.ProjectDTO;
 
 import com.end2end.spring.works.dto.ProjectInsertDTO;
 
+import com.end2end.spring.works.dto.ProjectSelectDTO;
 import com.end2end.spring.works.service.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RequestMapping("/project")
 @Controller
@@ -31,13 +28,24 @@ public class ProjectController {
         public String main(HttpSession session,Model model) {
             EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
 
-            List<ProjectDTO> projects = projectService.selectAll();
-            //진행상태별 프로젝트 수
+            List<ProjectSelectDTO> projects = projectService.selectAllProject();
 
-            model.addAttribute("projects", projects);
-//            model.addAttribute("stats", projectStats);
+
+            model.addAttribute("projects",projects);
+
             return   "works/worksmain";
         }
+
+//    @RequestMapping("/profileSelect")
+//    public String selectProjectMemberProfiles(Model model, @RequestParam int id) {
+//
+//        System.out.println("프로필찾는컨트롤러도착");
+//
+//        List<EmployeeDTO> profiles = projectService.selectProjectMemberProfiles(id);
+//        model.addAttribute("profiles", profiles);
+//        return "works/worksmain"; // 리다이렉트 대신 직접 뷰 반환
+//    }
+
 //        @RequestMapping("list")
 //            public String list(HttpSession session,Model model ){
 //            EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
@@ -59,13 +67,14 @@ public class ProjectController {
             return "redirect:/project/main";
         }
 
+
     @RequestMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model) {
             System.out.println("디테일 프젝 컨트롤러 도착");
             ProjectDTO project = projectService.selectById(id);//프로젝트 아이디를 받아서 정보를 가져오도록
         model.addAttribute("project", project);
         return "works/detailpage";
-    }//프로젝트의 디테일 누르면 works 페이지로 가도록
+    }
 
     // Update
     @ResponseBody
@@ -89,6 +98,7 @@ public class ProjectController {
 
     @RequestMapping("/search")
     public String selectByName(@RequestParam String name, Model model) {
+
         List<ProjectDTO> result = projectService.selectByName(name);
         model.addAttribute("projects", result);
         //jsp에서 검색해서 나오는 부분에 projects로 c:foreach로 풀어줘야됨

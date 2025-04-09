@@ -1,6 +1,5 @@
 package com.end2end.spring.messenger.controller;
 
-import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.messenger.dto.MessengerEmployeeListDTO;
 import com.end2end.spring.messenger.service.MessengerService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -12,5 +12,6 @@
             on e.departmentid = d.id
         join job j
             on e.jobid = j.id
+        order by j.id asc, d.id, e.name asc
     </select>
 </mapper>

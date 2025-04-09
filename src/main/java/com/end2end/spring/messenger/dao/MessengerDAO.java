@@ -15,4 +15,8 @@ public class MessengerDAO {
     public List<MessengerEmployeeListDTO> selectByEmployeeId() {
         return mybatis.selectList("messenger.selectEmployeeAll");
     }
+
+    public int messageInsert(String employeeId) {
+        return mybatis.insert("messenger.messageInsert");
+    }
 }

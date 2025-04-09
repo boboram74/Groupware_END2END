@@ -7,14 +7,14 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageDTO {
-    private Integer id;
-    private Integer messageRoomId;
-    private String employeeId;
+public class MessageHistoryDTO {
+    private Integer messageId;
+    private String senderId;
+    private String senderName;
     private String content;
-    private Timestamp regdate;
+    private Timestamp timestamp;
+    private Boolean isRead;
 }

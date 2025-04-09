@@ -6,15 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageDTO {
-    private Integer id;
-    private Integer messageRoomId;
-    private String employeeId;
-    private String content;
-    private Timestamp regdate;
+public class UnreadCountDTO {
+    private Integer roomId;
+    private Integer count;
 }

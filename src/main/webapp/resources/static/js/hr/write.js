@@ -71,7 +71,6 @@ $("#form").on("submit", function(e) {
     let contact = $("input[name='contact']").val().trim();
     let postCode = $("input[name='postCode']").val().trim();
     let address = $("input[name='address']").val().trim();
-    let detailAddress = $("input[name='detailAddress']").val().trim();
     let jobId = $("select[name='jobId']").val();
     let departmentId = $("select[name='departmentId']").val();
 

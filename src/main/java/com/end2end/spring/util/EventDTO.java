@@ -1,6 +1,7 @@
 package com.end2end.spring.util;
 
 import com.end2end.spring.commute.dto.CommuteStateDTO;
+import com.end2end.spring.commute.dto.VacationDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,10 +22,12 @@ public class EventDTO {
     private boolean allDay;
     private String display;
     private String backgroundColor;
+    private String eventName;
 
     public static EventDTO convertFromCommuteState(CommuteStateDTO dto) {
         String title = "";
         String backgroundColor = "";
+
         if (dto.getState().equals("WORK_ON")) {
             title = "출근 " + dto.getRegDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
             backgroundColor = "black";
@@ -56,6 +59,7 @@ public class EventDTO {
                 .allDay(true)
                 .display("block")
                 .backgroundColor(backgroundColor)
+                .eventName("dot")
                 .build();
     }
 
@@ -70,6 +74,38 @@ public class EventDTO {
                 .allDay(true)
                 .display("block")
                 .backgroundColor("red")
+                .build();
+    }
+
+    public static EventDTO convertFromVacation(VacationDTO dto, LocalDate startDate, LocalDate endDate) {
+        LocalDate srateDateToLocalDate = dto.getStartDate().toLocalDateTime().toLocalDate();
+        LocalDate endDateToLocalDate = dto.getEndDate().toLocalDateTime().toLocalDate();
+
+        String startDateStr = (!srateDateToLocalDate.isBefore(startDate)) ?
+                dto.getStartDate().toInstant().toString() : startDate.toString();
+        String endDateStr = (!endDateToLocalDate.isAfter(endDate)) ?
+                dto.getEndDate().toInstant().toString() : endDate.toString();
+
+        String type = "";
+        if (dto.getType().equals("HALF")) {
+            type = "반차";
+        } else if (dto.getType().equals("ANNUAL")) {
+            type = "연차";
+        } else if (dto.getType().equals("SICK")) {
+            type = "병가";
+        } else if (dto.getType().equals("EARLY")) {
+            type = "조퇴";
+        }
+
+        String title = type + " : " + dto.getReason()
+                + "(" + dto.getStartDate().toInstant().toString() + " ~ " + dto.getEndDate().toInstant().toString() + ")";
+
+        return EventDTO.builder()
+                .title(title)
+                .startDate(startDateStr)
+                .endDate(endDateStr)
+                .display("block")
+                .eventName("period")
                 .build();
     }
 }

@@ -144,6 +144,7 @@ public class CommuteServiceImpl implements CommuteService {
     public List<EventDTO> selectPeriodWorkState(SelectPeriodDTO dto) {
         List<CommuteStateDTO> commutePeriodList = commuteDAO.selectByPeriod(dto);
         List<CommuteStateDTO> solderingPeriodList = solderingDAO.selectByPeriod(dto);
+        List<VacationDTO> vacationPeriodList = vacationDAO.selectByPeriod(dto);
 
         LocalDate start = dto.getStartDate().toLocalDate();
         LocalDate end = dto.getEndDate().toLocalDate();
@@ -165,8 +166,16 @@ public class CommuteServiceImpl implements CommuteService {
             list.addAll(solderingLocalDateList);
         }
 
-        return list.stream()
+        List<EventDTO> result = list.stream()
                 .map(EventDTO::convertFromCommuteState)
                 .collect(Collectors.toList());
+
+        result.addAll(
+                vacationPeriodList.stream()
+                        .map(vacationDTO ->
+                                EventDTO.convertFromVacation(vacationDTO, start, end))
+                        .collect(Collectors.toList()));
+
+        return result;
     }
 }

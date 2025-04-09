@@ -861,13 +861,23 @@
                 calendar.removeAllEvents();
                 const events = data.map(function(event) {
                     console.log(event);
+                    if (event.eventName === 'period') {
+                        return {
+                            title: event.title,
+                            start: new Date(event.startDate),
+                            end: new Date(event.endDate),
+                            allDay: true,
+                            display: 'block',
+                        }
+                    }
                     return {
                         title: event.title,
                         start: new Date(event.startDate),
                         allDay: event.allDay,
-                        display: event.display,
+                        display: 'block',
                     }
                 })
+                console.log(events);
                 successCallback(events);
             })
         }

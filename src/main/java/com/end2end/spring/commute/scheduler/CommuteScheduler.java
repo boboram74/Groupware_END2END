@@ -1,19 +1,13 @@
 package com.end2end.spring.commute.scheduler;
 
-import com.end2end.spring.commute.dao.SolderingDAO;
-import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.commute.service.SolderingService;
 import com.end2end.spring.util.HolidayUtil;
-import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Component
 public class CommuteScheduler {

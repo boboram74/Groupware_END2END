@@ -19,7 +19,7 @@ public class ApproverDAO {
         mybatis.insert("approver.insertApprover", approverDTO);
     }
 
-    public List<String> nextId(String approvalId) {
+    public List<ApproverDTO> nextId(String approvalId) {
         return mybatis.selectList("approver.nextId", approvalId);
     }
     public List<Map<String, Object>> selectApproversList(String approvalId) {

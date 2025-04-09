@@ -7,7 +7,9 @@ import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.commute.service.SolderingService;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.util.EventDTO;
 import com.end2end.spring.util.HolidayUtil;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.HashMap;
+import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/commute")
 @Controller
@@ -103,34 +104,21 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/select/period")
-    public List<Map<String, Object>> selectPeriodWorkState(HttpSession session, SelectPeriodDTO dto) {
+    public List<EventDTO> selectPeriodWorkState(HttpSession session, SelectPeriodDTO dto) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         dto.setEmployeeId(employee.getId());
 
         return commuteService.selectPeriodWorkState(dto);
     }
 
+    @SneakyThrows
     @ResponseBody
     @RequestMapping("/test")
-    public List<Map<String, Object>> leaveEarly(HttpSession session, String year, String month) throws IOException {
-        Map<String, Object> result = HolidayUtil.getHolidayApi(year, month);
+    public List<EventDTO> leaveEarly(HttpSession session, String year, String month) throws ParseException {
+        List<HolidayUtil.HolidayDTO> list = HolidayUtil.generateHolidayList(year, month);
 
-        System.out.println("get : " + result.get("response"));
-        Map<String, Object> response = (Map<String, Object>) result.get("response");
-        System.out.println("status : " + response.get("body"));
-        Map<String, Object> body = (Map<String, Object>) response.get("body");
-        Map<String, Object> items = (Map<String, Object>) body.get("items");
-        List<Map<String, Object>> item = (List<Map<String, Object>>) items.get("item");
-
-        for (Map<String, Object> map : item) {
-            Object dateValue = map.get("locdate");
-            if (dateValue instanceof Number) {
-                String formattedDate = String.format("%.0f", ((Number) dateValue).doubleValue());
-                map.put("locdate", formattedDate);
-            }
-
-        }
-
-        return item;
+        return list.stream()
+                .map(EventDTO::convertFromHoliday)
+                .collect(Collectors.toList());
     }
 }

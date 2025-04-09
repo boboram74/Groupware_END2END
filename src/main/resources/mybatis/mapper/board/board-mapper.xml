@@ -6,8 +6,8 @@
     <select id="selectCategoryByName" resultType="com.end2end.spring.board.dto.BoardCategoryDTO">
         SELECT * FROM BOARD_CATEGORY WHERE NAME = #{name}
     </select>
-    <insert id="insert">
+    <insert id="insertBoardCtUser">
         INSERT INTO BOARD_CT_USER(id,employeeId, boardCtId)
-        VALUES (BOARD_CT_USER_SEQ.NEXTVAL,#{employeeId},${boardCtId})
+        VALUES (BOARD_CT_USER_ID_SEQ.NEXTVAL,#{employeeId},${boardCtId})
     </insert>
 </mapper>

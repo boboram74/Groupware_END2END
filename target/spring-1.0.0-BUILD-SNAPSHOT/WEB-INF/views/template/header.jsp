@@ -497,6 +497,13 @@
           <span>Works</span>
         </a>
       </div>
+
+      <div class="menu-item">
+        <a href="/contact">
+          <i class="material-icons">contacts</i>
+          <span>주소록</span>
+        </a>
+      </div>
     </div>
   </div>
   <div class="main-wrapper">

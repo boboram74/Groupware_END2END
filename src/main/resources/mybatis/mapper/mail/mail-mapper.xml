@@ -22,12 +22,12 @@
     </insert>
 
     <select id="selectDepartmentById" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
-        SELECT * FROM DEPARTMENT WHERE ID = ${id};
+        SELECT * FROM DEPARTMENT WHERE ID = ${id}
     </select>
 
     <insert id="insertEmailAddressUser">
         INSERT INTO EMAIL_ADDRESS_USER(id, employeeId, emailAddress)
-        VALUES (EMAIL_ADDRESS_USER_SEQ.NEXTVAL, #{employeeId}, #{emailAddress})
+        VALUES (EMAIL_ADDRESS_USER_ID_SEQ.NEXTVAL, #{employeeId}, #{emailAddress})
     </insert>
 
     <update id="updateImportant" >

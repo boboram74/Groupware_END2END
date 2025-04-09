@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="approvalReject">
+
+    <insert id="insertReject" parameterType="com.end2end.spring.approval.dto.ApprovalRejectDTO">
+        INSERT INTO approval_reject (id,approvalid,approverid,reason,regdate) VALUES(APPROVAL_REJECT_ID_SEQ.nextval,#{approvalId},#{approverId},#{reason},#{regdate})
+    </insert>
+
+</mapper>

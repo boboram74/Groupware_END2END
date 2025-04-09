@@ -112,6 +112,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public void roleUpdate(String id) {
+        employeeDAO.roleUpdate(id);
+    }
+
+    @Override
     public boolean idVali(String loginId){
         return employeeDAO.idVali(loginId);
     }

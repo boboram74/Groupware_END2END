@@ -5,7 +5,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class EmployeeDAO {
@@ -47,6 +49,13 @@ public class EmployeeDAO {
     public boolean idVali(String loginId) {
         Integer count = mybatis.selectOne("employee.idVali", loginId);
         return count != null && count > 0;
+    }
+
+    public void roleUpdate(String id, String role) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("id", id);
+        param.put("role", role);
+        mybatis.update("employee.roleUpdate", param);
     }
 
 }

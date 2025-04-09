@@ -81,4 +81,10 @@
         JOIN JOB j ON e.jobId = j.id
         WHERE e.id = #{id}
     </select>
+
+    <update id="roleUpdate">
+        UPDATE EMPLOYEE
+        SET role = #{role}
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -62,6 +62,12 @@ public class HRController {
         employeeService.insert(dto, file);
     }
 
+    @RequestMapping("/roleUpdate")
+    public void roleUpdate(@RequestParam("id") String id) {
+        // TODO: 인사팀에서 승인하면 권한 추가
+        employeeService.roleUpdate(id);
+    }
+
     @RequestMapping("/idCheck")
     @ResponseBody
     public boolean idCheck(@RequestParam("loginId") String loginId) {

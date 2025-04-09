@@ -1,11 +1,8 @@
 package com.end2end.spring.approval.controller;
 
-import com.end2end.spring.approval.dto.ApprovalDTO;
-import com.end2end.spring.approval.dto.ApprovalInsertDTO;
-import com.end2end.spring.approval.dto.ApproverDTO;
+import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
-import com.end2end.spring.approval.dto.TempApprovalDTO;
 import com.end2end.spring.approval.service.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -95,7 +92,7 @@ public class ApprovalController {
                 return "error/404";
             }
 
-            List<String> nextId = approvalService.nextId(id);
+            List<ApproverDTO> nextId = approvalService.nextId(id);
 
 
             List<Map<String, Object>> approvers = approvalService.selectApproversList(id);
@@ -155,9 +152,15 @@ public class ApprovalController {
     @ResponseBody
     public String approve(@PathVariable String approvalId, @RequestParam int approverId) {
         approvalService.approve(approvalId, approverId);
-        System.out.println(approvalId+" : "+ approverId);
         return "success";
     }
 
+    @PostMapping("/reject")
+    @ResponseBody
+    public String reject(@RequestBody ApprovalRejectDTO rejectDTO) {
+        rejectDTO.setRegdate(new Timestamp(System.currentTimeMillis()));
+        approvalService.rejectApproval(rejectDTO);
+        return "success";
+    }
 
 }

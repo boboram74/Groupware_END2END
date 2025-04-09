@@ -20,9 +20,10 @@ public class CommuteScheduler {
     @Autowired private SolderingService solderingService;
 
     @Scheduled(cron="0 59 23 * * 1-5")
-    public void insertSoldering() {
-        Date date = new Date();
-        HolidayUtil.isHoliday(date);
+    public void insertSoldering() throws IOException {
+        if (HolidayUtil.isHoliday(LocalDate.now())) {
+            return;
+        }
 
         solderingService.insertByState("ABSENCE");
         solderingService.insertNotCheck();

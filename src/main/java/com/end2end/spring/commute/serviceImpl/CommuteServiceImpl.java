@@ -7,19 +7,19 @@ import com.end2end.spring.commute.dto.*;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.util.EventDTO;
+import com.end2end.spring.util.HolidayUtil;
 import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,7 +40,7 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public boolean workOn(String employeeId) {
+    public boolean workOn(String employeeId) throws IOException {
         CommuteDTO dto = CommuteDTO.builder()
                 .employeeId(employeeId)
                 .state("WORK_ON")
@@ -53,7 +53,7 @@ public class CommuteServiceImpl implements CommuteService {
 
         LocalDateTime date = LocalDateTime.now();
         if (date.getHour() > Statics.WORK_ON_CHECK_TIME) {
-            if (vacationDAO.isOnVacation(employeeId) == 0) {
+            if (vacationDAO.isOnVacation(employeeId) == 0 || HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
                         .state("LATE")
@@ -67,7 +67,7 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public boolean workOff(String employeeId) {
+    public boolean workOff(String employeeId) throws IOException {
         CommuteDTO dto = CommuteDTO.builder()
                 .employeeId(employeeId)
                 .state("WORK_ON")
@@ -85,7 +85,7 @@ public class CommuteServiceImpl implements CommuteService {
 
         long workHour = Duration.between(workOnDTO.getRegDate().toLocalDateTime(), LocalDateTime.now()).toHours();
         if(workHour < Statics.WORK_HOUR) {
-            if ( vacationDAO.isOnVacation(employeeId) == 0) {
+            if ( vacationDAO.isOnVacation(employeeId) == 0 || HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
                         .state("LEAVE_EARLY")

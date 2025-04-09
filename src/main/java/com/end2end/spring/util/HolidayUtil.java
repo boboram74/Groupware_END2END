@@ -15,8 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -126,12 +126,18 @@ public class HolidayUtil {
         }
     }
 
-    public static boolean isHoliday(Date date) {
+    public static boolean isHoliday(LocalDate date) throws IOException {
         String year = new SimpleDateFormat("yyyy").format(date);
         String month = new SimpleDateFormat("MM").format(date);
 
-        System.out.println(year + " " + month);
+        List<HolidayDTO> holidayList = HolidayUtil.generateHolidayList(year, month);
 
-        return true;
+        for (HolidayDTO holiday : holidayList) {
+            if (holiday.getDate().equals(new SimpleDateFormat("yyyyMMdd").format(date))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

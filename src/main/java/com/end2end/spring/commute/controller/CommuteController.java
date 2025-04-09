@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,7 +87,7 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/workOn")
-    public boolean workOn(HttpSession session) {
+    public boolean workOn(HttpSession session) throws IOException {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         boolean workOn = commuteService.workOn(employee.getId());
 
@@ -94,7 +97,7 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/workOff")
-    public boolean workOff(HttpSession session) {
+    public boolean workOff(HttpSession session) throws IOException {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         boolean workOff = commuteService.workOff(employee.getId());
 
@@ -114,11 +117,15 @@ public class CommuteController {
     @SneakyThrows
     @ResponseBody
     @RequestMapping("/test")
-    public List<EventDTO> leaveEarly(HttpSession session, String year, String month) throws ParseException {
-        List<HolidayUtil.HolidayDTO> list = HolidayUtil.generateHolidayList(year, month);
+    public boolean leaveEarly(HttpSession session) {
+        //List<HolidayUtil.HolidayDTO> list = HolidayUtil.generateHolidayList(year, month);
 
+        return HolidayUtil.isHoliday(LocalDate.now());
+/*
         return list.stream()
                 .map(EventDTO::convertFromHoliday)
                 .collect(Collectors.toList());
+
+ */
     }
 }

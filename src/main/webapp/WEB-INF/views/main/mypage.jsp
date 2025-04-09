@@ -14,8 +14,7 @@
     <div class="mainBody">
         <form id="addressForm" action="/hr/update" method="post">
             <div class="content">
-                <div class="hrProfile">
-                    <img src="${employeeDetail.profileImg}" alt="프로필 이미지">
+                <div class="hrProfile" style="background-image: url(${employeeDetail.profileImg});">
                 </div>
                 <div class="name">이름 : ${employeeDetail.name}</div>
                 <div class="contact">연락처 : ${employeeDetail.contact}</div>

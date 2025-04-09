@@ -29,10 +29,10 @@
 
     <insert id="insert">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">
-            SELECT CONCAT(to_char(trunc(sysdate), 'YYMMDD'), EMPLOYEE_ID_SEQ.NEWTVAL) FROM DUAL
+            SELECT CONCAT(to_char(trunc(sysdate), 'YYMMDD'), EMPLOYEE_ID_SEQ.NEXTVAL) FROM DUAL
         </selectKey>
-        INSERT INTO EMPLOYEE(id, departmentId, jobId, name, email, profileImg, contact)
-        VALUES (#{id}, ${departmentId}, ${jobId}, #{name}, #{email}, #{profileImg}, #{contact})
+        INSERT INTO EMPLOYEE(id, departmentId, jobId, email, name, profileImg, contact)
+        VALUES (#{id}, ${departmentId}, ${jobId}, #{email}, #{name}, #{profileImg}, #{contact})
     </insert>
 
     <insert id="insertDetail">

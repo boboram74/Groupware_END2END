@@ -67,7 +67,6 @@ $("#form").on("submit", function(e) {
     let loginId = $("input[name='loginId']").val().trim();
     let password = $("input[name='password']").val().trim();
     let repw = $(".repw input").val().trim();
-    let email = $("input[name='email']").val().trim();
     let contact = $("input[name='contact']").val().trim();
     let postCode = $("input[name='postCode']").val().trim();
     let address = $("input[name='address']").val().trim();
@@ -114,17 +113,6 @@ $("#form").on("submit", function(e) {
     if(password !== repw) {
         alert("패스워드와 패스워드 확인이 일치하지 않습니다.");
         $(".repw input").focus();
-        return false;
-    }
-    if(email === "") {
-        alert("이메일을 입력하세요.");
-        $("input[name='email']").focus();
-        return false;
-    }
-    let emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    if(!emailPattern.test(email)) {
-        alert("유효한 이메일 주소를 입력하세요.");
-        $("input[name='email']").focus();
         return false;
     }
     if(contact === "") {

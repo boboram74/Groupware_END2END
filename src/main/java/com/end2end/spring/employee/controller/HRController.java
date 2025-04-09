@@ -57,9 +57,16 @@ public class HRController {
     }
 
     @RequestMapping("/insert")
-    public void insert(EmployeeDetailDTO dto, MultipartFile file) {
+    public String insert(EmployeeDetailDTO dto, MultipartFile file) {
         // TODO: 직원 데이터 추가
         employeeService.insert(dto, file);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/roleUpdate")
+    public void roleUpdate(@RequestParam("id") String id) {
+        // TODO: 인사팀에서 승인하면 권한 추가
+        employeeService.roleUpdate(id);
     }
 
     @RequestMapping("/idCheck")

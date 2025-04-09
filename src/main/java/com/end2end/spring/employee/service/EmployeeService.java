@@ -13,6 +13,7 @@ public interface EmployeeService {
     EmployeeDTO login(LoginDTO dto);
     void logout();
     void insert(EmployeeDetailDTO dto, MultipartFile file);
+    void roleUpdate(String id);
     void update(EmployeeDetailDTO dto);
     void deleteById(String id);
     boolean idVali(String loginId);

@@ -47,7 +47,7 @@ public class EmployeeDAO {
     }
 
     public EmployeeDTO selectJobById(String id){
-        return mybatis.selectOne("employee.selectDetailById", id);
+        return mybatis.selectOne("employee.selectJobById", id);
     }
 
     public boolean idVali(String loginId) {

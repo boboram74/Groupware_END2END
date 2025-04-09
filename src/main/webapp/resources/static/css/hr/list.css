@@ -84,17 +84,12 @@
     background-color: white;
     border: 2px solid dimgray;
 }
-.pageNavi{
-    width: 100%;
-    height: 20%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .listTable{
     width: 100%;
+    max-height: 500px;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 th,td{
     padding: 10px;

@@ -36,7 +36,7 @@
                         <th>직급</th>
                         <th>권한 상태</th>
                     </tr>
-                    <c:forEach items="${employee}" var="item">
+                    <c:forEach items="${employeeList}" var="item">
                         <c:if test="${!item.role.equals('NO_AUTH')}">
                         <tr>
                             <td>${item.id}</td>
@@ -58,7 +58,7 @@
                         <th>권한</th>
                         <th>확인</th>
                     </tr>
-                    <c:forEach items="${employee}" var="item">
+                    <c:forEach items="${employeeList}" var="item">
                         <c:if test="${item.role.equals('NO_AUTH')}">
                             <tr>
                                 <td>${item.name}</td>
@@ -73,9 +73,6 @@
                         </c:if>
                     </c:forEach>
                 </table>
-            </div>
-            <div class="pageNavi">
-                1 2 3 4 5
             </div>
         </div>
     </div>

@@ -46,6 +46,7 @@ public class ProjectWorkController {
     }
 
     @RequestMapping("/{id}")
+//    ?projectId=${project.id}
     public String toDetail(@PathVariable int id, Model model) {
         // TODO: 게시글 상세글로 이동
         return "/works/detail";

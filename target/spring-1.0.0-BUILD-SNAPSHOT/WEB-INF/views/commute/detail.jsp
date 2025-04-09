@@ -388,7 +388,6 @@
 
     /* CSS에 추가 */
     .simple-dot-event {
-        background-color: transparent !important;
         border: none !important;
     }
 
@@ -824,8 +823,8 @@
             weekNumbers: false,  // 주차 숨기기
             // 캘린더가 처음 마운트되고 이벤트를 로드할 때
             events: function(info, successCallback) {
-                const startDate = parseDate(info.start);
-                const endDate = parseDate(info.end);
+                const startDate = info.start;
+                const endDate = info.end;
                 loadEvents(startDate, endDate, successCallback);
             },
             viewDidMount: function() {
@@ -853,8 +852,10 @@
         }
 
         function loadEvents(startDate, endDate, successCallback) {
+            const startDateStr = parseDate(startDate);
+            const endDateStr = parseDate(endDate);
             $.ajax({
-                url: '/commute/select/period?startDate=' + startDate + '&endDate=' + endDate,
+                url: '/commute/select/period?startDate=' + startDateStr + '&endDate=' + endDateStr,
                 type: 'GET'
             }).done(function(data) {
                 calendar.removeAllEvents();

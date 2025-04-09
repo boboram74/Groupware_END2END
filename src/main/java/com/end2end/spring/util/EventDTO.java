@@ -7,11 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -29,10 +26,10 @@ public class EventDTO {
         String title = "";
         String backgroundColor = "";
         if (dto.getState().equals("WORK_ON")) {
-            title = "출근";
+            title = "출근 " + dto.getRegDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
             backgroundColor = "black";
         } else if (dto.getState().equals("WORK_OFF")) {
-            title = "퇴근";
+            title = "퇴근 " + dto.getRegDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
             backgroundColor = "black";
         } else if (dto.getState().equals("LATE")) {
             title = "지각";

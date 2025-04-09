@@ -474,7 +474,7 @@
         </a>
       </div>
       <div class="menu-item">
-        <a href="/commute/detail/1">
+        <a href="/commute/detail">
           <i class="material-icons">schedule</i>
           <span>근태관리</span>
         </a>

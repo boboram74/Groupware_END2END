@@ -45,4 +45,8 @@ public class VacationDAO {
     public List<VacationDTO> selectByPeriod(SelectPeriodDTO dto) {
         return mybatis.selectList("vacation.selectByPeriod", dto);
     }
+
+    public List<VacationDTO> selectByEmployeeId(String employeeId) {
+        return mybatis.selectList("vacation.selectByEmployeeId", employeeId);
+    }
 }

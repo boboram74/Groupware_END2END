@@ -92,4 +92,19 @@
             TRUNC(startDate) BETWEEN #{startDate} AND #{endDate}
         )
     </select>
+
+    <select id="selectByEmployeeId" resultType="com.end2end.spring.commute.dto.VacationDTO">
+        SELECT
+            VACATION.*,
+            CASE
+                WHEN APPROVAL.STATE = 'ONGOING' THEN 'N'
+                ELSE 'Y'
+            END AS submitYn
+        FROM
+            VACATION
+        JOIN
+            APPROVAL
+        ON VACATION.approvalId = APPROVAL.id
+        WHERE VACATION.employeeID = #{employeeId}
+    </select>
 </mapper>

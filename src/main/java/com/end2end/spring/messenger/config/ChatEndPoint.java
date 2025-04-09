@@ -2,9 +2,9 @@ package com.end2end.spring.messenger.config;
 
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.messenger.service.MessengerService;
+import com.end2end.spring.messenger.serviceImpl.MessengerServiceImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/chat", configurator = WebSocketConfig.class)
 public class ChatEndPoint {
 
-    private MessengerService messengerService = SpringProvider.Spring.getBean(MessengerService.class);
+    private MessengerService messengerService = new MessengerServiceImpl();
     private static List<Session> client = Collections.synchronizedList(new ArrayList<Session>());
     private static final Map<String, Session> clientSessions = new ConcurrentHashMap<>();
 
@@ -66,5 +66,13 @@ public class ChatEndPoint {
     public void onError(Session session, Throwable throwable) {
         client.remove(session);
         throwable.printStackTrace();
+    }
+
+    public MessengerService getMessengerService() {
+        return messengerService;
+    }
+
+    public void setMessengerService(MessengerService messengerService) {
+        this.messengerService = messengerService;
     }
 }

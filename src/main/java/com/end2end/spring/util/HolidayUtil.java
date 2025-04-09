@@ -127,8 +127,8 @@ public class HolidayUtil {
     }
 
     public static boolean isHoliday(LocalDate date) throws IOException {
-        String year = new SimpleDateFormat("yyyy").format(date);
-        String month = new SimpleDateFormat("MM").format(date);
+        String year = String.valueOf(date.getYear());
+        String month = String.format("%02d", date.getMonthValue());
 
         List<HolidayDTO> holidayList = HolidayUtil.generateHolidayList(year, month);
 

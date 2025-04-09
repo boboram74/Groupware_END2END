@@ -9,6 +9,7 @@ import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.util.EventDTO;
 import com.end2end.spring.util.HolidayUtil;
 import com.end2end.spring.util.Statics;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class CommuteServiceImpl implements CommuteService {
+    @Autowired private EmployeeDAO employeeDAO;
     @Autowired private CommuteDAO commuteDAO;
     @Autowired private SolderingDAO solderingDAO;
-    @Autowired private EmployeeDAO employeeDAO;
     @Autowired private VacationDAO vacationDAO;
 
     @Transactional

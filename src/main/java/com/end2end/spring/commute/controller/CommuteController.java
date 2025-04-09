@@ -19,12 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequestMapping("/commute")
 @Controller
@@ -33,9 +29,8 @@ public class CommuteController {
     @Autowired private SolderingService solderingService;
     @Autowired private VacationService vacationService;
 
-    @RequestMapping("/detail/{employeeId}")
-    public String toDetail(@PathVariable int employeeId, HttpSession session, Model model) {
-        // TODO: 해당 id의 사원의 detail.jsp로 이동
+    @RequestMapping("/detail")
+    public String toDetail(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         CommuteDTO commuteDTO = CommuteDTO.builder()
                 .employeeId(employee.getId())

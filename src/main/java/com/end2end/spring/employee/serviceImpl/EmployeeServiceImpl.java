@@ -123,7 +123,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 newRole = "ADMIN";
                 break;
             case 2:
-                newRole = "TEAM_READER";
+            case 3:
+                newRole = "TEAM_LEADER";
                 break;
             default:
                 newRole = "USER";

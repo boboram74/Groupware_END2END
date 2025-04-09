@@ -4,10 +4,22 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project">
 
+
+
     <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectDTO">
-        SELECT * FROM project
+        SELECT * from project
     </select>
     <!-- 프로젝트 모아보기-->
+
+    <select id="selectByprojectId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+
+       SELECT EMPLOYEE.* FROM
+        PROJECT_USER
+        JOIN EMPLOYEE
+        ON PROJECT_USER.EMPLOYEEID = EMPLOYEE.ID WHERE PROJECTID = #{id}
+
+</select>
+    <!-- 프로젝트 멤버 프로필 가져오기-->
 
 
     <delete id="deleteById" parameterType="Integer">
@@ -24,6 +36,19 @@
         </selectKey>
     </insert>
     <!-- 프로젝트추가 -->
+
+<!--   -->
+<!--    <select id="selectProjectMemberProfiles"  parameterType="int" resultType="com.end2end.spring.employee.dto.EmployeeDTO">-->
+<!--        SELECT-->
+<!--        e.profileImg-->
+<!--        FROM-->
+<!--        project_user p-->
+<!--        INNER JOIN-->
+<!--        employee e ON p.employeeId = e.id-->
+<!--        WHERE-->
+<!--        p.projectId = #{id}-->
+
+<!--    </select>-->
 
 
 <!--    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">-->

@@ -9,6 +9,7 @@ import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.util.EventDTO;
 import com.end2end.spring.util.HolidayUtil;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/commute")
 @Controller
@@ -112,9 +111,14 @@ public class CommuteController {
         return commuteService.selectPeriodWorkState(dto);
     }
 
+    @SneakyThrows
     @ResponseBody
     @RequestMapping("/test")
-    public List<HolidayUtil.HolidayDTO> leaveEarly(HttpSession session, String year, String month) throws IOException {
-        return HolidayUtil.generateHolidayList(year, month);
+    public List<EventDTO> leaveEarly(HttpSession session, String year, String month) throws ParseException {
+        List<HolidayUtil.HolidayDTO> list = HolidayUtil.generateHolidayList(year, month);
+
+        return list.stream()
+                .map(EventDTO::convertFromHoliday)
+                .collect(Collectors.toList());
     }
 }

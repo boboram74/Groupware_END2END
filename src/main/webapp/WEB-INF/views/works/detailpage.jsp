@@ -56,7 +56,6 @@
 
     }
 
-    * 프로젝트 헤더 영역 */
     .projectHeader {
         padding: 20px 0;
         border-bottom: 2px solid #f0f2f5;
@@ -74,7 +73,6 @@
         font-size: 15px;
     }
 
-    /* 칸반보드 스타일링 */
     .movingBoard {
         gap: 25px;
         padding: 20px;
@@ -134,7 +132,6 @@ height: 80%;
         font-size: 16px;
     }
 
-    /* 우선순위 뱃지 스타일링 */
     .priority {
         font-size: 12px;
         font-weight: 500;
@@ -154,7 +151,6 @@ height: 80%;
         background: linear-gradient(45deg, #69db7c, #51cf66);
     }
 
-    /* 메뉴 헤더 컨테이너 */
     .detail-menu-header {
         display: flex;
         align-items: center;
@@ -166,9 +162,9 @@ height: 80%;
 
 
     .detail-menu-title {
-        font-size: 18px;                    /* 폰트 크기 증가 */
+        font-size: 18px;
         font-weight: 600;
-        margin: 10px 0;                     /* 상단 여백 추가 */
+        margin: 10px 0;
         display: flex;
         align-items: center;
         justify-content: start;
@@ -176,7 +172,7 @@ height: 80%;
     }
 
     .detail-menu-title .material-icons {
-        font-size: 22px;                    /* 아이콘 크기도 약간 증가 */
+        font-size: 22px;
     }
 
 
@@ -241,13 +237,14 @@ height: 80%;
 
     .search {
         display: flex;
-        justify-content: flex-end;  /* 오른쪽 정렬 */
+        justify-content: flex-end;
         align-items: center;
-        gap: 20px;  /* search 내부 자식 요소들 간의 간격 */
+        gap: 20px;
     }
 
-    .search * {  /* search의 모든 자식 요소 */
-        height: 25px !important;  /* 모든 자식 요소 높이 통일 */
+    .search * {
+
+        height: 25px !important;
     }
 
     /* 입력 필드나 버튼 등의 추가 스타일 필요시 */
@@ -256,15 +253,15 @@ height: 80%;
     .search select {
         height: 25px;
         line-height: 25px;
-        padding: 0 8px;  /* 좌우 여백 추가 */
+        padding: 0 8px;
     }
 
     #searchBtn {
-        font-size: 13px;  /* 글자 크기 조정 */
+        font-size: 13px;
         display: flex;
-        align-items: center;  /* 수직 가운데 정렬 */
-        justify-content: center;  /* 수평 가운데 정렬 */
-        padding: 0 12px;  /* 좌우 여백 */
+        align-items: center;
+        justify-content: center;
+        padding: 0 12px;
     }
 
 
@@ -643,7 +640,8 @@ height: 80%;
                 <span>기간: ${project.regDate} ~ ${project.deadLine}</span>
 
             </div>
-            <button>작성하기</button>
+            <a href="/works/write">
+            <button>작성하기</button></a>
 
         </div>
 

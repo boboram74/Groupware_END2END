@@ -16,6 +16,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -123,5 +124,14 @@ public class HolidayUtil {
                     .seq((Double) json.get("seq"))
                     .build();
         }
+    }
+
+    public static boolean isHoliday(Date date) {
+        String year = new SimpleDateFormat("yyyy").format(date);
+        String month = new SimpleDateFormat("MM").format(date);
+
+        System.out.println(year + " " + month);
+
+        return true;
     }
 }

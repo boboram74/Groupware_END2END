@@ -1,9 +1,11 @@
 package com.end2end.spring.works.controller;
 
 
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.works.dto.ProjectSelectDTO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequestMapping("/work")
@@ -26,11 +29,11 @@ public class ProjectWorkController {
     ProjectWorkService wserv;
 
     @RequestMapping("/list")
-    public List<ProjectWorkDTO> toList(Model model) {
+    public String toList(Model model) {
         // TODO:모든게시물 리스트에 표시
         List<ProjectWorkDTO>list =  wserv.selectAll();
         model.addAttribute("list", list);
-        return list;
+        return "/works/detailpage";
     }
 
     @RequestMapping("/write")
@@ -42,7 +45,7 @@ public class ProjectWorkController {
     @RequestMapping("/write/update")
     public String toUpdate(Model model) {
         // TODO: 게시글 수정 폼으로 이동
-        return "/works/write";
+        return "/works/detail";
     }
 
     @RequestMapping("/{id}")
@@ -54,7 +57,13 @@ public class ProjectWorkController {
 
 
     @RequestMapping("/insert")
-    public String insert(@ModelAttribute ProjectWorkDTO wdto, @RequestParam("files") MultipartFile[] files) {
+    public String insert(HttpSession session, ProjectWorkDTO wdto, @RequestParam("files") MultipartFile[] files) {
+//
+//        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+//
+//        wdto.getProjectId();
+//        model.addAttribute("project",wdto);
+
         wserv.insert(wdto);
         // TODO: 게시글 등록
         return "redirect:/worksmain";

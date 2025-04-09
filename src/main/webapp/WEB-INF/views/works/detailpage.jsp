@@ -598,15 +598,8 @@ height: 80%;
                 <span class="detail-menu-disc">받은 메일함</span>
                 <span class="detail-badge">12</span>
             </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">drafts</span>
-                <span>임시 저장함</span>
-                <span class="detail-badge">2</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">delete</span>
-                <span>휴지통</span>
-            </li>
+
+
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>
@@ -640,7 +633,7 @@ height: 80%;
                 <span>기간: ${project.regDate} ~ ${project.deadLine}</span>
 
             </div>
-            <a href="/works/write">
+            <a href="/work/write">
             <button>작성하기</button></a>
 
         </div>
@@ -649,13 +642,14 @@ height: 80%;
         <div class="movingBoard">
             <!-- 시작전 -->
             <div class="movingBoardColumn ready-column surface-bright" data-status="READY" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 class="column-title">시작전</h3>
+                <h3 class="columnTitle">시작전</h3>
                 <div class="work-items">
-                    <c:forEach items="${works}" var="work">
-                        <c:if test="${work.state == 'READY'}">
+                    <c:forEach items="${list}" var="work">
+                        <c:if test="${work.state == 'ONGOING'}">
                             <div class="work-item" draggable="true" ondragstart="drag(event)"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
                                 <h4>${work.title}</h4>
+
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>

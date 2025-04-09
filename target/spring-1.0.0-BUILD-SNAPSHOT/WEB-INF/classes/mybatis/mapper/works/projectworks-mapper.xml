@@ -7,7 +7,7 @@
 
 
     <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectDTO">
-        SELECT * from project
+        SELECT * from project order by id desc
     </select>
     <!-- 프로젝트 모아보기-->
 

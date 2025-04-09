@@ -747,7 +747,6 @@
             $.ajax({
                 url: '/commute/workOn'
             }).done(function (data) {
-                console.log(data);
                 if (data) {
                     alert("출근하셨습니다.");
                     location.reload();
@@ -788,9 +787,9 @@
             initialView: 'dayGridWeek'
             ,  // 일주일 보기로 초기 설정
             headerToolbar: {
-                left: 'prev,next today',
+                left: 'prev today',
                 center: 'title',
-                right: ''  // 주간 보기만 표시
+                right: 'next'  // 주간 보기만 표시
             },
             locale: 'ko',
             height: calculateAvailableDimensions().height,
@@ -798,10 +797,74 @@
             dayHeaders: true,  // 요일 표시
             dayHeaderFormat: {weekday: 'short', month: 'numeric', day: 'numeric'}, // 날짜 포맷
             weekNumbers: false,  // 주차 숨기기
+            // 캘린더가 처음 마운트되고 이벤트를 로드할 때
+            events: function(info, successCallback) {
+                const startDate = parseDate(info.start);
+                const endDate = parseDate(info.end);
+                loadEvents(startDate, endDate, successCallback);
+            },
             viewDidMount: function() {
                 adjustCalendarSize();
+            },
+            eventDisplay: 'block',
+            displayEventTime: false,
+            eventTimeFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            },
+            // 날짜 범위 변경 시 호출
+            datesSet: function(info) {
+                console.log('보여지는 날짜 범위:', {
+                    start: info.start,
+                    end: info.end
+                });
             }
+
         });
+
+        function parseDate(dates) {
+            return dates.getFullYear() + '-' + (dates.getMonth() + 1) + '-' + dates.getDate();
+        }
+
+        function toStringDate(date) {
+            try {
+                // LocalDate 객체인 경우
+                if (date && typeof date === 'object' && 'year' in date && 'month' in date && 'day' in date) {
+                    const year = date.year;
+                    const month = String(date.month).padStart(2, '0');
+                    const day = String(date.day).padStart(2, '0');
+
+                    return year + '-' + month + '-' + day;
+                }
+
+                throw new Error('유효하지 않은 LocalDate 형식');
+
+            } catch(e) {
+                return null;
+            }
+        }
+
+        function loadEvents(startDate, endDate, successCallback) {
+            $.ajax({
+                url: '/commute/select/period?startDate=' + startDate + '&endDate=' + endDate,
+                type: 'GET'
+            }).done(function(data) {
+                calendar.removeAllEvents();
+                const events = data.map(function(event) {
+                    console.log(event);
+                    const date = toStringDate(event.date);
+                    console.log(date);
+                    return {
+                        title: '1',
+                        start: new Date(date),
+                        allDay: true,
+                        display: 'block'
+                    }
+                })
+                successCallback(events);
+            })
+        }
 
         function adjustCalendarSize() {
             const dimensions = calculateAvailableDimensions();
@@ -820,6 +883,16 @@
         }
 
         calendar.render();
+
+        let resizeTimer;
+        $(window).resize(function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                const dimensions = calculateAvailableDimensions();
+                calendar.setOption('height', dimensions.height);
+                adjustCalendarSize();
+            }, 100);
+        });
     });
 </script>
 <jsp:include page="/WEB-INF/views/commute/commute-footer.jsp"/>

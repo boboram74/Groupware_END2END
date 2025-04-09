@@ -82,6 +82,13 @@
         WHERE e.id = #{id}
     </select>
 
+    <select id="selectDetailById" resultType="com.end2end.spring.employee.dto.EmployeeDetailDTO">
+        SELECT
+        jobId
+        FROM EMPLOYEE
+        WHERE id = #{id}
+    </select>
+
     <update id="roleUpdate">
         UPDATE EMPLOYEE
         SET role = #{role}

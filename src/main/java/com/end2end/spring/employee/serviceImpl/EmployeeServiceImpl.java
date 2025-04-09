@@ -113,7 +113,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void roleUpdate(String id) {
-        employeeDAO.roleUpdate(id);
+        EmployeeDTO employee = employeeDAO.selectJobById(id);
+        int jobId = employee.getJobId();
+        String newRole;
+        switch (jobId) {
+            case 1:
+                newRole = "ADMIN";
+                break;
+            case 2:
+                newRole = "TEAM_READER";
+                break;
+            default:
+                newRole = "USER";
+                break;
+        }
+        employeeDAO.roleUpdate(id,newRole);
     }
 
     @Override

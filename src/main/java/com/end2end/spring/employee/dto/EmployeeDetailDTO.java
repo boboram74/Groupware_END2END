@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
@@ -21,13 +22,12 @@ public class EmployeeDetailDTO {
     private String role;
     private String loginId;
     private String password;
-    private int postCode;
+    private String postCode;
     private String address;
     private String detailAddress;
     private String contact;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Timestamp birthday;
+    private Date birthday;
     private Timestamp hireDate;
 
     private String departmentName;

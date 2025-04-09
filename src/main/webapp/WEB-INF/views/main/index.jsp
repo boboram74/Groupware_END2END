@@ -63,7 +63,8 @@
 
         function loadEvents(startDate, endDate, successCallback) {
             const currentYear = startDate.getFullYear();
-            const currentMonth = startDate.getMonth();
+            const currentMonth = (startDate.getMonth() > 10) ?
+                startDate.getMonth() + 1 : '0' + (startDate.getMonth() + 1);
             console.log(currentMonth, currentYear);
 
             $.ajax({

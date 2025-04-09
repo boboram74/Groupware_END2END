@@ -853,13 +853,11 @@
                 calendar.removeAllEvents();
                 const events = data.map(function(event) {
                     console.log(event);
-                    const date = toStringDate(event.date);
-                    console.log(date);
                     return {
-                        title: '1',
-                        start: new Date(date),
-                        allDay: true,
-                        display: 'block'
+                        title: event.title,
+                        start: new Date(event.startDate),
+                        allDay: event.allDay,
+                        display: event.display,
                     }
                 })
                 successCallback(events);

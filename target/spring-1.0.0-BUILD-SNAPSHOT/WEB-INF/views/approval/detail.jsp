@@ -3,7 +3,33 @@
 
 <link rel="stylesheet" href="/css/approval/draft.css">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
+<style>
+    .modal {
+        position: fixed;
+        z-index: 1000;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modalContent {
+        background: #fff;
+        padding: 20px;
+        margin: 10% auto;
+        width: 400px;
+        border-radius: 10px;
+    }
+    .modalContent textarea {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+    }
+    .modalActions {
+        text-align: right;
+    }
+    .modalActions button {
+        margin-left: 10px;
+    }
+</style>
 <div class="container">
     <table>
         <th>기 안 문</th>
@@ -64,6 +90,18 @@
             </div>
         </div>
     </div>
+    <div id="rejectModal" class="modal" style="display: none;">
+        <div class="modalContent">
+            <h3>반려 사유 입력</h3>
+            <textarea id="rejectReason" placeholder="반려 사유를 입력해주세요."></textarea>
+            <input type="hidden" id="modalApprovalId">
+            <input type="hidden" id="modalApproverId">
+            <div class="modalActions">
+                <button id="confirmRejectBtn">반려</button>
+                <button id="cancelRejectBtn">취소</button>
+            </div>
+        </div>
+    </div>
 
     <div class="body">
         <div class="titleBox">
@@ -90,16 +128,19 @@
             const approverId = $(this).siblings('input[name="approverId"]').val();
 
             $.ajax({
-                url: '/approval/submit/approve/' + approvalId,
+                url: '/approval/reject',
                 type: 'POST',
-                data: {
+                contentType: 'application/json',
+                data: JSON.stringify({
                     approvalId: approvalId,
-                    approverId: approverId
-                },
+                    approverId: approverId,
+                    reason: reason
+                }),
                 success: function(response) {
-                    if (response.status === "success") {
+                    if (response === "success") {
                         $('#approverStatus' + approverId).text('승인');
                         $('#approverStatus' + approverId).removeClass('N').addClass('done');
+                        location.reload();
                     } else {
                         alert("승인 처리에 실패했습니다.");
                     }
@@ -113,23 +154,49 @@
     $(document).ready(function() {
         $('.rejectBtn').click(function(e) {
             e.preventDefault();
+            const approvalId = $(this).siblings('input[name="approvalId"]').val();
+            const approverId = $(this).siblings('input[name="approverId"]').val();
 
-            var approvalId = $(this).siblings('input[name="approvalId"]').val();
-            var approverId = $(this).siblings('input[name="approverId"]').val();
+            $('#modalApprovalId').val(approvalId);
+            $('#modalApproverId').val(approverId);
+            $('#rejectReason').val('');
+            $('#rejectModal').show();
+        });
+
+        $('#cancelRejectBtn').click(function() {
+            $('#rejectModal').hide();
+        });
+
+        $('#confirmRejectBtn').click(function() {
+            const approvalId = $('#modalApprovalId').val();
+            const approverId = $('#modalApproverId').val();
+            const reason = $('#rejectReason').val();
+
+            if (!reason.trim()) {
+                alert("반려 사유를 입력해주세요.");
+                return;
+            }
 
             $.ajax({
                 url: '/approval/reject',
                 type: 'POST',
-                data: {
+                contentType: 'application/json',
+                data: JSON.stringify({
                     approvalId: approvalId,
-                    approverId: approverId
-                },
+                    approverId: approverId,
+                    reason: reason
+                }),
                 success: function(response) {
+                    $('#rejectModal').hide();
                     $('#approverStatus' + approverId).text('반려');
                     $('#approverStatus' + approverId).removeClass('N').addClass('rejected');
+                    location.reload();
                 },
-                error: function() {
+                error: function(xhr, status, error) {
                     alert('반려 처리에 실패했습니다.');
+                    console.error("에러 상태:", status);
+                    console.error("에러 메시지:", error);
+                    console.error("응답 본문:", xhr.responseText);
                 }
             });
         });

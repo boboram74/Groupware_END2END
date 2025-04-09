@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class MainController {
@@ -60,7 +59,7 @@ public class MainController {
 
 	@ResponseBody
 	@RequestMapping("/holiday")
-	public List<Map<String, Object>> getHoliday(String year, String month) {
+	public List<HolidayUtil.HolidayDTO> getHoliday(String year, String month) {
 		try {
 			return HolidayUtil.generateHolidayList(year, month);
 		} catch (IOException e) {

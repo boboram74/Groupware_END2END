@@ -10,28 +10,18 @@
     <!-- 프로젝트 모아보기-->
 
 
-<<<<<<< HEAD
-    <delete id="deleteById">
-        delete from project where id=${value}
-    </delete>
-    <!-- 프로젝트 삭제-->
-
-
-    <insert id="insert">
-        INSERT INTO project (id, name) values (Project_SEQ.NEXTVAL, #{name})
-    </insert>
-    <!-- 프로젝트추가 -->
-
-    <insert id="insertProjectUser" parameterType="ProjectUserDTO">
-=======
-    <delete id="deleteById" parameterType="int">
+    <delete id="deleteById" parameterType="Integer">
         delete from project where id=#{id}
     </delete>
     <!-- 프로젝트 삭제-->
 
-    <insert id="insertProject">
+    <insert id="insertProject" parameterType="com.end2end.spring.works.dto.ProjectDTO">
         INSERT INTO project (id, name, deadline, hideYn, regDate)
-        VALUES (Project_SEQ.NEXTVAL, #{name}, #{deadline}, 'N', SYSDATE)
+        VALUES (PROJECT_ID_SEQ.NEXTVAL, #{name}, #{deadLine}, 'N', SYSDATE)
+
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT PROJECT_ID_SEQ.currval FROM DUAL
+        </selectKey>
     </insert>
     <!-- 프로젝트추가 -->
 
@@ -47,25 +37,11 @@
 <!--    </insert>-->
 
     <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">
->>>>>>> 2c31e4ad5e226eb33bbbe48f28d97373b529e18f
-        INSERT INTO PROJECT_USER (projectId, employeeId)
-        VALUES (#{projectId}, #{employeeId})
+        INSERT INTO PROJECT_USER (id,projectId, employeeId)
+        VALUES (PROJECT_USER_ID_SEQ.NEXTVAL,#{projectId}, #{employeeId})
     </insert>
     <!-- 프로젝트인원추가 -->
 
-<<<<<<< HEAD
-    <update id="updateById">
-        update project set
-        name=?,deadLine=? where id =${value}
-    </update>
-    <!--프로젝트수정-->
-
-    <select id="selectByCon" resultType="com.end2end.spring.works.dto.ProjectDTO">
-        select * from project where
-        ${name} like '%'||#{deadLine}||'%'
-    </select>
-    <!--프로젝트 찾기 -->
-=======
 
 
     <insert id="insertAllProjectUser">
@@ -81,9 +57,9 @@
     </update>
     <!--프로젝트수정-->
 
-    <select id="selectById" resultType="int">
+    <select id="selectById" resultType="com.end2end.spring.works.dto.ProjectDTO">
         SELECT * FROM project
-        WHERE id =${id}
+        WHERE id = #{id}
     </select>
 
     <!--프로젝트 찾기 -->
@@ -99,5 +75,4 @@
         WHERE EMPLOYEE.NAME LIKE #{name}
 
     </select>
->>>>>>> 2c31e4ad5e226eb33bbbe48f28d97373b529e18f
 </mapper>

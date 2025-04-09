@@ -5,7 +5,18 @@
 <mapper namespace="employee">
 
     <select id="selectAll" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT * FROM EMPLOYEE
+        SELECT
+        e.id AS id,
+        e.name,
+        e.departmentId,
+        d.name AS departmentName,
+        e.jobId,
+        j.name AS jobName,
+        e.role AS role,
+        e.contact
+        FROM EMPLOYEE e
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        JOIN JOB j ON e.jobId = j.id
     </select>
 
     <select id="selectAllDepartment" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
@@ -30,7 +41,7 @@
     </insert>
 
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT * FROM EMPLOYEE WHERE departmentId = ${departmentId} ORDER BY desc 1
+        SELECT e.id, e.name , j.name as jobName FROM EMPLOYEE e join job j on e.jobid = j.id WHERE departmentId = ${departmentId}
     </select>
 
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">

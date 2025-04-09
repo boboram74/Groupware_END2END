@@ -316,40 +316,46 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item">
-                <span class="material-icons">star</span>
-                <span>중요 메일함</span>
-                <span class="detail-badge"><span id="importantMailBox"></span></span>
-            </li>
-            <li class="detail-menu-item">
-                <a href="/mail/list">
+            <a href="/mail/important">
+                <li class="detail-menu-item">
+                    <span class="material-icons">star</span>
+                    <span>중요 메일함</span>
+                    <span class="detail-badge"><span id="importantMailBox"></span></span>
+                </li>
+            </a>
+            <a href="/mail/list">
+                <li class="detail-menu-item">
                     <span class="material-icons">all_inbox</span>
                     <span>전체 메일함</span>
                     <span class="detail-badge"><span id="allMailBox"></span></span>
-                </a>
-            </li>
-            <li class="detail-menu-item">
-                <a href="/mail/sendList">
+                </li>
+            </a>
+            <a href="/mail/sendList">
+                <li class="detail-menu-item">
                     <span class="material-icons">send</span>
                     <span>보낸 메일함</span>
-                </a>
-            </li>
-            <li class="detail-menu-item">
-                <a href="/mail/inbox">
+                </li>
+            </a>
+            <a href="/mail/inbox">
+                <li class="detail-menu-item">
                     <span class="material-icons">move_to_inbox</span>
                     <span class="detail-menu-disc">받은 메일함</span>
                     <span class="detail-badge"><span id="receiveMailBox"></span></span>
-                </a>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">drafts</span>
-                <span>임시 저장함</span>
-                <span class="detail-badge">2</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">delete</span>
-                <span>휴지통</span>
-            </li>
+                </li>
+            </a>
+            <a href="/mail/temp">
+                <li class="detail-menu-item">
+                    <span class="material-icons">drafts</span>
+                    <span>임시 저장함</span>
+                    <span class="detail-badge">2</span>
+                </li>
+            </a>
+            <a href="/mail/trash">
+                <li class="detail-menu-item">
+                    <span class="material-icons">delete</span>
+                    <span>휴지통</span>
+                </li>
+            </a>
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>

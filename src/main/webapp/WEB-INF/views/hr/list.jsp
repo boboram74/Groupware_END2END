@@ -3,7 +3,7 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/hr/list.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
@@ -36,7 +36,7 @@
                         <th>직급</th>
                         <th>권한 상태</th>
                     </tr>
-                    <c:forEach items="${employeeList}" var="item">
+                    <c:forEach items="${employee}" var="item">
                         <c:if test="${!item.role.equals('NO_AUTH')}">
                         <tr>
                             <td>${item.id}</td>
@@ -58,7 +58,7 @@
                         <th>권한</th>
                         <th>확인</th>
                     </tr>
-                    <c:forEach items="${employeeList}" var="item">
+                    <c:forEach items="${employee}" var="item">
                         <c:if test="${item.role.equals('NO_AUTH')}">
                             <tr>
                                 <td>${item.name}</td>
@@ -74,11 +74,10 @@
                     </c:forEach>
                 </table>
             </div>
+            <div class="pageNavi">
+                1 2 3 4 5
+            </div>
         </div>
-        <div class="pageNavi">
-            1 2 3 4 5
-        </div>
-
     </div>
 
     <script src="/js/hr/list.js" type="text/javascript"></script>

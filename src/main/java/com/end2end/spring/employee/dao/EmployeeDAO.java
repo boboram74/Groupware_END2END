@@ -63,4 +63,8 @@ public class EmployeeDAO {
         mybatis.update("employee.roleUpdate", param);
     }
 
+    public void deleteById(String id) {
+        mybatis.delete("employee.deleteById", id);
+    }
+
 }

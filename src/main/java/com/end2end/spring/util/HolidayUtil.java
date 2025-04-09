@@ -16,14 +16,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HolidayUtil {
-    public static Map<String, Object> getHolidayApi(String year, String month) throws IOException {
+    private static Map<String, Object> getHolidayApi(String year, String month) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + Statics.apiServiceKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
@@ -105,28 +104,6 @@ public class HolidayUtil {
                 .collect(Collectors.toList());
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class HolidayDTO {
-        private String dateKind;
-        private String dateName;
-        private boolean isHoliday;
-        private String date;
-        private Double seq;
-
-        public static HolidayDTO of(Map<String, Object> json) {
-            return HolidayDTO.builder()
-                    .dateKind((String) json.get("dateKind"))
-                    .dateName((String) json.get("dateName"))
-                    .isHoliday((json.get("isHoliday").equals("Y")))
-                    .date((String) json.get("locdate"))
-                    .seq((Double) json.get("seq"))
-                    .build();
-        }
-    }
-
     public static boolean isHoliday(LocalDate date) throws IOException {
         String year = String.valueOf(date.getYear());
         String month = String.format("%02d", date.getMonthValue());
@@ -156,5 +133,27 @@ public class HolidayUtil {
         }
 
         return holidayList;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class HolidayDTO {
+        private String dateKind;
+        private String dateName;
+        private boolean isHoliday;
+        private String date;
+        private Double seq;
+
+        public static HolidayDTO of(Map<String, Object> json) {
+            return HolidayDTO.builder()
+                    .dateKind((String) json.get("dateKind"))
+                    .dateName((String) json.get("dateName"))
+                    .isHoliday((json.get("isHoliday").equals("Y")))
+                    .date((String) json.get("locdate"))
+                    .seq((Double) json.get("seq"))
+                    .build();
+        }
     }
 }

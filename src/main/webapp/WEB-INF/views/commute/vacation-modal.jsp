@@ -4,7 +4,7 @@
     <div class="modal-content surface-bright">
         <div class="modal-header">
             <h2>휴가 사용 현황</h2>
-            <span class="close">&times;</span>
+            <span class="material-icons">close</span>
         </div>
         <div class="modal-body">
             <div class="vacation-history">
@@ -14,6 +14,7 @@
                         <th>일자</th>
                         <th>구분</th>
                         <th>사용일수</th>
+                        <th>사유</th>
                         <th>상태</th>
                     </tr>
                     </thead>
@@ -29,7 +30,10 @@
                                 </c:choose>
                             </td>
                             <td>
-                                    ${item.vacationDate}일
+                                    ${(item.vacationDate == null) ? 0 : item.vacationDate}일
+                            </td>
+                            <td>
+                                ${item.reason}
                             </td>
                             <td>
                                 <c:choose>
@@ -44,5 +48,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>

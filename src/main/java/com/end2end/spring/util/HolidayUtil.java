@@ -16,6 +16,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -139,5 +140,21 @@ public class HolidayUtil {
         }
 
         return false;
+    }
+
+    public static List<HolidayDTO> getPeriodHolidayList(LocalDate startDate, LocalDate endDate) throws IOException {
+        List<HolidayDTO> holidayList = new ArrayList<>();
+
+        LocalDate currentDate = startDate;
+        while (!currentDate.isAfter(endDate)) {
+            String currentYear = String.valueOf(currentDate.getYear());
+            String currentMonth = String.format("%02d", currentDate.getMonthValue());
+
+            holidayList.addAll(HolidayUtil.generateHolidayList(currentYear, currentMonth));
+
+            currentDate = currentDate.plusMonths(1);
+        }
+
+        return holidayList;
     }
 }

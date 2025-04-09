@@ -143,13 +143,15 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public List<EventDTO> selectPeriodWorkState(SelectPeriodDTO dto) {
+    public List<EventDTO> selectPeriodWorkState(SelectPeriodDTO dto) throws IOException {
         List<CommuteStateDTO> commutePeriodList = commuteDAO.selectByPeriod(dto);
         List<CommuteStateDTO> solderingPeriodList = solderingDAO.selectByPeriod(dto);
         List<VacationDTO> vacationPeriodList = vacationDAO.selectByPeriod(dto);
 
         LocalDate start = dto.getStartDate().toLocalDate();
         LocalDate end = dto.getEndDate().toLocalDate();
+
+        List<HolidayUtil.HolidayDTO> holidayList = HolidayUtil.getPeriodHolidayList(start, end);
 
         List<CommuteStateDTO> list = new ArrayList<>();
         for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
@@ -176,6 +178,11 @@ public class CommuteServiceImpl implements CommuteService {
                 vacationPeriodList.stream()
                         .map(vacationDTO ->
                                 EventDTO.convertFromVacation(vacationDTO, start, end))
+                        .collect(Collectors.toList()));
+
+        result.addAll(
+                holidayList.stream()
+                        .map(EventDTO::convertFromHoliday)
                         .collect(Collectors.toList()));
 
         return result;

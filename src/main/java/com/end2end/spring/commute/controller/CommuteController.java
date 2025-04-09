@@ -105,7 +105,7 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/select/period")
-    public List<EventDTO> selectPeriodWorkState(HttpSession session, SelectPeriodDTO dto) {
+    public List<EventDTO> selectPeriodWorkState(HttpSession session, SelectPeriodDTO dto) throws IOException {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         dto.setEmployeeId(employee.getId());
 

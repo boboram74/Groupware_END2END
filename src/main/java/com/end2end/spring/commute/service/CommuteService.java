@@ -15,5 +15,5 @@ public interface CommuteService {
     int countWorkOnThisWeekByEmployeeId(String employeeId);
     int rateWorkOnThisWeekByEmployeeId(String employeeId);
     long sumTotalWorkTimeThisWeekByEmployeeId(String employeeId);
-    List<EventDTO> selectPeriodWorkState(SelectPeriodDTO dto);
+    List<EventDTO> selectPeriodWorkState(SelectPeriodDTO dto) throws IOException;
 }

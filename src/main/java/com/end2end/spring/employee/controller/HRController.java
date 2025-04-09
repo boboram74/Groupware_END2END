@@ -82,8 +82,10 @@ public class HRController {
         // TODO: 직원 데이터 수정
     }
 
-    @RequestMapping("/delete/{id}")
-    public void deleteById(@PathVariable int id) {
+    @RequestMapping("/deleteById/{id}")
+    public String deleteById(@PathVariable String id) {
         // TODO: 해당 id의 직원 데이터 삭제
+        employeeService.deleteById(id);
+        return "redirect:/hr/list";
     }
 }

@@ -21,4 +21,5 @@ public class VacationDTO {
     private String reason;
     private String type;
     private Timestamp regDate;
+    private String submitYn;
 }

@@ -18,25 +18,22 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach begin="1" end="10" varStatus="status">
+                    <c:forEach items="${vacationList}" var="item">
                         <tr>
-                            <td>2024-0${status.index}-01</td>
+                            <td>${item.startDate} ~ ${item.endDate}</td>
                             <td>
                                 <c:choose>
-                                    <c:when test="${status.index % 3 == 0}">연차</c:when>
-                                    <c:when test="${status.index % 3 == 1}">반차</c:when>
+                                    <c:when test="${item.type.equals('ANNUAL')}">연차</c:when>
+                                    <c:when test="${item.type.equlas('HALF')}">반차</c:when>
                                     <c:otherwise>병가</c:otherwise>
                                 </c:choose>
                             </td>
                             <td>
-                                <c:choose>
-                                    <c:when test="${status.index % 3 == 1}">0.5일</c:when>
-                                    <c:otherwise>1일</c:otherwise>
-                                </c:choose>
+                                    ${item.vacationDate}일
                             </td>
                             <td>
                                 <c:choose>
-                                    <c:when test="${status.index % 2 == 0}">승인</c:when>
+                                    <c:when test="${item.submitYn.equals('Y')}">승인</c:when>
                                     <c:otherwise>대기</c:otherwise>
                                 </c:choose>
                             </td>

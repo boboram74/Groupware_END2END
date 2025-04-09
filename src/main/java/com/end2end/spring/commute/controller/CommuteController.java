@@ -69,6 +69,8 @@ public class CommuteController {
         model.addAttribute("totalUsedVacationDates", vacationService.sumTotalUsedVacationDates(employee.getId()));
         model.addAttribute("thisMonthUsedVacationDates", vacationService.sumThisMonthUsedVacationDates(employee.getId()));
 
+        model.addAttribute("vacationList", vacationService.selectByEmployeeId(employee.getId()));
+
         model.addAttribute("active", 0);
 
         return "commute/detail";

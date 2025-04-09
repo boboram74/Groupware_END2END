@@ -95,6 +95,7 @@
 
     <select id="selectByEmployeeId" resultType="com.end2end.spring.commute.dto.VacationDTO">
         SELECT
+            startDate + NUMTODSINTERVAL(vacationDate, 'DAY') as endDate,
             VACATION.*,
             CASE
                 WHEN APPROVAL.STATE = 'ONGOING' THEN 'N'

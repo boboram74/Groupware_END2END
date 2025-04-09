@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -69,7 +71,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public List<String> nextId(String approvalId) {
+    public List<ApproverDTO> nextId(String approvalId) {
         return approverDAO.nextId(approvalId);
     }
 
@@ -86,23 +88,31 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         approvalDAO.insert(approvalDTO);
 
+        int order = 0;
         ApproverDTO writer = ApproverDTO.builder()
                 .approvalId(approvalDTO.getId())
                 .employeeId(dto.getEmployeeId())
-                .orders(0)
+                .orders(order++)
                 .submitYn("Y")
                 .submitDate(new Timestamp(System.currentTimeMillis()))
                 .build();
         approverDAO.insertApprover(writer);
 
-        int order = 0;
+        Set<String> added = new HashSet<>();
+        added.add(dto.getEmployeeId());
+
         for (String approverId : dto.getApproverId()) {
+            if (added.contains(approverId)) {
+                continue;
+            }
+
             ApproverDTO approverDTO = ApproverDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(approverId)
                     .orders(order++)
                     .build();
             approverDAO.insertApprover(approverDTO);
+            added.add(approverId);
         }
     }
 
@@ -111,14 +121,23 @@ public class ApprovalServiceImpl implements ApprovalService {
     public void approve(String approvalId, int approverId) {
         approverDAO.updateSubmitYn(approverId, "Y", new Timestamp(System.currentTimeMillis()));
         System.out.println("도착");
-        List<String> nextApprovers = approverDAO.nextId(approvalId);
+        List<ApproverDTO> nextApprovers = approverDAO.nextId(approvalId);
+
+
         System.out.println("도착2"+ " : " + nextApprovers+ " : " + approverId);
         if (nextApprovers == null || nextApprovers.isEmpty()) {
-            approvalDAO.updateState(approvalId, "submit");
+            System.out.println("도착3");
+            approvalDAO.updateState(approvalId, "SUBMIT");
         } else {
-            approvalDAO.updateState(approvalId, "진행중");
+            System.out.println("도착4");
+            approvalDAO.updateState(approvalId, "ONGOING");
         }
-        System.out.println("도착3");
+        System.out.println("도착5");
+
+        // 1. 내 orders 찾기 -> select
+        // 2. 내 orders가 2번 이상이라면, 이전 orders의 null이면 승인 가능 -> select
+        // 3. 승인했을때, 내 다음 order 사람이 존재한다면 -> 기안문 승인 아직 안됨 -> update / select
+        // 4. orders가 없다면, 내가 최종이니깐 SUBMIT  -> select 결과에 따라서 update 진행
     }
 
     @Override

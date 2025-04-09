@@ -95,7 +95,7 @@ public class ApprovalController {
                 return "error/404";
             }
 
-            List<String> nextId = approvalService.nextId(id);
+            List<ApproverDTO> nextId = approvalService.nextId(id);
 
 
             List<Map<String, Object>> approvers = approvalService.selectApproversList(id);

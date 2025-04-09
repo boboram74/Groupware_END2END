@@ -97,9 +97,10 @@
                     approverId: approverId
                 },
                 success: function(response) {
-                    if (response.status === "success") {
+                    if (response === "success") {
                         $('#approverStatus' + approverId).text('승인');
                         $('#approverStatus' + approverId).removeClass('N').addClass('done');
+                        location.reload();
                     } else {
                         alert("승인 처리에 실패했습니다.");
                     }

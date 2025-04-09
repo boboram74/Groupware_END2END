@@ -84,7 +84,7 @@
                             <div class="linePositions">${employee.jobName}</div>
                             <div class="lineEmployeeName">${employee.name}</div>
                             <div class="date"></div>
-                            <input type="hidden" name="approverId" value="employee.id" />
+                            <input type="hidden" name="approverId" value="${employee.id}" />
                         </div>
                     </div>
                     <div class="addBox">

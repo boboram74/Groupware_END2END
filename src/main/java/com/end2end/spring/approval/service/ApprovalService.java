@@ -27,7 +27,7 @@ public interface ApprovalService {
     List<Map<String, Object>> selectApproversList(String approvalId);
     Map<String, Object> selectById(String id);
 
-    List<String> nextId(String approvalId);
+    List<ApproverDTO> nextId(String approvalId);
 
     List<Map<String, Object>> selectByState(String state, String employeeId);
 

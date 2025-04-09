@@ -4,9 +4,7 @@ import com.end2end.spring.commute.dto.CommuteDTO;
 import com.end2end.spring.commute.dto.SelectPeriodDTO;
 import com.end2end.spring.util.EventDTO;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public interface CommuteService {
     boolean isExistByState(String employeeId, String state);

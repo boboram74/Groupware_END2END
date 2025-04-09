@@ -66,8 +66,8 @@
                                 <td>${item.jobName}</td>
                                 <td>${item.role}</td>
                                 <td class="btn">
-                                    <button id="approveBtn" data-id="${item.id}">승인</button>
-                                    <button id="rejectBtn" data-id="${item.id}">반려</button>
+                                    <button type="button" class="approveBtn" data-id="${item.id}">승인</button>
+                                    <button type="button" class="rejectBtn" data-id="${item.id}">반려</button>
                                 </td>
                             </tr>
                         </c:if>

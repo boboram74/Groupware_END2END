@@ -91,8 +91,8 @@
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function() {
             const dimensions = calculateAvailableDimensions();
-            calendar.setOption('height', dimensions.height);
-            adjustCalendarSize();
+            // calendar.setOption('height', dimensions.height);
+            // adjustCalendarSize();
         }, 100);
     });
 </script>

@@ -386,7 +386,31 @@
     .fc-day-sat .day-name { color: blue; }
     .fc-day-sun .day-name { color: red; }
 
+    /* CSS에 추가 */
+    .simple-dot-event {
+        border: none !important;
+    }
 
+    .simple-dot-event::before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: var(--md-sys-color-primary);
+        border-radius: 50%;
+        margin-right: 4px;
+        vertical-align: middle;
+    }
+
+    /* 시간 표시 숨기기 */
+    .fc-event-time {
+        display: none !important;
+    }
+
+    .fc-h-event.simple-dot-event {
+        padding: 0 !important;
+        color: var(--md-sys-color-primary) !important;
+    }
 </style>
 <style>
     .commuteBox {
@@ -799,8 +823,8 @@
             weekNumbers: false,  // 주차 숨기기
             // 캘린더가 처음 마운트되고 이벤트를 로드할 때
             events: function(info, successCallback) {
-                const startDate = parseDate(info.start);
-                const endDate = parseDate(info.end);
+                const startDate = info.start;
+                const endDate = info.end;
                 loadEvents(startDate, endDate, successCallback);
             },
             viewDidMount: function() {
@@ -819,35 +843,19 @@
                     start: info.start,
                     end: info.end
                 });
-            }
-
+            },
+            eventClassNames: 'simple-dot-event'
         });
 
         function parseDate(dates) {
             return dates.getFullYear() + '-' + (dates.getMonth() + 1) + '-' + dates.getDate();
         }
 
-        function toStringDate(date) {
-            try {
-                // LocalDate 객체인 경우
-                if (date && typeof date === 'object' && 'year' in date && 'month' in date && 'day' in date) {
-                    const year = date.year;
-                    const month = String(date.month).padStart(2, '0');
-                    const day = String(date.day).padStart(2, '0');
-
-                    return year + '-' + month + '-' + day;
-                }
-
-                throw new Error('유효하지 않은 LocalDate 형식');
-
-            } catch(e) {
-                return null;
-            }
-        }
-
         function loadEvents(startDate, endDate, successCallback) {
+            const startDateStr = parseDate(startDate);
+            const endDateStr = parseDate(endDate);
             $.ajax({
-                url: '/commute/select/period?startDate=' + startDate + '&endDate=' + endDate,
+                url: '/commute/select/period?startDate=' + startDateStr + '&endDate=' + endDateStr,
                 type: 'GET'
             }).done(function(data) {
                 calendar.removeAllEvents();

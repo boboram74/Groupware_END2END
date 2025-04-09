@@ -123,7 +123,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 newRole = "ADMIN";
                 break;
             case 2:
-                newRole = "TEAM_READER";
+            case 3:
+                newRole = "TEAM_LEADER";
                 break;
             default:
                 newRole = "USER";
@@ -145,6 +146,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteById(String id) {
         // TODO: 해당 id의 사원 삭제
+        employeeDAO.deleteById(id);
     }
 
     @Override

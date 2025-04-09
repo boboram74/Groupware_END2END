@@ -166,7 +166,7 @@ public class CommuteServiceImpl implements CommuteService {
         }
 
         return list.stream()
-                .map(EventDTO::of)
+                .map(EventDTO::convertFromCommuteState)
                 .collect(Collectors.toList());
     }
 }

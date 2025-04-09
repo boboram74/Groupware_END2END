@@ -1,9 +1,11 @@
 package com.end2end.spring.approval.serviceImpl;
 
 import com.end2end.spring.approval.dao.ApprovalDAO;
+import com.end2end.spring.approval.dao.ApprovalRejectDAO;
 import com.end2end.spring.approval.dao.ApproverDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.approval.dto.ApprovalInsertDTO;
+import com.end2end.spring.approval.dto.ApprovalRejectDTO;
 import com.end2end.spring.approval.dto.ApproverDTO;
 import com.end2end.spring.approval.service.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -22,6 +26,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 
     @Autowired
     private ApproverDAO approverDAO;
+
+    @Autowired
+    private ApprovalRejectDAO approvalRejectDAO;
 
     @Override
     public List<ApprovalDTO> myList(String state) {
@@ -69,7 +76,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public List<String> nextId(String approvalId) {
+    public List<ApproverDTO> nextId(String approvalId) {
         return approverDAO.nextId(approvalId);
     }
 
@@ -86,23 +93,31 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         approvalDAO.insert(approvalDTO);
 
+        int order = 0;
         ApproverDTO writer = ApproverDTO.builder()
                 .approvalId(approvalDTO.getId())
                 .employeeId(dto.getEmployeeId())
-                .orders(0)
+                .orders(order++)
                 .submitYn("Y")
                 .submitDate(new Timestamp(System.currentTimeMillis()))
                 .build();
         approverDAO.insertApprover(writer);
 
-        int order = 0;
+        Set<String> added = new HashSet<>();
+        added.add(dto.getEmployeeId());
+
         for (String approverId : dto.getApproverId()) {
+            if (added.contains(approverId)) {
+                continue;
+            }
+
             ApproverDTO approverDTO = ApproverDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(approverId)
                     .orders(order++)
                     .build();
             approverDAO.insertApprover(approverDTO);
+            added.add(approverId);
         }
     }
 
@@ -110,15 +125,26 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public void approve(String approvalId, int approverId) {
         approverDAO.updateSubmitYn(approverId, "Y", new Timestamp(System.currentTimeMillis()));
-        System.out.println("도착");
-        List<String> nextApprovers = approverDAO.nextId(approvalId);
-        System.out.println("도착2"+ " : " + nextApprovers+ " : " + approverId);
+
+        List<ApproverDTO> nextApprovers = approverDAO.nextId(approvalId);
+
         if (nextApprovers == null || nextApprovers.isEmpty()) {
-            approvalDAO.updateState(approvalId, "submit");
+            approvalDAO.updateState(approvalId, "SUBMIT");
         } else {
-            approvalDAO.updateState(approvalId, "진행중");
+            approvalDAO.updateState(approvalId, "ONGOING");
         }
-        System.out.println("도착3");
+
+    }
+
+    @Transactional
+    @Override
+    public void rejectApproval(ApprovalRejectDTO rejectDTO) {
+
+        approvalRejectDAO.insertReject(rejectDTO);
+
+        approverDAO.updateSubmitYn(rejectDTO.getApproverId(), "N", new Timestamp(System.currentTimeMillis()));
+
+        approvalDAO.updateState(rejectDTO.getApprovalId(), "REJECT");
     }
 
     @Override

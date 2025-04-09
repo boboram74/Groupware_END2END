@@ -6,6 +6,7 @@ import com.end2end.spring.commute.dao.VacationDAO;
 import com.end2end.spring.commute.dto.*;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
+import com.end2end.spring.util.EventDTO;
 import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,23 +141,20 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public List<Map<String, Object>> selectPeriodWorkState(SelectPeriodDTO dto) {
+    public List<EventDTO> selectPeriodWorkState(SelectPeriodDTO dto) {
         List<CommuteStateDTO> commutePeriodList = commuteDAO.selectByPeriod(dto);
         List<CommuteStateDTO> solderingPeriodList = solderingDAO.selectByPeriod(dto);
 
         LocalDate start = dto.getStartDate().toLocalDate();
         LocalDate end = dto.getEndDate().toLocalDate();
 
-        List<Map<String, Object>> mapList = new ArrayList<>();
+        List<CommuteStateDTO> list = new ArrayList<>();
         for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
-            Map<String, Object> map = new HashMap<>();
-
             LocalDate finalDate = date;
-            List<CommuteStateDTO> list = new ArrayList<>();
 
             List<CommuteStateDTO> commuteLocalDateList = commutePeriodList.stream()
                     .filter(commuteStateDTO ->
-                        commuteStateDTO.getDates().toLocalDate().equals(finalDate))
+                            commuteStateDTO.getDates().toLocalDate().equals(finalDate))
                     .collect(Collectors.toList());
             list.addAll(commuteLocalDateList);
 
@@ -165,14 +163,10 @@ public class CommuteServiceImpl implements CommuteService {
                             commuteStateDTO.getDates().toLocalDate().equals(finalDate))
                     .collect(Collectors.toList());
             list.addAll(solderingLocalDateList);
-
-            map.put("date", date);
-            map.put("events", list);
-            mapList.add(map);
         }
 
-
-
-        return mapList;
+        return list.stream()
+                .map(EventDTO::of)
+                .collect(Collectors.toList());
     }
 }

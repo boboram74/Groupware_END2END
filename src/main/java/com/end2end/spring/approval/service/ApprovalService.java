@@ -2,6 +2,7 @@ package com.end2end.spring.approval.service;
 
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.approval.dto.ApprovalInsertDTO;
+import com.end2end.spring.approval.dto.ApprovalRejectDTO;
 import com.end2end.spring.approval.dto.ApproverDTO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +28,7 @@ public interface ApprovalService {
     List<Map<String, Object>> selectApproversList(String approvalId);
     Map<String, Object> selectById(String id);
 
-    List<String> nextId(String approvalId);
+    List<ApproverDTO> nextId(String approvalId);
 
     List<Map<String, Object>> selectByState(String state, String employeeId);
 
@@ -37,6 +38,6 @@ public interface ApprovalService {
 
     void deleteById(String id);
     void approve(String approvalId, int approverId);
-
+    void rejectApproval(ApprovalRejectDTO rejectDTO);
     void submit(boolean isSubmit);
 }

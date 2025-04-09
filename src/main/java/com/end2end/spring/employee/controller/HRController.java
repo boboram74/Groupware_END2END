@@ -63,10 +63,11 @@ public class HRController {
         return "redirect:/";
     }
 
-    @RequestMapping("/roleUpdate")
-    public void roleUpdate(@RequestParam("id") String id) {
+    @RequestMapping("/roleUpdate/{id}")
+    public String roleUpdate(@PathVariable("id") String id) {
         // TODO: 인사팀에서 승인하면 권한 추가
         employeeService.roleUpdate(id);
+        return "redirect:/hr/list";
     }
 
     @RequestMapping("/idCheck")

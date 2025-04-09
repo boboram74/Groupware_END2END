@@ -4,6 +4,7 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.util.HolidayUtil;
+import com.end2end.spring.works.dto.ProjectSelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,8 +47,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/contact")
-	public String toContact() {
+	public String selectContactList(Model model) {
 		// TODO: 연락처 페이지 출력
+		List<EmployeeDTO> contactList = employeeService.selectContactList();
+		model.addAttribute("contactList", contactList);
 		return "main/contact";
 	}
 

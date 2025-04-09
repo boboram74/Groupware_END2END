@@ -1,7 +1,6 @@
 package com.end2end.spring.employee.dao;
 
 import com.end2end.spring.employee.dto.*;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -65,6 +64,10 @@ public class EmployeeDAO {
 
     public void deleteById(String id) {
         mybatis.delete("employee.deleteById", id);
+    }
+
+    public List<EmployeeDTO> selectContactList() {
+        return mybatis.selectList("employee.selectContactList");
     }
 
 }

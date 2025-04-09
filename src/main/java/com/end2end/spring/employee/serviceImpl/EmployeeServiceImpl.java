@@ -163,4 +163,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<JobDTO> selectAllJob() {
         return employeeDAO.selectAllJob();
     }
+
+    @Override
+    public List<EmployeeDTO> selectContactList() {
+        return employeeDAO.selectContactList();
+    }
 }

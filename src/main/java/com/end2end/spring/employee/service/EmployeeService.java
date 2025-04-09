@@ -20,4 +20,5 @@ public interface EmployeeService {
     List<EmployeeDTO> selectByDepartmentId(int departmentId);
     List<DepartmentDTO> selectAllDepartment();
     List<JobDTO> selectAllJob();
+    List<EmployeeDTO> selectContactList();
 }

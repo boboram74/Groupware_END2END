@@ -146,6 +146,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteById(String id) {
         // TODO: 해당 id의 사원 삭제
+        employeeDAO.deleteById(id);
     }
 
     @Override

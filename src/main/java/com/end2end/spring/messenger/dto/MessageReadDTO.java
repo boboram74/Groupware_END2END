@@ -11,10 +11,9 @@ import java.sql.Timestamp;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageDTO {
+public class MessageReadDTO {
     private Integer id;
-    private Integer messageRoomId;
-    private String employeeId;
-    private String content;
+    private Integer messageId;
+    private Integer messageRoomUserId;
     private Timestamp regdate;
 }

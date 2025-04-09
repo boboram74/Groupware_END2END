@@ -6,6 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,21 +23,29 @@ public class EventDTO {
     private String endDate;
     private boolean allDay;
     private String display;
+    private String backgroundColor;
 
-    public static EventDTO of(CommuteStateDTO dto) {
+    public static EventDTO convertFromCommuteState(CommuteStateDTO dto) {
         String title = "";
+        String backgroundColor = "";
         if (dto.getState().equals("WORK_ON")) {
             title = "출근";
+            backgroundColor = "black";
         } else if (dto.getState().equals("WORK_OFF")) {
             title = "퇴근";
+            backgroundColor = "black";
         } else if (dto.getState().equals("LATE")) {
             title = "지각";
+            backgroundColor = "blue";
         } else if (dto.getState().equals("LEAVE_EARLY")) {
             title = "조퇴";
+            backgroundColor = "blue";
         } else if (dto.getState().equals("ABSENCE")) {
             title = "결석";
+            backgroundColor = "blue";
         } else if (dto.getState().equals("NOT_CHECK")) {
             title = "퇴근 미체크";
+            backgroundColor = "blue";
         }
 
         String parseStartDate = dto
@@ -43,6 +58,21 @@ public class EventDTO {
                 .startDate(parseStartDate)
                 .allDay(true)
                 .display("block")
+                .backgroundColor(backgroundColor)
+                .build();
+    }
+
+    public static EventDTO convertFromHoliday(HolidayUtil.HolidayDTO dto) {
+        String newDate = LocalDate.parse(dto.getDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
+                .atStartOfDay()  // 시작 시간을 00:00:00으로 설정
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        return EventDTO.builder()
+                .title(dto.getDateName())
+                .startDate(Timestamp.valueOf(newDate).toInstant().toString())
+                .allDay(true)
+                .display("block")
+                .backgroundColor("red")
                 .build();
     }
 }

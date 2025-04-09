@@ -94,4 +94,10 @@
         SET role = #{role}
         WHERE id = #{id}
     </update>
+
+    <select id="idVali" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM EMPLOYEE_DETAIL
+        WHERE loginId = #{loginId}
+    </select>
 </mapper>

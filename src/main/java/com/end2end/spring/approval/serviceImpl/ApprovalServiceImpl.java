@@ -1,9 +1,11 @@
 package com.end2end.spring.approval.serviceImpl;
 
 import com.end2end.spring.approval.dao.ApprovalDAO;
+import com.end2end.spring.approval.dao.ApprovalRejectDAO;
 import com.end2end.spring.approval.dao.ApproverDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.approval.dto.ApprovalInsertDTO;
+import com.end2end.spring.approval.dto.ApprovalRejectDTO;
 import com.end2end.spring.approval.dto.ApproverDTO;
 import com.end2end.spring.approval.service.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 
     @Autowired
     private ApproverDAO approverDAO;
+
+    @Autowired
+    private ApprovalRejectDAO approvalRejectDAO;
 
     @Override
     public List<ApprovalDTO> myList(String state) {
@@ -120,24 +125,26 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public void approve(String approvalId, int approverId) {
         approverDAO.updateSubmitYn(approverId, "Y", new Timestamp(System.currentTimeMillis()));
-        System.out.println("도착");
+
         List<ApproverDTO> nextApprovers = approverDAO.nextId(approvalId);
 
-
-        System.out.println("도착2"+ " : " + nextApprovers+ " : " + approverId);
         if (nextApprovers == null || nextApprovers.isEmpty()) {
-            System.out.println("도착3");
             approvalDAO.updateState(approvalId, "SUBMIT");
         } else {
-            System.out.println("도착4");
             approvalDAO.updateState(approvalId, "ONGOING");
         }
-        System.out.println("도착5");
 
-        // 1. 내 orders 찾기 -> select
-        // 2. 내 orders가 2번 이상이라면, 이전 orders의 null이면 승인 가능 -> select
-        // 3. 승인했을때, 내 다음 order 사람이 존재한다면 -> 기안문 승인 아직 안됨 -> update / select
-        // 4. orders가 없다면, 내가 최종이니깐 SUBMIT  -> select 결과에 따라서 update 진행
+    }
+
+    @Transactional
+    @Override
+    public void rejectApproval(ApprovalRejectDTO rejectDTO) {
+
+        approvalRejectDAO.insertReject(rejectDTO);
+
+        approverDAO.updateSubmitYn(rejectDTO.getApproverId(), "N", new Timestamp(System.currentTimeMillis()));
+
+        approvalDAO.updateState(rejectDTO.getApprovalId(), "REJECT");
     }
 
     @Override

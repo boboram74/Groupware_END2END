@@ -2,7 +2,42 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/commute/commute-header.jsp"/>
 <style>
+    .box {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* 전체 높이 사용 */
+        border-radius: 8px;
+    }
 
+    .box-title {
+        padding: 15px;
+        font-size: 20px;
+        font-weight: 600;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+        flex-shrink: 0; /* 크기 고정 */
+    }
+
+    .box-content {
+        flex: 1; /* 남은 공간 모두 사용 */
+        padding: 20px;
+        display: flex; /* flex 컨테이너로 설정 */
+        flex-direction: column; /* 세로 방향 정렬 */
+    }
+
+    .commute-list-wrapper {
+        display: grid;
+        grid-template-rows: repeat(9, 1fr);
+        gap: 20px;
+        flex: 1;
+    }
+
+    .department-info-box {
+        grid-row: span 3;
+    }
+
+    .group-schedule-list-box {
+        grid-row: span 6;
+    }
 </style>
 <div class="search">
     <div>
@@ -19,7 +54,18 @@
         <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
     </div>
 </div>
-<div class="content">
-
+<div class="commute-list-wrapper">
+    <div class="box department-info-box surface-bright">
+        <div class="box-title">
+            ${employee.departmentName}
+        </div>
+        <div class="box-content department-info-content"></div>
+    </div>
+    <div class="box group-schedule-list-box surface-bright">
+        <div class="box-title">
+            부서 근무 현황
+        </div>
+        <div class="box-content" id="calender"></div>
+    </div>
 </div>
 <jsp:include page="/WEB-INF/views/commute/commute-footer.jsp"/>

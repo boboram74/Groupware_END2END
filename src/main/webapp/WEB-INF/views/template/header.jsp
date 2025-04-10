@@ -54,6 +54,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      font-size: x-large;
     }
 
     .logo h3 {
@@ -66,7 +67,7 @@
     }
 
     .menu-items {
-      padding: 20px 0;
+      padding: 30px 0;
     }
 
     .menu-item {

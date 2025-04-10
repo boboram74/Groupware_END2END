@@ -96,7 +96,6 @@ public class BoardController {
 
     @RequestMapping("/insert")
     public String insert(HttpSession session, BoardDTO dto,  @RequestParam("file") MultipartFile file)throws Exception {
-
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         boardService.insert(dto);
         // TODO: 게시글 입력을 받음

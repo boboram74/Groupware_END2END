@@ -393,9 +393,6 @@
     //     location.href = '/project/update/' + id;
     // }
 
-
-
-
     function deleteProject(id) {
         if(confirm("정말 프로젝트를 삭제 하시겠습니까?"))
         location.href = '/project/delete/' + id;

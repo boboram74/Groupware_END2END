@@ -56,7 +56,10 @@
         EMPLOYEEID =#{employeeId}
 
     </select>
-
+<select id="selectByworksId" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+    SELECT * FROM PROJECT_WORK
+    WHERE ID = #{id}
+</select>
 
 
     <!-- 프로젝트 진행중 보고된 게시물 추가 -->

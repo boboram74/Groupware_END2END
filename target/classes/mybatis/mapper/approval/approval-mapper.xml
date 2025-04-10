@@ -16,10 +16,16 @@
     </select>
 
     <select id="selectByState" resultType="map">
-        SELECT DISTINCT a.*, e.name AS drafterName
+        SELECT a.id AS ID,
+               a.title AS TITLE,
+               a.state AS STATE,
+               a.regDate AS REGDATE,
+               e.name AS DRAFTERNAME,
+               af.name AS FORMNAME
         FROM approval a
                  JOIN approver ap ON a.id = ap.approvalid
                  JOIN employee e ON a.employeeid = e.id
+                 JOIN approval_form af ON a.approvalformid = af.id
         WHERE ap.employeeid = #{employeeId}
           AND a.state = #{state}
     </select>
@@ -48,6 +54,24 @@
         SELECT *
         FROM APPROVAL_FORM
         WHERE id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="search" resultType="map">
+        SELECT a.id AS ID,
+               a.title AS TITLE,
+               a.state AS STATE,
+               a.regDate AS REGDATE,
+               e.name AS DRAFTERNAME,
+               af.name AS FORMNAME
+        FROM approval a
+                 JOIN approver ap ON a.id = ap.approvalid
+                 JOIN employee e ON a.employeeid = e.id
+                 JOIN approval_form af ON a.APPROVALFORMID = af.id
+        WHERE ap.employeeid = #{employeeId}
+          AND a.state = #{state}
+          AND (a.title LIKE '%' || #{keyword} || '%'
+            OR e.name LIKE '%' || #{keyword} || '%'
+            OR af.name LIKE '%' || #{keyword} || '%')
     </select>
 
 </mapper>

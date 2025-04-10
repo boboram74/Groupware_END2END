@@ -76,10 +76,6 @@
       position: relative;
     }
 
-    .menu-item:hover {
-      background-color: #34495e;
-    }
-
     .menu-item i {
       width: 24px;
       margin-right: 10px;
@@ -204,9 +200,10 @@
 
     .icon-button:hover {
       background-color: rgba(0, 0, 0, 0.05);
+      color: var(--md-sys-color-secondary-hover);
     }
 
-    .icon-button .material-symbols-outlined {
+    .icon-button .material-icons {
       font-size: 28px;
       color: var(--md-sys-color-secondary);
     }
@@ -224,15 +221,6 @@
       text-align: center;
     }
 
-
-    html.dark .icon-button i {
-      color: #eee;
-    }
-
-    html.dark .icon-button:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
     .boxContents {
       flex: 1;
       padding: 20px;
@@ -245,7 +233,6 @@
       left: -100%;
       width: 100%;
       height: 100vh;
-      background-color: rgba(0, 0, 0, 0.7);
       z-index: 1100;
       backdrop-filter: blur(5px);
       transition: all 0.3s ease-in-out;
@@ -327,7 +314,6 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: #2c3e50;
       padding: 10px 0;
       z-index: 1000;
     }
@@ -591,7 +577,7 @@
     </div>
 
     <!-- 모바일 네비게이션 -->
-    <div class="mobile-nav">
+    <div class="mobile-nav sidebar-color">
       <div class="mobile-nav-scroll-container">
         <div class="mobile-menu">
           <a href="#" class="mobile-menu-item">

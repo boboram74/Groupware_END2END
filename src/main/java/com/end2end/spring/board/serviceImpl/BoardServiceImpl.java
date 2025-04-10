@@ -51,7 +51,6 @@ public class BoardServiceImpl implements BoardService {
         // TODO: 게시글 입력
     }
 
-
     @Override
     public void update(BoardDTO dto) {
         // TODO: 게시글 수정

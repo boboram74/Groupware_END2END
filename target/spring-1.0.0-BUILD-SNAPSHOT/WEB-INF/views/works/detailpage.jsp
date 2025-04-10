@@ -182,7 +182,7 @@ height: 80%;
         margin: 0;
     }
 
-    .detail-menu-item {
+    .detailMenuItem {
         display: flex;
         align-items: center;
         padding: 8px 12px;
@@ -193,7 +193,7 @@ height: 80%;
         color: var(--md-sys-color-secondary);
     }
 
-    .detail-menu-item:hover {
+    .detailMenuItem:hover {
         background-color: #f5f5f5;
     }
 
@@ -579,21 +579,21 @@ height: 80%;
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item">
+            <li class="detailMenuItem">
                 <span class="material-icons">star</span>
                 <span>프로젝트 모음</span>
                 <span class="detail-badge">5</span>
             </li>
-            <li class="detail-menu-item">
+            <li class="detailMenuItem">
                 <span class="material-icons">all_inbox</span>
                 <span>전체 메일함</span>
                 <span class="detail-badge">32</span>
             </li>
-            <li class="detail-menu-item">
+            <li class="detailMenuItem">
                 <span class="material-icons">send</span>
                 <span>보낸 메일함</span>
             </li>
-            <li class="detail-menu-item">
+            <li class="detailMenuItem">
                 <span class="material-icons">move_to_inbox</span>
                 <span class="detail-menu-disc">받은 메일함</span>
                 <span class="detail-badge">12</span>
@@ -626,14 +626,13 @@ height: 80%;
         </div>
 
 
-
         <div class="projectHeader">
             <h2>프로젝트 : ${project.name}</h2>
             <div class="projectTime">
                 <span>기간: ${project.regDate} ~ ${project.deadLine}</span>
 
             </div>
-            <a href="/work/write">
+            <a href="/work/write/${project.id}">
             <button>작성하기</button></a>
 
         </div>
@@ -642,7 +641,7 @@ height: 80%;
         <div class="movingBoard">
             <!-- 시작전 -->
             <div class="movingBoardColumn ready-column surface-bright" data-status="READY" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 class="columnTitle">시작전</h3>
+                <h3 class="column-title">시작전</h3>
                 <div class="work-items">
                     <c:forEach items="${list}" var="work">
                         <c:if test="${work.state == 'ONGOING'}">
@@ -704,12 +703,12 @@ height: 80%;
                         <input type="hidden" name="id">
                         <input type="hidden" name="projectId" value="${project.id}">
 
-                        <div class="mb-3">
+                        <div>
                             <label>제목</label>
                             <input type="text" class="form-control" name="title">
                         </div>
 
-                        <div class="mb-3">
+                        <div>
                             <label>상태</label>
                             <select class="form-select" name="state">
                                 <option value="TODO">해야할 일</option>
@@ -718,7 +717,7 @@ height: 80%;
                             </select>
                         </div>
 
-                        <div class="mb-3">
+                        <div>
                             <label>우선순위</label>
                             <select class="form-select" name="priority">
                                 <option value="HIGH">높음</option>
@@ -727,12 +726,12 @@ height: 80%;
                             </select>
                         </div>
 
-                        <div class="mb-3">
+                        <div>
                             <label>내용</label>
                             <textarea class="form-control" name="content"></textarea>
                         </div>
 
-                        <div class="mb-3">
+                        <div>
                             <label>파일 첨부</label>
                             <input type="file" class="form-control" multiple>
                         </div>
@@ -747,8 +746,8 @@ height: 80%;
     </div>
     <script>
         $(document).ready(function() {
-            $('.detail-menu-item').on('click', function() {
-                $('.detail-menu-item').removeClass('active');
+            $('.detailMenuItem').on('click', function() {
+                $('.detailMenuItem').removeClass('active');
                 $(this).addClass('active');
                 // 클릭 이벤트 처리 로직
             });

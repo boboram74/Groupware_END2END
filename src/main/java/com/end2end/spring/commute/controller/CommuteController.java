@@ -115,17 +115,8 @@ public class CommuteController {
         return commuteService.selectPeriodWorkState(dto);
     }
 
-    @ResponseBody
     @RequestMapping("/test")
-    public boolean leaveEarly(HttpSession session) throws IOException {
-        //List<HolidayUtil.HolidayDTO> list = HolidayUtil.generateHolidayList(year, month);
-
-        return HolidayUtil.isHoliday(LocalDate.now());
-/*
-        return list.stream()
-                .map(EventDTO::convertFromHoliday)
-                .collect(Collectors.toList());
-
- */
+    public String leaveEarly(HttpSession session) throws IOException {
+        return "hr/hr-test";
     }
 }

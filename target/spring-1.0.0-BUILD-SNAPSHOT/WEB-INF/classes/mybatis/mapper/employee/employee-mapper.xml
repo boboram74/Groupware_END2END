@@ -110,4 +110,10 @@
         FROM EMPLOYEE_DETAIL
         WHERE loginId = #{loginId}
     </select>
+
+    <select id="countNoAuth" resultType="Integer">
+        SELECT COUNT(*)
+        FROM EMPLOYEE
+        WHERE role = 'NO_AUTH'
+    </select>
 </mapper>

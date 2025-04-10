@@ -29,7 +29,8 @@ public class HRController {
         // TODO: 직원 관리 페이지로 이동
         List<EmployeeDTO> list = employeeService.selectAll();
         model.addAttribute("employeeList", list);
-        return "hr/list";
+        model.addAttribute("isNoAuthExist", employeeService.isNoAuthExist());
+        return "hr/hr-test";
     }
 
     @RequestMapping("/list/search")

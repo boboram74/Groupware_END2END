@@ -43,7 +43,7 @@
 
     /* Surface / Border Colors */
     --md-sys-color-outline: #ddd;        /* 라이트 모드 테두리 색상 */
-    --md-sys-color-outline-variant: #e5e5e5;  /* 라이트 모드 보조 테두리 */
+    --md-sys-color-outline-variant: #cacaca; /* 라이트 모드 보조 테두리 */
     --md-sys-color-surface-variant: #f5f5f5;  /* 라이트 모드 표면 변형 */
 
     --md-sys-color-surface-container: #f8f9fa;
@@ -94,7 +94,7 @@
 
     /* Surface / Border Colors */
     --md-sys-color-outline: #2a2d31;         /* 메인 테두리 색상 */
-    --md-sys-color-outline-variant: #22252a;  /* 보조 테두리 (메인보다 약간 어두움) */
+    --md-sys-color-outline-variant: #2d3035; /* 보조 테두리 (메인보다 약간 어두움) */
     --md-sys-color-surface-variant: #1a1d22;  /* 표면 변형 (가장 어두움) */
 
     --md-sys-color-surface-container: #3c4044;

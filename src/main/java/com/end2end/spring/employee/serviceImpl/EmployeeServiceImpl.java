@@ -28,8 +28,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private MailDAO mailDAO;
     @Autowired
     private BoardDAO boardDAO;
-    @Autowired
-    private CommuteDAO commuteDAO;
 
     @Override
     public EmployeeDTO selectById(String id) {

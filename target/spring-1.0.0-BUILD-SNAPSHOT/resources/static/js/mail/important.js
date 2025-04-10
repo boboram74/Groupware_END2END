@@ -1,4 +1,3 @@
-
 $(function () {
     let cpage = sessionStorage.getItem("page") || 1;
     $.ajax({
@@ -11,7 +10,7 @@ $(function () {
         for(let i = 0; i < list.length; i++) {
             let tr = $('<tr>');
             tr.append(
-                $('<td style="width: 5%; text-align: center;">').html('<input class="childCheckbox" style="zoom: 1.5;" type="checkbox">')
+                $('<td>').html('<input class="childCheckbox" type="checkbox">')
             );
             if (list[i].importantYn === "Y") {
                 tr.append(
@@ -30,11 +29,15 @@ $(function () {
             } else {
                 tr.append($('<td>'));
             }
-            let a = $('<a>').attr('href', '/mail/' + list[i].id + '/' + list[i].esId).text(list[i].title);
+            let a = $('<span>').text(list[i].title);
             if (list[i].readYn === "Y") {
-                a.css("color", "#ccc");
+                a.addClass('read-column');
             }
             tr.append($('<td>').append(a).addClass('contents').attr('id', list[i].id));
+
+            a.on('click', function() {
+                window.location.href = '/mail/' + list[i].id + '/' + list[i].esId;
+            })
 
             let rawDate = list[i].regdate;
             if (typeof rawDate !== 'string') {
@@ -47,7 +50,7 @@ $(function () {
             } else {
                 tr.append($('<td>').addClass('relative-date').html("날짜 정보 없음"));
             }
-            $('#buttons').before(tr);
+            $('.mailList').append(tr);
         }
         let pagingTr = $('<tr>');
         let pagingTd = $('<td colspan="5" style="text-align: center;">');
@@ -58,6 +61,10 @@ $(function () {
         // 페이지 번호
         for(let i = resp.startNavi; i <= resp.endNavi; i++) {
             let pageSpan = $('<span>').addClass('paging').attr("page", i).html(i);
+            if (i == cpage) {
+                pageSpan.addClass('active');
+            }
+
             pagingTd.append(pageSpan);
         }
         // 다음 버튼

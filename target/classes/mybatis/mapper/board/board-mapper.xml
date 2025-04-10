@@ -3,11 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
-    <select id="selectCategoryByName" resultType="com.end2end.spring.board.dto.BoardCategoryDTO">
-        SELECT * FROM BOARD_CATEGORY WHERE NAME = #{name}
+
+    <select id="toList" resultType="com.end2end.spring.board.dto.BoardDTO">
+    select * from board
     </select>
-    <insert id="insertBoardCtUser">
-        INSERT INTO BOARD_CT_USER(id,employeeId, boardCtId)
-        VALUES (BOARD_CT_USER_ID_SEQ.NEXTVAL,#{employeeId},${boardCtId})
+
+    <select id="selectByCategoryId" resultType="com.end2end.spring.board.dto.BoardDTO">
+        SELECT * FROM BOARD
+    </select>
+
+    <delete id="boardId">
+            delete * board where id = #{id}
+    </delete>
+
+    <select id="selectById" resultType="com.end2end.spring.board.dto.BoardDTO">
+        select * from board where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.end2end.spring.board.dto.BoardDTO">
+        insert into board (id, boardCtId, employeeId, title, content) values (board_id_seq.nextval, #{boardCtId,jdbcType=INTEGER}, #{employeeId}, #{title}, #{content})
     </insert>
+
+
 </mapper>

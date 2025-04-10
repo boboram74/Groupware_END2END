@@ -6,8 +6,10 @@ import com.end2end.spring.works.dto.ProjectDTO;
 import com.end2end.spring.works.dto.ProjectInsertDTO;
 
 import com.end2end.spring.works.dto.ProjectSelectDTO;
+import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.service.ProjectService;
 
+import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private ProjectWorkService wserv;
+
 
         @RequestMapping("/main")
         public String main(HttpSession session,Model model) {
@@ -72,8 +77,12 @@ public class ProjectController {
     public String detail(@PathVariable int id, Model model) {
             System.out.println("디테일 프젝 컨트롤러 도착");
             ProjectDTO project = projectService.selectById(id);//프로젝트 아이디를 받아서 정보를 가져오도록
+        List<ProjectWorkDTO>list =  wserv.selectAll();
+
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
+        model.addAttribute("works", list);
+
         return "works/detailpage";
     }
 

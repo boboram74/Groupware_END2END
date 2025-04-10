@@ -39,8 +39,11 @@ mybatis.update("works.update",dto);
     }
 
     public void deleteById(int id) {
-mybatis.delete("works.deleteById",id);
+    mybatis.delete("works.deleteById",id);
     }
+        public ProjectWorkDTO selectByworksId(int id){
+        return mybatis.selectOne("works.selectByworksId",id);
+        }
 
     public void toggleState(int id) {
         // select * from POJECT_WORK WHERE id = ${id} => state값 추출

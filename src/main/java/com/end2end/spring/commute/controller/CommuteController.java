@@ -81,6 +81,7 @@ public class CommuteController {
         // TODO: 해당 id의 부서의 list.jsp로 이동
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         List<EmployeeDTO> employeeList = employeeService.selectByDepartmentId(employee.getDepartmentId());
+        model.addAttribute("employeeList", employeeList);
 
         return "commute/list";
     }

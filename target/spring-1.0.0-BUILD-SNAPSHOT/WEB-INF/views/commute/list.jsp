@@ -26,17 +26,16 @@
 
     .commute-list-wrapper {
         display: grid;
-        grid-template-rows: repeat(9, 1fr);
         gap: 20px;
         flex: 1;
     }
 
     .department-info-box {
-        grid-row: span 3;
+        height: 300px;
     }
 
     .group-schedule-list-box {
-        grid-row: span 6;
+        flex: 1;
     }
 </style>
 <div class="search">
@@ -68,4 +67,24 @@
         <div class="box-content" id="calender"></div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        const calender = new FullCalendar.Calendar(document.getElementById('calender'), {
+            resources: [],
+            initialView: 'resourceTimelineWeek',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'listWeek'
+            },
+            events: [
+                {}
+            ],
+            eventClick: function (info) {
+                window.location.href = "/commute/detail?id=" + info.event.id;
+            }
+        });
+        calender.render();
+    })
+</script>
 <jsp:include page="/WEB-INF/views/commute/commute-footer.jsp"/>

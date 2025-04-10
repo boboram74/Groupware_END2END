@@ -3,12 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="vacation">
-    <insert id="insert">
+    <insert id="insertUsableVacation">
         INSERT INTO VACATION_MANAGEMENT(id, employeeId, dates, reason)
         VALUES (VACATION_MENAGEMENT_ID_SEQ.nextval, #{employeeId}, ${dates}, #{reason})
     </insert>
 
-    <insert id="requestVacation">
+    <insert id="insert">
         INSERT INTO VACATION(id, employeeId, vacationDate, approvalId, startDate, reason, type)
         VALUES (VACATION_ID_SEQ.nextval, #{employeeId}, ${vacationDate}, #{approvalId}, #{startDate}, #{reason}, #{type})
     </insert>

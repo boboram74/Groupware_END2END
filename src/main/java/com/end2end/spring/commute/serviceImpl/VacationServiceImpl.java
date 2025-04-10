@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -38,11 +37,11 @@ public class VacationServiceImpl implements VacationService {
     @Override
     public void insertUsableVacationHired1st() throws IOException {
         List<GetVacationDTO> employeeList = vacationDAO.selectGetVacationForHired1st();
-
+/*
         if (employeeList.isEmpty()) {
             return;
         }
-
+*/
         LocalDate today = LocalDate.now();
         LocalDate startDate = today.minusDays(30);
 

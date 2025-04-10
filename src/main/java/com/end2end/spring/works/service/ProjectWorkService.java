@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ProjectWorkService {
     List<ProjectWorkDTO> selectAll();
-
     void insert(ProjectWorkDTO dto);
     void update(ProjectWorkDTO dto);
     void deleteById(int id);
     void toggleState(int id);
+    String selectByProjectIdAndEmployeeId(int projectId, String employeeId);
 }

@@ -21,4 +21,8 @@ public class ProjectUserDAO {
     public List<EmployeeDTO> selectByprojectId(int id) {
         return mybatis.selectList("project.selectByprojectId",id);
     }
+
+    public int searchById(int id) {
+        return mybatis.selectOne("project.searchById",id);
+    }
 }

@@ -52,4 +52,14 @@ public class ApprovalDAO {
     public ApprovalFormDTO selectByFormId(int id) {
         return mybatis.selectOne("approval.selectByFormId", id);
     }
+
+    public List<Map<String, Object>> search(String state, String employeeId, String keyword) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("state", state);
+        map.put("employeeId", employeeId);
+        map.put("keyword", keyword);
+
+        return mybatis.selectList("approval.search", map);
+    }
+
 }

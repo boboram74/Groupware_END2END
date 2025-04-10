@@ -38,11 +38,12 @@ public class ApprovalController {
         List<Map<String, Object>> rejectList = approvalService.selectByState("REJECT", employeeId);
         List<Map<String, Object>> completedList = approvalService.selectByState("SUBMIT", employeeId);
 
-        model.addAttribute("formList", formList);
+
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);
         model.addAttribute("rejectList", rejectList);
+        model.addAttribute("formList", formList);
 
         return "approval/list";
     }
@@ -181,6 +182,25 @@ public class ApprovalController {
         rejectDTO.setRegdate(new Timestamp(System.currentTimeMillis()));
         approvalService.rejectApproval(rejectDTO);
         return "success";
+    }
+
+    @RequestMapping("/search")
+    public String search(HttpSession session, String keyword, Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        String employeeId = employee.getId();
+
+        List<Map<String, Object>> waitingList = approvalService.search("ONGOING", employeeId, keyword);
+        List<Map<String, Object>> goingList = approvalService.search("ONGOING", employeeId, keyword);
+        List<Map<String, Object>> rejectList = approvalService.search("REJECT", employeeId, keyword);
+        List<Map<String, Object>> completedList = approvalService.search("SUBMIT", employeeId, keyword);
+
+        model.addAttribute("waitingList", waitingList);
+        model.addAttribute("goingList", goingList);
+        model.addAttribute("completedList", completedList);
+        model.addAttribute("rejectList", rejectList);
+        model.addAttribute("keyword", keyword);
+
+        return "approval/list";
     }
 
 }

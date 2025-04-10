@@ -16,11 +16,11 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item ${active != 0 ? 'active' : ''}">
+            <li class="detail-menu-item ${active == 0 ? 'active' : ''}" onClick="location.href='/commute/detail'">
                 <span class="material-icons">work</span>
                 <span>휴가/근무</span>
             </li>
-            <li class="detail-menu-item ${active == 0 ? 'active' : ''}">
+            <li class="detail-menu-item ${active != 0 ? 'active' : ''}" onClick="location.href='/commute/list'">
                 <span class="material-icons">assessment</span>
                 <span>근태 현황</span>
             </li>

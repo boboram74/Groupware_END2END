@@ -71,11 +71,41 @@
         SELECT employeeId as id
         FROM VACATION
         WHERE
-        startDate + NUMTODSINTERVAL(vacationDate, 'DAY') > TRUNC(SYSDATE)
+            startDate + NUMTODSINTERVAL(vacationDate, 'DAY') > TRUNC(SYSDATE)
         AND
-        employeeId NOT IN
+            employeeId NOT IN
         <foreach collection="list" item="employeeId" open="(" separator="," close=")">
             #{employeeId}
         </foreach>
+    </select>
+
+    <select id="selectByPeriod" resultType="com.end2end.spring.commute.dto.VacationDTO">
+        SELECT *
+        FROM (
+            SELECT startDate + NUMTODSINTERVAL(vacationDate, 'DAY') as endDate, VACATION.*
+            FROM VACATION)
+        WHERE
+            employeeId = #{employeeId}
+        AND (
+            TRUNC(endDate) BETWEEN #{startDate} AND #{endDate}
+        OR
+            TRUNC(startDate) BETWEEN #{startDate} AND #{endDate}
+        )
+    </select>
+
+    <select id="selectByEmployeeId" resultType="com.end2end.spring.commute.dto.VacationDTO">
+        SELECT
+            startDate + NUMTODSINTERVAL(vacationDate, 'DAY') as endDate,
+            VACATION.*,
+            CASE
+                WHEN APPROVAL.STATE = 'ONGOING' THEN 'N'
+                ELSE 'Y'
+            END AS submitYn
+        FROM
+            VACATION
+        JOIN
+            APPROVAL
+        ON VACATION.approvalId = APPROVAL.id
+        WHERE VACATION.employeeID = #{employeeId}
     </select>
 </mapper>

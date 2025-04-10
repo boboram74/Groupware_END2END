@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="messenger">
+
+    <select id="selectEmployeeAll" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessengerEmployeeListDTO">
+        select
+        e.id, e.name, d.name teamName, j.name as jobName
+        from employee e
+        join department d
+            on e.departmentid = d.id
+        join job j
+            on e.jobid = j.id
+        order by j.id asc, d.id, e.name asc
+    </select>
+</mapper>

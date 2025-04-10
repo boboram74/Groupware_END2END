@@ -163,4 +163,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<JobDTO> selectAllJob() {
         return employeeDAO.selectAllJob();
     }
+
+    @Override
+    public boolean isNoAuthExist() {
+        return employeeDAO.countNoAuth() > 0;
+    }
 }

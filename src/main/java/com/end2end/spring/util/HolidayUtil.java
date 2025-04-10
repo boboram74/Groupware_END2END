@@ -15,14 +15,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HolidayUtil {
-    public static Map<String, Object> getHolidayApi(String year, String month) throws IOException {
+    private static Map<String, Object> getHolidayApi(String year, String month) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + Statics.apiServiceKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
@@ -104,6 +104,37 @@ public class HolidayUtil {
                 .collect(Collectors.toList());
     }
 
+    public static boolean isHoliday(LocalDate date) throws IOException {
+        String year = String.valueOf(date.getYear());
+        String month = String.format("%02d", date.getMonthValue());
+
+        List<HolidayDTO> holidayList = HolidayUtil.generateHolidayList(year, month);
+
+        for (HolidayDTO holiday : holidayList) {
+            if (holiday.getDate().equals(new SimpleDateFormat("yyyyMMdd").format(date))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static List<HolidayDTO> getPeriodHolidayList(LocalDate startDate, LocalDate endDate) throws IOException {
+        List<HolidayDTO> holidayList = new ArrayList<>();
+
+        LocalDate currentDate = startDate;
+        while (!currentDate.isAfter(endDate)) {
+            String currentYear = String.valueOf(currentDate.getYear());
+            String currentMonth = String.format("%02d", currentDate.getMonthValue());
+
+            holidayList.addAll(HolidayUtil.generateHolidayList(currentYear, currentMonth));
+
+            currentDate = currentDate.plusMonths(1);
+        }
+
+        return holidayList;
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -124,14 +155,5 @@ public class HolidayUtil {
                     .seq((Double) json.get("seq"))
                     .build();
         }
-    }
-
-    public static boolean isHoliday(Date date) {
-        String year = new SimpleDateFormat("yyyy").format(date);
-        String month = new SimpleDateFormat("MM").format(date);
-
-        System.out.println(year + " " + month);
-
-        return true;
     }
 }

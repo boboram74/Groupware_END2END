@@ -95,7 +95,10 @@
 </table>
 <div class="btnGroup">
     <button class="editBtn">수정</button>
-    <button class="deleteBtn">삭제</button>
+    <form action="/board/delete" method="post">
+        <input type="hidden" name="id" value="${board.id}" />
+        <button type="submit" class="deleteBtn">삭제</button>
+    </form>
     <button class="replyBtn">답변</button>
     <a href="/board/list">
     <button class="backBtn">뒤로</button></a>

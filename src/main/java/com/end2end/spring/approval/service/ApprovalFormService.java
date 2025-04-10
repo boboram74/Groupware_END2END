@@ -8,7 +8,11 @@ public interface ApprovalFormService {
     List<ApprovalFormDTO> selectAll();
     List<ApprovalFormDTO> selectByEmployeeId(String employeeId);
     List<ApprovalFormDTO> selectByCategoryId(int categoryId);
-    ApprovalFormDTO selectById(int id);
+
+    ApprovalFormDTO selectByFormId(int id);
+
+    List<ApprovalFormDTO> selectFormList();
+
     void insert(ApprovalFormDTO approvalFormDTO);
     void update(ApprovalFormDTO approvalFormDTO);
     void deleteById(int id);

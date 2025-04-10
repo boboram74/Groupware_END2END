@@ -128,14 +128,12 @@
             const approverId = $(this).siblings('input[name="approverId"]').val();
 
             $.ajax({
-                url: '/approval/reject',
+                url: '/approval/submit/approve/' + approvalId,
                 type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
+                data: {
                     approvalId: approvalId,
-                    approverId: approverId,
-                    reason: reason
-                }),
+                    approverId: approverId
+                },
                 success: function(response) {
                     if (response === "success") {
                         $('#approverStatus' + approverId).text('승인');

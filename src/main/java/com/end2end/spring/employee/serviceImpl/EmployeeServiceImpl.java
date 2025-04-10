@@ -166,4 +166,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean isNoAuthExist() {
         return employeeDAO.countNoAuth() > 0;
     }
+
+    @Override
+    public List<EmployeeDTO> selectByThisMonthBirthday() {
+        return employeeDAO.selectByThisMonthBirthday();
+    }
 }

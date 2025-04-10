@@ -4,12 +4,39 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/approval/list.css">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
+<style>
+    .searchBox {
+        margin: 20px 0;
+        text-align: right;
+    }
+    .searchInput {
+        padding: 5px 10px;
+        font-size: 14px;
+        color: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: black;
+    }
+    .searchBtn {
+        padding: 5px 10px;
+        background-color: #ff0000;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        margin-left: 5px;
+        cursor: pointer;
+    }
+</style>
 <div class="userInfo">
     <div class="userIcon"></div>
     <div class="userText">나의 전자결재</div>
 </div>
-
+<div class="searchBox">
+    <form action="/approval/search" method="get" class="searchForm">
+        <input type="text" name="keyword" placeholder="문서종류,기안자,제목" class="searchInput" />
+        <button type="submit" class="searchBtn">검색</button>
+    </form>
+</div>
 <div class="apControls">
     <select class="apBtnNewDoc">
         <option>새 기안 쓰기</option>
@@ -33,6 +60,7 @@
                 <th class="apColStatus">결재 상태</th>
                 <th class="apColWriter">기안자</th>
                 <th class="apColDate">기안일</th>
+                <th class="apColType">문서 종류</th>
             </tr>
             </thead>
             <tbody>
@@ -48,6 +76,7 @@
                             <td class="apColStatus">결재 대기중</td>
                             <td class="apColWriter">${i.DRAFTERNAME}</td>
                             <td class="apColDate">${i.REGDATE}"</td>
+                            <td class="apColType">${i.FORMNAME}</td>
                         </tr>
                     </c:forEach>
                 </c:otherwise>
@@ -70,6 +99,7 @@
                 <th class="apColStatus">결재 상태</th>
                 <th class="apColWriter">기안자</th>
                 <th class="apColDate">기안일</th>
+                <th class="apColType">문서 종류</th>
             </tr>
             </thead>
             <tbody>
@@ -85,6 +115,7 @@
                             <td class="apColStatus">결재 진행중</td>
                             <td class="apColWriter">${i.DRAFTERNAME}</td>
                             <td class="apColDate">${i.REGDATE}"</td>
+                            <td class="apColType">${i.FORMNAME}</td>
                         </tr>
                     </c:forEach>
                 </c:otherwise>
@@ -107,6 +138,7 @@
                 <th class="apColStatus">결재 상태</th>
                 <th class="apColWriter">기안자</th>
                 <th class="apColDate">기안일</th>
+                <th class="apColType">문서 종류</th>
             </tr>
             </thead>
             <tbody>
@@ -122,6 +154,7 @@
                             <td class="apColStatus">결재 완료</td>
                             <td class="apColWriter">${i.DRAFTERNAME}</td>
                             <td class="apColDate">${i.REGDATE}"</td>
+                            <td class="apColType">${i.FORMNAME}</td>
                         </tr>
                     </c:forEach>
                 </c:otherwise>
@@ -159,6 +192,7 @@
                             <td class="apColStatus">반려</td>
                             <td class="apColWriter">${i.DRAFTERNAME}</td>
                             <td class="apColDate">${i.REGDATE}"</td>
+                            <td class="apColType">${i.FORMNAME}</td>
                         </tr>
                     </c:forEach>
                 </c:otherwise>

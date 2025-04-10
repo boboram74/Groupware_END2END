@@ -21,7 +21,7 @@
     </select>
 
     <insert id="insert" parameterType="com.end2end.spring.board.dto.BoardDTO">
-        insert into board (id, boardCtId, employeeId, title, content) values (#{id},#{boardCtId}, #{employeeId} #{title}, #{content})
+        insert into board (id, boardCtId, employeeId, title, content) values (board_id_seq.nextval, #{boardCtId,jdbcType=INTEGER}, #{employeeId}, #{title}, #{content})
     </insert>
 
 

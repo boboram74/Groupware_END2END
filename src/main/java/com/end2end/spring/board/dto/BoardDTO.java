@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Builder
 public class BoardDTO {
     private int id;
-    private String boardCtId;
+    private int boardCtId;
     private String employeeId;
     private String title;
     private String content;

@@ -93,22 +93,32 @@
         cursor: pointer;
         margin-right: 10px;
     }
+    #searchOption{
+        width: 120px;
+        height: 30px;
+        border-radius: 5px;
+    }
 </style>
 <div class="content">
 </div>
-<form action="/board/insert" method="post">
+<form action="/board/insert" method="post" enctype="multipart/form-data">
 <table>
     <tr>
-        <th>공지글</th>
+        <th>종류</th>
         <td>
             <div class="checkboxArea">
-                <input type="checkbox" id="notice" checked>
-                <label for="notice">설정</label>
+                <select id="searchOption" name="boardCtId">
+                    <option value="1">공지 게시판</option>
+                    <option value="2">중요 게시판</option>
+                    <option value="3">전사 게시판</option>
+                    <option value="4">그룹 게시판</option>
+                </select>
             </div>
         </td>
+
         <th>등록일</th>
         <td>
-            <div class="date">${board.regDate}</div>
+            <div class="date">등록일</div>
         </td>
     </tr>
     <tr>
@@ -120,14 +130,14 @@
     <tr>
         <th>이름 <span class="required">*</span></th>
         <td colspan="3">
-        <td>${board.employeeId}</td>
+            <input type="text" name="employeeId" value="${employee.id}" />
         </td>
     </tr>
     <tr>
         <th>첨부파일</th>
         <td colspan="3">
             <div class="fileUpload">
-                    <input type="file">
+                    <input type="file" name="file">
             </div>
         </td>
     </tr>
@@ -138,6 +148,8 @@
         </td>
     </tr>
 </table>
+<%--    <input type="hidden" name="employeeId" value="${employee.employeeId}">--%>
+<%--    <input type="hidden" name="id" value="자동으로 설정">--%>
 
 <div class="button-area">
     <button class="saveBtn">저장</button>

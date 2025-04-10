@@ -88,6 +88,10 @@
         <td class="label">내용</td>
         <td colspan="3">${board.content}</td>
     </tr>
+    <tr>
+        <td class="label">파일</td>
+        <td colspan="3"></td>
+    </tr>
 </table>
 <div class="btnGroup">
     <button class="editBtn">수정</button>

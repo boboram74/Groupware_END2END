@@ -8,9 +8,8 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -41,19 +40,18 @@ public class BoardController {
 //        return "board/detail";
 //    }
 
-//    @RequestMapping("/list/{categoryId}")
-//    public String toList(@PathVariable int categoryId, HttpSession session, Model model) {
-//        // TODO: 카테고리 id를 받아 해당 카테고리의 모든 게시글을 list.jsp에 표시
-//        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employeeDTO");
-//        if (employee == null) {
-//            return "redirect:/login";
-//        }
-//        List<BoardDTO> boardList = boardService.selectByCategoryId(categoryId, employee.getId());
-//
-//        model.addAttribute("employeeDTO", employee);
-//
-//        return "/board/list";
-//    }
+    @RequestMapping("/list/{categoryId}")
+    public String toList(@PathVariable int categoryId, HttpSession session, Model model) {
+        // TODO: 카테고리 id를 받아 해당 카테고리의 모든 게시글을 list.jsp에 표시
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        List<BoardDTO> boardList = boardService.selectByCategoryId(categoryId, employee.getId());
+        model.addAttribute("employeeDTO", employee);
+
+        return "/board/list";
+    }
 
     @RequestMapping("/list/search")
     public String toSearch(Model model) {
@@ -68,7 +66,10 @@ public class BoardController {
     }
 
     @RequestMapping("/write")
-    public String toWrite(Model model) {
+    public String toWrite(HttpSession session, Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        model.addAttribute("employeeDTO", employee);
+        System.out.println(employee);
         // TODO: 게시글 입력 폼으로 이동
         return "/board/write";
     }
@@ -94,15 +95,16 @@ public class BoardController {
     }
 
     @RequestMapping("/insert")
-    public String insert(HttpSession session, BoardDTO dto) {
-        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employeeId");
-        System.out.println(employee);
+    public String insert(HttpSession session, BoardDTO dto,  @RequestParam("file") MultipartFile file)throws Exception {
+
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         boardService.insert(dto);
         // TODO: 게시글 입력을 받음
-        return "/board/list";
+        return "redirect:/board/list";
     }
 
     @RequestMapping("/update")
+
     public void update(BoardDTO dto) {
         // TODO: 게시글 수정을 받음
     }

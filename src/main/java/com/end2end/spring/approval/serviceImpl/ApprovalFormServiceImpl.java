@@ -1,13 +1,18 @@
 package com.end2end.spring.approval.serviceImpl;
 
+import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dto.ApprovalFormDTO;
 import com.end2end.spring.approval.service.ApprovalFormService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ApprovalFormServiceImpl implements ApprovalFormService {
+    @Autowired
+    private ApprovalDAO approvalDAO;
+
     @Override
     public List<ApprovalFormDTO> selectAll() {
         // TODO: 모든 결재 문서 양식 출력
@@ -27,9 +32,13 @@ public class ApprovalFormServiceImpl implements ApprovalFormService {
     }
 
     @Override
-    public ApprovalFormDTO selectById(int id) {
-        // TODO: 해당 id의 결재 문서 양식 출력
-        return null;
+    public ApprovalFormDTO selectByFormId(int id) {
+        return  approvalDAO.selectByFormId(id);
+    }
+
+    @Override
+    public List<ApprovalFormDTO> selectFormList() {
+        return approvalDAO.selectFormList();
     }
 
     @Override

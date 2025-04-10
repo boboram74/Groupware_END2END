@@ -32,4 +32,9 @@ public class ApproverDAO {
         approverDTO.setSubmitDate(submitDate);
         mybatis.update("approver.updateSubmitYn", approverDTO);
     }
+
+    public void deleteByApprovalId(String approvalId) {
+        mybatis.delete("approver.deleteByApprovalId", approvalId);
+    }
+
 }

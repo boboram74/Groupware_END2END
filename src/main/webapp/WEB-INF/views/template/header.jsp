@@ -53,6 +53,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
     }
 
     .logo h3 {
@@ -415,7 +416,7 @@
 <div class="container-fluid bg-color">
   <!-- 사이드바 -->
   <div class="sidebar sidebar-color">
-    <div class="logo">
+    <div class="logo" onClick="location.href='/'">
       <h3>END2END</h3>
     </div>
     <div class="menu-items">

@@ -268,7 +268,7 @@
         <div class="calendar-content" id="calendar"></div>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/views/commute/vacation-modal.jsp" />
 <style>
     /* 모달 기본 스타일 */
     .modal {

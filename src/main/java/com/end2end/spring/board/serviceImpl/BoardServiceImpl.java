@@ -53,6 +53,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void update(BoardDTO dto) {
+        boardDAO.update(dto);
         // TODO: 게시글 수정
     }
 

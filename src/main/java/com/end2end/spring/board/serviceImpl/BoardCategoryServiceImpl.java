@@ -10,6 +10,7 @@ import java.util.List;
 public class BoardCategoryServiceImpl implements BoardCategoryService {
     @Override
     public List<BoardCategoryDTO> selectAll() {
+
         // TODO: 모든 카테고리 내용 조회
         return null;
     }

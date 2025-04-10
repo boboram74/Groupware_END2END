@@ -265,10 +265,11 @@
     <!-- 세 번째 컨테이너: 주간 캘린더 -->
     <div class="box weekly-calendar-container surface-bright">
         <div class="box-title">이번 주 근무 상세</div>
-        <div class="calendar-content" id="calendar"></div>
+        <div class="calendar-content" id="calendar">
+        </div>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/views/commute/vacation-modal.jsp" />
 <style>
     /* 모달 기본 스타일 */
     .modal {

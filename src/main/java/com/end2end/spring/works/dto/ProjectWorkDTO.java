@@ -13,8 +13,9 @@ import java.sql.Timestamp;
 public class ProjectWorkDTO {
     private int id;
     private int projectId;
-    private int projectUserId;
+    private String projectUserId;
     private String title;
+    private String type;
     private String content;
     private String state;  // "ONGOING", "FINISH"
     private String priority; // "HIGH", "MIDDLE", "LOW"

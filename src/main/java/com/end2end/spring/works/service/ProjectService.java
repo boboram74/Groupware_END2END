@@ -17,6 +17,7 @@ public interface ProjectService {
     void update(ProjectDTO dto);
     List<ProjectDTO> selectByName(String name);//프로젝트 찾는 메서드
     List<EmployeeDTO> selectByUser(String name);
-//    List<EmployeeDTO> selectProjectMemberProfiles(int id);
+
     List<ProjectSelectDTO> selectAllProject();
+
 }

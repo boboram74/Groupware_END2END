@@ -54,9 +54,8 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public List<ApprovalDTO> search() {
-        // TODO: 검색 결과 내용의 결재 리스트 출력
-        return null;
+    public List<Map<String, Object>> search(String state, String employeeId, String keyword) {
+        return approvalDAO.search(state, employeeId, keyword);
     }
 
     @Override

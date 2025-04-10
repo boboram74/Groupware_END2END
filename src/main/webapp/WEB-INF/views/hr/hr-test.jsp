@@ -39,6 +39,26 @@
         table-layout: fixed;
     }
 
+    .board-table .btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 5px;
+    }
+
+    .board-table button {
+        padding: 5px 5px;
+        border: none;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
 
     /* 스크롤바 스타일링 */
     .table-container tbody::-webkit-scrollbar {
@@ -151,8 +171,8 @@
                                         <td>${item.jobName}</td>
                                         <td>${item.role}</td>
                                         <td class="btn">
-                                            <button type="button" class="approveBtn" data-id="${item.id}">승인</button>
-                                            <button type="button" class="rejectBtn" data-id="${item.id}">반려</button>
+                                            <button type="button" class="approveBtn primary" data-id="${item.id}">승인</button>
+                                            <button type="button" class="rejectBtn secondary" data-id="${item.id}">반려</button>
                                         </td>
                                     </tr>
                                 </c:if>

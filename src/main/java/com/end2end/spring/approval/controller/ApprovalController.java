@@ -33,7 +33,6 @@ public class ApprovalController {
         String employeeId = employee.getId();
 
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
-        System.out.println(formList);
         List<Map<String, Object>> waitingList = approvalService.selectByState("ONGOING", employeeId);
         List<Map<String, Object>> goingList = approvalService.selectByState("ONGOING", employeeId);
         List<Map<String, Object>> rejectList = approvalService.selectByState("REJECT", employeeId);
@@ -131,10 +130,12 @@ public class ApprovalController {
     }
 
 
+
     @ResponseBody
     @RequestMapping("/insert")
     public void insert(MultipartFile[] files, ApprovalInsertDTO dto, HttpSession session, Model model) {
         System.out.println("Approver ID 리스트: " + dto.getApproverId());
+        System.out.println("Approver ID 리스트: " + dto.getApprovalFormId());
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         dto.setEmployeeId(employee.getId());
 

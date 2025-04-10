@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<input type="hidden" name="approvalFormId" value="1" />
 <div class="container">
     <table>
         <th>

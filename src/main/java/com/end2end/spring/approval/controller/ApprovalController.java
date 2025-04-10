@@ -32,6 +32,7 @@ public class ApprovalController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
 
+        List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
         List<Map<String, Object>> waitingList = approvalService.selectByState("ONGOING", employeeId);
         List<Map<String, Object>> goingList = approvalService.selectByState("ONGOING", employeeId);
         List<Map<String, Object>> rejectList = approvalService.selectByState("REJECT", employeeId);
@@ -42,6 +43,7 @@ public class ApprovalController {
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);
         model.addAttribute("rejectList", rejectList);
+        model.addAttribute("formList", formList);
 
         return "approval/list";
     }

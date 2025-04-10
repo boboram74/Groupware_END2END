@@ -12,9 +12,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRoomListDTO {
-    private Integer roomId;
+    private Integer messageRoomId;
     private String roomName;
-    private String lastMessage;
-    private Timestamp lastMessageTime;
-    private Integer unreadCount;
 }

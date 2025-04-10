@@ -182,4 +182,23 @@ public class ApprovalController {
         return "success";
     }
 
+    @RequestMapping("/search")
+    public String search(HttpSession session, String keyword, Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        String employeeId = employee.getId();
+
+        List<Map<String, Object>> waitingList = approvalService.search("ONGOING", employeeId, keyword);
+        List<Map<String, Object>> goingList = approvalService.search("ONGOING", employeeId, keyword);
+        List<Map<String, Object>> rejectList = approvalService.search("REJECT", employeeId, keyword);
+        List<Map<String, Object>> completedList = approvalService.search("SUBMIT", employeeId, keyword);
+
+        model.addAttribute("waitingList", waitingList);
+        model.addAttribute("goingList", goingList);
+        model.addAttribute("completedList", completedList);
+        model.addAttribute("rejectList", rejectList);
+        model.addAttribute("keyword", keyword);
+
+        return "approval/list";
+    }
+
 }

@@ -20,5 +20,6 @@ public class EmployeeDTO {
     private String jobName;
     private String departmentName;
     private String contact;
+
 }
 

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Data
@@ -18,7 +19,7 @@ public class ProjectWorkDTO {
     private String state;  // "ONGOING", "FINISH"
     private String priority; // "HIGH", "MIDDLE", "LOW"
     private Timestamp finishDate;
-    private Timestamp deadLine;
+    private Date deadLine;
     private Timestamp regDate;
 
 

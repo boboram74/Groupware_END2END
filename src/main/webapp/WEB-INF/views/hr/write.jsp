@@ -50,7 +50,6 @@
                         </c:forEach>
                     </select>
                 </div>
-                <div class="email">이메일 : <input type="text" name="email"></div>
                 <div class="contact">연락처 : <input type="text" name="contact"></div>
                 <div class="postCode">우편번호 : <input type="text" name="postCode" id="postcode" readonly>
                     <button type="button" class="postBtn" id="postBtn">우편번호 검색</button>

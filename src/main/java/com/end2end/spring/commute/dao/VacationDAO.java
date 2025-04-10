@@ -1,5 +1,6 @@
 package com.end2end.spring.commute.dao;
 
+import com.end2end.spring.commute.dto.SelectPeriodDTO;
 import com.end2end.spring.commute.dto.VacationDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.apache.ibatis.session.SqlSession;
@@ -39,5 +40,13 @@ public class VacationDAO {
 
     public int isOnVacation(String employeeId) {
         return mybatis.selectOne("vacation.isOnVacation", employeeId);
+    }
+
+    public List<VacationDTO> selectByPeriod(SelectPeriodDTO dto) {
+        return mybatis.selectList("vacation.selectByPeriod", dto);
+    }
+
+    public List<VacationDTO> selectByEmployeeId(String employeeId) {
+        return mybatis.selectList("vacation.selectByEmployeeId", employeeId);
     }
 }

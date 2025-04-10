@@ -4,13 +4,25 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project">
 
+
+
     <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectDTO">
-        SELECT * FROM project
+        SELECT * from project order by id desc
     </select>
     <!-- 프로젝트 모아보기-->
 
+    <select id="selectByprojectId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
 
-    <delete id="deleteById" parameterType="int">
+       SELECT EMPLOYEE.* FROM
+        PROJECT_USER
+        JOIN EMPLOYEE
+        ON PROJECT_USER.EMPLOYEEID = EMPLOYEE.ID WHERE PROJECTID = #{id}
+
+</select>
+    <!-- 프로젝트 멤버 프로필 가져오기-->
+
+
+    <delete id="deleteById" parameterType="Integer">
         delete from project where id=#{id}
     </delete>
     <!-- 프로젝트 삭제-->
@@ -24,6 +36,19 @@
         </selectKey>
     </insert>
     <!-- 프로젝트추가 -->
+
+<!--   -->
+<!--    <select id="selectProjectMemberProfiles"  parameterType="int" resultType="com.end2end.spring.employee.dto.EmployeeDTO">-->
+<!--        SELECT-->
+<!--        e.profileImg-->
+<!--        FROM-->
+<!--        project_user p-->
+<!--        INNER JOIN-->
+<!--        employee e ON p.employeeId = e.id-->
+<!--        WHERE-->
+<!--        p.projectId = #{id}-->
+
+<!--    </select>-->
 
 
 <!--    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">-->
@@ -57,9 +82,9 @@
     </update>
     <!--프로젝트수정-->
 
-    <select id="selectById" resultType="int">
+    <select id="selectById" resultType="com.end2end.spring.works.dto.ProjectDTO">
         SELECT * FROM project
-        WHERE id =${id}
+        WHERE id = #{id}
     </select>
 
     <!--프로젝트 찾기 -->

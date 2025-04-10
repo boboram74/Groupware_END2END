@@ -18,18 +18,29 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'ko',
             headerToolbar: {
                 left: 'title',
                 right: 'prev,next',
             },
             initialView: 'dayGridMonth',
+            initialDate: new Date(),
             width: '100%',
             height: 'auto',
+            events: function(info, successCallback) {
+                const view = info.view;
+                const visibleStart = info.start;
+                const visibleEnd = info.end;
+
+                console.log(visibleStart);
+                console.log(visibleEnd);
+              //  loadEvents(startDate, endDate, successCallback);
+            },
+            eventDisplay: 'block',
             // 헤더 스타일 설정
-            viewDidMount: function() {
+            viewDidMount: function () {
                 adjustCalendarSize();
             }
         });
@@ -50,12 +61,39 @@
             });
         }
 
+        function loadEvents(startDate, endDate, successCallback) {
+            const currentYear = startDate.getFullYear();
+            const currentMonth = (startDate.getMonth() > 10) ?
+                startDate.getMonth() + 1 : '0' + (startDate.getMonth() + 1);
+            console.log(currentMonth, currentYear);
+
+            $.ajax({
+                url: '/holiday?year=' + currentYear + '&month=' + currentMonth,
+                type: 'GET',
+                dataType: 'application/json',
+                success: function (data) {
+                    console.log(data);
+                    // successCallback(data);
+                }, errors: function(xhr, status, error) {
+                    console.log(xhr.status);
+                    console.log(xhr.responseText);
+                    console.log(error);
+                }
+            })
+        }
+
         calendar.render();
     });
 
     // 창 크기 변경 시 자동 조절
-    window.addEventListener('resize', function() {
-        calendar.setOption('height', calendar.getEl().offsetWidth * 0.8);
+    let resizeTimer;
+    $(window).resize(function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            const dimensions = calculateAvailableDimensions();
+            // calendar.setOption('height', dimensions.height);
+            // adjustCalendarSize();
+        }, 100);
     });
 </script>
 <style>
@@ -291,6 +329,11 @@
         pointer-events: none; /* 호버 효과 완전히 제거 */
     }
 
+    .endWork.disabled {
+        opacity: 0.5;
+        pointer-events: none; /* 호버 효과 완전히 제거 */
+    }
+
     .calendarBox {
         grid-row: span 5; /* 기존 값에서 5로 조정 */
         border-radius: 10px;
@@ -315,6 +358,14 @@
 
     .fc .fc-daygrid-day {
         height: auto !important;  /* 날짜 셀 높이 자동 조정 */
+    }
+
+    .fc th {
+        background-color: var(--md-sys-color-outline);
+    }
+
+    .fc-theme-standard td, .fc-theme-standard th {
+        border-color: var(--md-sys-color-outline);
     }
 
     .material-icons {
@@ -603,7 +654,8 @@
             <div class="commuteButtons">
                 <button class="startWork primary ${isWorkOn ? 'disabled' : ''}"
                 ${isWorkOn ? 'disabled' : ''}>출근하기</button>
-                <button class="endWork primary">퇴근하기</button>
+                <button class="endWork primary ${isWorkOff ? 'disabled' : ''}"
+                ${isWorkOff ? 'disabled' : ''}>퇴근하기</button>
             </div>
         </div>
         <div class="calendarBox surface-bright">

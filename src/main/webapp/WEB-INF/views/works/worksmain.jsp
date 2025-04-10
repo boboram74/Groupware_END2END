@@ -37,7 +37,14 @@
 <link rel="stylesheet" href="/css/worksmain.css">
 
 <style>
-
+    tbody tr:hover {
+        background-color: #f0f8ff;
+    }
+  .profile{
+      width: 35px;
+      height: 35px;
+      margin-right: -20px;
+      }
 </style>
 
         <div class="pageName">
@@ -195,7 +202,7 @@
                     <th>프로젝트 기간</th>
                     <th>참여 인원</th>
                     <th>상태</th>
-                    <c:if test="${isTeamLeader}">
+                    <c:if test="${employee.role.equals('TEAM_LEADER')}}">
                         <th>관리</th>
                     </c:if>
 
@@ -203,17 +210,30 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${projects}" var="list">
-                    <tr onclick="location.href='/works/project/${list.id}'">
+
+                    <tr onclick="location.href='/project/detail/${list.id}'">
+
                         <td>${list.name}</td>
                         <td>${list.regDate}</td>
-                        <td>${list.regDate} ~ ${list.deadLine}</td>
+                        <td> ${list.deadLine}</td>
                         <td>
                             <div class="member-profiles">
                                 <!-- 프로필 이미지 리스트 -->
+                                <c:forEach items="${list.profileImg}" var="img">
+                                <c:choose>
+                                    <c:when test="${img == null}">
+                                        <img class="profile" src="/image/defaultImg.jpg">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img class="profile" src="${img}">
+                                    </c:otherwise>
+                                </c:choose>
+                                </c:forEach>
                             </div>
                         </td>
-                        <td>${list.hideYn == 'N' ? '진행중' : '종료'}</td>
-                        <c:if test="${isTeamLeader}">
+<%--                        <td>${list.hideYn}</td>--%>
+                        <td>${list.status}</td>
+                        <c:if test="${employee.role.equals('TEAM_LEADER')}">
                             <td>
                                 <button class="updateProjectBtn" onclick="updateProject(${list.id})">수정</button>
                                 <button  onclick="deleteProject(${list.id})">삭제</button>
@@ -221,6 +241,7 @@
                         </c:if>
 
                     </tr>
+
 
                 </c:forEach>
 
@@ -371,6 +392,9 @@
     // function  updateProject(id) {
     //     location.href = '/project/update/' + id;
     // }
+
+
+
 
     function deleteProject(id) {
         if(confirm("정말 프로젝트를 삭제 하시겠습니까?"))

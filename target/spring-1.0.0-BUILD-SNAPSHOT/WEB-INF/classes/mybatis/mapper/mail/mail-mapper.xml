@@ -12,18 +12,22 @@
         update email_state SET TRASHCANYN = 'Y' WHERE id = #{value}
     </update>
 
+    <update id="insertDelete">
+        update email_state SET HIDEYN = 'Y' WHERE id = #{value}
+    </update>
+
     <insert id="insert">
         INSERT INTO EMAIL_ADDRESS(emailaddress, name)
         VALUES (#{emailAddress},#{name})
     </insert>
 
     <select id="selectDepartmentById" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
-        SELECT * FROM DEPARTMENT WHERE ID = ${id};
+        SELECT * FROM DEPARTMENT WHERE ID = ${id}
     </select>
 
     <insert id="insertEmailAddressUser">
         INSERT INTO EMAIL_ADDRESS_USER(id, employeeId, emailAddress)
-        VALUES (EMAIL_ADDRESS_USER_SEQ.NEXTVAL, #{employeeId}, #{emailAddress})
+        VALUES (EMAIL_ADDRESS_USER_ID_SEQ.NEXTVAL, #{employeeId}, #{emailAddress})
     </insert>
 
     <update id="updateImportant" >
@@ -47,7 +51,7 @@
     </select>
 
     <!--  해당 부서의 메일 목록 통합 조회 -->
-    <select id="selectDepartEmail" resultType="com.end2end.spring.mail.dto.MailTeamListDTO">
+    <select id="selectDepartEmail" resultType="com.end2end.spring.mail.dto.MailListDTO">
         SELECT e.id, e.SENDEREMAILADDRESS, e.TITLE, e.REGDATE
         FROM email e
         JOIN email_address_user eau
@@ -144,7 +148,21 @@
         AND es.TRASHCANYN = 'N'
     </select>
 
-    <select id="selectFromto" parameterType="map" resultType="com.end2end.spring.mail.dto.MailTeamListDTO">
+    <select id="getRecordTrashCount" resultType="int" >
+        SELECT COUNT(*)
+        FROM EMAIL e
+        JOIN EMAIL_STATE es
+        ON e.ID = es.EMAILID
+        WHERE es.EMAILUSERID IN (
+        SELECT id
+        FROM EMAIL_ADDRESS_USER
+        WHERE EMPLOYEEID = #{employeeId}
+        )
+        AND es.HIDEYN = 'N'
+        AND es.TRASHCANYN = 'Y'
+    </select>
+
+    <select id="selectFromto" parameterType="map" resultType="com.end2end.spring.mail.dto.MailListDTO">
         SELECT
         id,
         fileCount,
@@ -186,7 +204,7 @@
         WHERE rnum BETWEEN #{start} AND #{end}
     </select>
 
-    <select id="selectFromtoImportant" parameterType="map" resultType="com.end2end.spring.mail.dto.MailTeamListDTO">
+    <select id="selectFromtoImportant" parameterType="map" resultType="com.end2end.spring.mail.dto.MailListDTO">
         SELECT
         id,
         fileCount,
@@ -251,7 +269,7 @@
         WHERE rnum BETWEEN #{start} AND #{end}
     </select>
 
-    <select id="selectFromtoReciveList" parameterType="map" resultType="com.end2end.spring.mail.dto.MailTeamListDTO">
+    <select id="selectFromtoReciveList" parameterType="map" resultType="com.end2end.spring.mail.dto.MailListDTO">
         select
         id,
         fileCount,
@@ -292,6 +310,48 @@
         ))
         AND es.HIDEYN = 'N'
         AND es.TRASHCANYN = 'N'
+        )
+        WHERE rnum BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="selectFromtoTrashList" parameterType="map" resultType="com.end2end.spring.mail.dto.MailListDTO">
+        SELECT
+        id,
+        fileCount,
+        emailAddress,
+        title,
+        regdate,
+        esId,
+        readYn,
+        importantYn
+        FROM (
+        SELECT
+        e.id as id,
+        fe.fileCount AS fileCount,
+        e.SENDEREMAILADDRESS as emailAddress,
+        e.title as title,
+        e.regdate as regdate,
+        es.id as esId,
+        es.readYn as readYn,
+        es.importantYn as importantYn,
+        ROW_NUMBER() OVER (ORDER BY e.id DESC) AS rnum
+        FROM EMAIL e
+        LEFT JOIN (
+        select COUNT(*) AS fileCount, Email.ID
+        from email
+        join files
+        on email.id = files.emailId
+        GROUP BY Email.ID) fe
+        ON E.ID = fe.ID
+        JOIN EMAIL_STATE es
+        ON e.ID = es.EMAILID
+        WHERE es.EMAILUSERID IN (
+        SELECT id
+        FROM EMAIL_ADDRESS_USER
+        WHERE EMPLOYEEID = #{employeeId}
+        )
+        AND es.HIDEYN = 'N'
+        AND es.TRASHCANYN = 'Y'
         )
         WHERE rnum BETWEEN #{start} AND #{end}
     </select>

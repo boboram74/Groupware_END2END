@@ -5,11 +5,7 @@
 <mapper namespace="works">
 
 <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
-<<<<<<< HEAD
-    SELECT * FROM project_work
-=======
     SELECT * FROM project_work order by id desc
->>>>>>> 2c31e4ad5e226eb33bbbe48f28d97373b529e18f
 </select>
 <!-- 프로젝트 진행중 보고된 게시물 모아보기-->
 
@@ -18,19 +14,37 @@
     </delete>
 <!-- 프로젝트 진행중 보고된 게시물 삭제-->
 
-<<<<<<< HEAD
-    <insert id="insert">
-        INSERT INTO project_work(Project_Work_SEQ.NEXTVAL,
-        #{dto.title},#{dto.state},#{dto.priority})
-=======
-    <insert id="insert" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO"
-    >
-        INSERT INTO project_work(id, title, state, priority,content,deadLine)
+    <insert id="insert" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        INSERT INTO project_work
+        (
+        id,
+        projectid,
+        projectuserid,
+        title,
+        state,
+        priority,
+        type,
+        finishdate,
+        deadline,
+        regdate,
+        content
+        )
         VALUES
-        (Project_Work_SEQ.NEXTVAL,
-        #{title},#{state},#{priority},#{content},#{deadLine})
->>>>>>> 2c31e4ad5e226eb33bbbe48f28d97373b529e18f
+        (
+        Project_Work_id_SEQ.NEXTVAL,
+        #{projectId},
+        #{projectUserId},
+        #{title},
+        #{state, jdbcType=VARCHAR},
+        #{priority},
+        #{type},
+        null,
+        #{deadLine},
+        SYSDATE,
+        #{content, jdbcType=VARCHAR}
+        )
     </insert>
+
     <!-- 프로젝트 진행중 보고된 게시물 추가 -->
 
     <update id="updateById" >
@@ -40,14 +54,6 @@
 
 <!-- 프로젝트 진행중 보고된 게시물 수정-->
 
-<<<<<<< HEAD
-    <select id="selectByCon" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
-        select * from project_work where
-        ${title} like '%'||#{contents}||'%'
-    </select>
-    <!--프로젝트 진행중 보고된 게시물 찾기 -->
-=======
 
->>>>>>> 2c31e4ad5e226eb33bbbe48f28d97373b529e18f
 
 </mapper>

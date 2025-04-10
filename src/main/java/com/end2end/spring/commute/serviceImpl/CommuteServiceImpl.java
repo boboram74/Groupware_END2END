@@ -3,28 +3,32 @@ package com.end2end.spring.commute.serviceImpl;
 import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.commute.dao.SolderingDAO;
 import com.end2end.spring.commute.dao.VacationDAO;
-import com.end2end.spring.commute.dto.CommuteDTO;
-import com.end2end.spring.commute.dto.SolderingDTO;
-import com.end2end.spring.commute.dto.TodayWorkTimeDTO;
+import com.end2end.spring.commute.dto.*;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.employee.dao.EmployeeDAO;
+import com.end2end.spring.util.EventDTO;
+import com.end2end.spring.util.HolidayUtil;
 import com.end2end.spring.util.Statics;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class CommuteServiceImpl implements CommuteService {
+    @Autowired private EmployeeDAO employeeDAO;
     @Autowired private CommuteDAO commuteDAO;
     @Autowired private SolderingDAO solderingDAO;
-    @Autowired private EmployeeDAO employeeDAO;
     @Autowired private VacationDAO vacationDAO;
 
     @Transactional
@@ -38,7 +42,7 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public boolean workOn(String employeeId) {
+    public boolean workOn(String employeeId) throws IOException {
         CommuteDTO dto = CommuteDTO.builder()
                 .employeeId(employeeId)
                 .state("WORK_ON")
@@ -49,9 +53,9 @@ public class CommuteServiceImpl implements CommuteService {
 
         commuteDAO.insert(dto);
 
-        Date date = new Date();
-        if (date.getHours() > Statics.WORK_HOUR) {
-            if (vacationDAO.isOnVacation(employeeId) == 0) {
+        LocalDateTime date = LocalDateTime.now();
+        if (date.getHour() > Statics.WORK_ON_CHECK_TIME) {
+            if (vacationDAO.isOnVacation(employeeId) == 0 || !HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
                         .state("LATE")
@@ -65,7 +69,7 @@ public class CommuteServiceImpl implements CommuteService {
 
     @Transactional
     @Override
-    public boolean workOff(String employeeId) {
+    public boolean workOff(String employeeId) throws IOException {
         CommuteDTO dto = CommuteDTO.builder()
                 .employeeId(employeeId)
                 .state("WORK_ON")
@@ -83,7 +87,7 @@ public class CommuteServiceImpl implements CommuteService {
 
         long workHour = Duration.between(workOnDTO.getRegDate().toLocalDateTime(), LocalDateTime.now()).toHours();
         if(workHour < Statics.WORK_HOUR) {
-            if ( vacationDAO.isOnVacation(employeeId) == 0) {
+            if ( vacationDAO.isOnVacation(employeeId) == 0 || !HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
                         .state("LEAVE_EARLY")
@@ -135,5 +139,52 @@ public class CommuteServiceImpl implements CommuteService {
         }
 
         return totalDuration;
+    }
+
+    @Transactional
+    @Override
+    public List<EventDTO> selectPeriodWorkState(SelectPeriodDTO dto) throws IOException {
+        List<CommuteStateDTO> commutePeriodList = commuteDAO.selectByPeriod(dto);
+        List<CommuteStateDTO> solderingPeriodList = solderingDAO.selectByPeriod(dto);
+        List<VacationDTO> vacationPeriodList = vacationDAO.selectByPeriod(dto);
+
+        LocalDate start = dto.getStartDate().toLocalDate();
+        LocalDate end = dto.getEndDate().toLocalDate();
+
+        List<HolidayUtil.HolidayDTO> holidayList = HolidayUtil.getPeriodHolidayList(start, end);
+
+        List<CommuteStateDTO> list = new ArrayList<>();
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+            LocalDate finalDate = date;
+
+            List<CommuteStateDTO> commuteLocalDateList = commutePeriodList.stream()
+                    .filter(commuteStateDTO ->
+                            commuteStateDTO.getDates().toLocalDate().equals(finalDate))
+                    .collect(Collectors.toList());
+            list.addAll(commuteLocalDateList);
+
+            List<CommuteStateDTO> solderingLocalDateList = solderingPeriodList.stream()
+                    .filter(commuteStateDTO ->
+                            commuteStateDTO.getDates().toLocalDate().equals(finalDate))
+                    .collect(Collectors.toList());
+            list.addAll(solderingLocalDateList);
+        }
+
+        List<EventDTO> result = list.stream()
+                .map(EventDTO::convertFromCommuteState)
+                .collect(Collectors.toList());
+
+        result.addAll(
+                vacationPeriodList.stream()
+                        .map(vacationDTO ->
+                                EventDTO.convertFromVacation(vacationDTO, start, end))
+                        .collect(Collectors.toList()));
+
+        result.addAll(
+                holidayList.stream()
+                        .map(EventDTO::convertFromHoliday)
+                        .collect(Collectors.toList()));
+
+        return result;
     }
 }

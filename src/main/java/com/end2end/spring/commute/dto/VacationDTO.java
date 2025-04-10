@@ -16,7 +16,10 @@ public class VacationDTO {
     private String employeeId;
     private String approvalId;
     private Timestamp startDate;
+    private Timestamp endDate;
+    private Double vacationDate;
     private String reason;
     private String type;
     private Timestamp regDate;
+    private String submitYn;
 }

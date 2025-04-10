@@ -1,30 +1,36 @@
 package com.end2end.spring.commute.controller;
 
 import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.dto.SelectPeriodDTO;
 import com.end2end.spring.commute.dto.SolderingDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.commute.service.SolderingService;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.employee.service.EmployeeService;
+import com.end2end.spring.util.EventDTO;
+import com.end2end.spring.util.HolidayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 
 @RequestMapping("/commute")
 @Controller
 public class CommuteController {
+    @Autowired private EmployeeService employeeService;
     @Autowired private CommuteService commuteService;
     @Autowired private SolderingService solderingService;
     @Autowired private VacationService vacationService;
 
-    @RequestMapping("/detail/{employeeId}")
-    public String toDetail(@PathVariable int employeeId, HttpSession session, Model model) {
-        // TODO: 해당 id의 사원의 detail.jsp로 이동
+    @RequestMapping("/detail")
+    public String toDetail(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         CommuteDTO commuteDTO = CommuteDTO.builder()
                 .employeeId(employee.getId())
@@ -63,18 +69,25 @@ public class CommuteController {
         model.addAttribute("totalUsedVacationDates", vacationService.sumTotalUsedVacationDates(employee.getId()));
         model.addAttribute("thisMonthUsedVacationDates", vacationService.sumThisMonthUsedVacationDates(employee.getId()));
 
+        model.addAttribute("vacationList", vacationService.selectByEmployeeId(employee.getId()));
+
+        model.addAttribute("active", 0);
+
         return "commute/detail";
     }
 
-    @RequestMapping("/list/{departmentId}")
-    public String toList(@PathVariable int departmentId, Model model) {
+    @RequestMapping("/list")
+    public String toList(HttpSession session, Model model) {
         // TODO: 해당 id의 부서의 list.jsp로 이동
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        List<EmployeeDTO> employeeList = employeeService.selectByDepartmentId(employee.getDepartmentId());
+
         return "commute/list";
     }
 
     @ResponseBody
     @RequestMapping("/workOn")
-    public boolean workOn(HttpSession session) {
+    public boolean workOn(HttpSession session) throws IOException {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         boolean workOn = commuteService.workOn(employee.getId());
 
@@ -84,7 +97,7 @@ public class CommuteController {
 
     @ResponseBody
     @RequestMapping("/workOff")
-    public boolean workOff(HttpSession session) {
+    public boolean workOff(HttpSession session) throws IOException {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         boolean workOff = commuteService.workOff(employee.getId());
 
@@ -93,9 +106,25 @@ public class CommuteController {
     }
 
     @ResponseBody
-    @RequestMapping("/test")
-    public void leaveEarly(HttpSession session) {
+    @RequestMapping("/select/period")
+    public List<EventDTO> selectPeriodWorkState(HttpSession session, SelectPeriodDTO dto) throws IOException {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        commuteService.sumTotalWorkTimeThisWeekByEmployeeId(employee.getId());
+        dto.setEmployeeId(employee.getId());
+
+        return commuteService.selectPeriodWorkState(dto);
+    }
+
+    @ResponseBody
+    @RequestMapping("/test")
+    public boolean leaveEarly(HttpSession session) throws IOException {
+        //List<HolidayUtil.HolidayDTO> list = HolidayUtil.generateHolidayList(year, month);
+
+        return HolidayUtil.isHoliday(LocalDate.now());
+/*
+        return list.stream()
+                .map(EventDTO::convertFromHoliday)
+                .collect(Collectors.toList());
+
+ */
     }
 }

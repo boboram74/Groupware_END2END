@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/commute/commute-header.jsp"/>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/list/main.js'></script>
+<link href='https://cdn.jsdelivr.net/npm/@fullcalendar/list/main.css' rel='stylesheet' />
 <style>
     .box {
         display: flex;
@@ -69,6 +71,8 @@
 </div>
 <script>
     $(document).ready(function() {
+        const employeeList = [[${employeeList}]]
+
         const calender = new FullCalendar.Calendar(document.getElementById('calender'), {
             resources: [],
             initialView: 'resourceTimelineWeek',

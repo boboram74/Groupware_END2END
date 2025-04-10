@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApprovalInsertDTO {
+    private String id;
     private String employeeId;
     private int approvalFormId;
     private int departmentId;

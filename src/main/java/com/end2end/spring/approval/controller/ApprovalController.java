@@ -1,6 +1,7 @@
 package com.end2end.spring.approval.controller;
 
 import com.end2end.spring.approval.dto.*;
+import com.end2end.spring.approval.service.ApprovalFormService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.service.ApprovalService;
@@ -23,18 +24,26 @@ public class ApprovalController {
     @Autowired
     public ApprovalService approvalService;
 
+    @Autowired
+    private ApprovalFormService approvalFormService;
+
     @RequestMapping("/list")
     public String toList(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
 
+        List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
         List<Map<String, Object>> waitingList = approvalService.selectByState("ONGOING", employeeId);
         List<Map<String, Object>> goingList = approvalService.selectByState("ONGOING", employeeId);
+        List<Map<String, Object>> rejectList = approvalService.selectByState("REJECT", employeeId);
         List<Map<String, Object>> completedList = approvalService.selectByState("SUBMIT", employeeId);
+
 
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);
+        model.addAttribute("rejectList", rejectList);
+        model.addAttribute("formList", formList);
 
         return "approval/list";
     }
@@ -73,8 +82,18 @@ public class ApprovalController {
     @RequestMapping("/write")
     public String toWrite(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-
         model.addAttribute("employee", employee);
+        return "approval/write";
+    }
+
+    @RequestMapping("/write/{id}")
+    public String toWrite2(HttpSession session, @PathVariable int id, Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+
+        model.addAttribute("dto", approvalFormService.selectByFormId(id));
+        model.addAttribute("formId", id);
+        model.addAttribute("employee", employee);
+        System.out.println(id);
         return "approval/write";
     }
 
@@ -112,10 +131,12 @@ public class ApprovalController {
     }
 
 
+
     @ResponseBody
     @RequestMapping("/insert")
     public void insert(MultipartFile[] files, ApprovalInsertDTO dto, HttpSession session, Model model) {
         System.out.println("Approver ID 리스트: " + dto.getApproverId());
+        System.out.println("Approver ID 리스트: " + dto.getApprovalFormId());
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         dto.setEmployeeId(employee.getId());
 
@@ -161,6 +182,25 @@ public class ApprovalController {
         rejectDTO.setRegdate(new Timestamp(System.currentTimeMillis()));
         approvalService.rejectApproval(rejectDTO);
         return "success";
+    }
+
+    @RequestMapping("/search")
+    public String search(HttpSession session, String keyword, Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        String employeeId = employee.getId();
+
+        List<Map<String, Object>> waitingList = approvalService.search("ONGOING", employeeId, keyword);
+        List<Map<String, Object>> goingList = approvalService.search("ONGOING", employeeId, keyword);
+        List<Map<String, Object>> rejectList = approvalService.search("REJECT", employeeId, keyword);
+        List<Map<String, Object>> completedList = approvalService.search("SUBMIT", employeeId, keyword);
+
+        model.addAttribute("waitingList", waitingList);
+        model.addAttribute("goingList", goingList);
+        model.addAttribute("completedList", completedList);
+        model.addAttribute("rejectList", rejectList);
+        model.addAttribute("keyword", keyword);
+
+        return "approval/list";
     }
 
 }

@@ -70,4 +70,8 @@ public class EmployeeDAO {
     public int countNoAuth() {
         return mybatis.selectOne("employee.countNoAuth");
     }
+
+    public List<EmployeeDTO> selectByThisMonthBirthday() {
+        return mybatis.selectList("employee.selectByThisMonthBirthday");
+    }
 }

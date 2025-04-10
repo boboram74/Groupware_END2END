@@ -20,11 +20,14 @@ public class MainController {
 	private EmployeeService employeeService;
 
 	@GetMapping("/")
-	public String home(HttpSession session) {
+	public String home(HttpSession session, Model model) {
 		EmployeeDTO loginUser = (EmployeeDTO) session.getAttribute("employee");
 		if (loginUser == null) {
 			return "main/login";
 		}
+
+		model.addAttribute("birthdayList", employeeService.selectByThisMonthBirthday());
+
 		return "main/index";
 	}
 

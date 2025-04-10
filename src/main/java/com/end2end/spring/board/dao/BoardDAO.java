@@ -19,7 +19,7 @@ public class BoardDAO {
     }
 
     public int deleteById(int id){
-        return mybatis.selectOne("board.boardId", id);
+        return mybatis.delete("board.boardId", id);
     }
 
     public List<BoardDTO> selectByCategoryId(int id, String employeeId){

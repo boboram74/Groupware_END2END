@@ -30,7 +30,7 @@ public class BoardController {
         return "/board/list";
     }
     @RequestMapping("/delete")
-    public String deleteById(int id){
+    public String deleteById(@RequestParam("id") int id){
         int deleteId = boardService.deleteById(id);
         System.out.println(deleteId);
         return "redirect:/board/list";

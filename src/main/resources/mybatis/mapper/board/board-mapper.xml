@@ -5,7 +5,7 @@
 <mapper namespace="board">
 
     <select id="toList" resultType="com.end2end.spring.board.dto.BoardDTO">
-    select * from board
+    select * from board ORDER BY ID DESC
     </select>
 
     <select id="selectByCategoryId" resultType="com.end2end.spring.board.dto.BoardDTO">
@@ -13,7 +13,7 @@
     </select>
 
     <delete id="boardId">
-            delete * board where id = #{id}
+        delete from board where id = #{id}
     </delete>
 
     <select id="selectById" resultType="com.end2end.spring.board.dto.BoardDTO">

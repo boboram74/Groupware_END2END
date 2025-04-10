@@ -75,13 +75,8 @@
     color: var(--md-sys-color-secondary);
 }
 
-.detail-menu-item:hover {
-    background-color: var(--md-sys-color-secondary-hover);
-    color: var(--md-sys-color-on-secondary);
-}
-
-.detail-menu-item:hover>.material-icons {
-    color: var(--md-sys-color-on-secondary);
+.detail-menu-item:hover:not(.active) {
+    background-color: rgba(var(--md-sys-color-secondary-rgb), 0.3);
 }
 
 .detail-menu-disc {
@@ -110,7 +105,7 @@
 
 .detail-menu-item.active {
     background-color: var(--md-sys-color-secondary);
-    color: var(--md-sys-color-on-secondary);;
+    color: var(--md-sys-color-on-secondary);
 }
 
 .detail-menu-item.active .material-icons {

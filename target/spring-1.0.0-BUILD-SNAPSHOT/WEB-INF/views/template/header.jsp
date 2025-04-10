@@ -434,7 +434,7 @@
         <span>메일</span>
       </div>
       <div class="menu-item" onClick="location.href='/commute/detail'">
-        <i class="material-icons">schedule</i>
+        <i class="material-icons">work_history</i>
         <span>근태관리</span>
       </div>
       <div class="menu-item" onClick="location.href='/schedule/list'">

@@ -191,7 +191,11 @@
 
         $('form').on('submit', function(e) {
             e.preventDefault();
-            // $('.loading-img').style('display', 'block');
+
+            if (approvalList.length < 1) {
+                alert('결재자는 최소 2명 이상이어야 합니다.');
+                return;
+            }
 
             const formData = new FormData(document.getElementById('form'));
             formData.append('content', $('#contents').summernote('code'));
@@ -214,10 +218,10 @@
             }).done(function(resp) {
                 console.log('전송됨');
                 if (window.opener) {
-                    window.opener.location.reload(); // 부모 창 새로고침
-                    window.close(); // 현재 창 닫기
+                    window.opener.location.reload();
+                    window.close();
                 } else {
-                    location.href = '/approval/list'; // 단일 창에서 작성한 경우 fallback
+                    location.href = '/approval/list';
                 }
             });
         });

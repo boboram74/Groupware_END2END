@@ -17,7 +17,7 @@ public interface ApprovalService {
 
     List<ApprovalDTO> myList(String state);
 
-    List<ApprovalDTO> search();
+    public List<Map<String, Object>> search(String state, String employeeId, String keyword);
 
     List<ApprovalDTO> search(String employeeId);
 

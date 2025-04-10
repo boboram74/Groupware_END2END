@@ -33,12 +33,6 @@
         SELECT e.id, e.name , j.name as jobName FROM EMPLOYEE e join job j on e.jobid = j.id WHERE departmentId = ${departmentId}
     </select>
 
-    <select id="idVali" resultType="int">
-        SELECT COUNT(*)
-        FROM EMPLOYEE_DETAIL
-        WHERE LOGINID = #{loginId}
-    </select>
-
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT EMPLOYEE.*, JOB.NAME AS jobName, DEPARTMENT.NAME AS departmentName
         FROM EMPLOYEE_DETAIL

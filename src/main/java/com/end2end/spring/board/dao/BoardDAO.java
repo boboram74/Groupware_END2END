@@ -18,6 +18,7 @@ public class BoardDAO {
     public List<BoardDTO> selectAll() {
         return mybatis.selectList("board.toList");
     }
+
     public int deleteById(int id){
         return mybatis.selectOne("board.boardId", id);
     }
@@ -32,6 +33,7 @@ public class BoardDAO {
     public BoardDTO selectById(int id) {
         return mybatis.selectOne("board.selectById",id);
     }
+
     public BoardDTO insert(BoardDTO dto) {
         return mybatis.selectOne("board.insert",dto);
     }

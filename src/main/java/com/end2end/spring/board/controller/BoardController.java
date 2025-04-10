@@ -48,7 +48,9 @@ public class BoardController {
             return "redirect:/login";
         }
         List<BoardDTO> boardList = boardService.selectByCategoryId(categoryId, employee.getId());
+        System.out.println("카테고리 게시판 출력: " + boardList);
         model.addAttribute("employeeDTO", employee);
+        model.addAttribute("boardList", boardList);
 
         return "/board/list";
     }
@@ -75,10 +77,11 @@ public class BoardController {
     }
 
     @RequestMapping("/write/update")
-    public String toUpdate(Model model) {
-
+    public String toUpdate(@RequestParam("id") int id, Model model) {
+    BoardDTO board = boardService.selectById(id);
+    model.addAttribute("board", board);
         // TODO: 게시글 수정 폼으로 이동
-        return "/board/write";
+        return "/board/update";
     }
 
     @RequestMapping("/detail/{id}")
@@ -103,8 +106,9 @@ public class BoardController {
     }
 
     @RequestMapping("/update")
-
-    public void update(BoardDTO dto) {
+    public String update(BoardDTO dto) {
+        boardService.update(dto);
+        return "redirect:/board/list";
         // TODO: 게시글 수정을 받음
     }
 

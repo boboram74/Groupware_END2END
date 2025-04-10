@@ -20,4 +20,5 @@ public interface EmployeeService {
     List<DepartmentDTO> selectAllDepartment();
     List<JobDTO> selectAllJob();
     boolean isNoAuthExist();
+    List<EmployeeDTO> selectByThisMonthBirthday();
 }

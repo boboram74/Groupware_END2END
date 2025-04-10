@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="/css/main/index.css" />
 <script>
     function calculateAvailableDimensions() {
@@ -255,16 +256,18 @@
         <div class="birthBox surface-bright">
             <div class="boxTitle">이달의 생일</div>
             <div class="birth-list">
-                <c:forEach begin="1" end="3" var="i">
+                <c:forEach items="${birthdayList}" var="item">
                     <div class="birth-item">
                         <div class="birth-profile">
-                            <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
+                            <div class="profile-img" style="background-image: url(${item.profileImg})"></div>
                             <div class="birth-info">
-                                <div class="birth-name">홍길동${i}</div>
-                                <div class="birth-dept">개발팀</div>
+                                <div class="birth-name">${item.name} ${item.jobName}</div>
+                                <div class="birth-dept">${item.departmentName}</div>
                             </div>
                         </div>
-                        <div class="birth-date">3월 ${i+20}일</div>
+                        <div class="birth-date">
+                            <fmt:formatDate value="${item.birthday}" pattern="MM월 dd일"/>
+                        </div>
                     </div>
                 </c:forEach>
             </div>

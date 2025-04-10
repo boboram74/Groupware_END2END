@@ -9,7 +9,6 @@ import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.util.EventDTO;
-import com.end2end.spring.util.HolidayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 @RequestMapping("/commute")

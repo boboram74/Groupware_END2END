@@ -1,9 +1,6 @@
 package com.end2end.spring.approval.service;
 
-import com.end2end.spring.approval.dto.ApprovalDTO;
-import com.end2end.spring.approval.dto.ApprovalInsertDTO;
-import com.end2end.spring.approval.dto.ApprovalRejectDTO;
-import com.end2end.spring.approval.dto.ApproverDTO;
+import com.end2end.spring.approval.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
 

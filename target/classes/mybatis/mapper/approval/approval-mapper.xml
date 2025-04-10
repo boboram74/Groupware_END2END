@@ -37,4 +37,17 @@
         SET state = #{state}
         WHERE id = #{id}
     </update>
+
+    <select id="selectFormList" resultType="com.end2end.spring.approval.dto.ApprovalFormDTO">
+        SELECT *
+        FROM APPROVAL_FORM
+        order by id
+    </select>
+
+    <select id="selectByFormId" parameterType="int" resultType="com.end2end.spring.approval.dto.ApprovalFormDTO">
+        SELECT *
+        FROM APPROVAL_FORM
+        WHERE id = #{id, jdbcType=INTEGER}
+    </select>
+
 </mapper>

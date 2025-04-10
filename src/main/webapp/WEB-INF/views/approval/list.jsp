@@ -12,10 +12,10 @@
 
 <div class="apControls">
     <select class="apBtnNewDoc">
-        <option value="">새 기안 쓰기</option>
-        <option value="1">기안문</option>
-        <option value="2">휴가계</option>
-        <option value="3">지출결의서</option>
+        <option>새 기안 쓰기</option>
+        <c:forEach var="form" items="${formList}">
+            <option value="${form.id}">${form.name}</option>
+        </c:forEach>
     </select>
     <button class="apBtnRefresh">상세 조회</button>
 </div>
@@ -131,6 +131,43 @@
     </div>
 </div>
 
+<div class="apDocumentSection">
+    <div class="apSectionHeader">
+        <h3 class="apSectionTitle">반려 문서</h3>
+    </div>
+    <div class="apDocumentTable">
+        <table>
+            <thead>
+            <tr>
+                <th class="apColStar"></th>
+                <th class="apColTitle">제목</th>
+                <th class="apColStatus">결재 상태</th>
+                <th class="apColWriter">기안자</th>
+                <th class="apColDate">기안일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:choose>
+                <c:when test="${empty rejectList}">
+                    <tr><td colspan="5" class="emptyMessage">반려된 문서가 없습니다.</td></tr>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="i" items="${rejectList}">
+                        <tr>
+                            <td class="apColStar">★</td>
+                            <td class="apColTitle"><a href="/approval/detail/${i.ID}">${i.TITLE}</a></td>
+                            <td class="apColStatus">반려</td>
+                            <td class="apColWriter">${i.DRAFTERNAME}</td>
+                            <td class="apColDate">${i.REGDATE}"</td>
+                        </tr>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <div class="bottomButton">
     <button class="btnChat"> 채팅</button>
 </div>
@@ -139,7 +176,7 @@
     $(".apBtnNewDoc").on("change", function () {
         let selectDoc = $(this).val();
         if (selectDoc) {
-            let url = "/approval/write?" + selectDoc;
+            let url = "/approval/write/" + selectDoc;
             window.open(url, "new", "width=1000,height=1000");
         }
     });

@@ -4,7 +4,7 @@
 .light {
     --md-sys-color-bg: #f5f5f5;
     --md-sys-color-surface-bright: #ffffff;
-    --md-sys-color-surface: #202024;
+    --md-sys-color-surface: #121212;
     --md-sys-color-sidebar-bg: #2c3e50;
     --md-sys-color-sidebar-text: #ffffff;
 
@@ -48,13 +48,15 @@
     --md-sys-color-surface-variant: #f5f5f5;  /* 라이트 모드 표면 변형 */
 
     --md-sys-color-surface-container: #f8f9fa;
+
+    --md-custom-read-color: #cacaca;
 }
 
 /* Dark 테마 색상 */
 .dark {
     --md-sys-color-bg: #202024;
     --md-sys-color-surface-bright: rgb(54 57 62);
-    --md-sys-color-surface: #ffffff;
+    --md-sys-color-surface: #dedede;
 
     --md-sys-color-sidebar-bg: #3c4044;
     --md-sys-color-sidebar-text: #ffffff;
@@ -100,6 +102,8 @@
     --md-sys-color-surface-variant: #1a1d22;  /* 표면 변형 (가장 어두움) */
 
     --md-sys-color-surface-container: #3c4044;
+
+    --md-custom-read-color: rgba(255, 255, 255, 0.2);
 }
 
 .bg-color {

@@ -76,7 +76,7 @@
 }
 
 .detail-menu-item:hover:not(.active) {
-    background-color: rgba(var(--md-sys-color-secondary-rgb), 0.3);
+    background-color: rgba(var(--md-sys-color-secondary-rgb), 0.1);
 }
 
 .detail-menu-disc {
@@ -135,6 +135,20 @@
     height: 25px;
     line-height: 25px;
     padding: 0 8px;  /* 좌우 여백 추가 */
+    background-color: var(--md-sys-color-surface-bright);
+    color: var(--md-sys-color-surface);
+}
+
+/* placeholder 색상 변경 */
+.search input::placeholder {
+    color: var(--md-custom-read-color);
+    opacity: 0.87;
+}
+
+/* Firefox를 위한 별도 설정 */
+input::-moz-placeholder {
+    color: #DEDEDE;
+    opacity: 0.87;
 }
 
 .search button {

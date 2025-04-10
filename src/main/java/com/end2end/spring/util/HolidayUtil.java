@@ -164,7 +164,7 @@ public class HolidayUtil {
 
     public static int getWorkingDaysBetween(LocalDate startDate, LocalDate endDate) throws IOException {
         List<HolidayDTO> holidayList = getPeriodHolidayList(startDate, endDate);
-        
+
         int workingDays = (int) startDate.datesUntil(endDate.plusDays(1))
                 .filter(date -> date.getDayOfWeek() != DayOfWeek.SATURDAY
                         && date.getDayOfWeek() != DayOfWeek.SUNDAY)

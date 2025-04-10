@@ -1,0 +1,519 @@
+.boxContents {
+    display: grid;
+    grid-template-columns: 2.5fr 10fr 2.5fr; /* 3:5:2 비율 설정 */
+    max-width: 2100px; /* 최대 너비 설정 */
+    margin: 60px auto 0;
+    gap: 20px;
+    padding: 35px;
+}
+/* 좌측 영역 */
+.leftContents {
+    display: grid;
+    grid-template-rows: repeat(12, 1fr);
+    gap: 20px;
+}
+
+/* commuteBox 수정 - grid-row 값을 4에서 3으로 변경 */
+.commuteBox {
+    grid-row: span 3;  /* 4에서 3으로 변경하여 높이 25% 감소 */
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* 중앙 영역 */
+.centerContents {
+    display: grid;
+    grid-template-rows: repeat(12, 1fr);
+    gap: 20px;
+}
+
+.boardBox {
+    grid-row: span 7;
+    border-radius: 10px;
+}
+
+.approvalBox {
+    grid-row: span 5;
+    border-radius: 10px;
+}
+/* 우측 영역 */
+.rightContents {
+    display: grid;
+    grid-template-rows: repeat(12, 1fr);
+    gap: 20px;
+}
+
+.btnBox {
+    grid-row: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+    padding: 0;
+}
+
+.btnBox button {
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    font-size: 25px;
+    font-weight: 600;
+    padding: 30px 20px; /* 패딩 증가로 버튼 크기 키움 */
+    word-break: keep-all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    transition: all 0.2s ease-in-out;
+    line-height: 1.2; /* 줄 간격 조정 */
+    cursor: pointer;
+}
+
+.btnBox button:hover {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    transform: translateY(-1px);
+}
+
+/* imgBox 수정 */
+.imgBox {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-image: url("/image/defaultImg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid #eee; /* 테두리 추가 */
+}
+
+/* logbox 수정 */
+.logbox {
+    grid-row: span 4;
+    border-radius: 10px;
+    padding: 10px; /* 상하좌우 패딩 축소 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* information 수정 */
+.information {
+    width: 90%;
+    height: 98px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+    background-color: var(--md-sys-color-surface-container);
+    border-radius: 8px;
+    box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    justify-content: center;
+    font-wieght: 600;
+}
+
+/* 이름 스타일 */
+.info-item.name {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--md-sys-color-surface);
+}
+
+/* 부서 스타일 */
+.info-item.department {
+    font-size: 14px;
+    color: var(--md-sys-color-secondary);
+}
+
+.info-summary {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    width: 100%; /* information 전체 너비만큼 확장 */
+    box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 양끝 정렬 */
+    padding: 5px 0;
+    font-size: 18px;
+    color: var(--md-sys-color-secondary);
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.summary-item .material-icons {
+    font-size: 18px;
+    color: var(--md-sys-color-primary);
+}
+
+.summary-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.summary-count {
+    color: var(--md-sys-color-primary);
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.boxTitle {
+    padding: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+}
+
+.currentDate {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--md-sys-color-secondary);
+}
+
+.currentTime {
+    font-size: 35px;
+    font-weight: 600;
+}
+
+.commuteButtons {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 추가 */
+    gap: 10px;
+    padding: 10px;
+}
+
+/* 출퇴근 버튼 스타일 수정 */
+.commuteButtons button {
+    width: 120px; /* 버튼 너비 고정 */
+    padding: 12px;
+    font-size: 18px;
+    font-weight: 500;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* timeDisplay 여백 조정 */
+.timeDisplay {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;  /* 패딩 살짝 줄임 */
+}
+
+.commuteButtons button:hover:not(.disabled) {
+    opacity: 0.9;
+}
+
+.startWork.disabled {
+    opacity: 0.5;
+    pointer-events: none; /* 호버 효과 완전히 제거 */
+}
+
+.endWork.disabled {
+    opacity: 0.5;
+    pointer-events: none; /* 호버 효과 완전히 제거 */
+}
+
+.calendarBox {
+    grid-row: span 5; /* 기존 값에서 5로 조정 */
+    border-radius: 10px;
+}
+
+#calendar {
+    padding: 10px;
+}
+
+/* FullCalendar 커스텀 스타일 */
+.fc {
+    aspect-ratio: 1;!important;
+}
+
+.fc .fc-toolbar {
+    font-size: 0.9em;  /* 툴바 전체 폰트 크기 축소 */
+}
+
+.fc .fc-button {
+    padding: 0.2em 0.4em;  /* 버튼 크기 축소 */
+}
+
+.fc .fc-daygrid-day {
+    height: auto !important;  /* 날짜 셀 높이 자동 조정 */
+}
+
+.fc th {
+    background-color: var(--md-sys-color-outline);
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+    border-color: var(--md-sys-color-outline);
+}
+
+.material-icons {
+    font-size: 20px;
+}
+
+.btn-text {
+    font-size: 14px;
+}
+
+/* 게시판 컨테이너 스타일 */
+.board-container {
+    padding: 20px;
+}
+
+/* 게시판 타입 버튼 스타일 */
+.board-type-buttons {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--md-sys-color-outline);
+}
+
+.board-type-btn {
+    padding: 15px 30px; /* 패딩 증가로 버튼 크기 증가 */
+    border: none;
+    border-top: 2px solid var(--md-sys-color-outline);
+    border-radius: 0; /* 모서리 둥글기 제거 */
+    background: none;
+    cursor: pointer;
+    font-size: 15px;
+    position: relative;
+    transition: all 0.2s;
+    min-width: 120px; /* 최소 너비 설정 */
+    text-align: center;
+    color: var(--md-sys-color-surface);
+}
+
+/* hover 효과 - active와 동일한 스타일 적용 */
+.board-type-btn:hover {
+    font-weight: 600;
+    border-top: 2px solid var(--md-sys-color-primary);
+    border-bottom: 2px solid var(--md-sys-color-surface-bright);
+    color: var(--md-sys-color-primary);
+    margin-bottom: -2px;
+}
+
+/* active 상태 */
+.board-type-btn.active {
+    font-weight: 600;
+    border-bottom: 2px solid var(--md-sys-color-surface-bright);
+    border-top: 2px solid var(--md-sys-color-primary);
+    color: var(--md-sys-color-primary);
+    margin-bottom: -2px;
+}
+
+/* category-list-container 스타일 */
+.category-list-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+}
+
+/* 카테고리 목록 스타일 */
+.category-list {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.category-btn {
+    padding: 6px 16px;
+    border: none; /* 테두리 제거 */
+    background: none; /* 배경 제거 */
+    cursor: pointer;
+    font-size: 13px;
+    color: 1px solid var(--md-sys-color-outline);
+    transition: all 0.2s;
+}
+
+.category-btn.active {
+    background: none; /* 활성화 상태에서도 배경 없음 */
+    color: var(--md-sys-color-primary);
+    font-weight: 600; /* 활성화 상태일 때 글자 굵기 증가 */
+}
+
+.category-btn:hover {
+    background: none;
+    color: var(--md-sys-color-primary);
+}
+
+/* 더보기 버튼 스타일 */
+.more-btn {
+    font-size: 14px;
+    color: var(--md-sys-color-secondary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    transition: all 0.2s;
+}
+
+.more-btn:hover {
+    color: var(--md-sys-color-primary);
+}
+
+/* 게시판 테이블 스타일 */
+.board-table-container {
+    overflow-x: auto;
+}
+
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.board-table th {
+    background-color: var(--md-sys-color-surface-container);
+    padding: 12px;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    border-top: 1px solid var(--md-sys-color-primary);
+}
+
+.board-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.board-table td.title {
+    text-align: left;
+    cursor: pointer;
+}
+
+.board-table td.title:hover {
+    text-decoration: underline;
+    color: var(--md-sys-color-primary);
+}
+
+/* 테이블 행 호버 효과 */
+.board-table tbody tr:hover {
+    background-color: var(--md-sys-color-surface-container);
+}
+
+/* 기존 스타일에 추가 */
+.writer-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.profile-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid #eee;
+}
+
+.birthBox {
+    grid-row: span 10;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* 그리드 셀의 전체 높이 사용 */
+}
+
+.birth-list {
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100% - 53px); /* boxTitle 높이를 뺀 나머지 전체 */
+    min-height: 0; /* 스크롤 동작을 위해 필요 */
+}
+
+.birth-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+}
+
+.birth-item:last-child {
+    border-bottom: none;
+}
+
+.birth-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.birth-profile .profile-img {
+    width: 40px;
+    height: 40px;
+}
+
+.birth-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.birth-name {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.birth-dept {
+    font-size: 13px;
+    color: var(--md-sys-color-secondary);
+}
+
+.birth-date {
+    font-size: 14px;
+    color: var(--md-sys-color-primary);
+    font-weight: 500;
+}
+
+/* 반응형을 위한 미디어 쿼리 추가 */
+@media screen and (max-width: 2140px) { /* 1700px + 좌우 패딩 고려 */
+    .boxContents {
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .leftContents,
+    .rightContents {
+        width: 250px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .leftContents,
+    .rightContents {
+        width: 200px;
+    }
+}

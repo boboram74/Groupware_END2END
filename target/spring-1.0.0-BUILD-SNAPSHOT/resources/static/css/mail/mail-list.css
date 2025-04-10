@@ -1,0 +1,83 @@
+.titleArea h4 {
+    color: var(--md-sys-color-surface);
+}
+
+.titleArea {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+.board-table .contents {
+    cursor: pointer;
+}
+
+input.star-checkbox {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    border: none;
+    background-size: cover;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9.3 17 14 18 21 12 18 6 21 7 14 2 9.3 9 8.5 12 2"/></svg>');
+}
+
+input.star-checkbox:checked {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="%23f39c12" stroke="%23f39c12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9.3 17 14 18 21 12 18 6 21 7 14 2 9.3 9 8.5 12 2"/></svg>');
+}
+
+.pageNavi{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.paging {
+    display: inline-block;
+    margin: 5px 3px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    background: var(--md-sys-color-secondary);
+    color: var(--md-sys-color-on-secondary);
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.paging:hover {
+    background-color: rgba(var(--md-sys-color-secondary-rgb), 0.2);
+    transform: translateY(-2px);
+}
+.paging.active {
+    background-color: var(--md-sys-color-primary);
+    color: #fff;
+    transform: none;
+}
+
+.read-column {
+    color: var(--md-custom-read-color);
+}
+
+.board-table .contents span:hover {
+    text-decoration: underline;
+    color: var(--md-sys-color-primary);
+}
+
+.board-table td.contents:hover {
+    text-decoration: underline;
+    color: var(--md-sys-color-primary);
+}
+
+.board-table td.contents {
+    text-align: left;
+    cursor: pointer;
+}
+
+.board-table th {
+    color: var(--md-sys-color-surface);
+}

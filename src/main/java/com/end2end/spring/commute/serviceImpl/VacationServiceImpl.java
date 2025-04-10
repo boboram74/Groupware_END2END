@@ -7,10 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.end2end.spring.commute.service.VacationService;
 
+import java.util.List;
+
 @Service
 public class VacationServiceImpl implements VacationService {
     @Autowired
     private VacationDAO vacationDAO;
+
+    @Override
+    public List<VacationDTO> selectByEmployeeId(String employeeId) {
+        return vacationDAO.selectByEmployeeId(employeeId);
+    }
 
     @Override
     public void insert(VacationDTO dto) {

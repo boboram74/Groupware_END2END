@@ -29,10 +29,10 @@
 
     <insert id="insert">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">
-            SELECT CONCAT(to_char(trunc(sysdate), 'YYMMDD'), EMPLOYEE_ID_SEQ.NEWTVAL) FROM DUAL
+            SELECT CONCAT(to_char(trunc(sysdate), 'YYMMDD'), EMPLOYEE_ID_SEQ.NEXTVAL) FROM DUAL
         </selectKey>
-        INSERT INTO EMPLOYEE(id, departmentId, jobId, name, email, profileImg, contact)
-        VALUES (#{id}, ${departmentId}, ${jobId}, #{name}, #{email}, #{profileImg}, #{contact})
+        INSERT INTO EMPLOYEE(id, departmentId, jobId, email, name, profileImg, contact)
+        VALUES (#{id}, ${departmentId}, ${jobId}, #{email}, #{name}, #{profileImg}, #{contact})
     </insert>
 
     <insert id="insertDetail">
@@ -41,7 +41,11 @@
     </insert>
 
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT e.id, e.name , j.name as jobName FROM EMPLOYEE e join job j on e.jobid = j.id WHERE departmentId = ${departmentId}
+        SELECT e.* , j.name as jobName
+        FROM EMPLOYEE e
+        join job j
+        ON e.jobid = j.id
+        WHERE departmentId = ${departmentId}
     </select>
 
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
@@ -80,5 +84,36 @@
         JOIN DEPARTMENT d ON e.departmentId = d.id
         JOIN JOB j ON e.jobId = j.id
         WHERE e.id = #{id}
+    </select>
+
+    <select id="selectJobById" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT
+        jobId
+        FROM EMPLOYEE
+        WHERE id = #{id}
+    </select>
+
+    <update id="roleUpdate">
+        UPDATE EMPLOYEE
+        SET role = #{role}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM EMPLOYEE
+        WHERE id = #{id}
+    </delete>
+
+    <select id="idVali" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM EMPLOYEE_DETAIL
+        WHERE loginId = #{loginId}
+    </select>
+
+    <select id="countNoAuth" resultType="Integer">
+        SELECT COUNT(*)
+        FROM EMPLOYEE
+        WHERE role = 'NO_AUTH'
     </select>
 </mapper>

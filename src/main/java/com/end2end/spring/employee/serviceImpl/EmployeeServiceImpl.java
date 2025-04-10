@@ -67,13 +67,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 1. 사원 기본 정보 저장
         String hashedPassword = SecurityUtil.hashPassword(dto.getPassword());
         dto.setPassword(hashedPassword);
+        dto.setEmail(dto.getLoginId() + "@end2end.site");
+
         EmployeeDTO employeeDTO = EmployeeDTO.builder()
                 .departmentId(dto.getDepartmentId())
                 .jobId(dto.getJobId())
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .profileImg(dto.getProfileImg())
-                .contact("010-1234-1234")
+                .contact(dto.getContact())
                 .build();
         employeeDAO.insert(employeeDTO);
         String employeeId = employeeDTO.getId();
@@ -112,6 +114,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public void roleUpdate(String id) {
+        EmployeeDTO employee = employeeDAO.selectJobById(id);
+        int jobId = employee.getJobId();
+        String newRole;
+        switch (jobId) {
+            case 1:
+                newRole = "ADMIN";
+                break;
+            case 2:
+            case 3:
+                newRole = "TEAM_LEADER";
+                break;
+            default:
+                newRole = "USER";
+                break;
+        }
+        employeeDAO.roleUpdate(id,newRole);
+    }
+
+    @Override
     public boolean idVali(String loginId){
         return employeeDAO.idVali(loginId);
     }
@@ -124,6 +146,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteById(String id) {
         // TODO: 해당 id의 사원 삭제
+        employeeDAO.deleteById(id);
     }
 
     @Override
@@ -139,5 +162,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<JobDTO> selectAllJob() {
         return employeeDAO.selectAllJob();
+    }
+
+    @Override
+    public boolean isNoAuthExist() {
+        return employeeDAO.countNoAuth() > 0;
     }
 }

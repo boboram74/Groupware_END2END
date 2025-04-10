@@ -1,5 +1,6 @@
 package com.end2end.spring.works.dao;
 
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.works.dto.ProjectUserDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,4 +17,8 @@ public class ProjectUserDAO {
         return  mybatis.insert("project.insertProjectUser",dto);
     }
 
+
+    public List<EmployeeDTO> selectByprojectId(int id) {
+        return mybatis.selectList("project.selectByprojectId",id);
+    }
 }

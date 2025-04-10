@@ -29,7 +29,8 @@ public class HRController {
         // TODO: 직원 관리 페이지로 이동
         List<EmployeeDTO> list = employeeService.selectAll();
         model.addAttribute("employeeList", list);
-        return "hr/list";
+        model.addAttribute("isNoAuthExist", employeeService.isNoAuthExist());
+        return "hr/hr-test";
     }
 
     @RequestMapping("/list/search")
@@ -57,9 +58,17 @@ public class HRController {
     }
 
     @RequestMapping("/insert")
-    public void insert(EmployeeDetailDTO dto, MultipartFile file) {
+    public String insert(EmployeeDetailDTO dto, MultipartFile file) {
         // TODO: 직원 데이터 추가
         employeeService.insert(dto, file);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/roleUpdate/{id}")
+    public String roleUpdate(@PathVariable("id") String id) {
+        // TODO: 인사팀에서 승인하면 권한 추가
+        employeeService.roleUpdate(id);
+        return "redirect:/hr/list";
     }
 
     @RequestMapping("/idCheck")
@@ -74,8 +83,10 @@ public class HRController {
         // TODO: 직원 데이터 수정
     }
 
-    @RequestMapping("/delete/{id}")
-    public void deleteById(@PathVariable int id) {
+    @RequestMapping("/deleteById/{id}")
+    public String deleteById(@PathVariable String id) {
         // TODO: 해당 id의 직원 데이터 삭제
+        employeeService.deleteById(id);
+        return "redirect:/hr/list";
     }
 }

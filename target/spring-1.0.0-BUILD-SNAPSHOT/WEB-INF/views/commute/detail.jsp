@@ -2,355 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/commute/commute-header.jsp"/>
+<link rel="stylesheet" href="/css/commute/detail.css" />
 <style>
-    /* 기본 버튼 스타일 */
-    .button-container button {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .button-container .primary:hover {
-        /*
-        background-color: var(--md-sys-color-on-primary);
-        color: var(--md-sys-color-primary);
-        */
-        opacity: 0.9;
-
-
-    }
-
-    .button-container .secondary:hover {
-        opacity: 0.9;
-    }
-</style>
-<style>
-    .commute-detail-wrapper {
-        display: grid;
-        grid-template-rows: repeat(11, 1fr);
-        gap: 20px;
-    }
-
-    /* 첫 번째 컨테이너 스타일 */
-    .status-container {
-        grid-row: span 3;
-        display: grid;
-        grid-template-columns: 2fr 3fr 5fr;
-        gap: 20px;
-        border-radius: 8px;
-    }
-
-    .box {
-        display: flex;
-        flex-direction: column;
-        height: 100%; /* 전체 높이 사용 */
-    }
-
-    .box-title {
-        padding: 15px;
-        font-size: 20px;
-        font-weight: 600;
-        border-bottom: 1px solid var(--md-sys-color-outline);
-        flex-shrink: 0; /* 크기 고정 */
-    }
-
-    .box-content {
-        flex: 1; /* 남은 공간 모두 사용 */
-        padding: 20px;
-        display: flex; /* flex 컨테이너로 설정 */
-        flex-direction: column; /* 세로 방향 정렬 */
-    }
-
-    .work-time-box {
-        border-radius: 8px;
-    }
-
-    .time-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0; /* gap 제거하고 border로 대체 */
-        position: relative; /* border 위치 지정을 위해 */
-    }
-
-    /* 구분선 추가 */
-    .time-grid::after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 10%; /* 위아래 여백 */
-        height: 80%; /* 구분선 높이 */
-        width: 1px;
-        background-color: var(--md-sys-color-outline-variant);
-    }
-
-    .time-column {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding-right: 20px; /* 구분선과의 간격 */
-    }
-
-    .time-item {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .time-item h4 {
-        font-size: 14px;
-        color: var(--md-sys-color-on-surface-variant);
-        margin: 0;
-    }
-
-    .time-display {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .time-unit {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 24px;
-        font-weight: 600;
-        min-width: 50px;
-        padding: 4px;
-        background: var(--md-sys-color-surface-container-high);
-        border-radius: 4px;
-    }
-
-    .time-unit small {
-        font-size: 12px;
-        font-weight: normal;
-        color: var(--md-sys-color-secondary);
-    }
-
-    .total-time-column {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* 왼쪽 정렬로 변경 */
-        padding-left: 20px; /* 구분선과의 간격 */
-        height: 100%; /* 전체 높이 사용 */
-    }
-
-    .time-item.total {
-        width: 100%;
-        height: 100%; /* 전체 높이 사용 */
-        display: flex;
-        flex-direction: column;
-    }
-
-    .time-item.total .time-display {
-        flex: 1; /* 남은 공간 모두 차지 */
-        justify-content: center; /* 수평 가운데 정렬 */
-        align-items: center; /* 수직 가운데 정렬 */
-        margin-top: 0; /* 기존 마진 제거 */
-    }
-
-    .time-item.total h4 {
-        text-align: left;
-        margin-bottom: 8px;
-    }
-
-    /* 모든 time-item의 h4 스타일 통일 */
-    .time-item h4 {
-        font-size: 14px;
-        color: var(--md-sys-color-on-surface-variant);
-        margin: 0 0 8px;
-    }
-
-    .vacation-status-box {
-        border-radius: 8px;
-    }
-
-    .vacation-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        position: relative;
-        height: 100%; /* box-content의 전체 높이 사용 */
-        flex: 1; /* 남은 공간 모두 사용 */
-    }
-
-    .vacation-grid::after,
-    .vacation-grid::before {
-        content: '';
-        position: absolute;
-        top: 10%;
-        height: 80%;
-        width: 1px;
-        background-color: var(--md-sys-color-outline-variant);
-    }
-
-    .vacation-grid::before {
-        left: 33%;
-    }
-
-    .vacation-grid::after {
-        left: 66%;
-    }
-
-    .vacation-item {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding: 15px 10px;
-    }
-
-    .vacation-item h4 {
-        font-size: 14px;
-        color: var(--md-sys-color-on-surface-variant);
-        margin: 0;
-        text-align: center;
-        padding-top: 20px; /* 상단 여백 추가 */
-    }
-
-    .vacation-display {
-        flex: 1; /* 남은 공간 모두 사용 */
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .vacation-unit {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 32px; /* 크기 증가 */
-        font-weight: 600;
-        min-width: 80px; /* 너비 증가 */
-        min-height: 60px; /* 높이 지정 */
-        padding: 8px 12px; /* 패딩 증가 */
-        background: var(--md-sys-color-surface-container-high);
-        border-radius: 4px;
-        justify-content: center; /* 세로 중앙 정렬 */
-    }
-
-    .vacation-unit small {
-        font-size: 14px; /* 단위 텍스트 크기 증가 */
-        font-weight: normal;
-        color: var(--md-sys-color-secondary);
-    }
-
-    /* 두 번째 컨테이너 스타일 */
-    .weekly-status-box {
-        grid-row: span 3;
-        border-radius: 8px;
-    }
-
-    .weekly-status-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 20px;
-        position: relative;
-        height: 100%;
-        flex: 1;
-    }
-
-    /* 구분선 */
-    .weekly-status-grid > div:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        top: 10%;
-        height: 80%;
-        width: 1px;
-        background-color: var(--md-sys-color-outline-variant);
-        right: 0;
-    }
-
-    .status-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 0 10px;
-        height: 100%;
-        position: relative;
-    }
-
-    .status-item h4 {
-        font-size: 14px;
-        color: var(--md-sys-color-on-surface-variant);
-        margin: 0;
-        text-align: center;
-        padding-top: 20px;
-    }
-
-    .status-display {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .status-unit {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 32px;
-        font-weight: 600;
-        min-width: 80px;
-        min-height: 60px;
-        padding: 8px 12px;
-        background: var(--md-sys-color-surface-container-high);
-        border-radius: 4px;
-        justify-content: center;
-    }
-
-    .status-unit small {
-        font-size: 14px;
-        font-weight: normal;
-        color: var(--md-sys-color-secondary);
-        margin-top: 4px;
-    }
-
-    /* 반응형을 위한 미디어 쿼리 */
-    @media (max-width: 1200px) {
-        .weekly-status-grid {
-            grid-template-columns: repeat(4, 1fr); /* 4열로 변경 */
-            grid-template-rows: auto auto; /* 2행으로 변경 */
-        }
-
-        /* 구분선 재조정 */
-        .weekly-status-grid > div:not(:last-child)::after {
-            content: '';
-            right: 0;
-        }
-
-        .weekly-status-grid > div:nth-child(4)::after {
-            display: none; /* 4번째 아이템 뒤의 구분선 제거 */
-        }
-    }
-
-    @media (max-width: 768px) {
-        .weekly-status-grid {
-            grid-template-columns: repeat(2, 1fr); /* 2열로 변경 */
-            grid-template-rows: auto auto auto auto; /* 4행으로 변경 */
-        }
-
-        .status-unit {
-            font-size: 28px;
-            min-width: 70px;
-        }
-    }
-
-    /* 세 번째 컨테이너 스타일 */
-    .weekly-calendar-container {
-        grid-row: span 5;
-        border-radius: 8px;
-        height: 500px;
-        min-height: 400px; /* 캘린더를 위한 임시 높이 */
-    }
-
     #calendar {
         max-width: 100%;
         margin: 0 auto;
@@ -386,66 +39,30 @@
     .fc-day-sat .day-name { color: blue; }
     .fc-day-sun .day-name { color: red; }
 
-
-</style>
-<style>
-    .commuteBox {
-        border-radius: 8px;
+    /* CSS에 추가 */
+    .simple-dot-event {
+        border: none !important;
     }
 
-    .currentDate {
-        font-size: 18px;
-        font-weight: 500;
-        margin-bottom: 10px;
-        color: var(--md-sys-color-secondary);
+    .simple-dot-event::before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: var(--md-sys-color-primary);
+        border-radius: 50%;
+        margin-right: 4px;
+        vertical-align: middle;
     }
 
-    .currentTime {
-        font-size: 35px;
-        font-weight: 600;
+    /* 시간 표시 숨기기 */
+    .fc-event-time {
+        display: none !important;
     }
 
-    .commuteButtons {
-        display: flex;
-        justify-content: center; /* 가운데 정렬 추가 */
-        gap: 10px;
-        padding: 10px;
-    }
-
-    /* 출퇴근 버튼 스타일 수정 */
-    .commuteButtons button {
-        width: 120px; /* 버튼 너비 고정 */
-        padding: 12px;
-        font-size: 18px;
-        font-weight: 500;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-    }
-
-    /* timeDisplay 여백 조정 */
-    .timeDisplay {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;  /* 패딩 살짝 줄임 */
-    }
-
-    .commuteButtons button:hover:not(.disabled) {
-        opacity: 0.9;
-    }
-
-    .startWork.disabled {
-        opacity: 0.5;
-        pointer-events: none; /* 호버 효과 완전히 제거 */
-    }
-
-    .endWork.disabled {
-        opacity: 0.5;
-        pointer-events: none; /* 호버 효과 완전히 제거 */
+    .fc-h-event.simple-dot-event {
+        padding: 0 !important;
+        color: var(--md-sys-color-primary) !important;
     }
 </style>
 <div class="button-container">
@@ -649,10 +266,138 @@
     <div class="box weekly-calendar-container surface-bright">
         <div class="box-title">이번 주 근무 상세</div>
         <div class="calendar-content" id="calendar">
-            <!-- 캘린더가 들어갈 자리 -->
         </div>
     </div>
 </div>
+<jsp:include page="/WEB-INF/views/commute/vacation-modal.jsp" />
+<style>
+    /* 모달 기본 스타일 */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .modal-content {
+        position: relative;
+        margin: 5% auto;
+        width: 80%;
+        max-width: 800px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        padding: 20px;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--md-sys-color-on-surface);
+    }
+
+    .close {
+        font-size: 28px;
+        font-weight: bold;
+        color: var(--md-sys-color-on-surface-variant);
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: var(--md-sys-color-on-surface);
+    }
+
+    .vacation-stat-box h3 {
+        margin: 0 0 10px 0;
+        font-size: 1rem;
+        color: var(--md-sys-color-on-surface-variant);
+    }
+
+    /* 휴가 내역 테이블 스타일 */
+    .vacation-history {
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .vacation-history h3 {
+        margin: 0 0 20px 0;
+        font-size: 1.2rem;
+    }
+
+    .vacation-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .vacation-table th,
+    .vacation-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    }
+
+    .vacation-table th {
+        background-color: var(--md-sys-color-surface-container-high);
+        color: var(--md-sys-color-on-surface);
+        font-weight: 600;
+    }
+
+    .vacation-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* 반응형 스타일 */
+    @media (max-width: 768px) {
+        .vacation-stats {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .modal-content {
+            width: 95%;
+            margin: 10% auto;
+        }
+
+        .vacation-table {
+            display: block;
+            overflow-x: auto;
+        }
+    }
+</style>
+
+<script>
+    // 모달 관련 JavaScript
+    const modal = document.getElementById('vacationModal');
+    const closeBtn = document.getElementsByClassName('close')[0];
+    const vacationListBtn = document.getElementById('vacation-list-button');
+
+    $('.vacation-list-button').on('click', function() {
+        $('#vacationModal').show();
+    })
+
+    // X 버튼으로 모달 닫기
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // 모달 외부 클릭시 닫기
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
 <script>
     $(document).ready(function() {
         let workOnTime = ${workOnTime != null ? workOnTime.getTime() : "null"};
@@ -799,8 +544,8 @@
             weekNumbers: false,  // 주차 숨기기
             // 캘린더가 처음 마운트되고 이벤트를 로드할 때
             events: function(info, successCallback) {
-                const startDate = parseDate(info.start);
-                const endDate = parseDate(info.end);
+                const startDate = info.start;
+                const endDate = info.end;
                 loadEvents(startDate, endDate, successCallback);
             },
             viewDidMount: function() {
@@ -819,49 +564,41 @@
                     start: info.start,
                     end: info.end
                 });
-            }
-
+            },
+            eventClassNames: 'simple-dot-event'
         });
 
         function parseDate(dates) {
             return dates.getFullYear() + '-' + (dates.getMonth() + 1) + '-' + dates.getDate();
         }
 
-        function toStringDate(date) {
-            try {
-                // LocalDate 객체인 경우
-                if (date && typeof date === 'object' && 'year' in date && 'month' in date && 'day' in date) {
-                    const year = date.year;
-                    const month = String(date.month).padStart(2, '0');
-                    const day = String(date.day).padStart(2, '0');
-
-                    return year + '-' + month + '-' + day;
-                }
-
-                throw new Error('유효하지 않은 LocalDate 형식');
-
-            } catch(e) {
-                return null;
-            }
-        }
-
         function loadEvents(startDate, endDate, successCallback) {
+            const startDateStr = parseDate(startDate);
+            const endDateStr = parseDate(endDate);
             $.ajax({
-                url: '/commute/select/period?startDate=' + startDate + '&endDate=' + endDate,
+                url: '/commute/select/period?startDate=' + startDateStr + '&endDate=' + endDateStr,
                 type: 'GET'
             }).done(function(data) {
                 calendar.removeAllEvents();
                 const events = data.map(function(event) {
                     console.log(event);
-                    const date = toStringDate(event.date);
-                    console.log(date);
+                    if (event.eventName === 'period') {
+                        return {
+                            title: event.title,
+                            start: new Date(event.startDate),
+                            end: new Date(event.endDate),
+                            allDay: true,
+                            display: 'block',
+                        }
+                    }
                     return {
-                        title: '1',
-                        start: new Date(date),
-                        allDay: true,
-                        display: 'block'
+                        title: event.title,
+                        start: new Date(event.startDate),
+                        allDay: event.allDay,
+                        display: 'block',
                     }
                 })
+                console.log(events);
                 successCallback(events);
             })
         }

@@ -3,6 +3,10 @@ package com.end2end.spring.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,12 +14,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class HolidayUtil {
-    public static Map<String, Object> getHolidayApi(String year, String month) throws IOException {
+    private static Map<String, Object> getHolidayApi(String year, String month) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + Statics.apiServiceKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
@@ -32,9 +39,6 @@ public class HolidayUtil {
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json; charset=UTF-8");
 
-        String contentType = conn.getHeaderField("Content-Type");
-        System.out.println("Response Content-Type: " + contentType);
-
         BufferedReader br;
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
             br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
@@ -50,8 +54,6 @@ public class HolidayUtil {
         br.close();
         conn.disconnect();
 
-        System.out.println("sb: "+ sb);
-
         Gson g = new GsonBuilder()
                 .disableHtmlEscaping()  // HTML 이스케이프 비활성화
                 .setPrettyPrinting()
@@ -59,17 +61,32 @@ public class HolidayUtil {
         return g.fromJson(sb.toString(), new TypeToken<Map<String, Object>>(){}.getType());
     }
 
-    public static List<Map<String, Object>> generateHolidayList(String year, String month) throws IOException {
-        Map<String, Object> json = getHolidayApi(year, month);
+    public static List<HolidayDTO> generateHolidayList(String year, String month) throws IOException {
+        Map<String, Object> result = HolidayUtil.getHolidayApi(year, month);
 
-        Map<String, Object> response = (Map<String, Object>) json.get("response");
+        Map<String, Object> response = (Map<String, Object>) result.get("response");
         Map<String, Object> body = (Map<String, Object>) response.get("body");
+
+        Double totalCount = (Double) body.get("totalCount");
+        int totalCountInt = totalCount.intValue();
+
+        if (totalCountInt == 0) {
+            return new ArrayList<>();
+        }
+
         Map<String, Object> items = (Map<String, Object>) body.get("items");
 
-        int totalCount = (int) body.get("totalCount");
+        if (totalCountInt == 1) {
+            Map<String, Object> item = (Map<String, Object>) items.get("item");
+            List<HolidayDTO> list = new ArrayList<>();
 
-        if (totalCount == 0) {
-            return new ArrayList<>();
+            Object dateValue = item.get("locdate");
+            if (dateValue instanceof Number) {
+                String formattedDate = String.format("%.0f", ((Number) dateValue).doubleValue());
+                item.put("locdate", formattedDate);
+            }
+            list.add(HolidayDTO.of(item));
+            return list;
         }
 
         List<Map<String, Object>> item = (List<Map<String, Object>>) items.get("item");
@@ -80,9 +97,63 @@ public class HolidayUtil {
                 String formattedDate = String.format("%.0f", ((Number) dateValue).doubleValue());
                 map.put("locdate", formattedDate);
             }
-
         }
 
-        return item;
+        return item.stream()
+                .map(HolidayDTO::of)
+                .collect(Collectors.toList());
+    }
+
+    public static boolean isHoliday(LocalDate date) throws IOException {
+        String year = String.valueOf(date.getYear());
+        String month = String.format("%02d", date.getMonthValue());
+
+        List<HolidayDTO> holidayList = HolidayUtil.generateHolidayList(year, month);
+
+        for (HolidayDTO holiday : holidayList) {
+            if (holiday.getDate().equals(new SimpleDateFormat("yyyyMMdd").format(date))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static List<HolidayDTO> getPeriodHolidayList(LocalDate startDate, LocalDate endDate) throws IOException {
+        List<HolidayDTO> holidayList = new ArrayList<>();
+
+        LocalDate currentDate = startDate;
+        while (!currentDate.isAfter(endDate)) {
+            String currentYear = String.valueOf(currentDate.getYear());
+            String currentMonth = String.format("%02d", currentDate.getMonthValue());
+
+            holidayList.addAll(HolidayUtil.generateHolidayList(currentYear, currentMonth));
+
+            currentDate = currentDate.plusMonths(1);
+        }
+
+        return holidayList;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class HolidayDTO {
+        private String dateKind;
+        private String dateName;
+        private boolean isHoliday;
+        private String date;
+        private Double seq;
+
+        public static HolidayDTO of(Map<String, Object> json) {
+            return HolidayDTO.builder()
+                    .dateKind((String) json.get("dateKind"))
+                    .dateName((String) json.get("dateName"))
+                    .isHoliday((json.get("isHoliday").equals("Y")))
+                    .date((String) json.get("locdate"))
+                    .seq((Double) json.get("seq"))
+                    .build();
+        }
     }
 }

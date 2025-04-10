@@ -36,8 +36,9 @@ public class ProjectWorkController {
         return "/works/detailpage";
     }
 
-    @RequestMapping("/write")
-    public String toWrite() {
+    @RequestMapping("/write/{id}")
+    public String toWrite(@PathVariable int id, Model model) {
+        model.addAttribute("projectId", id);
         // TODO: 게시글 입력 폼으로 이동
         return "/works/write";
     }
@@ -45,28 +46,26 @@ public class ProjectWorkController {
     @RequestMapping("/write/update")
     public String toUpdate(Model model) {
         // TODO: 게시글 수정 폼으로 이동
-        return "/works/detail";
+        return "/works/detail/{id}";
     }
 
-    @RequestMapping("/{id}")
-//    ?projectId=${project.id}
     public String toDetail(@PathVariable int id, Model model) {
         // TODO: 게시글 상세글로 이동
+
         return "/works/detail";
     }
 
 
     @RequestMapping("/insert")
-    public String insert(HttpSession session, ProjectWorkDTO wdto, @RequestParam("files") MultipartFile[] files) {
-//
-//        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
-//
-//        wdto.getProjectId();
-//        model.addAttribute("project",wdto);
+    public String insert(int projectId, HttpSession session,ProjectWorkDTO wdto, @RequestParam("files") MultipartFile[] files) {
+
+        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+        String projectUserId = wserv.selectByProjectIdAndEmployeeId(wdto.getProjectId(),employeeDTO.getId());
+        wdto.setProjectUserId(projectUserId);
 
         wserv.insert(wdto);
         // TODO: 게시글 등록
-        return "redirect:/worksmain";
+        return "redirect:/work/list";
     }
 //    리다이렉트 헷갈리지말것 !- 이유: 폼 중복 제출 방지
 //- 브라우저 새로고침 시 POST 요청이 중복되는 것을 방지

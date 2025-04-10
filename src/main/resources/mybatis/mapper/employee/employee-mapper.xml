@@ -41,7 +41,11 @@
     </insert>
 
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT e.id, e.name , j.name as jobName FROM EMPLOYEE e join job j ON e.jobid = j.id WHERE departmentId = ${departmentId}
+        SELECT e.* , j.name as jobName
+        FROM EMPLOYEE e
+        join job j
+        ON e.jobid = j.id
+        WHERE departmentId = ${departmentId}
     </select>
 
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
@@ -105,5 +109,11 @@
         SELECT COUNT(*)
         FROM EMPLOYEE_DETAIL
         WHERE loginId = #{loginId}
+    </select>
+
+    <select id="countNoAuth" resultType="Integer">
+        SELECT COUNT(*)
+        FROM EMPLOYEE
+        WHERE role = 'NO_AUTH'
     </select>
 </mapper>

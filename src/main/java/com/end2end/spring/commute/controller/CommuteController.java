@@ -81,6 +81,7 @@ public class CommuteController {
         // TODO: 해당 id의 부서의 list.jsp로 이동
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         List<EmployeeDTO> employeeList = employeeService.selectByDepartmentId(employee.getDepartmentId());
+        model.addAttribute("employeeList", employeeList);
 
         return "commute/list";
     }
@@ -114,17 +115,8 @@ public class CommuteController {
         return commuteService.selectPeriodWorkState(dto);
     }
 
-    @ResponseBody
     @RequestMapping("/test")
-    public boolean leaveEarly(HttpSession session) throws IOException {
-        //List<HolidayUtil.HolidayDTO> list = HolidayUtil.generateHolidayList(year, month);
-
-        return HolidayUtil.isHoliday(LocalDate.now());
-/*
-        return list.stream()
-                .map(EventDTO::convertFromHoliday)
-                .collect(Collectors.toList());
-
- */
+    public String leaveEarly(HttpSession session) throws IOException {
+        return "hr/hr-test";
     }
 }

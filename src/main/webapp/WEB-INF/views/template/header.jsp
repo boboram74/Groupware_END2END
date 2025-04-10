@@ -43,15 +43,18 @@
     .sidebar:hover {
       width: 240px;
     }
-    .logo {
+
+    .sidebar .logo {
       padding: 20px;
       text-align: center;
-      border-bottom: 1px solid #34495e;
+      border-bottom: 1px solid var(--md-sys-color-outline);
       white-space: nowrap;
-      height: 60px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      font-size: x-large;
     }
 
     .logo h3 {
@@ -64,7 +67,7 @@
     }
 
     .menu-items {
-      padding: 20px 0;
+      padding: 30px 0;
     }
 
     .menu-item {
@@ -74,10 +77,6 @@
       cursor: pointer;
       white-space: nowrap;
       position: relative;
-    }
-
-    .menu-item:hover {
-      background-color: #34495e;
     }
 
     .menu-item i {
@@ -125,11 +124,6 @@
       transition: width 0.3s ease, left 0.3s ease;
     }
 
-    /* 기존 header 구조는 유지하고 로고와 프로필 이미지만 수정 */
-    header .logo img {
-      display: none; /* 기존 img 태그 숨김 */
-    }
-
     header .logo {
       width: 150px;
       height: 40px;
@@ -137,10 +131,7 @@
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
-    }
-
-    header .profile img {
-      display: none;
+      cursor: pointer;
     }
 
     .profile-container {
@@ -169,7 +160,7 @@
     }
 
     .menu-item:hover {
-      background-color: var(--md-sys-color-surface-container);
+      background-color: var(--md-sys-color-surface-bright);
       color: var(--md-sys-color-primary);
     }
 
@@ -204,9 +195,10 @@
 
     .icon-button:hover {
       background-color: rgba(0, 0, 0, 0.05);
+      color: var(--md-sys-color-secondary-hover);
     }
 
-    .icon-button .material-symbols-outlined {
+    .icon-button .material-icons {
       font-size: 28px;
       color: var(--md-sys-color-secondary);
     }
@@ -224,15 +216,6 @@
       text-align: center;
     }
 
-
-    html.dark .icon-button i {
-      color: #eee;
-    }
-
-    html.dark .icon-button:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
     .boxContents {
       flex: 1;
       padding: 20px;
@@ -245,7 +228,6 @@
       left: -100%;
       width: 100%;
       height: 100vh;
-      background-color: rgba(0, 0, 0, 0.7);
       z-index: 1100;
       backdrop-filter: blur(5px);
       transition: all 0.3s ease-in-out;
@@ -327,7 +309,6 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: #2c3e50;
       padding: 10px 0;
       z-index: 1000;
     }
@@ -363,15 +344,6 @@
       font-size: 24px;
       display: block;
       margin-bottom: 5px;
-    }
-
-    .menu-items .menu-item a,
-    .menu-items .menu-item a:link,
-    .menu-items .menu-item a:visited,
-    .menu-items .menu-item a:hover,
-    .menu-items .menu-item a:active {
-      color: white;
-      text-decoration: none;
     }
 
     /* 모바일 반응형 */
@@ -445,70 +417,48 @@
 <div class="container-fluid bg-color">
   <!-- 사이드바 -->
   <div class="sidebar sidebar-color">
-    <div class="logo">
+    <div class="logo" onClick="location.href='/'">
       <h3>END2END</h3>
     </div>
     <div class="menu-items">
-      <div class="menu-item">
-        <a href="/">
-          <i class="material-icons">home</i>
-          <span>홈</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/board/list/1'">
+        <i class="material-icons">dashboard</i>
+        <span>게시판</span>
       </div>
-      <div class="menu-item">
-        <a href="/board/list/1">
-          <i class="material-icons">dashboard</i>
-          <span>게시판</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/approval/list/1'">
+        <i class="material-icons">description</i>
+        <span>전자결재</span>
       </div>
-      <div class="menu-item">
-        <a href="/approval/list/1">
-          <i class="material-icons">description</i>
-          <span>전자결재</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/mail/list'">
+        <i class="material-icons">mail</i>
+        <span>메일</span>
       </div>
-      <div class="menu-item">
-        <a href="/mail/list">
-          <i class="material-icons">mail</i>
-          <span>메일</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/commute/detail'">
+        <i class="material-icons">schedule</i>
+        <span>근태관리</span>
       </div>
-      <div class="menu-item">
-        <a href="/commute/detail">
-          <i class="material-icons">schedule</i>
-          <span>근태관리</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/schedule/list'">
+        <i class="material-icons">event_available</i>
+        <span>예약</span>
       </div>
-      <div class="menu-item">
-        <a href="/schedule/list">
-          <i class="material-icons">event_available</i>
-          <span>예약</span>
-        </a>
-      </div>
-      <div class="menu-item">
-      <a href="/hr/list">
+      <div class="menu-item" onClick="location.href='/hr/list'">
         <i class="material-icons">people</i>
         <span>인사관리</span>
-      </a>
     </div>
-      <div class="menu-item">
-        <a href="/project/main">
-          <i class="material-icons">description</i>
-          <span>Works</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/project/main'">
+        <i class="material-icons">description</i>
+        <span>Works</span>
       </div>
 
-      <div class="menu-item">
-        <a href="/contact">
-          <i class="material-icons">contacts</i>
-          <span>주소록</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/contact'">
+        <i class="material-icons">contacts</i>
+        <span>주소록</span>
       </div>
     </div>
   </div>
   <div class="main-wrapper">
     <header class="header">
-      <div class="logo"></div>
+      <div class="logo" onClick="location.href='/'"></div>
       <div class="header-icons">
         <!-- 알람 아이콘 -->
         <button class="icon-button" id="notificationBtn">
@@ -591,7 +541,7 @@
     </div>
 
     <!-- 모바일 네비게이션 -->
-    <div class="mobile-nav">
+    <div class="mobile-nav sidebar-color">
       <div class="mobile-nav-scroll-container">
         <div class="mobile-menu">
           <a href="#" class="mobile-menu-item">

@@ -29,6 +29,14 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     }
 
     @Override
+    public String selectByProjectIdAndEmployeeId(int projectId, String employeeId) {
+        //게시물 등록
+
+       return dao.selectByProjectIdAndEmployeeId(projectId,employeeId);
+
+    }
+
+    @Override
     public void update(ProjectWorkDTO dto) {
 dao.update(dto);
     }

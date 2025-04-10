@@ -35,6 +35,7 @@
     .btnGroup {
         margin-top: 10px;
         text-align: center;
+        display: flex;
     }
     .editBtn, .deleteBtn, .replyBtn, .backBtn {
         padding: 6px 12px;
@@ -44,11 +45,11 @@
         cursor: pointer;
     }
     .editBtn {
-        background-color: #e8f4f8;
+        background-color: #f8f8f8;
         color: #333;
     }
     .deleteBtn {
-        background-color: #f8e8e8;
+        background-color: #f8f8f8;
         color: #333;
     }
     .replyBtn {
@@ -105,7 +106,11 @@
 </div>
 
 <script>
-
+    document.querySelector(".deleteBtn").addEventListener("click",function(e){
+        if(!confirm("정말 삭제하시겠습니까?")){
+            e.preventDefault();
+        }
+    })
 </script>
 
 

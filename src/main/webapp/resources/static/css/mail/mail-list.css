@@ -2,6 +2,13 @@
     color: var(--md-sys-color-surface);
 }
 
+.titleArea {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
 .board-table .contents {
     cursor: pointer;
 }

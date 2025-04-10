@@ -10,7 +10,7 @@
     height: 100vh;
     border-right: 1px solid var(--md-sys-color-outline);
     z-index: 100;
-    margin-top: 60px;
+    margin-top: 70px;
     transition: none;
 }
 

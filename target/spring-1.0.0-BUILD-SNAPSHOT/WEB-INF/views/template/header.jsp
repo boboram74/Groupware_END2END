@@ -43,12 +43,13 @@
     .sidebar:hover {
       width: 240px;
     }
-    .logo {
+
+    .sidebar .logo {
       padding: 20px;
       text-align: center;
       border-bottom: 1px solid #34495e;
       white-space: nowrap;
-      height: 60px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -120,11 +121,7 @@
       width: calc(100% - 60px);
       transition: width 0.3s ease, left 0.3s ease;
     }
-
-    /* 기존 header 구조는 유지하고 로고와 프로필 이미지만 수정 */
-    header .logo img {
-      display: none; /* 기존 img 태그 숨김 */
-    }
+    
 
     header .logo {
       width: 150px;
@@ -133,6 +130,7 @@
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
+      cursor: pointer;
     }
 
     header .profile img {
@@ -494,7 +492,7 @@
   </div>
   <div class="main-wrapper">
     <header class="header">
-      <div class="logo"></div>
+      <div class="logo" onClick="location.href='/'"></div>
       <div class="header-icons">
         <!-- 알람 아이콘 -->
         <button class="icon-button" id="notificationBtn">

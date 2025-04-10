@@ -33,7 +33,7 @@
 </div>
 <div class="searchBox">
     <form action="/approval/search" method="get" class="searchForm">
-        <input type="text" name="keyword" placeholder="기안문서 또는 기안자 검색" class="searchInput" />
+        <input type="text" name="keyword" placeholder="문서종류,기안자,제목" class="searchInput" />
         <button type="submit" class="searchBtn">검색</button>
     </form>
 </div>

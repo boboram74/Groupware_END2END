@@ -47,7 +47,7 @@
     .sidebar .logo {
       padding: 20px;
       text-align: center;
-      border-bottom: 1px solid #34495e;
+      border-bottom: 1px solid var(--md-sys-color-outline);
       white-space: nowrap;
       height: 70px;
       display: flex;
@@ -132,10 +132,6 @@
       cursor: pointer;
     }
 
-    header .profile img {
-      display: none;
-    }
-
     .profile-container {
       position: relative;
     }
@@ -162,7 +158,7 @@
     }
 
     .menu-item:hover {
-      background-color: var(--md-sys-color-surface-container);
+      background-color: var(--md-sys-color-surface-bright);
       color: var(--md-sys-color-primary);
     }
 
@@ -348,15 +344,6 @@
       margin-bottom: 5px;
     }
 
-    .menu-items .menu-item a,
-    .menu-items .menu-item a:link,
-    .menu-items .menu-item a:visited,
-    .menu-items .menu-item a:hover,
-    .menu-items .menu-item a:active {
-      color: white;
-      text-decoration: none;
-    }
-
     /* 모바일 반응형 */
     @media (max-width: 768px) {
       .sidebar {
@@ -432,60 +419,38 @@
       <h3>END2END</h3>
     </div>
     <div class="menu-items">
-      <div class="menu-item">
-        <a href="/">
-          <i class="material-icons">home</i>
-          <span>홈</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/board/list/1'">
+        <i class="material-icons">dashboard</i>
+        <span>게시판</span>
       </div>
-      <div class="menu-item">
-        <a href="/board/list/1">
-          <i class="material-icons">dashboard</i>
-          <span>게시판</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/approval/list/1'">
+        <i class="material-icons">description</i>
+        <span>전자결재</span>
       </div>
-      <div class="menu-item">
-        <a href="/approval/list/1">
-          <i class="material-icons">description</i>
-          <span>전자결재</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/mail/list'">
+        <i class="material-icons">mail</i>
+        <span>메일</span>
       </div>
-      <div class="menu-item">
-        <a href="/mail/list">
-          <i class="material-icons">mail</i>
-          <span>메일</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/commute/detail'">
+        <i class="material-icons">schedule</i>
+        <span>근태관리</span>
       </div>
-      <div class="menu-item">
-        <a href="/commute/detail">
-          <i class="material-icons">schedule</i>
-          <span>근태관리</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/schedule/list'">
+        <i class="material-icons">event_available</i>
+        <span>예약</span>
       </div>
-      <div class="menu-item">
-        <a href="/schedule/list">
-          <i class="material-icons">event_available</i>
-          <span>예약</span>
-        </a>
-      </div>
-      <div class="menu-item">
-      <a href="/hr/list">
+      <div class="menu-item" onClick="location.href='/hr/list'">
         <i class="material-icons">people</i>
         <span>인사관리</span>
-      </a>
     </div>
-      <div class="menu-item">
-        <a href="/project/main">
-          <i class="material-icons">description</i>
-          <span>Works</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/project/main'">
+        <i class="material-icons">description</i>
+        <span>Works</span>
       </div>
 
-      <div class="menu-item">
-        <a href="/contact">
-          <i class="material-icons">contacts</i>
-          <span>주소록</span>
-        </a>
+      <div class="menu-item" onClick="location.href='/contact'">
+        <i class="material-icons">contacts</i>
+        <span>주소록</span>
       </div>
     </div>
   </div>

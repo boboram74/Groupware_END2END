@@ -108,4 +108,29 @@
         ON VACATION.approvalId = APPROVAL.id
         WHERE VACATION.employeeID = #{employeeId}
     </select>
+
+    <select id="selectGetVacationForHired1st" resultType="com.end2end.spring.commute.dto.GetVacationDTO">
+        SELECT
+            EMPLOYEE_DETAIL.id
+        FROM EMPLOYEE_DETAIL
+        WHERE
+            MOD((TRUNC(SYSDATE) - TRUNC(HIREDDATE)) , 30) = 0
+        AND
+            MOD((TRUNC(SYSDATE) - TRUNC(HIREDDATE)) , 360) != 0
+        AND
+            365 > TRUNC(SYSDATE) - TRUNC(HIREDDATE)
+        AND
+            TRUNC(SYSDATE) != TRUNC(HIREDDATE)
+    </select>
+
+    <select id="selectGetVacationList" resultType="com.end2end.spring.commute.dto.GetVacationDTO">
+        SELECT
+            EMPLOYEE_DETAIL.id AS employeeId,
+            TRUNC((TRUNC(SYSDATE) - TRUNC(HIREDDATE)) / 365) AS yearOfService
+        FROM EMPLOYEE_DETAIL
+        WHERE
+            MOD((TRUNC(SYSDATE) - TRUNC(HIREDDATE)) , 365) = 0
+        AND
+            TRUNC(SYSDATE) != TRUNC(HIREDDATE)
+    </select>
 </mapper>

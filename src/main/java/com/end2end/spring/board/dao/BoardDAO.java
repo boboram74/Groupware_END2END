@@ -43,4 +43,9 @@ public class BoardDAO {
     public void insertBoardCtUser(BoardCtUserDTO boardCtUserDTO) {
         mybatis.insert("board.insertBoardCtUser",boardCtUserDTO);
     }
+
+    public int update(BoardDTO dto) {
+        return mybatis.update("board.update",dto);
+    }
+
 }

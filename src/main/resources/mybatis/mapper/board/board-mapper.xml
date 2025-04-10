@@ -25,4 +25,12 @@
     </insert>
 
 
+    <update id="update" parameterType="com.end2end.spring.board.dto.BoardDTO">
+        UPDATE board
+        SET title = #{title},
+            content = #{content}
+        WHERE id = #{id}
+    </update>
+
+
 </mapper>

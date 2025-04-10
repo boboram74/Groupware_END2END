@@ -95,7 +95,9 @@
     </tr>
 </table>
 <div class="btnGroup">
-    <button class="editBtn">수정</button>
+    <a href="/board/write/update?id=${board.id}">
+        <button type="button" class="editBtn">수정</button>
+    </a>
     <form action="/board/delete" method="post">
         <input type="hidden" name="id" value="${board.id}" />
         <button type="submit" class="deleteBtn">삭제</button>

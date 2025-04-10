@@ -95,7 +95,7 @@
 </style>
 <div class="button-container">
     <button class="extended-button" style="width:100px;">연장근무 신청</button>
-    <a href="/board/write"><button id=writeBtn" class="vacation-button"  style="width:80px; height:30px;">글쓰기</button></a>
+    <a href="/board/write"><button id="writeBtn" class="vacation-button"  style="width:80px; height:30px;">글쓰기</button></a>
     <button class="vacation-list-button" style="width:70px;">휴가 조회</button>
 </div>
 <div class="search">

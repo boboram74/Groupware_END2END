@@ -424,7 +424,7 @@
 		});
 		refreshChatRoomList();
 		function refreshChatRoomList() {
-				$.ajax({
+			$.ajax({
 				url:"/messenger/chatListAll"
 			}).done(function (resp) {
 				chatRooms = resp.chatListAll;
@@ -496,6 +496,7 @@
 				id: $('#sender-employee-id').val(),
 				message: message,
 				recipient: $('#selected-employee-id').val(),
+				recipientName: $('#selected-recipient-name').val(),
 				roomId: currentRoomId
 			};
 			ws.send(JSON.stringify(payload));
@@ -708,7 +709,7 @@
 		function makeChatRoomListItem(room) {
 			const roomId = room.roomId || room.messageRoomId;
 			const div = $('<div>').addClass('employee-item').attr('data-room-id', roomId);
-/*			const div = $('<div>').addClass('employee-item').attr('data-room-id', room.messageRoomId);*/
+			/*			const div = $('<div>').addClass('employee-item').attr('data-room-id', room.messageRoomId);*/
 			const avatar = $('<div>').addClass('employee-avatar').css('background-color', '#bbb');
 			const info = $('<div>').addClass('employee-info');
 			const name = $('<div>').addClass('employee-name').text(room.roomName);

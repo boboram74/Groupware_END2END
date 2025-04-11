@@ -59,7 +59,8 @@
                 <div>
                     작업상태
                     <select name="state">
-                        <option value="ONGOING">진행중</option>
+                        <option value="READY">프로젝트 진행 전 작업</option>
+                        <option value="ONGOING">프로젝트 진행중</option>
                         <option value="FINISH">완료</option>
                     </select>
 

@@ -19,6 +19,7 @@
     </div>
     <div class="mainBody">
         <form action="/hr/update" method="post" id="frm">
+            <%--<input type="hidden" name="employeeId" value="${employeeDetail.employeeId}" />--%>
             <div class="content">
                 <div class="hrProfile" style="background-image: url(${employeeDetail.profileImg});">
                 </div>
@@ -43,10 +44,28 @@
                 <div class="position">
                     직급 :
                     <span id="positionText">${employeeDetail.jobName}</span>
+                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
+                        <select name="jobId" id="positionInput" style="display:none;">
+                            <c:forEach var="job" items="${jobList}">
+                                <option value="${job.id}">
+                                        ${job.name}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </c:if>
                 </div>
                 <div class="department">
                     부서 :
                     <span id="departmentText">${employeeDetail.departmentName}</span>
+                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
+                        <select name="departmentId" id="departmentInput" style="display:none;">
+                            <c:forEach var="dept" items="${departmentList}">
+                                <option value="${dept.id}">
+                                        ${dept.name}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </c:if>
                 </div>
                 <div class="email">
                     이메일 :

@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 public class ExtendedCommuteDTO {
     private int id;
     private String employeeId;
+    private int commuteId;
+    private String approvalId;
     private Timestamp workOffTime;
     private Timestamp regDate;
 }

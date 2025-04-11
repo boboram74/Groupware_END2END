@@ -20,7 +20,7 @@
         select * from board where id = #{id}
     </select>
 
-    <select id="selectCategoryByName" resultType="com.end2end.spring.board.dto.BoardcategoryDTO">
+    <select id="selectCategoryByName" resultType="com.end2end.spring.board.dto.BoardCategoryDTO">
         SELECT * FROM BOARD_CATEGORY WHERE NAME = #{name}
     </select>
 

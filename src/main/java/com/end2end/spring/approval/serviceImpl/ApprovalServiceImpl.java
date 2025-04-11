@@ -5,7 +5,10 @@ import com.end2end.spring.approval.dao.ApprovalRejectDAO;
 import com.end2end.spring.approval.dao.ApproverDAO;
 import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.approval.service.ApprovalService;
+import com.end2end.spring.commute.dao.ExtendedCommuteDAO;
 import com.end2end.spring.commute.dao.VacationDAO;
+import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.dto.ExtendedCommuteDTO;
 import com.end2end.spring.commute.dto.VacationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 
     @Autowired
     private VacationDAO vacationDAO;
+
+    @Autowired
+    private ExtendedCommuteDAO extendedCommuteDAO;
 
     @Override
     public List<ApprovalDTO> myList(String state) {
@@ -100,12 +106,18 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .approvalId(approvalDTO.getId())
                     .vacationDate(1.0)
                     .reason("연차")
-                    .startDate(Timestamp.valueOf("2025-05-05"))
+                    .startDate(Timestamp.valueOf("2025-05-05 12:00:00"))
                     .type("ANNUAL")
                     .build();
             vacationDAO.insert(vacationDTO);
         } else if (formDTO.getName().contains("연장 근무")) {  // 연장 근무라면 연장 근무 추가
-            // TODO: 연장근무 넣기
+            ExtendedCommuteDTO extendedCommuteDTO = ExtendedCommuteDTO.builder()
+                    .approvalId(approvalDTO.getId())
+                    .employeeId(dto.getEmployeeId())
+                    .commuteId(0)
+                    .workOffTime(Timestamp.valueOf("2025-05-05 12:00:00"))
+                    .build();
+            extendedCommuteDAO.insert(extendedCommuteDTO);
         }
 
         int order = 0;
@@ -113,7 +125,7 @@ public class ApprovalServiceImpl implements ApprovalService {
                 .approvalId(approvalDTO.getId())
                 .employeeId(dto.getEmployeeId())
                 .orders(order++)
-                .submitYn("N")
+                .submitYn("Y")
                 .build();
         approverDAO.insertApprover(writer);
 

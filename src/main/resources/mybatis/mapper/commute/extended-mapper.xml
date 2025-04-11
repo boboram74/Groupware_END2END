@@ -5,6 +5,8 @@
 <mapper namespace="extendedCommute">
     <insert id="insert">
         INSERT INTO EXTENDED_COMMUTE(id, employeeId, workOffTime)
-        VALUES (EXTENDED_COMMUTE_ID_SEQ.nextval, #{employeeId}, #{workOffTime})
+        VALUES (EXTENDED_COMMUTE_ID_SEQ.nextval, #{employeeId},
+        <if test="commuteId != 0">${commuteId}, </if>
+        #{approvalId}, #{workOffTime})
     </insert>
 </mapper>

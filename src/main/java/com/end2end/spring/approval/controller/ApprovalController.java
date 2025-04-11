@@ -45,7 +45,7 @@ public class ApprovalController {
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("formList", formList);
 
-        return "approval/list";
+        return "approval/approval-test";
     }
 
 

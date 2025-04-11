@@ -25,7 +25,26 @@
     </div>
     <div class="mainBody">
         <div class="content">
-            출력 공간(높이 주지말고 컨텐츠 내용에 따라 유동적으로 증가하게 두세요)
+            <table>
+                <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>부서명</th>
+                    <th>직급명</th>
+                    <th>연락처</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${contactList}" var="contact">
+                    <tr>
+                        <td>${contact.name}</td>
+                        <td>${contact.departmentName}</td>
+                        <td>${contact.jobName}</td>
+                        <td>${contact.contact}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
         <div class="pageNavi">
             1 2 3 4 5

@@ -6,7 +6,9 @@ import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.works.dto.ProjectSelectDTO;
+import com.end2end.spring.works.dto.ProjectUserDTO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
+import com.end2end.spring.works.dto.WorkUpdateDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,7 +65,6 @@ public class ProjectWorkController {
 
         return response;
 
-
     }
 
     @RequestMapping("/insert")
@@ -82,10 +83,18 @@ public class ProjectWorkController {
 
 
     @RequestMapping("/update")
-    public String update(ProjectWorkDTO dto) {
+    public String update(WorkUpdateDTO dto) {
         // TODO: 게시글 수정을 받음
         wserv.update(dto);
         return "redirect:/work/" + dto.getId();
+
+    }
+@ResponseBody
+    @RequestMapping("/updateState")
+    public String updateState(String state, int id) {
+        // TODO: 드래그앤 드롭으로 상태 변경된거 수정
+        wserv.updateState(state,id);
+        return "redirect:/work/" + id;
 
     }
 

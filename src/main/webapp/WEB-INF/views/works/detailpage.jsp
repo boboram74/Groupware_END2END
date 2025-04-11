@@ -1,18 +1,19 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-    <title>프로젝트 상세</title>
+<title>프로젝트 상세</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <!-- Date Range Picker CSS & JS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
 <!-- Bootstrap 5 JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -38,8 +39,8 @@
     }
 
     .mainContainer {
-        width: calc(100% - 200px);  /* boxContents 전체 너비에서 mainHeader(200px)만큼 뺌 */
-        margin-left: 200px;  /* mainHeader 너비만큼 왼쪽 마진 */
+        width: calc(100% - 200px); /* boxContents 전체 너비에서 mainHeader(200px)만큼 뺌 */
+        margin-left: 200px; /* mainHeader 너비만큼 왼쪽 마진 */
         min-height: 100vh;
         background-color: #fff;
         padding: 20px;
@@ -52,7 +53,7 @@
         max-width: 1200px;
         width: 100%;
         padding: 0;
-        gap: 20px;  /* 자식 요소들 간의 간격 */
+        gap: 20px; /* 자식 요소들 간의 간격 */
 
     }
 
@@ -80,7 +81,7 @@
         border-radius: 15px;
         display: flex;
         justify-content: space-evenly;
-height: 80%;
+        height: 80%;
 
 
     }
@@ -90,13 +91,13 @@ height: 80%;
         background: #ffffff;
         border-radius: 12px;
         padding: 20px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
     }
 
     .movingBoardColumn:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     }
 
     .column-title {
@@ -122,7 +123,7 @@ height: 80%;
 
     .work-item:hover {
         transform: translateY(-3px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         border-color: #4a90e2;
     }
 
@@ -201,7 +202,7 @@ height: 80%;
         font-size: 12px;
     }
 
-    .detail-menu-item>.material-icons {
+    .detail-menu-item > .material-icons {
         font-size: 18px;
         color: var(--md-sys-color-secondary);
     }
@@ -286,7 +287,7 @@ height: 80%;
 
     /* 모바일 메뉴 버튼 */
     .detail-menu-toggle-btn {
-        display: none;  /* 기본적으로 숨김 */
+        display: none; /* 기본적으로 숨김 */
         padding: 8px;
         background: #fff;
         border: 1px solid #e0e0e0;
@@ -307,7 +308,7 @@ height: 80%;
 
     /* 모달 닫기 버튼 */
     .detail-modal-close {
-        display: none;  /* 기본적으로 숨김 */
+        display: none; /* 기본적으로 숨김 */
         position: absolute;
         top: 10px;
         right: 10px;
@@ -341,11 +342,11 @@ height: 80%;
         }
 
         .detail-menu-toggle-btn {
-            display: flex;  /* 모바일에서만 보이게 */
+            display: flex; /* 모바일에서만 보이게 */
         }
 
         .detail-modal-close {
-            display: block;  /* 모바일에서만 보이게 */
+            display: block; /* 모바일에서만 보이게 */
             position: absolute;
             top: 10px;
             right: 10px;
@@ -360,24 +361,24 @@ height: 80%;
         }
 
         .detail-menu-list {
-            margin-top: 30px;  /* 닫기 버튼과의 간격 */
+            margin-top: 30px; /* 닫기 버튼과의 간격 */
             max-height: 80vh;
             overflow-y: auto;
-            padding-top: 10px;  /* 리스트 상단 간격 */
+            padding-top: 10px; /* 리스트 상단 간격 */
         }
 
         .detail-menu-modal {
             display: none;
             position: absolute;
-            top: 100%;  /* 헤더 바로 아래에 위치 */
-            width: 250px;  /* 너비 250px로 설정 */
+            top: 100%; /* 헤더 바로 아래에 위치 */
+            width: 250px; /* 너비 250px로 설정 */
             right: 0;
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 1100;
-            margin-top: 10px;  /* 헤더와의 간격 */
+            margin-top: 10px; /* 헤더와의 간격 */
         }
 
         .detail-menu-modal.active {
@@ -398,7 +399,7 @@ height: 80%;
             min-height: calc(100vh - 70px);
         }
 
-        .projectTime{
+        .projectTime {
             font-size: 1rem;
             color: #666;
         }
@@ -477,6 +478,10 @@ height: 80%;
             background: #ffffff;
         }
 
+        .work-item:active {
+            cursor: grabbing;
+        }
+
         /* 우선순위 뱃지 */
         .priority {
             display: inline-block;
@@ -488,10 +493,21 @@ height: 80%;
             text-transform: uppercase;
         }
 
-        .priority.high { background: #e74c3c; } /* 높은 우선순위 */
-        .priority.middle { background: #f1c40f; } /* 중간 우선순위 */
-        .priority.low { background: #2ecc71; } /* 낮은 우선순위 */
+        .priority.high {
+            background: #e74c3c;
+        }
 
+        /* 높은 우선순위 */
+        .priority.middle {
+            background: #f1c40f;
+        }
+
+        /* 중간 우선순위 */
+        .priority.low {
+            background: #2ecc71;
+        }
+
+        /* 낮은 우선순위 */
         /* 드래그 상태 강조 */
         .work-items.drag-over {
             background: rgba(0, 123, 255, 0.1);
@@ -499,18 +515,16 @@ height: 80%;
             border-radius: 8px;
         }
 
-        .movingBoardColumn h3 {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #333;
-            background: #f5f5f5;
-            padding: 10px;
-            border-radius: 8px;
-
+        .movingBoardColumn.drag-over {
+            border: 2px dashed #007bff;
+            background-color: rgba(0, 123, 255, 0.1);
         }
+
         .work-items {
             min-height: 300px;
             margin-top: 20px;
+            cursor: grab;
+
         }
 
         /* 작업 카드 */
@@ -564,23 +578,22 @@ height: 80%;
             border: 2px dashed #00aaff;
             border-radius: 8px;
         }
+
         .closeBtn {
             display: flex;
-            justify-content: flex-end;  /* 오른쪽 정렬 */
-            margin-bottom: 5px;        /* 아래 내용과의 간격 */
+            justify-content: flex-end; /* 오른쪽 정렬 */
+            margin-bottom: 5px; /* 아래 내용과의 간격 */
         }
 
         .btn-close {
-            padding: 0.15rem !important;  /* 패딩 줄임 */
+            padding: 0.15rem !important; /* 패딩 줄임 */
             font-size: 0.6rem !important; /* 글자 크기 줄임 */
-            opacity: 0.5;                 /* 투명도 조절 */
+            opacity: 0.5; /* 투명도 조절 */
         }
 
         .btn-close:hover {
-            opacity: 1;  /* 호버시 완전 불투명 */
+            opacity: 1; /* 호버시 완전 불투명 */
         }
-
-
 
 
     }
@@ -651,23 +664,24 @@ height: 80%;
 
             </div>
             <a href="/work/write/${project.id}">
-            <button>작성하기</button></a>
+                <button>작성하기</button>
+            </a>
 
         </div>
 
         <!-- 칸반보드 -->
         <div class="movingBoard">
             <!-- 시작전 -->
-            <div class="movingBoardColumn ready-column surface-bright" data-status="READY" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <div class="movingBoardColumn ready-column surface-bright" data-state="READY">
                 <h3 class="column-title">시작전</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'ONGOING'}">
-                            <div class="work-item" draggable="true" ondragstart="drag(event)"
+                            <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
                                 <div class="closeBtn">
-                                    <button type="button" class="btn-close btn-sm
-" aria-label="Close" ></button></div>
+                                    <button type="button" class="btn-close btn-sm" aria-label="Close"></button>
+                                </div>
                                 <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
@@ -677,15 +691,16 @@ height: 80%;
             </div>
 
             <!-- 작성중 -->
-            <div class="movingBoardColumn ongoing-column surface-bright" data-status="ONGOING" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <div class="movingBoardColumn ongoing-column surface-bright" data-state="ONGOING">
                 <h3 class="column-title">작성 중</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'ONGOING'}">
-                            <div class="work-item" draggable="true" ondragstart="drag(event)"
+                            <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
                                 <div class="closeBtn">
-                                <button type="button" class="btn-close" aria-label="Close"></button></div>
+                                    <button type="button" class="btn-close" aria-label="Close"></button>
+                                </div>
                                 <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
@@ -695,14 +710,18 @@ height: 80%;
             </div>
 
             <!-- 완료 -->
-            <div class="movingBoardColumn finish-column surface-bright" data-status="FINISH" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <div class="movingBoardColumn finish-column surface-bright" data-state="FINISH">
                 <h3 class="column-title">완료</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'FINISH'}">
-                            <div class="work-item" draggable="true" ondragstart="drag(event)"
+                            <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
-                                <h4>${work.title}</h4>
+                                <c:if test="${employee.role == 'TeamLeader'}">
+                                    <div class="closeBtn">
+                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                    </div>
+                                </c:if> <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>
@@ -710,7 +729,6 @@ height: 80%;
                 </div>
             </div>
         </div>
-
 
         <!-- 모달 구조 -->
         <div class="modal fade" id="workModal" tabindex="-1" aria-hidden="true">
@@ -726,130 +744,128 @@ height: 80%;
                         <div id="workType">
                             <h2>게시물 type</h2></div>
                         <h5>중요도</h5>
-                        <div id="workPriority"> <h2>중요도</h2></div>
+                        <div id="workPriority"><h2>중요도</h2></div>
                         <h5>진행도</h5>
-                        <div id="workState"> <h2>진행도</h2></div>
+                        <div id="workState"><h2>진행도</h2></div>
                         <h5>기간</h5>
-                        <div id="workDate"> <h2>기간</h2></div>
+                        <div id="workDate"><h2>기간</h2></div>
                         <h5>내용</h5>
-                        <div id="workContet"> </div>
+                        <div id="workContet"></div>
 
                         <!-- 파일 목록 표시 영역 -->
                         <div id="fileList"></div>
 
 
                     </div>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
-            function openWorkModal(workId) {
-                $.ajax({
-                    url: '/work/detail/' + workId,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log(response);
-                        const work = response.worksDTO;
-                        const files = response.files;
+    <script>
+        function openWorkModal(workId) {
+            $.ajax({
+                url: '/work/detail/' + workId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    const work = response.worksDTO;
+                    const files = response.files;
 
-                        $('#modalTitle').html(work.title);
-                        $('#workType').html(work.type);
-                        $('#workPriority').html(work.priority);
-                        $('#workState').html(work.state);
-                        $('#workDate').html(work.regDate + ' ~ ' + work.deadLine);
-                        $('#workContent').html(work.content);
+                    $('#modalTitle').html(work.title);
+                    $('#workType').html(work.type);
+                    $('#workPriority').html(work.priority);
+                    $('#workState').html(work.state);
+                    $('#workDate').html(work.regDate + ' ~ ' + work.deadLine);
+                    $('#workContent').html(work.content);
 
-                        // 파일 목록 업데이트
+                    // 파일 목록 업데이트
 
-                        let fileList = "";
-                        if (files && files.length > 0) {
-                            files.forEach(function(file) {
-                                console.log(file);
-                                fileList += '<li class="mb-2">' +
-                                    '<i class="bi bi-paperclip"></i> ' +
-                                    '<a href="/download/' + file.filesId +
-                                    '" class="text-decoration-none">' +
+                    let fileList = "";
+                    if (files && files.length > 0) {
+                        files.forEach(function (file) {
+                            console.log(file);
+                            fileList += '<li class="mb-2">' +
+                                '<i class="bi bi-paperclip"></i> ' +
+                                '<a href="/download/' + file.filesId +
+                                '" class="text-decoration-none">' +
 
-                                    file.originFileName
-                                    + '</a></li>';
-                            });
+                                file.originFileName
+                                + '</a></li>';
+                        });
 
-                        } else {
-                            filesList = '<li>첨부된 파일이 없습니다.</li>';
-                        }
-                        $('#fileList').html(fileList);
-
-                        // 모달 표시
-                        $('#workModal').modal('show');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        console.error('Status:', status);
-                        console.error('Response:', xhr.responseText);
-                        alert('데이터를 불러오는데 실패했습니다.');
+                    } else {
+                        filesList = '<li>첨부된 파일이 없습니다.</li>';
                     }
-                });
-            }
+                    $('#fileList').html(fileList);
 
-function getBadgeClass(status) {
-    switch(status) {
-        case '진행중':
-            return 'bg-primary';
-        case '완료':
-            return 'bg-success';
-        case '대기':
-            return 'bg-warning';
-        default:
-            return 'bg-secondary';
-    }
-}
+                    // 모달 표시
+                    $('#workModal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    console.error('Status:', status);
+                    console.error('Response:', xhr.responseText);
+                    alert('데이터를 불러오는데 실패했습니다.');
+                }
+            });
 
 
-드래그 시작
-        function drag(event) {
-        event.dataTransfer.setData("workId", event.target.dataset.workId);
         }
+        $(document).ready(function () {
+            let dragged = null;
 
-        // 드래그 가능한 공간으로 이동 가능
-        function allowDrop(event) {
-        event.preventDefault();
-        const target = event.target.closest(".work-items");
-        if (target) {
-        target.classList.add("drag-over"); // 드래그 오버 강조 효과
-        }
-        }
+            $('.work-item').on('dragstart', function (e) {
+                dragged = this;
+            });
 
-        // 드래그가 공간을 벗어났을 때
-        function leaveDrop(event) {
-        const target = event.target.closest(".work-items");
-        if (target) {
-        target.classList.remove("drag-over"); // 오버 강조 효과 제거
-        }
-        }
+            $('.work-item').on('dragend', function (e) {
+                // 드래그가 끝난 후 처리할 일이 있다면 여기에 작성
+            });
 
-        // 드롭된 상태
-        async function drop(event) {
-        event.preventDefault();
-        const workId = event.dataTransfer.getData("workId");
-        const target = event.target.closest(".work-items");
-        const newState = target.closest(".section").dataset.status; // 상태 변경
+            $('.work-item').on('drag', function (e) {
+                // 드래그 중에 처리할 일이 있다면 여기에 작성
+            });
 
-        if (target) {
-        target.classList.remove("drag-over"); // 드래그 강조 해제
-        }
+            $('.ongoing-column').on('drop', function (e) {
+                e.preventDefault();
+                $(this).append(dragged);
+            });
 
-        try {
-        await updateWorkStatus(workId, newState);
-        location.reload(); // 상태 변경 후 리프레시
-        } catch (error) {
-        console.error("업데이트 실패:", error);
-        }
-        }
-}
+            $('.ongoing-column').on('dragover', function (e) {
+                e.preventDefault();
+            });
+        });
 
-        </script>
+ 
+        // 처음 드래그 요소가 위치하고 있는 좌측 박스 영역
+        const readyBox = document.querySelector(".ready-column");
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp" />
+        readyBox.addEventListener("dragenter", (e) => {
+            e.preventDefault();
+            console.log(e);
+            console.log("드래그 요소가 '첫' 번째 박스 영역에 최초로 진입했을 때");
+        });
+        readyBox.addEventListener("dragleave", (e) => {
+            e.preventDefault();
+            console.log(e);
+            console.log("드래그 요소가 '첫' 번째 박스 영역을 떠나면 발생하는 이벤트");
+        });
+
+
+        ongoingBox.addEventListener("dragenter", (e) => {
+            e.preventDefault();
+            console.log(e);
+            console.log("드래그 요소가 '두' 번째 박스 영역에 최초로 진입했을 때");
+        });
+        ongoingBox.addEventListener("dragleave", (e) => {
+            e.preventDefault();
+            console.log(e);
+            console.log("드래그 요소가 '두' 번째 박스 영역을 떠나면 발생하는 이벤트");
+        });
+
+
+    </script>
+
+    <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

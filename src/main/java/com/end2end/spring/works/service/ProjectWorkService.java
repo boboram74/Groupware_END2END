@@ -8,10 +8,10 @@ import java.util.List;
 public interface ProjectWorkService {
     List<ProjectWorkDTO> selectAll();
     void insert(MultipartFile[] files, ProjectWorkDTO dto) throws Exception;
-    void update(ProjectWorkDTO dto);
+    void update(WorkUpdateDTO dto);
     void deleteById(int id);
     void toggleState(int id);
     String selectByProjectIdAndEmployeeId(int projectId, String employeeId);
-
+    void updateState(String state, int id);
     ProjectWorkDTO selectByworksId(int id);
 }

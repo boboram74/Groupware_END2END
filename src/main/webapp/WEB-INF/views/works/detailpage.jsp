@@ -761,24 +761,26 @@ height: 80%;
                         $('#workState').html(work.state);
                         $('#workDate').html(work.regDate + ' ~ ' + work.deadLine);
                         $('#workContent').html(work.content);
-                        $('#fileList').html(files);
+
                         // 파일 목록 업데이트
 
-                        let filesList = "";
+                        let fileList = "";
                         if (files && files.length > 0) {
                             files.forEach(function(file) {
-                                filesList += '<li class="mb-2">' +
+                                console.log(file);
+                                fileList += '<li class="mb-2">' +
                                     '<i class="bi bi-paperclip"></i> ' +
-                                    '<a href="${pageContext.request.contextPath}/download/' + file.filId +
+                                    '<a href="/download/' + file.filesId +
                                     '" class="text-decoration-none">' +
-                                    file.originalName
+
+                                    file.originFileName
                                     + '</a></li>';
                             });
 
                         } else {
-                            filesHtml = '<li>첨부된 파일이 없습니다.</li>';
+                            filesList = '<li>첨부된 파일이 없습니다.</li>';
                         }
-                        $('#fileListContent').html(filesHtml);
+                        $('#fileList').html(fileList);
 
                         // 모달 표시
                         $('#workModal').modal('show');
@@ -792,61 +794,61 @@ height: 80%;
                 });
             }
 
-// function getBadgeClass(status) {
-//     switch(status) {
-//         case '진행중':
-//             return 'bg-primary';
-//         case '완료':
-//             return 'bg-success';
-//         case '대기':
-//             return 'bg-warning';
-//         default:
-//             return 'bg-secondary';
-//     }
-// }
+function getBadgeClass(status) {
+    switch(status) {
+        case '진행중':
+            return 'bg-primary';
+        case '완료':
+            return 'bg-success';
+        case '대기':
+            return 'bg-warning';
+        default:
+            return 'bg-secondary';
+    }
+}
 
 
-//드래그 시작
-//         function drag(event) {
-//         event.dataTransfer.setData("workId", event.target.dataset.workId);
-//         }
-//
-//         // 드래그 가능한 공간으로 이동 가능
-//         function allowDrop(event) {
-//         event.preventDefault();
-//         const target = event.target.closest(".work-items");
-//         if (target) {
-//         target.classList.add("drag-over"); // 드래그 오버 강조 효과
-//         }
-//         }
-//
-//         // 드래그가 공간을 벗어났을 때
-//         function leaveDrop(event) {
-//         const target = event.target.closest(".work-items");
-//         if (target) {
-//         target.classList.remove("drag-over"); // 오버 강조 효과 제거
-//         }
-//         }
-//
-//         // 드롭된 상태
-//         async function drop(event) {
-//         event.preventDefault();
-//         const workId = event.dataTransfer.getData("workId");
-//         const target = event.target.closest(".work-items");
-//         const newState = target.closest(".section").dataset.status; // 상태 변경
-//
-//         if (target) {
-//         target.classList.remove("drag-over"); // 드래그 강조 해제
-//         }
-//
-//         try {
-//         await updateWorkStatus(workId, newState);
-//         location.reload(); // 상태 변경 후 리프레시
-//         } catch (error) {
-//         console.error("업데이트 실패:", error);
-//         }
-//         }
-// }
+드래그 시작
+        function drag(event) {
+        event.dataTransfer.setData("workId", event.target.dataset.workId);
+        }
+
+        // 드래그 가능한 공간으로 이동 가능
+        function allowDrop(event) {
+        event.preventDefault();
+        const target = event.target.closest(".work-items");
+        if (target) {
+        target.classList.add("drag-over"); // 드래그 오버 강조 효과
+        }
+        }
+
+        // 드래그가 공간을 벗어났을 때
+        function leaveDrop(event) {
+        const target = event.target.closest(".work-items");
+        if (target) {
+        target.classList.remove("drag-over"); // 오버 강조 효과 제거
+        }
+        }
+
+        // 드롭된 상태
+        async function drop(event) {
+        event.preventDefault();
+        const workId = event.dataTransfer.getData("workId");
+        const target = event.target.closest(".work-items");
+        const newState = target.closest(".section").dataset.status; // 상태 변경
+
+        if (target) {
+        target.classList.remove("drag-over"); // 드래그 강조 해제
+        }
+
+        try {
+        await updateWorkStatus(workId, newState);
+        location.reload(); // 상태 변경 후 리프레시
+        } catch (error) {
+        console.error("업데이트 실패:", error);
+        }
+        }
+}
 
         </script>
 

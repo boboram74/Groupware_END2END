@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +106,10 @@ public class HolidayUtil {
     }
 
     public static boolean isHoliday(LocalDate date) throws IOException {
+        if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            return true;
+        }
+
         String year = String.valueOf(date.getYear());
         String month = String.format("%02d", date.getMonthValue());
 
@@ -155,5 +160,16 @@ public class HolidayUtil {
                     .seq((Double) json.get("seq"))
                     .build();
         }
+    }
+
+    public static int getWorkingDaysBetween(LocalDate startDate, LocalDate endDate) throws IOException {
+        List<HolidayDTO> holidayList = getPeriodHolidayList(startDate, endDate);
+
+        int workingDays = (int) startDate.datesUntil(endDate.plusDays(1))
+                .filter(date -> date.getDayOfWeek() != DayOfWeek.SATURDAY
+                        && date.getDayOfWeek() != DayOfWeek.SUNDAY)
+                .count();
+
+        return workingDays - holidayList.size();
     }
 }

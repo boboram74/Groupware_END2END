@@ -54,22 +54,33 @@
         PROJECTID =#{projectId}
         AND
         EMPLOYEEID =#{employeeId}
-
     </select>
+
 <select id="selectByworksId" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
     SELECT * FROM PROJECT_WORK
     WHERE ID = #{id}
 </select>
 
 
-    <!-- 프로젝트 진행중 보고된 게시물 추가 -->
-
-    <update id="updateById" >
+    <update id="update" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO" >
         update project_work set
-        title=?,content=?,state=?,priority=?, deadLine=? where id =${value}
+        title= #{title},
+        state=#{state},
+        priority=#{priority},
+        type= #{type},
+        content = #{content,jdbcType=VARCHAR}
+        where id =${id}
     </update>
 
 <!-- 프로젝트 진행중 보고된 게시물 수정-->
+
+
+    <update id="updateState" parameterType="java.util.Map">
+        update project_work set
+    state=${state}where id =${workId}
+    </update>
+
+
 <select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">
 
     SELECT * FROM project_user where projectId = ${id}

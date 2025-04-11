@@ -21,11 +21,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectUserDAO projectUserDao;
 
-//    @Override
-//    public   List<ProjectSelectDTO> selectAll() {
-//
-//        return projectDao.selectAll();
-//    }
+
 
     //    @Override
 //    public Map<String, Integer> getProjectStatistics() {
@@ -48,21 +44,7 @@ public class ProjectServiceImpl implements ProjectService {
 //        return stats;
 //    }
 
-//    @Transactional
-//    @Override
-//    public void insert(ProjectInsertDTO dto, List<String> employeeId) {
-//        projectDao.insert(dto);
-//
-//        for (String id : employeeId) {
-//            ProjectUserDTO udto = ProjectUserDTO.builder()
-//                    .employeeId(id)
-//                    .projectId(dto.getProjectId())
-//                    .build();
-//        projectUserDao.insert(udto);
-//
-//
-//        }
-//    }
+
     @Transactional
     @Override
     public void insert(ProjectInsertDTO dto) {
@@ -116,8 +98,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         return result;
     }
-
-
 
 
 //    public void insert(ProjectDTO dto, ProjectUserDTO udto) {

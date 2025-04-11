@@ -143,17 +143,6 @@
     <!-- 추가 행 -->
     </tbody>
 </table>
-<script>
-    document.querySelectorAll(".open-modal").forEach(link => {
-        link.addEventListener("click",function(){
-            const row = this.closest(".board-row");
-            document.getElementById("modalTitle").textContent = row.dataset.title;
-            document.getElementById("modalEmployee").textContent = row.dataset.employee;
-            document.getElementById("modalDate").textDate = row.dataset.data;
-        })
-    })
-
-</script>
 
 
 

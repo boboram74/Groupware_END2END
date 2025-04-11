@@ -41,11 +41,25 @@
 
     <select id="selectRoomListAll" parameterType="map" resultType="com.end2end.spring.messenger.dto.ChatRoomListDTO">
         select
-        mru.MESSAGEROOMID, mr.name as roomName
+        t.MESSAGEROOMID,
+        t.roomName,
+        t.lastMessage
+        from (
+        select
+        mru.MESSAGEROOMID,
+        mr.name as roomName,
+        m.content as lastMessage,
+        mru.regdate as roomRegDate,
+        row_number() over (partition by mru.MESSAGEROOMID order by m.regdate desc) as rn
         from message_room_user mru
         join message_room mr
         on mru.MESSAGEROOMID = mr.ID
+        join message m
+        on m.MESSAGEROOMID = mru.MESSAGEROOMID
         where mru.EMPLOYEEID = #{value}
+        ) t
+        where t.rn = 1
+        order by t.roomRegDate desc
     </select>
 
     <select id="selectByRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageHistoryDTO">
@@ -76,6 +90,12 @@
 
     <select id="findRoomUser" parameterType="map" resultType="int">
         SELECT id FROM message_room_user WHERE messageRoomId = #{roomId} AND employeeId = #{employeeId}
+    </select>
+
+    <select id="selectRoomMemberIds" parameterType="map" resultType="java.lang.String">
+        SELECT EMPLOYEEID
+        FROM MESSAGE_ROOM_USER
+        WHERE MESSAGEROOMID = #{roomId}
     </select>
 
 </mapper>

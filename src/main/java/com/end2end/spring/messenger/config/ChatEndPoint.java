@@ -41,21 +41,17 @@ public class ChatEndPoint {
     @OnMessage
     public void onMessage(String message, Session session) {
         JsonObject parsedMessage = gson.fromJson(message, JsonObject.class);
-        System.out.println(parsedMessage);
         String type = parsedMessage.has("type") ? parsedMessage.get("type").getAsString() : "";
 
         int roomId = 0;
         if (parsedMessage.has("roomId") && !parsedMessage.get("roomId").getAsString().trim().isEmpty()) {
-            System.out.println("현재 roomId = " + roomId);
             roomId = Integer.parseInt(parsedMessage.get("roomId").getAsString());
         }
-        System.out.println("현재 roomId = " + roomId);
         if ("roomEnter".equals(type)) {
             System.out.println(dto.getName() + "님이 " + roomId + " 채팅방에 입장했습니다.");
             List<MessageHistoryDTO> result = messengerService.selectByRoomId(roomId);
 
             for (MessageHistoryDTO msg : result) {
-                System.out.println(msg.getName() + ":" + msg.getContent());
                 Map<String, String> data = new HashMap<>();
                 data.put("type", "history");
                 data.put("id", String.valueOf(msg.getId()));
@@ -72,15 +68,32 @@ public class ChatEndPoint {
         // 그 외의 메시지 처리 (메시지 전송)
         String id = parsedMessage.get("id").getAsString();
         String messageContent = parsedMessage.get("message").getAsString();
+        String recipientId = "";
+        if (parsedMessage.has("recipient")) {
+            recipientId = parsedMessage.get("recipient").getAsString();
+        }
         Map<String, String> data = new ConcurrentHashMap<>();
         data.put("senderId", dto.getId());
         data.put("sender", dto.getName());
         data.put("message", messageContent);
+        data.put("roomId", String.valueOf(roomId));
 
-        messengerService.messageFirstInsert(dto.getName(), dto.getId(), messageContent, roomId);
+        if (roomId == 0) {
+            roomId = messengerService.messageFirstInsert(dto.getName(), dto.getId(), messageContent, roomId, recipientId);
+            // 클라이언트에 신규 roomId 전달
+            Map<String, String> newRoomResponse = new HashMap<>();
+            newRoomResponse.put("type", "NEW_CHAT_ROOM");
+            newRoomResponse.put("roomId", String.valueOf(roomId));
+            newRoomResponse.put("roomName", dto.getName());
+            sendMessage(session, newRoomResponse);
 
-        if (parsedMessage.has("recipient")) {
-            String recipientId = parsedMessage.get("recipient").getAsString();
+
+        } else {
+            // 기존 채팅방일 경우
+            messengerService.messageFirstInsert(dto.getName(), dto.getId(), messageContent, roomId, recipientId);
+        }
+
+        if (!recipientId.isEmpty()) {
             Session recipientSession = clientSessions.get(recipientId);
             if (recipientSession != null && recipientSession.isOpen()) {
                 sendMessage(recipientSession, data);

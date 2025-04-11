@@ -74,4 +74,9 @@
             OR af.name LIKE '%' || #{keyword} || '%')
     </select>
 
+    <select id="selectFormLikeName" resultType="com.end2end.spring.approval.dto.ApprovalFormDTO">
+        SELECT *
+        FROM APPROVAL_FORM
+        WHERE NAME LIKE ${name}
+    </select>
 </mapper>

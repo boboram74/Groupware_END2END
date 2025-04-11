@@ -9,15 +9,13 @@
             approvalId,
             employeeId,
             orders,
-            submitYn,
-            submitDate,
+            submitYn
             regDate
         ) VALUES (APPROVER_ID_SEQ.NEXTVAL,
                      #{approvalId},
                      #{employeeId},
                      #{orders},
                   #{submitYn, jdbcType=VARCHAR},
-                  #{submitDate, jdbcType=TIMESTAMP},
                      SYSDATE
                  )
     </insert>

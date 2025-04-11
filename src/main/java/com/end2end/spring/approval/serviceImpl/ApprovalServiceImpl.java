@@ -3,11 +3,10 @@ package com.end2end.spring.approval.serviceImpl;
 import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dao.ApprovalRejectDAO;
 import com.end2end.spring.approval.dao.ApproverDAO;
-import com.end2end.spring.approval.dto.ApprovalDTO;
-import com.end2end.spring.approval.dto.ApprovalInsertDTO;
-import com.end2end.spring.approval.dto.ApprovalRejectDTO;
-import com.end2end.spring.approval.dto.ApproverDTO;
+import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.approval.service.ApprovalService;
+import com.end2end.spring.commute.dao.VacationDAO;
+import com.end2end.spring.commute.dto.VacationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +28,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 
     @Autowired
     private ApprovalRejectDAO approvalRejectDAO;
+
+    @Autowired
+    private VacationDAO vacationDAO;
 
     @Override
     public List<ApprovalDTO> myList(String state) {
@@ -92,13 +94,26 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         approvalDAO.insert(approvalDTO);
 
+        ApprovalFormDTO formDTO = approvalDAO.selectByFormId(dto.getApprovalFormId());
+        if (formDTO.getName().contains("휴가")) {  // 휴가 문서라면 휴가 추가
+            VacationDTO vacationDTO = VacationDTO.builder()
+                    .approvalId(approvalDTO.getId())
+                    .vacationDate(1.0)
+                    .reason("연차")
+                    .startDate(Timestamp.valueOf("2025-05-05"))
+                    .type("ANNUAL")
+                    .build();
+            vacationDAO.insert(vacationDTO);
+        } else if (formDTO.getName().contains("연장 근무")) {  // 연장 근무라면 연장 근무 추가
+            // TODO: 연장근무 넣기
+        }
+
         int order = 0;
         ApproverDTO writer = ApproverDTO.builder()
                 .approvalId(approvalDTO.getId())
                 .employeeId(dto.getEmployeeId())
                 .orders(order++)
-                .submitYn("Y")
-                .submitDate(new Timestamp(System.currentTimeMillis()))
+                .submitYn("N")
                 .build();
         approverDAO.insertApprover(writer);
 

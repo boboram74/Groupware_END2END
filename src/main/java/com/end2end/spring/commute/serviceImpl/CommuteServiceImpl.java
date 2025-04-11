@@ -97,7 +97,6 @@ public class CommuteServiceImpl implements CommuteService {
         }
 
         return true;
-
     }
 
     @Override

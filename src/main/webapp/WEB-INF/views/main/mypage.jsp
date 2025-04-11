@@ -39,30 +39,18 @@
                 <div class="birthday">
                     생년월일 :
                     <span id="birthdayText">${employeeDetail.birthday}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
-                        <input type="text" id="birthdayInput" name="birthday" value="${employeeDetail.birthday}" style="display:none;" />
-                    </c:if>
                 </div>
                 <div class="position">
                     직급 :
                     <span id="positionText">${employeeDetail.jobName}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
-                        <input type="text" id="positionInput" name="jobName" value="${employeeDetail.jobName}" style="display:none;" />
-                    </c:if>
                 </div>
                 <div class="department">
                     부서 :
                     <span id="departmentText">${employeeDetail.departmentName}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
-                        <input type="text" id="departmentInput" name="departmentName" value="${employeeDetail.departmentName}" style="display:none;" />
-                    </c:if>
                 </div>
                 <div class="email">
                     이메일 :
                     <span id="emailText">${employeeDetail.email}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
-                        <input type="text" id="emailInput" name="email" value="${employeeDetail.email}" style="display:none;" />
-                    </c:if>
                 </div>
 
                 <div class="postCode">

@@ -1,8 +1,8 @@
 $("#editBtn").on("click",function(e){
     e.preventDefault();
     if (isHR) {
-        $("#nameText, #contactText, #birthdayText, #positionText, #departmentText, #emailText").hide();
-        $("#nameInput, #contactInput, #birthdayInput, #positionInput, #departmentInput, #emailInput").show();
+        $("#nameText, #contactText").hide();
+        $("#nameInput, #contactInput").show();
     }
     $("#zipCodeText, #addressText, #detailAddressText").hide();
     $("#zipCodeInput, #addressInput, #detailAddressInput").show();

@@ -18,9 +18,13 @@ public class ProjectWorkDAO {
     private SqlSession mybatis;
 
 
-    public List<ProjectWorkDTO> selectAll() {
-        return   mybatis.selectList("works.selectAll");
+    public List<ProjectWorkDTO> selectAll(int id) {
+
+        return   mybatis.selectList("works.selectAll",id);
     }
+
+
+
     public int getProjectId() {
    return  mybatis.selectOne("works.getProjectId");
     }
@@ -39,11 +43,11 @@ public class ProjectWorkDAO {
 mybatis.update("works.update",dto);
     }
 
-    public void updateState(String state, int id) {
+    public void updateState(String state, int workItemId) {
 
         Map<String, Object> params = new HashMap<>();
         params.put("state", state);
-        params.put("workId",id);
+        params.put("workId",workItemId);
         mybatis.update("works.updateState",params);
     }
 

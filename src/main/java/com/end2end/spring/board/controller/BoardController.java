@@ -5,9 +5,6 @@ import com.end2end.spring.board.dto.BoardDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
 import com.end2end.spring.board.service.BoardService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
-import com.end2end.spring.file.dto.FileDTO;
-import com.end2end.spring.file.dto.FileDetailDTO;
-import com.end2end.spring.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +19,7 @@ import java.util.List;
 public class BoardController {
     @Autowired
     private BoardService boardService;
-@Autowired
-FileService fileService;
+
     @RequestMapping("/list")
     public String list(Model model) {
         List<BoardDTO> boardList = boardService.selectAll();
@@ -75,7 +71,7 @@ FileService fileService;
     public String toWrite(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         model.addAttribute("employeeDTO", employee);
-        System.out.println(employee);
+
         // TODO: 게시글 입력 폼으로 이동
         return "/board/write";
     }
@@ -92,17 +88,6 @@ FileService fileService;
     public String toDetail(@PathVariable int id, Model model) {
         model.addAttribute("board", boardService.selectById(id));
         // TODO: 게시글 상세글로 이동
-
-        FileDTO fileDTO = FileDTO.builder()
-                .boardId(id)
-                .build();
-        List<FileDetailDTO> file = fileService.selectByParentsId(fileDTO);
-        System.out.println(file);
-          model.addAttribute("fileList", file);
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("files", files);
-//        response.put("worksDTO", wdto);
-
         return "/board/detail";
     }
 
@@ -113,10 +98,9 @@ FileService fileService;
     }
 
     @RequestMapping("/insert")
-    public String insert(HttpSession session, BoardDTO dto,  @RequestParam("file") MultipartFile[]file)throws Exception {
+    public String insert(HttpSession session, BoardDTO dto,  @RequestParam("file") MultipartFile file)throws Exception {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-
-        boardService.insert(dto,file);
+        boardService.insert(dto);
         // TODO: 게시글 입력을 받음
         return "redirect:/board/list";
     }

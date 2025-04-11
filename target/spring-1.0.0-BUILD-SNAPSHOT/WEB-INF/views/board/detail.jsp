@@ -35,6 +35,7 @@
     .btnGroup {
         margin-top: 10px;
         text-align: center;
+        display: flex;
     }
     .editBtn, .deleteBtn, .replyBtn, .backBtn {
         padding: 6px 12px;
@@ -44,11 +45,11 @@
         cursor: pointer;
     }
     .editBtn {
-        background-color: #e8f4f8;
+        background-color: #f8f8f8;
         color: #333;
     }
     .deleteBtn {
-        background-color: #f8e8e8;
+        background-color: #f8f8f8;
         color: #333;
     }
     .replyBtn {
@@ -94,15 +95,24 @@
     </tr>
 </table>
 <div class="btnGroup">
-    <button class="editBtn">수정</button>
-    <button class="deleteBtn">삭제</button>
+    <a href="/board/write/update?id=${board.id}">
+        <button type="button" class="editBtn">수정</button>
+    </a>
+    <form action="/board/delete" method="post">
+        <input type="hidden" name="id" value="${board.id}" />
+        <button type="submit" class="deleteBtn">삭제</button>
+    </form>
     <button class="replyBtn">답변</button>
     <a href="/board/list">
     <button class="backBtn">뒤로</button></a>
 </div>
 
 <script>
-
+    document.querySelector(".deleteBtn").addEventListener("click",function(e){
+        if(!confirm("정말 삭제하시겠습니까?")){
+            e.preventDefault();
+        }
+    })
 </script>
 
 

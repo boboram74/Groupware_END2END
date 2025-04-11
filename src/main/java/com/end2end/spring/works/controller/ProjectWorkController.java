@@ -43,6 +43,8 @@ public class ProjectWorkController {
         return "/works/updatewrite";
     }
 
+
+
     @ResponseBody
     @RequestMapping("/detail/{id}")
     public Map<String, Object> toDetail(@PathVariable int id) {
@@ -54,8 +56,7 @@ public class ProjectWorkController {
         List<FileDetailDTO> files = fserv.selectByParentsId(fileDTO);
         System.out.println(files);
         System.out.println(wdto);
-//        model.addAttribute("files", files);
-//        model.addAttribute("worksDTO", wdto);
+
         Map<String, Object> response = new HashMap<>();
         response.put("files", files);
         response.put("worksDTO", wdto);
@@ -64,6 +65,7 @@ public class ProjectWorkController {
 
 
     }
+
 
 
     @RequestMapping("/insert")

@@ -734,11 +734,11 @@ height: 80%;
                         <h5>내용</h5>
                         <div id="workContet"> </div>
 
-                        <!-- 파일 목록 -->
-                        <div id="fileList" class="mt-3">
-                            <h6>첨부 파일</h6>
-                            <ul class="list-unstyled" id="fileListContent"></ul>
-                        </div>
+                        <!-- 파일 목록 표시 영역 -->
+                        <div id="fileList"></div>
+
+
+                    </div>
                     </div>
                 </div>
             </div>
@@ -761,20 +761,20 @@ height: 80%;
                         $('#workState').html(work.state);
                         $('#workDate').html(work.regDate + ' ~ ' + work.deadLine);
                         $('#workContent').html(work.content);
-                        $('#fileListContent').html(files);
+                        $('#fileList').html(files);
                         // 파일 목록 업데이트
-                        let filesHtml = '';
+
+                        let filesList = "";
                         if (files && files.length > 0) {
-                            files.forEach(file => {
-                                filesHtml += `
-                        <li class="mb-2">
-                            <i class="bi bi-paperclip"></i>
-                            <a href="${pageContext.request.contextPath}/download/${files.id}" class="text-decoration-none">
-                                ${files.originalFileName}
-                            </a>
-                        </li>
-                    `;
+                            files.forEach(function(file) {
+                                filesList += '<li class="mb-2">' +
+                                    '<i class="bi bi-paperclip"></i> ' +
+                                    '<a href="${pageContext.request.contextPath}/download/' + file.filId +
+                                    '" class="text-decoration-none">' +
+                                    file.originalName
+                                    + '</a></li>';
                             });
+
                         } else {
                             filesHtml = '<li>첨부된 파일이 없습니다.</li>';
                         }

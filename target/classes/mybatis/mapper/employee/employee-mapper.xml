@@ -40,6 +40,25 @@
         VALUES (#{id}, #{password}, ${postCode}, #{detailAddress}, #{address}, #{birthday}, #{loginId})
     </insert>
 
+    <update id="update">
+        UPDATE EMPLOYEE
+        SET
+        departmentId = #{departmentId},
+        jobId = #{jobId},
+        name = #{name},
+        contact = #{contact}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDetail">
+        UPDATE EMPLOYEE_DETAIL
+        SET
+        postCode = #{postCode},
+        address = #{address},
+        detailAddress = #{detailAddress}
+        WHERE id = #{id}
+    </update>
+
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT e.* , j.name as jobName
         FROM EMPLOYEE e

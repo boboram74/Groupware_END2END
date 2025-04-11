@@ -136,9 +136,22 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDAO.idVali(loginId);
     }
 
+    @Transactional
     @Override
     public void update(EmployeeDetailDTO dto) {
         // TODO: 사원 수정
+        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+                .id(dto.getId()) // 업데이트 대상 사원 식별 (DTO에 employeeId 포함)
+                .departmentId(dto.getDepartmentId())
+                .jobId(dto.getJobId())
+                .name(dto.getName())
+                .contact(dto.getContact())
+                .profileImg(dto.getProfileImg())
+                .build();
+        // 사원 기본 정보 업데이트
+        employeeDAO.update(employeeDTO);
+        // 사원 상세 정보 업데이트
+        employeeDAO.updateDetail(dto);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.end2end.spring.works.dao;
 
 import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.dto.ProjectWorkReplyDTO;
+import com.end2end.spring.works.dto.WorkUpdateDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,8 +35,16 @@ public class ProjectWorkDAO {
        mybatis.insert("works.insert",dto);
     }
 
-    public void update(ProjectWorkDTO dto) {
+    public void update(WorkUpdateDTO dto) {
 mybatis.update("works.update",dto);
+    }
+
+    public void updateState(String state, int id) {
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("state", state);
+        params.put("workId",id);
+        mybatis.update("works.updateState",params);
     }
 
     public void deleteById(int id) {

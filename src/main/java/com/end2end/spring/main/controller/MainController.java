@@ -1,9 +1,12 @@
 package com.end2end.spring.main.controller;
 
+import com.end2end.spring.employee.dto.DepartmentDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
+import com.end2end.spring.employee.dto.JobDTO;
 import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.util.HolidayUtil;
+import com.end2end.spring.works.dto.ProjectSelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,14 +28,13 @@ public class MainController {
 		if (loginUser == null) {
 			return "main/login";
 		}
-
 		model.addAttribute("birthdayList", employeeService.selectByThisMonthBirthday());
-
 		return "main/index";
 	}
 
 	@RequestMapping("/mypage/{employeeId}")
 	public String toMyPage(@PathVariable String employeeId, HttpSession session, Model model) {
+
 		EmployeeDTO loginUser = (EmployeeDTO) session.getAttribute("employee");
 		if (loginUser == null) {
 			return "redirect:/";
@@ -45,12 +47,19 @@ public class MainController {
 		}
 		EmployeeDetailDTO employee = employeeService.selectDetailById(employeeId);
 		model.addAttribute("employeeDetail", employee);
+
+		List<DepartmentDTO> departmentList = employeeService. selectAllDepartment();
+		List<JobDTO> jobList = employeeService.selectAllJob();
+		model.addAttribute("departmentList", departmentList);
+		model.addAttribute("jobList", jobList);
 		return "main/mypage";
 	}
 
 	@RequestMapping("/contact")
-	public String toContact() {
+	public String selectContactList(Model model) {
 		// TODO: 연락처 페이지 출력
+		List<EmployeeDTO> contactList = employeeService.selectContactList();
+		model.addAttribute("contactList", contactList);
 		return "main/contact";
 	}
 

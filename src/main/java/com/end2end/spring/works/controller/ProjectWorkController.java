@@ -6,9 +6,12 @@ import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.works.dto.ProjectSelectDTO;
+import com.end2end.spring.works.dto.ProjectUserDTO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
+import com.end2end.spring.works.dto.WorkUpdateDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -43,6 +46,8 @@ public class ProjectWorkController {
         return "/works/updatewrite";
     }
 
+
+
     @ResponseBody
     @RequestMapping("/detail/{id}")
     public Map<String, Object> toDetail(@PathVariable int id) {
@@ -54,17 +59,14 @@ public class ProjectWorkController {
         List<FileDetailDTO> files = fserv.selectByParentsId(fileDTO);
         System.out.println(files);
         System.out.println(wdto);
-//        model.addAttribute("files", files);
-//        model.addAttribute("worksDTO", wdto);
+
         Map<String, Object> response = new HashMap<>();
         response.put("files", files);
         response.put("worksDTO", wdto);
 
         return response;
 
-
     }
-
 
     @RequestMapping("/insert")
     public String insert(int projectId, HttpSession session,ProjectWorkDTO wdto, @RequestParam("files") MultipartFile[] files) throws Exception {
@@ -82,19 +84,30 @@ public class ProjectWorkController {
 
 
     @RequestMapping("/update")
-    public String update(ProjectWorkDTO dto) {
+    public String update(WorkUpdateDTO dto) {
         // TODO: 게시글 수정을 받음
         wserv.update(dto);
         return "redirect:/work/" + dto.getId();
 
     }
+    @ResponseBody
+    @RequestMapping("/updateState")
+    public String updateState(int workItemId, String state) {
+        System.out.println("도착");
+    // 클라이언트로부터 데이터 수신
+//    int workItemId = (int) data.get("workItemId");
+//    String state = (String) data.get("state");
+   System.out.println("아이디값"+workItemId);
+   System.out.println("상태값"+state);
+    wserv.updateState(state, workItemId);
+
+    return "SUCCESS";
+}
 
     @RequestMapping("/delete")
     public void deleteById(int id) {
         wserv.deleteById(id);
         // TODO: 작업 번호로 작업게시글삭제
     }
-
-
 
 }

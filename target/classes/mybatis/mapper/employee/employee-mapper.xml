@@ -40,6 +40,25 @@
         VALUES (#{id}, #{password}, ${postCode}, #{detailAddress}, #{address}, #{birthday}, #{loginId})
     </insert>
 
+    <update id="update">
+        UPDATE EMPLOYEE
+        SET
+        departmentId = #{departmentId},
+        jobId = #{jobId},
+        name = #{name},
+        contact = #{contact}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDetail">
+        UPDATE EMPLOYEE_DETAIL
+        SET
+        postCode = #{postCode},
+        address = #{address},
+        detailAddress = #{detailAddress}
+        WHERE id = #{id}
+    </update>
+
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT e.* , j.name as jobName
         FROM EMPLOYEE e
@@ -109,6 +128,19 @@
         SELECT COUNT(*)
         FROM EMPLOYEE_DETAIL
         WHERE loginId = #{loginId}
+    </select>
+
+    <select id="selectContactList" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT
+        e.name,
+        e.departmentId,
+        d.name AS departmentName,
+        e.jobId,
+        j.name AS jobName,
+        e.contact
+        FROM EMPLOYEE e
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        JOIN JOB j ON e.jobId = j.id
     </select>
 
     <select id="countNoAuth" resultType="Integer">

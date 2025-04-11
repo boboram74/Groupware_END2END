@@ -366,6 +366,7 @@
 		let ws = new WebSocket("ws://10.10.55.9/chat");
 		let employees = [];
 		let chatRooms = [];
+		let currentRoomId = 0;
 
 		//채팅방 더미데이터
 		<%--const dummyRooms = Array.from({ length: 10 }, (_, i) => ({--%>
@@ -394,12 +395,7 @@
 			$(".chat-messages").append(chat);
 			$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
 		}
-
-		ws.onclose = function () {
-			setTimeout(() => {
-				location.reload();
-			}, 3000);
-		};
+		
 		//사원 목록 출력
 		$.ajax({
 			url:"/messenger/employeeListAll"
@@ -461,7 +457,8 @@
 			const payload = {
 				id: $('#sender-employee-id').val(),
 				message: message,
-				recipient: $('#selected-employee-id').val()
+				recipient: $('#selected-employee-id').val(),
+				roomId: currentRoomId
 			};
 			ws.send(JSON.stringify(payload));
 		}
@@ -582,6 +579,9 @@
 
 		//채팅방 생성
 		function showChatRoom(employeeId, employeeName, roomId) {
+
+			$(".chat-messages").empty();
+
 			if (window.innerWidth <= 768) {
 				$('.chat-sidebar').css('display', 'none');
 			}
@@ -604,6 +604,8 @@
 
 			$('.invite-sidebar').hide(); // 채팅방 열릴 때 초대 사이드바 닫기
 			$('.chat-nav, .chat-content').css('margin-left', '0');
+			console.log(roomId + "roomID입니다.");
+			currentRoomId = roomId;
 
 			//기존 메시지 불러오기 로직 필요
 			const payload = {

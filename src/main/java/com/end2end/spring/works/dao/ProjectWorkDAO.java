@@ -18,9 +18,13 @@ public class ProjectWorkDAO {
     private SqlSession mybatis;
 
 
-    public List<ProjectWorkDTO> selectAll() {
-        return   mybatis.selectList("works.selectAll");
+    public List<ProjectWorkDTO> selectAll(int id) {
+
+        return   mybatis.selectList("works.selectAll",id);
     }
+
+
+
     public int getProjectId() {
    return  mybatis.selectOne("works.getProjectId");
     }

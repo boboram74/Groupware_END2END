@@ -22,8 +22,8 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     FileService fileService;
 
     @Override
-    public List<ProjectWorkDTO> selectAll() {
-        return dao.selectAll()  ;
+    public List<ProjectWorkDTO> selectAll(int id) {
+        return dao.selectAll(id)  ;
     }
 
 

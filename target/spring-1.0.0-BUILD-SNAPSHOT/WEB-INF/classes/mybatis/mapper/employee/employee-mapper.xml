@@ -111,6 +111,19 @@
         WHERE loginId = #{loginId}
     </select>
 
+    <select id="selectContactList" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT
+        e.name,
+        e.departmentId,
+        d.name AS departmentName,
+        e.jobId,
+        j.name AS jobName,
+        e.contact
+        FROM EMPLOYEE e
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        JOIN JOB j ON e.jobId = j.id
+    </select>
+
     <select id="countNoAuth" resultType="Integer">
         SELECT COUNT(*)
         FROM EMPLOYEE

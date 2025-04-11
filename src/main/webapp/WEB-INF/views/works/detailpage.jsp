@@ -673,10 +673,10 @@
         <div class="movingBoard">
             <!-- 시작전 -->
             <div class="movingBoardColumn ready-column surface-bright" data-state="READY">
-                <h3 class="column-title">시작전</h3>
+                <h3 class="column-title">프로젝트 작업 진행전</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
-                        <c:if test="${work.state == 'ONGOING'}">
+                        <c:if test="${work.state == 'READY'}">
                             <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
                                 <div class="closeBtn">
@@ -692,7 +692,7 @@
 
             <!-- 작성중 -->
             <div class="movingBoardColumn ongoing-column surface-bright" data-state="ONGOING">
-                <h3 class="column-title">작성 중</h3>
+                <h3 class="column-title">프로젝트 작업 진행중</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'ONGOING'}">
@@ -813,14 +813,23 @@
 
 
         }
+        // 모달 코드
+
+
+
+
+
         $(document).ready(function () {
             let dragged = null;
 
             $('.work-item').on('dragstart', function (e) {
                 dragged = this;
+
             });
 
             $('.work-item').on('dragend', function (e) {
+                dragged = null;
+
                 // 드래그가 끝난 후 처리할 일이 있다면 여기에 작성
             });
 
@@ -828,17 +837,42 @@
                 // 드래그 중에 처리할 일이 있다면 여기에 작성
             });
 
-            $('.ongoing-column').on('drop', function (e) {
+            $('.movingBoardColumn'
+            ).on('drop', function (e) {
                 e.preventDefault();
                 $(this).append(dragged);
+                 const columnState = $(this).data('state');
+                // 예: "READY", "ONGOING", "FINISH"
+
+                // 드래그된 작업 ID 가져오기
+                const workItemId = $(dragged).data('work-id');
+                // 드래그된 요소를 컬럼에 추가
+                $(this).find('.work-items').append(dragged);
+
+                $.ajax({
+                    url: '/work/updateState',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        workItemId: workItemId, // 이동된 작업 ID
+                        state: columnState // 이동 후 상태 (컬럼 상태)
+                    }),
+                    success: function (response) {
+                        console.log('저장 성공:', response);
+                    },
+                    error: function (error) {
+                        console.error('저장 실패:', error);
+                    }
+                });
             });
 
-            $('.ongoing-column').on('dragover', function (e) {
+            $('.movingBoardColumn').on('dragover', function (e) {
                 e.preventDefault();
             });
+
         });
 
- 
+
         // 처음 드래그 요소가 위치하고 있는 좌측 박스 영역
         const readyBox = document.querySelector(".ready-column");
 
@@ -853,7 +887,6 @@
             console.log("드래그 요소가 '첫' 번째 박스 영역을 떠나면 발생하는 이벤트");
         });
 
-
         ongoingBox.addEventListener("dragenter", (e) => {
             e.preventDefault();
             console.log(e);
@@ -864,6 +897,7 @@
             console.log(e);
             console.log("드래그 요소가 '두' 번째 박스 영역을 떠나면 발생하는 이벤트");
         });
+
 
 
     </script>

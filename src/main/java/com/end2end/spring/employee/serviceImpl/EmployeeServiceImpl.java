@@ -163,6 +163,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<EmployeeDTO> selectContactList() {
+        return employeeDAO.selectContactList();
+    }
+
+    @Override
     public boolean isNoAuthExist() {
         return employeeDAO.countNoAuth() > 0;
     }

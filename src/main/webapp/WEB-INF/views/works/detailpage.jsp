@@ -12,7 +12,7 @@
 <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 <!-- Bootstrap 5 JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -564,6 +564,24 @@ height: 80%;
             border: 2px dashed #00aaff;
             border-radius: 8px;
         }
+        .closeBtn {
+            display: flex;
+            justify-content: flex-end;  /* 오른쪽 정렬 */
+            margin-bottom: 5px;        /* 아래 내용과의 간격 */
+        }
+
+        .btn-close {
+            padding: 0.15rem !important;  /* 패딩 줄임 */
+            font-size: 0.6rem !important; /* 글자 크기 줄임 */
+            opacity: 0.5;                 /* 투명도 조절 */
+        }
+
+        .btn-close:hover {
+            opacity: 1;  /* 호버시 완전 불투명 */
+        }
+
+
+
 
     }
 </style>
@@ -643,12 +661,14 @@ height: 80%;
             <div class="movingBoardColumn ready-column surface-bright" data-status="READY" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3 class="column-title">시작전</h3>
                 <div class="work-items">
-                    <c:forEach items="${list}" var="work">
+                    <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'ONGOING'}">
                             <div class="work-item" draggable="true" ondragstart="drag(event)"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
+                                <div class="closeBtn">
+                                    <button type="button" class="btn-close btn-sm
+" aria-label="Close" ></button></div>
                                 <h4>${work.title}</h4>
-
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>
@@ -664,6 +684,8 @@ height: 80%;
                         <c:if test="${work.state == 'ONGOING'}">
                             <div class="work-item" draggable="true" ondragstart="drag(event)"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
+                                <div class="closeBtn">
+                                <button type="button" class="btn-close" aria-label="Close"></button></div>
                                 <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
@@ -690,167 +712,141 @@ height: 80%;
         </div>
 
 
-        <!-- Work 상세 모달 -->
-    <div class="modal fade" id="workModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Work 상세</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="workForm">
-                        <input type="hidden" name="id">
-                        <input type="hidden" name="projectId" value="${project.id}">
+        <!-- 모달 구조 -->
+        <div class="modal fade" id="workModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 업무 상세 정보 -->
+                        <h5>게시물 type</h5>
+                        <div id="workType">
+                            <h2>게시물 type</h2></div>
+                        <h5>중요도</h5>
+                        <div id="workPriority"> <h2>중요도</h2></div>
+                        <h5>진행도</h5>
+                        <div id="workState"> <h2>진행도</h2></div>
+                        <h5>기간</h5>
+                        <div id="workDate"> <h2>기간</h2></div>
+                        <h5>내용</h5>
+                        <div id="workContet"> </div>
 
-                        <div>
-                            <label>제목</label>
-                            <input type="text" class="form-control" name="title">
+                        <!-- 파일 목록 -->
+                        <div id="fileList" class="mt-3">
+                            <h6>첨부 파일</h6>
+                            <ul class="list-unstyled" id="fileListContent"></ul>
                         </div>
-
-                        <div>
-                            <label>상태</label>
-                            <select class="form-select" name="state">
-                                <option value="TODO">해야할 일</option>
-                                <option value="ONGOING">작성중</option>
-                                <option value="FINISH">완료</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label>우선순위</label>
-                            <select class="form-select" name="priority">
-                                <option value="HIGH">높음</option>
-                                <option value="MIDDLE">중간</option>
-                                <option value="LOW">낮음</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label>내용</label>
-                            <textarea class="form-control" name="content"></textarea>
-                        </div>
-
-                        <div>
-                            <label>파일 첨부</label>
-                            <input type="file" class="form-control" multiple>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <script>
+            function openWorkModal(workId) {
+                $.ajax({
+                    url: '/work/detail/' + workId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+                        const work = response.worksDTO;
+                        const files = response.files;
 
+                        $('#modalTitle').html(work.title);
+                        $('#workType').html(work.type);
+                        $('#workPriority').html(work.priority);
+                        $('#workState').html(work.state);
+                        $('#workDate').html(work.regDate + ' ~ ' + work.deadLine);
+                        $('#workContent').html(work.content);
+                        $('#fileListContent').html(files);
+                        // 파일 목록 업데이트
+                        let filesHtml = '';
+                        if (files && files.length > 0) {
+                            files.forEach(file => {
+                                filesHtml += `
+                        <li class="mb-2">
+                            <i class="bi bi-paperclip"></i>
+                            <a href="${pageContext.request.contextPath}/download/${files.id}" class="text-decoration-none">
+                                ${files.originalFileName}
+                            </a>
+                        </li>
+                    `;
+                            });
+                        } else {
+                            filesHtml = '<li>첨부된 파일이 없습니다.</li>';
+                        }
+                        $('#fileListContent').html(filesHtml);
 
-
-    </div>
-    <script>
-        $(document).ready(function() {
-            $('.detailMenuItem').on('click', function() {
-                $('.detailMenuItem').removeClass('active');
-                $(this).addClass('active');
-                // 클릭 이벤트 처리 로직
-            });
-
-            const $menuBtn = $('.detail-menu-toggle-btn');
-            const $detailMenuModal = $('.detail-menu-modal');
-            const $closeBtn = $('.detail-modal-close');
-
-            // 메뉴 버튼 클릭 시 모달 열기
-            $menuBtn.on('click', function() {
-                $detailMenuModal.addClass('active');
-                $('body').css('overflow', 'hidden');
-            });
-
-            // 닫기 버튼 클릭 시 모달 닫기
-            $closeBtn.on('click', function() {
-                $detailMenuModal.removeClass('active');
-                $('body').css('overflow', '');
-            });
-
-            // 모달 외부 클릭 시 닫기
-            $(window).on('click', function(e) {
-                if ($(e.target).is($detailMenuModal)) {
-                    $detailMenuModal.removeClass('active');
-                    $('body').css('overflow', '');
-                }
-            });
-        });
-
-
-    // 프로젝트 기간 선택
-    $('#projectPeriod').daterangepicker({
-        locale: {
-            format: 'YYYY-MM-DD'
-        },
-        opens: 'left'
-    }, function(start, end) {
-        $('input[name="regDate"]').val(start.format('YYYY-MM-DD'));
-        $('input[name="deadLine"]').val(end.format('YYYY-MM-DD'));
-    });
-
-    // 프로젝트 생성
-    async function createProject() {
-        const formData = new FormData(document.getElementById('projectForm'));
-        const projectData = Object.fromEntries(formData.entries());
-
-        try {
-            const response = await fetch('/api/projects', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(projectData)
-            });
-
-            if (response.ok) {
-                location.reload();
+                        // 모달 표시
+                        $('#workModal').modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        console.error('Status:', status);
+                        console.error('Response:', xhr.responseText);
+                        alert('데이터를 불러오는데 실패했습니다.');
+                    }
+                });
             }
-        } catch (error) {
-            console.error('프로젝트 생성 실패:', error);
-        }
-    }
 
-    //드래그 시작
-        function drag(event) {
-        event.dataTransfer.setData("workId", event.target.dataset.workId);
-        }
+// function getBadgeClass(status) {
+//     switch(status) {
+//         case '진행중':
+//             return 'bg-primary';
+//         case '완료':
+//             return 'bg-success';
+//         case '대기':
+//             return 'bg-warning';
+//         default:
+//             return 'bg-secondary';
+//     }
+// }
 
-        // 드래그 가능한 공간으로 이동 가능
-        function allowDrop(event) {
-        event.preventDefault();
-        const target = event.target.closest(".work-items");
-        if (target) {
-        target.classList.add("drag-over"); // 드래그 오버 강조 효과
-        }
-        }
 
-        // 드래그가 공간을 벗어났을 때
-        function leaveDrop(event) {
-        const target = event.target.closest(".work-items");
-        if (target) {
-        target.classList.remove("drag-over"); // 오버 강조 효과 제거
-        }
-        }
-
-        // 드롭된 상태
-        async function drop(event) {
-        event.preventDefault();
-        const workId = event.dataTransfer.getData("workId");
-        const target = event.target.closest(".work-items");
-        const newState = target.closest(".section").dataset.status; // 상태 변경
-
-        if (target) {
-        target.classList.remove("drag-over"); // 드래그 강조 해제
-        }
-
-        try {
-        await updateWorkStatus(workId, newState);
-        location.reload(); // 상태 변경 후 리프레시
-        } catch (error) {
-        console.error("업데이트 실패:", error);
-        }
-        }
+//드래그 시작
+//         function drag(event) {
+//         event.dataTransfer.setData("workId", event.target.dataset.workId);
+//         }
+//
+//         // 드래그 가능한 공간으로 이동 가능
+//         function allowDrop(event) {
+//         event.preventDefault();
+//         const target = event.target.closest(".work-items");
+//         if (target) {
+//         target.classList.add("drag-over"); // 드래그 오버 강조 효과
+//         }
+//         }
+//
+//         // 드래그가 공간을 벗어났을 때
+//         function leaveDrop(event) {
+//         const target = event.target.closest(".work-items");
+//         if (target) {
+//         target.classList.remove("drag-over"); // 오버 강조 효과 제거
+//         }
+//         }
+//
+//         // 드롭된 상태
+//         async function drop(event) {
+//         event.preventDefault();
+//         const workId = event.dataTransfer.getData("workId");
+//         const target = event.target.closest(".work-items");
+//         const newState = target.closest(".section").dataset.status; // 상태 변경
+//
+//         if (target) {
+//         target.classList.remove("drag-over"); // 드래그 강조 해제
+//         }
+//
+//         try {
+//         await updateWorkStatus(workId, newState);
+//         location.reload(); // 상태 변경 후 리프레시
+//         } catch (error) {
+//         console.error("업데이트 실패:", error);
+//         }
+//         }
+// }
 
         </script>
 

@@ -1,6 +1,7 @@
 package com.end2end.spring.employee.service;
 
 import com.end2end.spring.employee.dto.*;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public interface EmployeeService {
     List<EmployeeDTO> selectByDepartmentId(int departmentId);
     List<DepartmentDTO> selectAllDepartment();
     List<JobDTO> selectAllJob();
+    List<EmployeeDTO> selectContactList();
     boolean isNoAuthExist();
     List<EmployeeDTO> selectByThisMonthBirthday();
 }

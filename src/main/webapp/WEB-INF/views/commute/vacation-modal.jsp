@@ -4,7 +4,7 @@
     <div class="modal-content surface-bright">
         <div class="modal-header">
             <h2>휴가 사용 현황</h2>
-            <span class="material-icons">close</span>
+            <span class="material-icons" id="vacationModalClose">close</span>
         </div>
         <div class="modal-body">
             <div class="vacation-history">
@@ -60,3 +60,13 @@
         </div>
     </div>
 </div>
+<script>
+    $('.vacation-list-button').on('click', function() {
+        $('#vacationModal').show();
+    })
+
+    // X 버튼으로 모달 닫기
+    $('#vacationModalClose').on('click', function() {
+        $('#vacationModal').hide();
+    })
+</script>

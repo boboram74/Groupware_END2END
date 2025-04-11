@@ -376,29 +376,6 @@
 </style>
 
 <script>
-    // 모달 관련 JavaScript
-    const modal = document.getElementById('vacationModal');
-    const closeBtn = document.getElementsByClassName('close')[0];
-    const vacationListBtn = document.getElementById('vacation-list-button');
-
-    $('.vacation-list-button').on('click', function() {
-        $('#vacationModal').show();
-    })
-
-    // X 버튼으로 모달 닫기
-    closeBtn.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // 모달 외부 클릭시 닫기
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
-
-<script>
     $(document).ready(function() {
         let workOnTime = ${workOnTime != null ? workOnTime.getTime() : "null"};
         let workOffTime = ${workOffTime != null ? workOffTime.getTime() : "null"};

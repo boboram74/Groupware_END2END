@@ -113,8 +113,9 @@ public class CommuteController {
         return commuteService.selectPeriodWorkState(dto);
     }
 
+    @ResponseBody
     @RequestMapping("/test")
-    public String leaveEarly(HttpSession session) throws IOException {
-        return "hr/hr-test";
+    public void leaveEarly(HttpSession session) throws IOException {
+        vacationService.insertUsableVacationHired1st();
     }
 }

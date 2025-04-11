@@ -28,9 +28,7 @@ public class MainController {
 		if (loginUser == null) {
 			return "main/login";
 		}
-
 		model.addAttribute("birthdayList", employeeService.selectByThisMonthBirthday());
-
 		return "main/index";
 	}
 
@@ -48,9 +46,6 @@ public class MainController {
 			return "redirect:/";
 		}
 		EmployeeDetailDTO employee = employeeService.selectDetailById(employeeId);
-/*		for (EmployeeDetailDTO dto : employee) {
-			System.out.println(dto.getDepartmentName());
-		}*/
 		model.addAttribute("employeeDetail", employee);
 
 		List<DepartmentDTO> departmentList = employeeService. selectAllDepartment();

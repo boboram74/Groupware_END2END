@@ -19,7 +19,7 @@
     </div>
     <div class="mainBody">
         <form action="/hr/update" method="post" id="frm">
-            <%--<input type="hidden" name="employeeId" value="${employeeDetail.employeeId}" />--%>
+            <input type="hidden" name="id" value="${employeeDetail.id}" />
             <div class="content">
                 <div class="hrProfile" style="background-image: url(${employeeDetail.profileImg});">
                 </div>

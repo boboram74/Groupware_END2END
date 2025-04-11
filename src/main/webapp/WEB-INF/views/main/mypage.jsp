@@ -8,7 +8,7 @@
 
 <script>
     let isHR = ("<c:out value='${employeeDetail.departmentName}'/>" === "인사팀") ||
-               ("<c:out value='${employeeDetail.jobName}'/>" === "ADMIN");
+               ("<c:out value='${employeeDetail.role}'/>" === "ADMIN");
 </script>
 
 <div class="mainContainer">
@@ -25,42 +25,42 @@
                 <div class="name">
                     이름 :
                     <span id="nameText">${employeeDetail.name}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.jobName eq 'ADMIN'}">
+                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
                         <input type="text" id="nameInput" name="name" value="${employeeDetail.name}" style="display:none;" />
                     </c:if>
                 </div>
                 <div class="contact">
                     연락처 :
                     <span id="contactText">${employeeDetail.contact}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.jobName eq 'ADMIN'}">
+                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
                         <input type="text" id="contactInput" name="contact" value="${employeeDetail.contact}" style="display:none;" />
                     </c:if>
                 </div>
                 <div class="birthday">
                     생년월일 :
                     <span id="birthdayText">${employeeDetail.birthday}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.jobName eq 'ADMIN'}">
+                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
                         <input type="text" id="birthdayInput" name="birthday" value="${employeeDetail.birthday}" style="display:none;" />
                     </c:if>
                 </div>
                 <div class="position">
                     직급 :
                     <span id="positionText">${employeeDetail.jobName}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.jobName eq 'ADMIN'}">
+                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
                         <input type="text" id="positionInput" name="jobName" value="${employeeDetail.jobName}" style="display:none;" />
                     </c:if>
                 </div>
                 <div class="department">
                     부서 :
                     <span id="departmentText">${employeeDetail.departmentName}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.jobName eq 'ADMIN'}">
+                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
                         <input type="text" id="departmentInput" name="departmentName" value="${employeeDetail.departmentName}" style="display:none;" />
                     </c:if>
                 </div>
                 <div class="email">
                     이메일 :
                     <span id="emailText">${employeeDetail.email}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.jobName eq 'ADMIN'}">
+                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
                         <input type="text" id="emailInput" name="email" value="${employeeDetail.email}" style="display:none;" />
                     </c:if>
                 </div>
@@ -84,9 +84,9 @@
 
             </div>
         <div class="btn">
-            <button id="editBtn">수정하기</button>
+            <button type="button" id="editBtn">수정하기</button>
             <button type="submit" id="saveBtn" style="display:none;">수정완료</button>
-            <button id="backBtn">돌아가기</button>
+            <button type="button" id="backBtn">돌아가기</button>
         </div>
         </form>
     </div>

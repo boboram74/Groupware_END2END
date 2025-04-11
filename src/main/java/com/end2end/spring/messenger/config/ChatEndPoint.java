@@ -44,9 +44,10 @@ public class ChatEndPoint {
         System.out.println(parsedMessage);
         String type = parsedMessage.has("type") ? parsedMessage.get("type").getAsString() : "";
 
+        System.out.println(dto.getName() + "현재 로그인한 사용자");
+
         int roomId = 0;
         if (parsedMessage.has("roomId") && !parsedMessage.get("roomId").getAsString().trim().isEmpty()) {
-            System.out.println("현재 roomId = " + roomId);
             roomId = Integer.parseInt(parsedMessage.get("roomId").getAsString());
         }
         System.out.println("현재 roomId = " + roomId);

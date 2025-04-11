@@ -839,24 +839,25 @@
 
             $('.movingBoardColumn'
             ).on('drop', function (e) {
+                console.log("도착");
                 e.preventDefault();
                 $(this).append(dragged);
+
                  const columnState = $(this).data('state');
-                // 예: "READY", "ONGOING", "FINISH"
-
-                // 드래그된 작업 ID 가져오기
                 const workItemId = $(dragged).data('work-id');
-                // 드래그된 요소를 컬럼에 추가
-                $(this).find('.work-items').append(dragged);
 
+                $(this).find('.work-items').append(dragged);
+                console.log(columnState);
+                console.log(workItemId);
                 $.ajax({
                     url: '/work/updateState',
                     type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        workItemId: workItemId, // 이동된 작업 ID
-                        state: columnState // 이동 후 상태 (컬럼 상태)
-                    }),
+
+                    data: {
+                        workItemId: workItemId,
+                        state: columnState
+                    },
+
                     success: function (response) {
                         console.log('저장 성공:', response);
                     },

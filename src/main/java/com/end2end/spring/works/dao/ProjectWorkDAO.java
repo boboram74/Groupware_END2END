@@ -43,11 +43,11 @@ public class ProjectWorkDAO {
 mybatis.update("works.update",dto);
     }
 
-    public void updateState(String state, int id) {
+    public void updateState(String state, int workItemId) {
 
         Map<String, Object> params = new HashMap<>();
         params.put("state", state);
-        params.put("workId",id);
+        params.put("workId",workItemId);
         mybatis.update("works.updateState",params);
     }
 

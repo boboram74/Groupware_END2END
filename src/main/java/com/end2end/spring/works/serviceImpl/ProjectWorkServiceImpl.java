@@ -59,8 +59,8 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     }
 
     @Override
-    public void updateState(String state, int id) {
-        dao.updateState(state,id);
+    public void updateState(String state, int workItemId) {
+        dao.updateState(state,workItemId);
     }
 
     @Override

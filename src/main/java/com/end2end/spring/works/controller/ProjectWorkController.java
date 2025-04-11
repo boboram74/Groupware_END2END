@@ -90,14 +90,19 @@ public class ProjectWorkController {
         return "redirect:/work/" + dto.getId();
 
     }
-@ResponseBody
-    @RequestMapping("/updateState/{id}")
-    public String updateState(String state, @PathVariable int id) {
-        // TODO: 드래그앤 드롭으로 상태 변경된거 수정
-        wserv.updateState(state,id);
-        return "redirect:/work/" + id;
+    @ResponseBody
+    @RequestMapping("/updateState")
+    public String updateState(int workItemId, String state) {
+        System.out.println("도착");
+    // 클라이언트로부터 데이터 수신
+//    int workItemId = (int) data.get("workItemId");
+//    String state = (String) data.get("state");
+   System.out.println("아이디값"+workItemId);
+   System.out.println("상태값"+state);
+    wserv.updateState(state, workItemId);
 
-    }
+    return "SUCCESS";
+}
 
     @RequestMapping("/delete")
     public void deleteById(int id) {

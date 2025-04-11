@@ -12,6 +12,6 @@ public interface ProjectWorkService {
     void deleteById(int id);
     void toggleState(int id);
     String selectByProjectIdAndEmployeeId(int projectId, String employeeId);
-    void updateState(String state, int id);
+    void updateState(String state, int workItemId);
     ProjectWorkDTO selectByworksId(int id);
 }

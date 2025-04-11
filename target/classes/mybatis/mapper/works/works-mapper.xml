@@ -78,12 +78,12 @@
 
     <update id="updateState" parameterType="java.util.Map">
         update project_work set
-    state=${state}where id =${workId}
+    state=#{state} where id =#{workId}
     </update>
 
 
 <select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">
 
-    SELECT * FROM project_user where projectId = ${id}
+    SELECT * FROM project_user where projectId = #{id}
 </select>
 </mapper>

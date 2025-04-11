@@ -4,13 +4,19 @@ import com.end2end.spring.board.dao.BoardDAO;
 import com.end2end.spring.board.dto.BoardDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
 import com.end2end.spring.board.service.BoardService;
+import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
 public class BoardServiceImpl implements BoardService {
+
+    @Autowired
+    FileService fileService;
 
     @Autowired
     private BoardDAO boardDAO;
@@ -46,7 +52,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDTO insert(BoardDTO dto) {
+    public BoardDTO insert(BoardDTO dto, MultipartFile[]file)throws Exception {
+        int boardId =  dto.getId();
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(boardId)
+                .build();
+        fileService.insert(file, fileDTO);
         return boardDAO.insert(dto);
         // TODO: 게시글 입력
     }

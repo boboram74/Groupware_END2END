@@ -28,8 +28,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private MailDAO mailDAO;
     @Autowired
     private BoardDAO boardDAO;
-    @Autowired
-    private CommuteDAO commuteDAO;
 
     @Override
     public EmployeeDTO selectById(String id) {
@@ -167,5 +165,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> selectContactList() {
         return employeeDAO.selectContactList();
+    }
+
+    @Override
+    public boolean isNoAuthExist() {
+        return employeeDAO.countNoAuth() > 0;
+    }
+
+    @Override
+    public List<EmployeeDTO> selectByThisMonthBirthday() {
+        return employeeDAO.selectByThisMonthBirthday();
     }
 }

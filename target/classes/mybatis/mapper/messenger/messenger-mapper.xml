@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="messenger">
+
+    <select id="selectEmployeeAll" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessengerEmployeeListDTO">
+        select
+        e.id, e.name, d.name teamName, j.name as jobName
+        from employee e
+        join department d
+            on e.departmentid = d.id
+        join job j
+            on e.jobid = j.id
+        where e.id != #{value}
+        order by j.id asc, d.id, e.name asc
+    </select>
+
+    <insert id="messageFirstInsert" parameterType="map">
+        insert into message_room(id, name) values (message_room_id_seq.nextval, #{value})
+        <selectKey order="AFTER" keyProperty="id" resultType="int">
+            select message_room_id_seq.currval from dual
+        </selectKey>
+    </insert>
+
+    <insert id="messageFirstRoomInsert" parameterType="map">
+        insert into message_room_user(id, messageRoomId, employeeId) values (message_room_user_id_seq.nextval, #{roomSeq}, #{employeeId})
+        <selectKey order="AFTER" keyProperty="id" resultType="int">
+            select message_room_user_id_seq.currval from dual
+        </selectKey>
+    </insert>
+
+    <insert id="messageFirstContentInsert">
+        insert into message(id, messageRoomId, messageRoomuserId, content)
+        values (message_id_seq.nextval, #{roomId} , #{roomUserId}, #{messageContent})
+    </insert>
+
+    <select id="selectRoomListAll" parameterType="map" resultType="com.end2end.spring.messenger.dto.ChatRoomListDTO">
+        select
+        mru.MESSAGEROOMID, mr.name as roomName
+        from message_room_user mru
+        join message_room mr
+        on mru.MESSAGEROOMID = mr.ID
+        where mru.EMPLOYEEID = #{value}
+    </select>
+
+    <select id="selectByRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageHistoryDTO">
+        SELECT MESSAGE.id, employee.id employeeId, MESSAGE.content , EMPLOYEE.NAME, EMPLOYEE.PROFILEIMG, JOB.NAME jName, DEPARTMENT.NAME dName, MESSAGE.REGDATE
+        FROM
+        MESSAGE
+        JOIN
+        MESSAGE_ROOM_USER
+        ON MESSAGE.MESSAGEROOMUSERID = MESSAGE_ROOM_USER.ID
+        JOIN
+        EMPLOYEE
+        ON MESSAGE_ROOM_USER.EMPLOYEEID = EMPLOYEE.ID
+        JOIN
+        JOB
+        ON EMPLOYEE.JOBID = JOB.ID
+        JOIN
+        DEPARTMENT
+        ON DEPARTMENT.ID = EMPLOYEE.DEPARTMENTID
+        WHERE
+        MESSAGE.MESSAGEROOMID = #{value}
+    </select>
+
+    <select id="findByRoomId" resultType="int" >
+        se
+    </select>
+
+</mapper>
+
+<!--        SELECT * FROM MESSAGE_ROOM;-->
+
+<!--        INSERT INTO MESSAGE_ROOM(ID, NAME) VALUES (MEETING_ROOM_ID_SEQ.nextval, 'END2END');-->
+
+<!--        INSERT INTO MESSAGE_ROOM_USER(ID, MESSAGEROOMID, EMPLOYEEID)-->
+<!--        VALUES (MESSAGE_ROOM_USER_ID_SEQ.nextval, 5, '2002183');-->
+
+<!--        SELECT *-->
+<!--        FROM MESSAGE_ROOM-->
+<!--        JOIN MESSAGE_ROOM_USER-->
+<!--        ON MESSAGE_ROOM.ID = MESSAGE_ROOM_USER.MESSAGEROOMID;-->
+
+<!--        SELECT *-->
+<!--        FROM MESSAGE_ROOM_USER-->
+<!--        WHERE MESSAGEROOMID = 5;-->
+
+<!--        //초대 -->
+<!--        INSERT INTO MESSAGE_ROOM_USER(ID, MESSAGEROOMID, EMPLOYEEID)-->
+<!--        VALUES (MESSAGE_ROOM_USER_ID_SEQ.nextval, 5, '20062210');-->
+
+<!--        INSERT INTO MESSAGE(ID, MESSAGEROOMID, MESSAGEROOMUSERID, CONTENT)-->
+<!--        VALUES (MESSAGE_ID_SEQ.nextval, 5, 1, '안녕하세요1');-->
+
+<!--        SELECT *-->
+<!--        FROM MESSAGE_ROOM_USER-->
+<!--        WHERE MESSAGEROOMID = 5;-->
+
+<!--        채팅 상세보기-->
+<!--        SELECT MESSAGE.*, EMPLOYEE.NAME, EMPLOYEE.PROFILEIMG, JOB.NAME, DEPARTMENT.NAME-->
+<!--        FROM-->
+<!--        MESSAGE-->
+<!--        JOIN-->
+<!--        MESSAGE_ROOM_USER-->
+<!--        ON MESSAGE.MESSAGEROOMUSERID = MESSAGE_ROOM_USER.ID-->
+<!--        JOIN-->
+<!--        EMPLOYEE-->
+<!--        ON MESSAGE_ROOM_USER.EMPLOYEEID = EMPLOYEE.ID-->
+<!--        JOIN-->
+<!--        JOB-->
+<!--        ON EMPLOYEE.JOBID = JOB.ID-->
+<!--        JOIN-->
+<!--        DEPARTMENT-->
+<!--        ON DEPARTMENT.ID = EMPLOYEE.DEPARTMENTID-->
+<!--        WHERE MESSAGE.MESSAGEROOMID = 5;-->

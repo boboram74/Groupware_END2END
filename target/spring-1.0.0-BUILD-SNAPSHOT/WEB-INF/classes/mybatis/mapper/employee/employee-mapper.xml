@@ -41,7 +41,11 @@
     </insert>
 
     <select id="selectByDepartmentId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT e.id, e.name , j.name as jobName FROM EMPLOYEE e join job j ON e.jobid = j.id WHERE departmentId = ${departmentId}
+        SELECT e.* , j.name as jobName
+        FROM EMPLOYEE e
+        join job j
+        ON e.jobid = j.id
+        WHERE departmentId = ${departmentId}
     </select>
 
     <select id="login" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
@@ -95,9 +99,35 @@
         WHERE id = #{id}
     </update>
 
+    <delete id="deleteById">
+        DELETE
+        FROM EMPLOYEE
+        WHERE id = #{id}
+    </delete>
+
     <select id="idVali" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM EMPLOYEE_DETAIL
         WHERE loginId = #{loginId}
+    </select>
+
+    <select id="countNoAuth" resultType="Integer">
+        SELECT COUNT(*)
+        FROM EMPLOYEE
+        WHERE role = 'NO_AUTH'
+    </select>
+
+    <select id="selectByThisMonthBirthday" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT EMPLOYEE.*, EMPLOYEE_DETAIL.BIRTHDAY, JOB.NAME AS jobName, DEPARTMENT.NAME AS departmentName
+        FROM EMPLOYEE
+        JOIN EMPLOYEE_DETAIL
+        ON EMPLOYEE.ID = EMPLOYEE_DETAIL.ID
+        JOIN DEPARTMENT
+        ON DEPARTMENT.ID = EMPLOYEE.DEPARTMENTID
+        JOIN JOB
+        ON JOB.ID = EMPLOYEE.JOBID
+        WHERE
+            EXTRACT(MONTH FROM BIRTHDAY) = TO_CHAR(SYSDATE, 'MM')
+        ORDER BY TO_CHAR(birthday, 'DD')
     </select>
 </mapper>

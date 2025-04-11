@@ -42,4 +42,9 @@
         WHERE id = #{id}
     </update>
 
+    <delete id="deleteByApprovalId" parameterType="string">
+        DELETE FROM approver
+        WHERE approval_id = #{approvalId}
+    </delete>
+
 </mapper>

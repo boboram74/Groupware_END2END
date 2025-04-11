@@ -15,11 +15,53 @@
 <!-- 프로젝트 진행중 보고된 게시물 삭제-->
 
     <insert id="insert" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO">
-        INSERT INTO project_work(id, title, state, priority,content,deadLine)
+        INSERT INTO project_work
+        (
+        id,
+        projectid,
+        projectuserid,
+        title,
+        state,
+        priority,
+        type,
+        finishdate,
+        deadline,
+        regdate,
+        content
+        )
         VALUES
-        (Project_Work_SEQ.NEXTVAL,
-        #{title},#{state},#{priority},#{content},#{deadLine})
+        (
+        Project_Work_id_SEQ.NEXTVAL,
+        #{projectId},
+        #{projectUserId},
+        #{title},
+        #{state, jdbcType=VARCHAR},
+        #{priority},
+        #{type},
+        null,
+        #{deadLine},
+        SYSDATE,
+        #{content, jdbcType=VARCHAR}
+        )
     </insert>
+
+
+    <select id="selectByProjectIdAndEmployeeId" parameterType="java.util.Map"
+            resultType="String">
+        SELECT *
+        FROM PROJECT_USER
+        WHERE
+        PROJECTID =#{projectId}
+        AND
+        EMPLOYEEID =#{employeeId}
+
+    </select>
+<select id="selectByworksId" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+    SELECT * FROM PROJECT_WORK
+    WHERE ID = #{id}
+</select>
+
+
     <!-- 프로젝트 진행중 보고된 게시물 추가 -->
 
     <update id="updateById" >
@@ -28,7 +70,8 @@
     </update>
 
 <!-- 프로젝트 진행중 보고된 게시물 수정-->
+<select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">
 
-
-
+    SELECT * FROM project_user where projectId = ${id}
+</select>
 </mapper>

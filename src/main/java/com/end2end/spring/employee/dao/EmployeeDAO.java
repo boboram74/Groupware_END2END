@@ -1,6 +1,7 @@
 package com.end2end.spring.employee.dao;
 
 import com.end2end.spring.employee.dto.*;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -70,4 +71,11 @@ public class EmployeeDAO {
         return mybatis.selectList("employee.selectContactList");
     }
 
+    public int countNoAuth() {
+        return mybatis.selectOne("employee.countNoAuth");
+    }
+
+    public List<EmployeeDTO> selectByThisMonthBirthday() {
+        return mybatis.selectList("employee.selectByThisMonthBirthday");
+    }
 }

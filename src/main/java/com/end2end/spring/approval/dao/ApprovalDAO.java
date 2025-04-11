@@ -1,6 +1,7 @@
 package com.end2end.spring.approval.dao;
 
 import com.end2end.spring.approval.dto.ApprovalDTO;
+import com.end2end.spring.approval.dto.ApprovalFormDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,23 @@ public class ApprovalDAO {
         map.put("id", id);
         map.put("state", state);
         mybatis.update("approval.updateState", map);
+    }
+
+    public List<ApprovalFormDTO> selectFormList() {
+        return mybatis.selectList("approval.selectFormList");
+    }
+
+    public ApprovalFormDTO selectByFormId(int id) {
+        return mybatis.selectOne("approval.selectByFormId", id);
+    }
+
+    public List<Map<String, Object>> search(String state, String employeeId, String keyword) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("state", state);
+        map.put("employeeId", employeeId);
+        map.put("keyword", keyword);
+
+        return mybatis.selectList("approval.search", map);
     }
 
 }

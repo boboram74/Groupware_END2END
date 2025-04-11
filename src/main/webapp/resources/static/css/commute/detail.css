@@ -1,3 +1,9 @@
+.commute-detail-wrapper {
+    display: grid;
+    grid-template-rows: repeat(11, 1fr);
+    gap: 20px;
+}
+
 /* 첫 번째 컨테이너 스타일 */
 .status-container {
     grid-row: span 3;
@@ -307,5 +313,65 @@
 .weekly-calendar-container {
     grid-row: span 5;
     border-radius: 8px;
+    height: 500px;
     min-height: 400px; /* 캘린더를 위한 임시 높이 */
+}
+
+.commuteBox {
+    border-radius: 8px;
+}
+
+.currentDate {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--md-sys-color-secondary);
+}
+
+.currentTime {
+    font-size: 35px;
+    font-weight: 600;
+}
+
+.commuteButtons {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 추가 */
+    gap: 10px;
+    padding: 10px;
+}
+
+/* 출퇴근 버튼 스타일 수정 */
+.commuteButtons button {
+    width: 120px; /* 버튼 너비 고정 */
+    padding: 12px;
+    font-size: 18px;
+    font-weight: 500;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* timeDisplay 여백 조정 */
+.timeDisplay {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;  /* 패딩 살짝 줄임 */
+}
+
+.commuteButtons button:hover:not(.disabled) {
+    opacity: 0.9;
+}
+
+.startWork.disabled {
+    opacity: 0.5;
+    pointer-events: none; /* 호버 효과 완전히 제거 */
+}
+
+.endWork.disabled {
+    opacity: 0.5;
+    pointer-events: none; /* 호버 효과 완전히 제거 */
 }

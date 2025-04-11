@@ -117,14 +117,7 @@ public class ProjectServiceImpl implements ProjectService {
         return result;
     }
 
-//
-//public List<EmployeeDTO> selectProjectMemberProfiles(int id){
-//
-//
-// projectDao.selectProjectMemberProfiles(id);
-//
-//    return null;
-//}
+
 
 
 //    public void insert(ProjectDTO dto, ProjectUserDTO udto) {

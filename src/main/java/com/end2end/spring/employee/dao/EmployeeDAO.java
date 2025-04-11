@@ -67,6 +67,10 @@ public class EmployeeDAO {
         mybatis.delete("employee.deleteById", id);
     }
 
+    public List<EmployeeDTO> selectContactList() {
+        return mybatis.selectList("employee.selectContactList");
+    }
+
     public int countNoAuth() {
         return mybatis.selectOne("employee.countNoAuth");
     }

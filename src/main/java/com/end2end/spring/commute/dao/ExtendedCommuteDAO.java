@@ -12,4 +12,8 @@ public class ExtendedCommuteDAO {
     public void insert(ExtendedCommuteDTO dto) {
         mybatis.insert("extendedCommute.insert", dto);
     }
+
+    public ExtendedCommuteDTO selectByApprovalId(int approvalId) {
+        return mybatis.selectOne("extendedCommute.selectById", approvalId);
+    }
 }

@@ -43,14 +43,19 @@ public class ChatEndPoint {
         JsonObject parsedMessage = gson.fromJson(message, JsonObject.class);
         System.out.println(parsedMessage);
         String type = parsedMessage.has("type") ? parsedMessage.get("type").getAsString() : "";
+
+        int roomId = 0;
+        if (parsedMessage.has("roomId") && !parsedMessage.get("roomId").getAsString().trim().isEmpty()) {
+            System.out.println("현재 roomId = " + roomId);
+            roomId = Integer.parseInt(parsedMessage.get("roomId").getAsString());
+        }
+        System.out.println("현재 roomId = " + roomId);
         if ("roomEnter".equals(type)) {
-            int roomId = Integer.parseInt(parsedMessage.get("roomId").getAsString());
             System.out.println(dto.getName() + "님이 " + roomId + " 채팅방에 입장했습니다.");
-            // TODO: 여기에 roomId 기반 처리 (ex: 세션 매핑, DB 저장 등)
             List<MessageHistoryDTO> result = messengerService.selectByRoomId(roomId);
 
             for (MessageHistoryDTO msg : result) {
-                System.out.println(msg.getName() +":" +msg.getContent());
+                System.out.println(msg.getName() + ":" + msg.getContent());
                 Map<String, String> data = new HashMap<>();
                 data.put("type", "history");
                 data.put("id", String.valueOf(msg.getId()));
@@ -59,28 +64,24 @@ public class ChatEndPoint {
                 data.put("message", msg.getContent());
                 data.put("profileImg", msg.getProfileImg());
                 data.put("timestamp", String.valueOf(msg.getRegDate()));
-                sendMessage(session, data); // 현재 사용자에게만 전송
+                sendMessage(session, data);
             }
-            messengerService.findByRoomId(roomId);
             return;
         }
 
-//        messengerService.findByRoomId(roomId);
-
+        // 그 외의 메시지 처리 (메시지 전송)
         String id = parsedMessage.get("id").getAsString();
         String messageContent = parsedMessage.get("message").getAsString();
-
         Map<String, String> data = new ConcurrentHashMap<>();
         data.put("senderId", dto.getId());
         data.put("sender", dto.getName());
         data.put("message", messageContent);
 
-        messengerService.messageFirstInsert(dto.getName(), dto.getId(),messageContent);
+        messengerService.messageFirstInsert(dto.getName(), dto.getId(), messageContent, roomId);
 
         if (parsedMessage.has("recipient")) {
             String recipientId = parsedMessage.get("recipient").getAsString();
             Session recipientSession = clientSessions.get(recipientId);
-            Session senderSession = clientSessions.get(id);
             if (recipientSession != null && recipientSession.isOpen()) {
                 sendMessage(recipientSession, data);
             }
@@ -90,8 +91,8 @@ public class ChatEndPoint {
         } else {
             broadcastMessage(data);
         }
-
     }
+
 
     @OnClose
     public void onClose(Session session) {

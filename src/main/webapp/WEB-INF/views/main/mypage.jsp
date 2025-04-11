@@ -7,8 +7,9 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-    let isHR = ("<c:out value='${employeeDetail.departmentName}'/>" === "인사팀") ||
-               ("<c:out value='${employeeDetail.role}'/>" === "ADMIN");
+    // 로그인 사용자 기준으로 전체 수정 권한 판단
+    let isHR = ("<c:out value='${sessionScope.employee.departmentName}'/>" === "인사팀") ||
+        ("<c:out value='${sessionScope.employee.role}'/>" === "ADMIN");
 </script>
 
 <div class="mainContainer">
@@ -19,50 +20,69 @@
     </div>
     <div class="mainBody">
         <form action="/hr/update" method="post" id="frm">
+            <input type="hidden" name="id" value="${employeeDetail.id}" />
             <div class="content">
                 <div class="hrProfile" style="background-image: url(${employeeDetail.profileImg});">
                 </div>
                 <div class="name">
                     이름 :
                     <span id="nameText">${employeeDetail.name}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
+                    <c:if test="${sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN'}">
                         <input type="text" id="nameInput" name="name" value="${employeeDetail.name}" style="display:none;" />
+                    </c:if>
+                    <c:if test="${!(sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN')}">
+                        <input type="hidden" name="name" value="${employeeDetail.name}" />
                     </c:if>
                 </div>
                 <div class="contact">
                     연락처 :
                     <span id="contactText">${employeeDetail.contact}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
+                    <c:if test="${sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN'}">
                         <input type="text" id="contactInput" name="contact" value="${employeeDetail.contact}" style="display:none;" />
+                    </c:if>
+                    <c:if test="${!(sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN')}">
+                        <input type="hidden" name="contact" value="${employeeDetail.contact}" />
                     </c:if>
                 </div>
                 <div class="birthday">
                     생년월일 :
                     <span id="birthdayText">${employeeDetail.birthday}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
-                        <input type="text" id="birthdayInput" name="birthday" value="${employeeDetail.birthday}" style="display:none;" />
-                    </c:if>
                 </div>
                 <div class="position">
                     직급 :
                     <span id="positionText">${employeeDetail.jobName}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
-                        <input type="text" id="positionInput" name="jobName" value="${employeeDetail.jobName}" style="display:none;" />
+                    <c:if test="${sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN'}">
+                        <select name="jobId" id="positionInput" style="display:none;">
+                            <c:forEach var="job" items="${jobList}">
+                                <option value="${job.id}">
+                                        ${job.name}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </c:if>
+                    <c:if test="${!(sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN')}">
+                        <input type="hidden" name="jobId" value="${employeeDetail.jobId}" />
                     </c:if>
                 </div>
                 <div class="department">
                     부서 :
                     <span id="departmentText">${employeeDetail.departmentName}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
-                        <input type="text" id="departmentInput" name="departmentName" value="${employeeDetail.departmentName}" style="display:none;" />
+                    <c:if test="${sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN'}">
+                        <select name="departmentId" id="departmentInput" style="display:none;">
+                            <c:forEach var="dept" items="${departmentList}">
+                                <option value="${dept.id}">
+                                        ${dept.name}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </c:if>
+                    <c:if test="${!(sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN')}">
+                        <input type="hidden" name="departmentId" value="${employeeDetail.departmentId}" />
                     </c:if>
                 </div>
                 <div class="email">
                     이메일 :
                     <span id="emailText">${employeeDetail.email}</span>
-                    <c:if test="${employeeDetail.departmentName eq '인사팀' or employeeDetail.role eq 'ADMIN'}">
-                        <input type="text" id="emailInput" name="email" value="${employeeDetail.email}" style="display:none;" />
-                    </c:if>
                 </div>
 
                 <div class="postCode">

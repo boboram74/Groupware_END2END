@@ -71,11 +71,17 @@ public class EmployeeDAO {
         return mybatis.selectList("employee.selectContactList");
     }
 
-    public int countNoAuth() {
-        return mybatis.selectOne("employee.countNoAuth");
-    }
+    public int countNoAuth() {return mybatis.selectOne("employee.countNoAuth");}
 
     public List<EmployeeDTO> selectByThisMonthBirthday() {
         return mybatis.selectList("employee.selectByThisMonthBirthday");
     }
+
+    public void update(EmployeeDTO dto) {mybatis.update("employee.update", dto);}
+
+    public void updateDetail(EmployeeDetailDTO dto) {
+        mybatis.update("employee.updateDetail", dto);
+    }
+
+
 }

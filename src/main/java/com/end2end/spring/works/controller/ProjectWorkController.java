@@ -11,6 +11,7 @@ import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.dto.WorkUpdateDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -89,21 +90,24 @@ public class ProjectWorkController {
         return "redirect:/work/" + dto.getId();
 
     }
-@ResponseBody
+    @ResponseBody
     @RequestMapping("/updateState")
-    public String updateState(String state, int id) {
-        // TODO: 드래그앤 드롭으로 상태 변경된거 수정
-        wserv.updateState(state,id);
-        return "redirect:/work/" + id;
+    public String updateState(int workItemId, String state) {
+        System.out.println("도착");
+    // 클라이언트로부터 데이터 수신
+//    int workItemId = (int) data.get("workItemId");
+//    String state = (String) data.get("state");
+   System.out.println("아이디값"+workItemId);
+   System.out.println("상태값"+state);
+    wserv.updateState(state, workItemId);
 
-    }
+    return "SUCCESS";
+}
 
     @RequestMapping("/delete")
     public void deleteById(int id) {
         wserv.deleteById(id);
         // TODO: 작업 번호로 작업게시글삭제
     }
-
-
 
 }

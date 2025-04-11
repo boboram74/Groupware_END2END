@@ -77,7 +77,7 @@ public class ProjectController {
     public String detail(@PathVariable int id, Model model) {
             System.out.println("디테일 프젝 컨트롤러 도착");
             ProjectDTO project = projectService.selectById(id);//프로젝트 아이디를 받아서 정보를 가져오도록
-        List<ProjectWorkDTO>list =  wserv.selectAll();
+        List<ProjectWorkDTO>list =  wserv.selectAll(id);
 
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);

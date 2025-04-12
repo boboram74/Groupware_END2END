@@ -16,27 +16,32 @@
         order by j.id asc, d.id, e.name asc
     </select>
 
+    <insert id="messageSecondInsert">
+        insert into message_room(id, name) values (#{value1}, #{value2})
+    </insert>
+
     <insert id="messageFirstInsert" parameterType="map">
         insert into message_room(id, name) values (message_room_id_seq.nextval, #{value})
         <selectKey order="AFTER" keyProperty="id" resultType="int">
             select message_room_id_seq.currval from dual
         </selectKey>
     </insert>
-
-    <insert id="messageSecondInsert">
-        insert into message_room(id, name) values (#{value1}, #{value2})
-    </insert>
-
+    <update id="messageRoomInvite">
+        UPDATE message_room
+        SET name = name || '|' || #{employeeId}
+        WHERE id = #{roomId}
+    </update>
+    <!-- 방 입장 처리 -->
     <insert id="messageFirstRoomInsert" parameterType="map">
         insert into message_room_user(id, messageRoomId, employeeId) values (message_room_user_id_seq.nextval, #{roomSeq}, #{employeeId})
         <selectKey order="AFTER" keyProperty="id" resultType="int">
             select message_room_user_id_seq.currval from dual
         </selectKey>
     </insert>
-
+    <!--메세지 insert-->
     <insert id="messageFirstContentInsert">
         insert into message(id, messageRoomId, messageRoomuserId, content)
-        values (message_id_seq.nextval, #{roomId} , #{roomUserId}, #{messageContent})
+        values (message_id_seq.nextval, #{messageRoomId} , #{messageRoomUserId}, #{messageContent})
     </insert>
 
     <select id="selectRoomListAll" parameterType="map" resultType="com.end2end.spring.messenger.dto.ChatRoomListDTO">
@@ -77,13 +82,18 @@
     </select>
 
     <select id="findByRoomId" resultType="int" >
-        select count(*) as total
-        from message_room_user
-        where messageRoomId = #{value}
+<!--        select count(*) as total-->
+<!--        from message_room_user-->
+<!--        where messageRoomId = #{value}-->
+        select id from MESSAGE_ROOM where name = #{value}
     </select>
 
     <select id="findRoomUser" parameterType="map" resultType="int">
         SELECT id FROM message_room_user WHERE messageRoomId = #{roomId} AND employeeId = #{employeeId}
+    </select>
+
+    <select id="selectRoomByName" parameterType="map" resultType="int">
+        select id from message_room where name = #{value}
     </select>
 
 </mapper>

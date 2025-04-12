@@ -241,16 +241,6 @@
     // 페이지 로드 시작할 때 로딩 표시
     showLoading();
 
-    // 모든 Ajax 요청 시작 시 로딩 표시
-    $(document).ajaxStart(function() {
-      showLoading();
-    });
-
-    // 모든 Ajax 요청 완료 시 로딩 숨김
-    $(document).ajaxStop(function() {
-      hideLoading();
-    });
-
     function showLoading() {
       $('#loading').show();
     }

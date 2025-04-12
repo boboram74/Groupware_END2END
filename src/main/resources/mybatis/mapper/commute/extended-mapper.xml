@@ -15,4 +15,20 @@
         FROM EXTENDED_COMMUTE
         WHERE approvalId = ${approvalId}
     </select>
+
+    <select id="selectTodayByEmployeeId" resultType="com.end2end.spring.commute.dto.ExtendedCommuteDTO">
+        SELECT *
+        FROM
+            EXTENDED_COMMUTE
+        JOIN
+            APPROVAL
+        ON
+            EXTENDED_COMMUTE.approvalId = APPROVAL.id
+        WHERE
+            APPROVAL.state = 'SUBMIT'
+        AND
+            TRUNC(workOffTime) = TRUNC(SYSDATE)
+        AND
+            EXTENDED_COMMUTE.employeeId = #{employeeId}
+    </select>
 </mapper>

@@ -554,7 +554,12 @@
             const endDateStr = parseDate(endDate);
             $.ajax({
                 url: '/commute/select/period?startDate=' + startDateStr + '&endDate=' + endDateStr,
-                type: 'GET'
+                type: 'GET',
+                error : function(request, status, error) {
+                    console.log("code: " + request.status)
+                    console.log("message: " + request.responseText)
+                    console.log("error: " + error);
+                }
             }).done(function(data) {
                 calendar.removeAllEvents();
                 const events = data.map(function(event) {

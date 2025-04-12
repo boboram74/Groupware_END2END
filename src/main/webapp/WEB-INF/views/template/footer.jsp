@@ -364,7 +364,7 @@
 <input type="hidden" id="sender-name" value="${employee.name}">
 <script>
 	$(document).ready(function() {
-		let ws = new WebSocket("ws://192.168.45.169/chat");
+		let ws = new WebSocket("ws://192.168.219.100/chat");
 		let employees = [];
 		let chatRooms = [];
 		let currentRoomId = 0;
@@ -508,11 +508,11 @@
 			}
 		});
 
-		const makeChatEmployeeList = (employee, index) => {
-			const div = $('<div>').addClass('employee-item').attr('data-id', employee.id).attr('data-name', employee.name);
+		const makeChatEmployeeList = (employee, type) => {
+			const div = $('<div>').addClass('employee-item ' + type).attr('data-id', employee.id).attr('data-name', employee.name);
 			const avatar = $('<div>')
 					.addClass('employee-avatar')
-					.css('background-image', "url('https://picsum.photos/200/" + (index + 1) + "')");
+					.css('background-image', "url('" + employee.profileImg + "')");
 			const info = $('<div>').addClass('employee-info');
 			const name = $('<div>').addClass('employee-name').html(employee.name);
 			const position = $('<div>').addClass('employee-position').text(employee.position);
@@ -523,13 +523,13 @@
 		}
 
 		// 사원 목록 렌더링
-		function renderEmployeeList(data) {
+		function renderEmployeeList(data, type) {
 			const listData = data || employees;
 			// $('.invite-sidebar .employee-list').empty();
 			// $('.chat-content .employee-list').empty();
 
 			listData.forEach((employee, index) => {
-				const employeeItem = makeChatEmployeeList(employee, index);
+				const employeeItem = makeChatEmployeeList(employee, type);
 				$('.invite-sidebar .employee-list').append(employeeItem.clone());
 				$('.chat-content .employee-list').append(employeeItem.clone());
 			});
@@ -544,7 +544,7 @@
 					emp.position.toLowerCase().includes(searchTerm)
 			);
 			// 필터링된 결과로 목록 다시 렌더링
-			renderEmployeeList(filteredEmployees);
+			renderEmployeeList(filteredEmployees, 'main-list');
 		});
 
 		//초대버튼 UI
@@ -555,12 +555,13 @@
 			} else {
 				$('.invite-sidebar, .employee-list, .search-box').show();
 				$('.chat-nav, .chat-content').css('margin-left', '280px');
-				renderEmployeeList();
+				renderEmployeeList('invite-list');
 			}
 		});
 		// 실제 초대 로직
 		$(document).on('click', '.invite-sidebar .employee-item', function() {
 			const inviteeId = $(this).data('id');
+
 			if (!currentRoomId || currentRoomId === 0) {
 				alert("유효한 대화방 정보가 없습니다. 초대 전, 채팅방을 먼저 확인해주세요.");
 				return;
@@ -574,6 +575,8 @@
 			ws.send(JSON.stringify(payload));
 			$('.invite-sidebar').hide();
 			$('.chat-nav, .chat-content').css('margin-left', '0');
+			console.log('.chat-nav')
+			console.log(payload);
 		});
 
 		$(document).on('click', '.employee-item', function() {
@@ -586,11 +589,11 @@
 
 
 		// 사원 목록 렌더링 함수 수정
-		function renderEmployeeList(data) {
+		function renderEmployeeList(data, type) {
 			const listData = data || employees;
 			$('.invite-sidebar .employee-list, .chat-content .employee-list').empty();
-			listData.forEach((employee, index) => {
-				const employeeItem = makeChatEmployeeList(employee, index);
+			listData.forEach((employee, type) => {
+				const employeeItem = makeChatEmployeeList(employee, type);
 				$('.invite-sidebar .employee-list').append(employeeItem.clone(true));
 				$('.chat-content .employee-list').append(employeeItem.clone(true));
 			});
@@ -613,7 +616,7 @@
 			}
 		});
 
-		$(document).on('click', '.employee-item[data-id]', function() {
+		$(document).on('click', '.invite-item[data-id]', function() {
 			const employeeId = $(this).data('id');
 			const payload = {
 				type: "newRoom",
@@ -685,7 +688,7 @@
 			if(view === 'employees') {
 				$('.chat-room').hide();
 				$('.chat-content, .chat-nav').show();
-				renderEmployeeList();
+				renderEmployeeList('main-list');
 			} else if (view === 'rooms') {
 				$('.chat-room').hide();
 				$('.chat-content, .chat-nav, .room-list').show();
@@ -706,7 +709,7 @@
 				$('.search-box').show();
 				$('.chat-content').show();
 				$('.room-list').hide();
-				renderEmployeeList();
+				renderEmployeeList('main-list');
 			} else if (view === 'rooms') {
 				$('.employee-list').hide();
 				$('.search-box').hide();

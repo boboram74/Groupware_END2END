@@ -7,7 +7,6 @@ import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.approval.service.ApprovalService;
 import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.commute.dao.ExtendedCommuteDAO;
-import com.end2end.spring.commute.dao.VacationDAO;
 import com.end2end.spring.commute.dto.CommuteDTO;
 import com.end2end.spring.commute.dto.ExtendedCommuteDTO;
 import com.end2end.spring.commute.dto.VacationDTO;

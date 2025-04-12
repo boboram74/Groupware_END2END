@@ -1,6 +1,7 @@
 package com.end2end.spring.commute.serviceImpl;
 
 import com.end2end.spring.commute.dao.CommuteDAO;
+import com.end2end.spring.commute.dao.ExtendedCommuteDAO;
 import com.end2end.spring.commute.dao.SolderingDAO;
 import com.end2end.spring.commute.dao.VacationDAO;
 import com.end2end.spring.commute.dto.*;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -30,6 +32,7 @@ public class CommuteServiceImpl implements CommuteService {
     @Autowired private CommuteDAO commuteDAO;
     @Autowired private SolderingDAO solderingDAO;
     @Autowired private VacationDAO vacationDAO;
+    @Autowired private ExtendedCommuteDAO extendedCommuteDAO;
 
     @Transactional
     @Override
@@ -83,16 +86,38 @@ public class CommuteServiceImpl implements CommuteService {
             return false;
         }
         commuteDAO.insert(dto);
-        CommuteDTO workOnDTO = commuteDAO.selectByStateAndEmployeeId(dto);
 
-        long workHour = Duration.between(workOnDTO.getRegDate().toLocalDateTime(), LocalDateTime.now()).toHours();
-        if(workHour < Statics.WORK_HOUR) {
+        dto.setState("WORK_ON");
+        CommuteDTO workOnDTO = commuteDAO.selectByStateAndEmployeeId(dto);
+        LocalDateTime workTime = workOnDTO.getRegDate().toLocalDateTime().plusHours(Statics.WORK_HOUR);
+
+        if(workTime.isAfter(LocalDateTime.now())) {
             if ( vacationDAO.isOnVacation(employeeId) == 0 || !HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
                         .state("LEAVE_EARLY")
                         .build();
                 solderingDAO.insert(solderingDTO);
+            }
+
+            dto.setState("WORK_OFF");
+            commuteDAO.insert(dto);
+        } else {
+            List<ExtendedCommuteDTO> extendedCommuteDTOList = extendedCommuteDAO.selectTodayByEmployeeId(employeeId);
+
+            if (extendedCommuteDTOList.isEmpty()) {
+                dto.setRegDate(Timestamp.valueOf(workTime));
+                commuteDAO.insertWithRegDate(dto);
+            } else {
+                Timestamp regDate = Timestamp.valueOf(workTime);
+                for (ExtendedCommuteDTO extendedCommuteDTO : extendedCommuteDTOList) {
+                    if (regDate.before(extendedCommuteDTO.getRegDate())) {
+                        regDate = extendedCommuteDTO.getRegDate();
+                    }
+                }
+
+                dto.setRegDate(regDate);
+                commuteDAO.insertWithRegDate(dto);
             }
         }
 

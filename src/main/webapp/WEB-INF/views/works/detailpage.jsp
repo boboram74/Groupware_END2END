@@ -682,7 +682,7 @@
                                 <c:if test="${employee.role != 'TeamLeader'}">
                                     <div class="closeBtn">
                                         <button type="button" class="btn-close btn-sm"
-                                                onclick="deleteWork(event, ${work.id})
+                                                onclick="deleteWork(${work.id})
                                                         "></button>
                                     </div>
                                 </c:if>
@@ -707,7 +707,7 @@
                                 <c:if test="${employee.role != 'TeamLeader'}">
                                     <div class="closeBtn">
                                         <button type="button" class="btn-close btn-sm"
-                                                onclick="deleteWork(event, ${work.id})
+                                                onclick="deleteWork(${work.id})
                                                         "></button>
                                     </div>
                                 </c:if>
@@ -729,9 +729,10 @@
                             <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
                                 <c:if test="${employee.role != 'TeamLeader'}">
+                                    <%--삭제 테스트를 위해 != 설정해둠--%>
                                     <div class="closeBtn">
                                         <button type="button" class="btn-close btn-sm"
-                                                onclick="deleteWork(event, ${work.id})
+                                                onclick="deleteWork(${work.id})
                                                         "></button>
                                     </div>
                                 </c:if> <h4>${work.title}</h4>
@@ -752,7 +753,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- 업무 상세 정보 -->
                         <h5>게시물 type</h5>
                         <div id="workType">
                             <h2>게시물 type</h2></div>
@@ -764,8 +764,7 @@
                         <div id="workDate"><h2>기간</h2></div>
                         <h5>내용</h5>
                         <div id="workContet"></div>
-
-                        <!-- 파일 목록 표시 영역 -->
+                        <h5>파일 리스트</h5>
                         <div id="fileList"></div>
 
 
@@ -776,9 +775,8 @@
     </div>
 
     <script>
-        function deleteWork(event, workId) {
-            // 이벤트 전파 차단
-            // event.stopPropagation();
+        function deleteWork(workId) {
+
             console.log(workId);
             $.ajax({
                 url: '/work/delete/',

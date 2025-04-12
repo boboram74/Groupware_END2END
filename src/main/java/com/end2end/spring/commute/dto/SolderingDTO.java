@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class SolderingDTO {
     private int id;
+    private int commuteId;
     private String employeeId;
     private String state;
     private LocalDateTime regDate;

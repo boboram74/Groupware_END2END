@@ -7,9 +7,9 @@ import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.approval.service.ApprovalService;
 import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.commute.dao.ExtendedCommuteDAO;
-import com.end2end.spring.commute.dto.CommuteDTO;
 import com.end2end.spring.commute.dto.ExtendedCommuteDTO;
 import com.end2end.spring.commute.dto.VacationDTO;
+import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
@@ -30,9 +30,9 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Autowired private ApproverDAO approverDAO;
     @Autowired private ApprovalRejectDAO approvalRejectDAO;
     @Autowired private ExtendedCommuteDAO extendedCommuteDAO;
-    @Autowired private CommuteDAO commuteDAO;
     @Autowired private FileService fileService;
     @Autowired private VacationService vacationService;
+    @Autowired private CommuteService commuteService;
 
     @Override
     public List<ApprovalDTO> myList(String state) {
@@ -170,11 +170,7 @@ public class ApprovalServiceImpl implements ApprovalService {
                 ExtendedCommuteDTO extendedCommuteDTO = extendedCommuteDAO.selectByApprovalId(approverId);
 
                 if (extendedCommuteDTO.getCommuteId() != 0) {
-                    CommuteDTO commuteDTO = CommuteDTO.builder()
-                            .id(extendedCommuteDTO.getCommuteId())
-                            .regDate(extendedCommuteDTO.getWorkOffTime())
-                            .build();
-                    commuteDAO.update(commuteDTO);
+                    commuteService.update(extendedCommuteDTO);
                 }
             }
         } else {

@@ -35,4 +35,8 @@ public class SolderingDAO {
     public List<CommuteStateDTO> selectByPeriod(SelectPeriodDTO dto) {
         return mybatis.selectList("soldering.selectByPeriod", dto);
     }
+
+    public void deleteByCommuteId(int commuteId) {
+        mybatis.delete("soldering.deleteByCommuteId", commuteId);
+    }
 }

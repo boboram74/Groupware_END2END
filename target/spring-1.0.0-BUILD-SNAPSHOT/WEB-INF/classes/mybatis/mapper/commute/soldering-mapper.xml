@@ -13,8 +13,8 @@
     </insert>
 
     <insert id="insert">
-        INSERT INTO SOLDERING(id, employeeId, state)
-        VALUES (SOLDERING_ID_SEQ.nextval, #{employeeId}, #{state})
+        INSERT INTO SOLDERING(id, employeeId, state, commuteId)
+        VALUES (SOLDERING_ID_SEQ.nextval, #{employeeId}, #{state}, ${commuteId})
     </insert>
 
     <select id="countThisWeekByStateAndEmployeeId" resultType="Integer">

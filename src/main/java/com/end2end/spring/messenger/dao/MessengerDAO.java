@@ -61,4 +61,12 @@ public class MessengerDAO {
         param.put("employeeId", employeeId);
         return mybatis.selectOne("messenger.findRoomUser", param);
     }
+
+    public List<String> selectRoomMemberIds(int roomId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("roomId", roomId);
+        return mybatis.selectList("messenger.selectRoomMemberIds", param);
+    }
+
+
  }

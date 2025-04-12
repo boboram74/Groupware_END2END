@@ -10,6 +10,29 @@
         flex-direction: column;
         gap: 20px;
     }
+
+    .writer-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .profile-img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border: 1px solid #eee;
+    }
+
+    select {
+        padding: 0 8px;  /* 좌우 여백 추가 */
+        background-color: var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-surface);
+    }
 </style>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
@@ -104,8 +127,11 @@
                                             <td class="apColStar">★</td>
                                             <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                             <td class="apColStatus">결재 대기중</td>
-                                            <td class="apColWriter">${i.DRAFTERNAME}</td>
-                                            <td class="apColDate">${i.REGDATE}"</td>
+                                            <td class="apColWriter writer-info">
+                                                <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
+                                                <span>${i.DRAFTERNAME}</span>
+                                            </td>
+                                            <td class="apColDate">${i.REGDATE}</td>
                                             <td class="apColType">${i.FORMNAME}</td>
                                         </tr>
                                     </c:forEach>
@@ -144,8 +170,11 @@
                                         <td class="apColStar">★</td>
                                         <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">결재 진행중</td>
-                                        <td class="apColWriter">${i.DRAFTERNAME}</td>
-                                        <td class="apColDate">${i.REGDATE}"</td>
+                                        <td class="apColWriter writer-info">
+                                            <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
+                                            <span>${i.DRAFTERNAME}</span>
+                                        </td>
+                                        <td class="apColDate">${i.REGDATE}</td>
                                         <td class="apColType">${i.FORMNAME}</td>
                                     </tr>
                                 </c:forEach>
@@ -184,8 +213,11 @@
                                         <td class="apColStar">★</td>
                                         <td class="apColTitle" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">결재 완료</td>
-                                        <td class="apColWriter">${i.DRAFTERNAME}</td>
-                                        <td class="apColDate">${i.REGDATE}"</td>
+                                        <td class="apColWriter writer-info">
+                                            <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
+                                            <span>${i.DRAFTERNAME}</span>
+                                        </td>
+                                        <td class="apColDate">${i.REGDATE}</td>
                                         <td class="apColType">${i.FORMNAME}</td>
                                     </tr>
                                 </c:forEach>
@@ -224,8 +256,11 @@
                                         <td class="apColStar">★</td>
                                         <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">반려</td>
-                                        <td class="apColWriter">${i.DRAFTERNAME}</td>
-                                        <td class="apColDate">${i.REGDATE}"</td>
+                                        <td class="apColWriter writer-info">
+                                            <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
+                                            <span>${i.DRAFTERNAME}</span>
+                                        </td>
+                                        <td class="apColDate">${i.REGDATE}</td>
                                         <td class="apColType">${i.FORMNAME}</td>
                                     </tr>
                                 </c:forEach>

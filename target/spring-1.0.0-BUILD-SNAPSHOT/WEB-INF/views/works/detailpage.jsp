@@ -679,10 +679,11 @@
                         <c:if test="${work.state == 'READY'}">
                             <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
-                                <c:if test="${employee.role == 'TeamLeader'}">
+                                <c:if test="${employee.role != 'TeamLeader'}">
                                     <div class="closeBtn">
-                                        <button type="button" class="btn-close btn-sm" aria-label="Close"
-                                                onclick="deleteWork"></button>
+                                        <button type="button" class="btn-close btn-sm"
+                                                onclick="deleteWork(event, ${work.id})
+                                                        "></button>
                                     </div>
                                 </c:if>
                                 <h4>${work.title}</h4>
@@ -696,24 +697,27 @@
             <!-- 작성중 -->
             <div class="movingBoardColumn ongoing-column surface-bright" data-state="ONGOING">
                 <h3 class="column-title">프로젝트 작업 진행중</h3>
-                <div class="workBox">
-                    <c:if test="${employee.role == 'TeamLeader'}">
-                        <div class="closeBtn">
-                            <button type="button" class="btn-close" aria-label="Close"></button>
-                        </div>
-                    </c:if>
+
+
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'ONGOING'}">
                             <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
+                                <c:if test="${employee.role != 'TeamLeader'}">
+                                    <div class="closeBtn">
+                                        <button type="button" class="btn-close btn-sm"
+                                                onclick="deleteWork(event, ${work.id})
+                                                        "></button>
+                                    </div>
+                                </c:if>
                                 <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>
                     </c:forEach>
                 </div>
-                </div>
+
             </div>
 
             <!-- 완료 -->
@@ -726,7 +730,9 @@
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
                                 <c:if test="${employee.role != 'TeamLeader'}">
                                     <div class="closeBtn">
-                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                        <button type="button" class="btn-close btn-sm"
+                                                onclick="deleteWork(event, ${work.id})
+                                                        "></button>
                                     </div>
                                 </c:if> <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
@@ -770,14 +776,19 @@
     </div>
 
     <script>
-        function deleteWork(workId) {
-
+        function deleteWork(event, workId) {
+            // 이벤트 전파 차단
+            // event.stopPropagation();
+            console.log(workId);
             $.ajax({
-                url: '/work/delete/' + workId,
-                type: 'Post',
+                url: '/work/delete/',
+                type: 'POST',
                 data: {workId: workId},
                 success: function (response) {
-                    console.log('저장 성공:', response);
+                    console.log('삭제 성공:', response);
+                    location.reload();
+
+
                 },
                 error: function (error) {
                     console.error('저장 실패:', error);

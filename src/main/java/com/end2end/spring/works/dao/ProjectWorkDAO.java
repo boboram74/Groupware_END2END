@@ -52,6 +52,7 @@ mybatis.update("works.update",dto);
     }
 
     public void deleteById(int workId) {
+        System.out.println("dao 도착"+workId);
     mybatis.delete("works.deleteById",workId);
     }
         public ProjectWorkDTO selectByworksId(int id){

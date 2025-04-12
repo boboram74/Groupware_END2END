@@ -65,14 +65,21 @@ public class ChatEndPoint {
             return;
         } else if("newRoom".equals(type)) {
             String youEmployeeId = parsedMessage.get("employeeId").getAsString();
-            String meEmployeeId = dto.getId();
-            List<String> idList = new ArrayList<>();
-            idList.add(youEmployeeId);
-            idList.add(meEmployeeId);
-            Collections.sort(idList);
-            String findRoom = String.join("|", idList);
-
-            roomId = messengerService.selectRoomByName(findRoom);
+//            String meEmployeeId = dto.getId();
+//            List<String> idList = new ArrayList<>();
+//            idList.add(youEmployeeId);
+//            idList.add(meEmployeeId);
+//            Collections.sort(idList);
+//            String findRoom = String.join("|", idList);
+            String userId1 = dto.getId();
+            String userId2 = youEmployeeId;
+            String roomName;
+            if(userId1.compareTo(userId2) < 0) {
+                roomName = userId1 + "|" + userId2;
+            } else {
+                roomName = userId2 + "|" + userId1;
+            }
+            roomId = messengerService.selectRoomByName(roomName);
             if (roomId > 0) {
                 List<MessageHistoryDTO> result = messengerService.selectByRoomId(roomId);
                 for (MessageHistoryDTO msg : result) {
@@ -88,7 +95,7 @@ public class ChatEndPoint {
                     sendMessage(session, data);
                 }
             } else {
-                int result = messengerService.findByRoomId(findRoom);
+                int result = messengerService.findByRoomId(roomName);
                 Map<String, String> data = new HashMap<>();
                 data.put("type", "NEW_CHAT_ROOM");
                 data.put("roomId", String.valueOf(result));
@@ -115,14 +122,23 @@ public class ChatEndPoint {
         data.put("sender", dto.getName());
         data.put("message", messageContent);
 
-        List<String> idList = new ArrayList<>();
-        idList.add(dto.getId());
-        if (!recipientId.isEmpty()) {
-            idList.add(recipientId);
-        }
-        Collections.sort(idList);
+//        List<String> idList = new ArrayList<>();
+//        idList.add(dto.getId());
+//        if (!recipientId.isEmpty()) {
+//            idList.add(recipientId);
+//        }
+//        Collections.sort(idList);
+//        String roomName = String.join("|", idList);
 
-        String roomName = String.join("|", idList);
+        String userId1 = dto.getId();
+        String userId2 = recipientId;
+        String roomName;
+        if(userId1.compareTo(userId2) < 0) {
+            roomName = userId1 + "|" + userId2;
+        } else {
+            roomName = userId2 + "|" + userId1;
+        }
+
         int roomResult = messengerService.selectRoomByName(roomName);
         if (roomResult > 0) {
             // 기존 채팅방이 있음

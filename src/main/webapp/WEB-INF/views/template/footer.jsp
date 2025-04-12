@@ -509,7 +509,7 @@
 		});
 
 		const makeChatEmployeeList = (employee, index) => {
-			const div = $('<div>').addClass('employee-item').attr('data-id', employee.id).attr('data-name', employee.name);
+			const div = $('<div>').addClass('employee-item invite-user').attr('data-id', employee.id).attr('data-name', employee.name);
 			const avatar = $('<div>')
 					.addClass('employee-avatar')
 					.css('background-image', "url('https://picsum.photos/200/" + (index + 1) + "')");
@@ -530,7 +530,7 @@
 
 			listData.forEach((employee, index) => {
 				const employeeItem = makeChatEmployeeList(employee, index);
-				$('.invite-sidebar .employee-list').append(employeeItem.clone());
+				$('.invite-sidebar .employee-list').append(employeeItem.clone(true).addClass('invite-user'));
 				$('.chat-content .employee-list').append(employeeItem.clone());
 			});
 		}
@@ -559,7 +559,7 @@
 			}
 		});
 		// 실제 초대 로직
-		$(document).on('click', '.invite-sidebar .employee-item', function() {
+		$(document).on('click', '.invite-sidebar .invite-user', function() {
 			const inviteeId = $(this).data('id');
 			if (!currentRoomId || currentRoomId === 0) {
 				alert("유효한 대화방 정보가 없습니다. 초대 전, 채팅방을 먼저 확인해주세요.");
@@ -655,7 +655,6 @@
 		function makeChatRoomListItem(room) {
 			const roomId = room.roomId || room.messageRoomId;
 			const div = $('<div>').addClass('employee-item').attr('data-room-id', roomId);
-			/*			const div = $('<div>').addClass('employee-item').attr('data-room-id', room.messageRoomId);*/
 			const avatar = $('<div>').addClass('employee-avatar').css('background-color', '#bbb');
 			const info = $('<div>').addClass('employee-info');
 			const name = $('<div>').addClass('employee-name').text(room.roomName);

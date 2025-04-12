@@ -2,6 +2,7 @@ package com.end2end.spring.approval.controller;
 
 import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.approval.service.ApprovalFormService;
+import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.service.ApprovalService;
@@ -27,6 +28,9 @@ public class ApprovalController {
     @Autowired
     private ApprovalFormService approvalFormService;
 
+    @Autowired
+    private VacationService vacationService;
+
     @RequestMapping("/list")
     public String toList(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
@@ -43,7 +47,7 @@ public class ApprovalController {
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);
         model.addAttribute("rejectList", rejectList);
-        model.addAttribute("formList", formList);   
+        model.addAttribute("formList", formList);
 
         return "approval/approval-test";
     }
@@ -93,6 +97,13 @@ public class ApprovalController {
         model.addAttribute("dto", approvalFormService.selectByFormId(id));
         model.addAttribute("formId", id);
         model.addAttribute("employee", employee);
+
+        double totalVacationDate = vacationService.sumTotalVacationDates(employee.getId());
+        boolean isAbleHalf = totalVacationDate >= 0.5;
+
+        model.addAttribute("totalVacationDate", (int) vacationService.sumTotalVacationDates(employee.getId()));
+        model.addAttribute("isAbleHalf", isAbleHalf);
+
         System.out.println(id);
         return "approval/write";
     }

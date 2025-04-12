@@ -111,6 +111,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         if (formDTO.getName().contains("휴가")) {  // 휴가 문서라면 휴가 추가
             VacationDTO vacationDTO = VacationDTO.builder()
                     .approvalId(approvalDTO.getId())
+                    .employeeId(dto.getEmployeeId())
                     .vacationDate(dto.getVacationDate())
                     .reason("연차")
                     .startDate(Timestamp.valueOf(dto.getStartDate()))

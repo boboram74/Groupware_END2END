@@ -378,7 +378,7 @@ input::-moz-placeholder {
 }
 
 /* 테이블 행 호버 효과 */
-.board-table tbody tr:hover {
+.board-table tbody tr:hover:not(.emptyMessage) {
     background-color: var(--md-sys-color-surface-container);
 }
 

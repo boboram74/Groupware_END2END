@@ -9,7 +9,7 @@
             approvalId,
             employeeId,
             orders,
-            submitYn
+            submitYn,
             regDate
         ) VALUES (APPROVER_ID_SEQ.NEXTVAL,
                      #{approvalId},

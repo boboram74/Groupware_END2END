@@ -40,13 +40,13 @@
 
     <div class="body">
         <div class="vacationKind">
-            <input type="radio" name="type" value="1" />
+            <input type="radio" name="vacationType" value="ANNUAL" />
             <label>연차</label>
-            <input type="radio" name="type" value="2" />
+            <input type="radio" name="vacationType" value="SICK" />
             <label>병가</label>
-            <input type="radio" name="type" value="3" />
+            <input type="radio" name="vacationType" value="HALF" />
             <label>반차</label>
-            <input type="radio" name="type" value="4" />
+            <input type="radio" name="vacationType" value="LEAVE_EARLY" />
             <label>조퇴</label>
         </div>
         <input type="text">
@@ -57,7 +57,7 @@
             <textarea id="contents"></textarea>
         </div>
         <div class="signInform" id="signButtons">
-            <input type="file" name="files">
+            <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
             <button id="signOk">제출</button>
             <button type="button" onclick="location.href='/approval/list'">취소</button>
         </div>

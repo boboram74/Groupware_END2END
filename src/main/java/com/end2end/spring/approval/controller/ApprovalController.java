@@ -43,7 +43,7 @@ public class ApprovalController {
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);
         model.addAttribute("rejectList", rejectList);
-        model.addAttribute("formList", formList);
+        model.addAttribute("formList", formList);   
 
         return "approval/approval-test";
     }

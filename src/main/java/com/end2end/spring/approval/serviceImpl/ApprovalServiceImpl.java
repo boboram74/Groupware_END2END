@@ -96,13 +96,15 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         approvalDAO.insert(approvalDTO);
 
-        FileDTO fileDTO = FileDTO.builder()
-                .approvalId(approvalDTO.getId())
-                .build();
-        try {
-            fileService.insert(files, fileDTO);
-        } catch(Exception e) {
-            e.printStackTrace();
+        if (files.length != 0) {
+            FileDTO fileDTO = FileDTO.builder()
+                    .approvalId(approvalDTO.getId())
+                    .build();
+            try {
+                fileService.insert(files, fileDTO);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
 
         ApprovalFormDTO formDTO = approvalDAO.selectByFormId(dto.getApprovalFormId());

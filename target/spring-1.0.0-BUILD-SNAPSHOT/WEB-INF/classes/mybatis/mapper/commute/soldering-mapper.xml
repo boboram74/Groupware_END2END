@@ -81,4 +81,8 @@
             TRUNC(regDate) BETWEEN #{startDate} AND #{endDate}
         ORDER BY dates
     </select>
+
+    <delete id="deleteByCommuteId">
+        DELETE FROM SOLDERING WHERE commuteId = #{commuteId}
+    </delete>
 </mapper>

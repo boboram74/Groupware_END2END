@@ -278,7 +278,7 @@
 	}
 
 	.invite-sidebar {
-		width: 280px;
+		width: 190px;
 		height: 100%;
 		background: white;
 		border-right: 1px solid #eee;
@@ -305,6 +305,7 @@
 	</div>
 	<div class="chat-container">
 
+		<!-- 채팅방 초대 -->
 		<div class="invite-sidebar" style="display: none;">
 			<div class="search-box">
 				<input type="text" placeholder="사원 검색...">
@@ -363,7 +364,7 @@
 <input type="hidden" id="sender-name" value="${employee.name}">
 <script>
 	$(document).ready(function() {
-		let ws = new WebSocket("ws://10.10.55.9/chat");
+		let ws = new WebSocket("ws://192.168.45.169/chat");
 		let employees = [];
 		let chatRooms = [];
 		let currentRoomId = 0;
@@ -380,12 +381,9 @@
 		ws.onmessage = function (e) {
 			let msg = JSON.parse(e.data);
 			console.log(msg);
-
 			if (msg.type === "invite") {
-				alert(msg.sender + "님이 " + msg.recipientId + "님을 초대하였습니다.");
 				return;
 			}
-
 			if (msg.type === "NEW_CHAT_ROOM") {
 				currentRoomId = msg.roomId;
 				addNewChatRoomItem(msg);
@@ -527,8 +525,8 @@
 		// 사원 목록 렌더링
 		function renderEmployeeList(data) {
 			const listData = data || employees;
-			$('.invite-sidebar .employee-list').empty();
-			$('.chat-content .employee-list').empty();
+			// $('.invite-sidebar .employee-list').empty();
+			// $('.chat-content .employee-list').empty();
 
 			listData.forEach((employee, index) => {
 				const employeeItem = makeChatEmployeeList(employee, index);
@@ -549,100 +547,54 @@
 			renderEmployeeList(filteredEmployees);
 		});
 
-		// 초대 버튼 클릭 이벤트 핸들러
-		// $('.invite-chat').on("click", function() {
-		// 	const $inviteSidebar = $('.invite-sidebar');
-		// 	if ($inviteSidebar.is(':visible')) {
-		// 		$inviteSidebar.hide();
-		// 		$('.chat-nav, .chat-content').css('margin-left', '0');
-		// 	} else {
-		// 		$inviteSidebar.show();
-		// 		$('.chat-nav, .chat-content').css('margin-left', '280px');
-		// 		renderEmployeeList(); // 사원 목록 다시 렌더링
-		// 	}
-		// 	const inviteeId = $('#selected-employee-id').val();
-		// 	let inviteMessage = {
-		// 		type: "invite",
-		// 		recipientId: inviteeId,
-		// 		roomId: currentRoomId
-		// 	};
-		// 	ws.send(JSON.stringify(inviteMessage));
-		// });
+		//초대버튼 UI
 		$('.invite-chat').on("click", function() {
-			const $inviteSidebar = $('.invite-sidebar');
-			// 사이드바가 열려 있으면, 선택된 사용자가 있는지 확인 후 초대 메시지 전송
-			if ($inviteSidebar.is(':visible')) {
-				const inviteeId = $('#selected-employee-id').val();
-				console.log("초대 전 currentRoomId:", currentRoomId);
-				if (!currentRoomId || currentRoomId === 0) {
-					alert("유효한 대화방 정보가 없습니다. 대화방을 확인해주세요.");
-					return;
-				}
-				let inviteMessage = {
-					type: "invite",
-					recipientId: inviteeId,
-					roomId: currentRoomId
-				};
-				ws.send(JSON.stringify(inviteMessage));
-				alert("초대 메시지가 전송되었습니다.");
-				$inviteSidebar.hide();
+			if ($('.invite-sidebar').is(':visible')) {
+				$('.invite-sidebar').hide();
 				$('.chat-nav, .chat-content').css('margin-left', '0');
 			} else {
-				// 사이드바가 닫혀 있다면 열면서 목록 재렌더링
-				$inviteSidebar.show();
+				$('.invite-sidebar, .employee-list, .search-box').show();
 				$('.chat-nav, .chat-content').css('margin-left', '280px');
-				// 초대용 사원 목록을 새로 불러오거나 기존 배열을 이용해 렌더링
 				renderEmployeeList();
 			}
 		});
-
-
-
-		// 사원 목록의 각 항목 클릭 시 (초대 대상 선택)
+		// 실제 초대 로직
 		$(document).on('click', '.invite-sidebar .employee-item', function() {
+			const inviteeId = $(this).data('id');
+			if (!currentRoomId || currentRoomId === 0) {
+				alert("유효한 대화방 정보가 없습니다. 초대 전, 채팅방을 먼저 확인해주세요.");
+				return;
+			}
+			alert("초대한ID : " + inviteeId + " 현재 채팅방 이름 : " + currentRoomId);
+			let payload = {
+				type: "invite",
+				recipientId: inviteeId,
+				roomId: currentRoomId
+			};
+			ws.send(JSON.stringify(payload));
+			$('.invite-sidebar').hide();
+			$('.chat-nav, .chat-content').css('margin-left', '0');
+		});
+
+		$(document).on('click', '.employee-item', function() {
 			const employeeId = $(this).data('id');
+			const employeeName = $(this).data('name');
+			const roomId = $(this).data('room-id');
 			$('#selected-employee-id').val(employeeId);
-			$('.invite-sidebar .employee-item').removeClass('active');
-			$(this).addClass('active');
+			showChatRoom(employeeId, employeeName, roomId);
 		});
 
 
 		// 사원 목록 렌더링 함수 수정
 		function renderEmployeeList(data) {
 			const listData = data || employees;
-
-			// 두 개의 영역을 모두 비웁니다.
 			$('.invite-sidebar .employee-list, .chat-content .employee-list').empty();
-
 			listData.forEach((employee, index) => {
 				const employeeItem = makeChatEmployeeList(employee, index);
-
-				// 초대 사이드바 & 메인 컨텐츠 영역 둘 다에 같은 목록 표시
 				$('.invite-sidebar .employee-list').append(employeeItem.clone(true));
 				$('.chat-content .employee-list').append(employeeItem.clone(true));
 			});
 		}
-
-
-		$(document).on('click', '.invite-sidebar .employee-item', function() {
-			const employeeId = $(this).data('id');
-			const employeeName = $(this).data('name');
-
-			// 초대 메시지 전송
-			const payload = {
-				type: "invite",
-				id: $('#sender-employee-id').val(),
-				senderName: $('#sender-name').val(),
-				recipientId: employeeId,
-				message: employeeName + " 님을 채팅방에 초대하였습니다"
-			};
-
-			ws.send(JSON.stringify(payload));;
-
-			// 초대 사이드바 닫기
-			$('.invite-sidebar').hide();
-			$('.chat-nav, .chat-content').css('margin-left', '0');
-		});
 
 		// 네비게이션 전환 기능
 		$('.nav-icon').on('click', function() {
@@ -661,47 +613,41 @@
 			}
 		});
 
-		$(document).on('click', '.employee-item', function() {
+		$(document).on('click', '.employee-item[data-id]', function() {
 			const employeeId = $(this).data('id');
-			const employeeName = $(this).data('name');
-			const roomId = $(this).data('room-id');
-			$('#selected-employee-id').val(employeeId);
-			showChatRoom(employeeId, employeeName, roomId);
+			const payload = {
+				type: "newRoom",
+				employeeId: employeeId
+			};
+			ws.send(JSON.stringify(payload));
 		});
 
 		//채팅방 생성
 		function showChatRoom(employeeId, employeeName, roomId) {
-
 			$(".chat-messages").empty();
-
 			if (window.innerWidth <= 768) {
 				$('.chat-sidebar').css('display', 'none');
 			}
 			chatContent.css('display', 'flex');
-			// 선택된 사원 하이라이트
 			$('.employee-item').each(function() {
 				$(this).removeClass('active');
 				if ($(this).data('id') === employeeId) {
 					$(this).addClass('active');
 				}
 			});
-
 			$('#chat-user-title').text(employeeName);
 			$('#selected-employee-id').val(employeeId);
-
-			// 채팅방 표시
 			$('.chat-content, .chat-nav, .room-list').hide();
 			$('.chat-room').show();
 			$('.invite-chat').show();
 
-			$('.invite-sidebar').hide(); // 채팅방 열릴 때 초대 사이드바 닫기
+			$('.invite-sidebar').hide();
 			$('.chat-nav, .chat-content').css('margin-left', '0');
 			currentRoomId = roomId;
-
-			//기존 메시지 불러오기 로직 필요
 			const payload = {
 				type: "roomEnter",
-				roomId: roomId
+				roomId: roomId,
+				recipient: employeeId
 			};
 			ws.send(JSON.stringify(payload));
 		}

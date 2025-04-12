@@ -9,9 +9,12 @@ import java.util.Map;
 
 public interface MessengerService {
     List<MessengerEmployeeListDTO> employeeListAll(String employeeId);
-    void messageFirstInsert(String roomName, String employeeId, String messageContent, int roomId);
+    void createChatRoom(String roomName, String employeeId, String messageContent);
+    void insertMessageToRoom(int roomId, String employeeId, String messageContent);
     List<ChatRoomListDTO> selectRoomListAll(String employeeId);
     List<MessageHistoryDTO> selectByRoomId(int roomId);
-
-    int findByRoomId(int roomId);
+    int selectRoomByName(String roomName);
+    void messageRoomInvite(int roomId, String employeeId);
+    int findByRoomId(String roomName);
+    void insertInviteUser(int roomId, String employeeId);
 }

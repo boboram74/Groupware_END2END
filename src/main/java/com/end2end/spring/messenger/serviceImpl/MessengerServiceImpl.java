@@ -22,33 +22,6 @@ public class MessengerServiceImpl implements MessengerService {
         return messengerDAO.selectByEmployeeId(employeeId);
     }
 
-    @Transactional
-    @Override
-    public void messageFirstInsert(String roomName, String employeeId, String messageContent, int roomId) {
-        Integer roomUserId = null;
-        // 신규 채팅방 생성
-        if (roomId == 0) {
-            roomId = messengerDAO.messageFirstInsert(roomName);
-            roomUserId = messengerDAO.messageFirstRoomInsert(roomId, employeeId);
-        } else {
-            // 기존 채팅방인 경우
-            int count = messengerDAO.findByRoomId(roomId);
-            if (count == 0) {
-                // 실제로 기존 채팅방이 없다면 신규로 생성
-                roomId = messengerDAO.messageFirstInsert(roomName);
-                roomUserId = messengerDAO.messageFirstRoomInsert(roomId, employeeId);
-            } else {
-                // 채팅방이 존재하면 해당 사용자(roomUser)가 등록되어 있는지 확인
-                roomUserId = messengerDAO.findRoomUser(roomId, employeeId);
-                if (roomUserId == null) {
-                    roomUserId = messengerDAO.messageFirstRoomInsert(roomId, employeeId);
-                }
-            }
-        }
-        messengerDAO.messageFirstContentInsert(roomId, roomUserId, messageContent);
-    }
-
-
     @Override
     public List<ChatRoomListDTO> selectRoomListAll(String employeeId) {
         return messengerDAO.selectRoomListAll(employeeId);
@@ -60,7 +33,43 @@ public class MessengerServiceImpl implements MessengerService {
     }
 
     @Override
-    public int findByRoomId(int roomId) {
-        return messengerDAO.findByRoomId(roomId);
+    public int selectRoomByName(String roomName) {
+        Integer result = messengerDAO.selectRoomByName(roomName);
+        return result == null ? 0 : result;
+    }
+
+    @Override
+    public void messageRoomInvite(int roomId, String employeeId) {
+        messengerDAO.messageRoomInvite(roomId, employeeId);
+    }
+
+    @Override
+    public int findByRoomId(String roomName) {
+        Integer roomResult = messengerDAO.selectRoomByName(roomName);
+        return roomResult == null ? 0 : roomResult;
+    }
+
+    @Transactional
+    @Override
+    public void createChatRoom(String roomName, String employeeId, String messageContent) {
+        //새로운 채팅방 일때
+        int messageRoomId = messengerDAO.messageFirstInsert(roomName);
+        int messageRoomUserId = messengerDAO.messageFirstRoomInsert(messageRoomId, employeeId);
+        messengerDAO.messageFirstContentInsert(messageRoomId, messageRoomUserId, messageContent);
+    }
+
+    @Transactional
+    @Override
+    public void insertMessageToRoom(int roomId, String employeeId, String messageContent) {
+        Integer roomUserId = messengerDAO.findRoomUser(roomId, employeeId);
+        if (roomUserId == null) {
+            roomUserId = messengerDAO.messageFirstRoomInsert(roomId, employeeId);
+        }
+        messengerDAO.messageFirstContentInsert(roomId, roomUserId, messageContent);
+    }
+
+    @Override
+    public void insertInviteUser(int roomId, String employeeId) {
+        messengerDAO.messageFirstRoomInsert(roomId, employeeId);
     }
 }

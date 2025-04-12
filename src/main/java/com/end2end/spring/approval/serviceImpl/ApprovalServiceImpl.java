@@ -5,7 +5,6 @@ import com.end2end.spring.approval.dao.ApprovalRejectDAO;
 import com.end2end.spring.approval.dao.ApproverDAO;
 import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.approval.service.ApprovalService;
-import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.commute.dao.ExtendedCommuteDAO;
 import com.end2end.spring.commute.dto.ExtendedCommuteDTO;
 import com.end2end.spring.commute.dto.VacationDTO;
@@ -36,10 +35,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 
     @Override
     public List<ApprovalDTO> myList(String state) {
-
         return approvalDAO.toList(state);
     }
-
 
     @Override
     public List<ApprovalDTO> selectAll() {
@@ -86,10 +83,12 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Transactional
     @Override
     public void insert(MultipartFile[] files, ApprovalInsertDTO dto) {
+        ApprovalFormDTO formDTO = approvalDAO.selectByFormId(dto.getApprovalFormId());
 
         ApprovalDTO approvalDTO = ApprovalDTO.builder()
                 .employeeId(dto.getEmployeeId())
                 .approvalFormId(dto.getApprovalFormId())
+                .prefixes(formDTO.getPrefixes())
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .build();
@@ -107,7 +106,6 @@ public class ApprovalServiceImpl implements ApprovalService {
             }
         }
 
-        ApprovalFormDTO formDTO = approvalDAO.selectByFormId(dto.getApprovalFormId());
         if (formDTO.getName().contains("휴가")) {  // 휴가 문서라면 휴가 추가
             VacationDTO vacationDTO = VacationDTO.builder()
                     .approvalId(approvalDTO.getId())

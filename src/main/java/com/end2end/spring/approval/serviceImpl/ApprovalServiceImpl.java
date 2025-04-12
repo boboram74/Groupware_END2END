@@ -11,6 +11,7 @@ import com.end2end.spring.commute.dao.VacationDAO;
 import com.end2end.spring.commute.dto.CommuteDTO;
 import com.end2end.spring.commute.dto.ExtendedCommuteDTO;
 import com.end2end.spring.commute.dto.VacationDTO;
+import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,10 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Autowired private ApprovalDAO approvalDAO;
     @Autowired private ApproverDAO approverDAO;
     @Autowired private ApprovalRejectDAO approvalRejectDAO;
-    @Autowired private VacationDAO vacationDAO;
     @Autowired private ExtendedCommuteDAO extendedCommuteDAO;
     @Autowired private CommuteDAO commuteDAO;
     @Autowired private FileService fileService;
+    @Autowired private VacationService vacationService;
 
     @Override
     public List<ApprovalDTO> myList(String state) {
@@ -117,7 +118,7 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .startDate(Timestamp.valueOf(dto.getStartDate()))
                     .type(dto.getVacationType())
                     .build();
-            vacationDAO.insert(vacationDTO);
+            vacationService.insert(vacationDTO);
         } else if (formDTO.getName().contains("연장 근무")) {  // 연장 근무라면 연장 근무 추가
             ExtendedCommuteDTO extendedCommuteDTO = ExtendedCommuteDTO.builder()
                     .approvalId(approvalDTO.getId())

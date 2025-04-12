@@ -102,7 +102,7 @@
                                     <c:forEach var="i" items="${waitingList}">
                                         <tr>
                                             <td class="apColStar">★</td>
-                                            <td class="apColTitle"><a href="/approval/detail/${i.ID}">${i.TITLE}</a></td>
+                                            <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                             <td class="apColStatus">결재 대기중</td>
                                             <td class="apColWriter">${i.DRAFTERNAME}</td>
                                             <td class="apColDate">${i.REGDATE}"</td>
@@ -142,7 +142,7 @@
                                 <c:forEach var="i" items="${goingList}">
                                     <tr>
                                         <td class="apColStar">★</td>
-                                        <td class="apColTitle"><a href="/approval/detail/${i.ID}">${i.TITLE}</a></td>
+                                        <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">결재 진행중</td>
                                         <td class="apColWriter">${i.DRAFTERNAME}</td>
                                         <td class="apColDate">${i.REGDATE}"</td>
@@ -182,7 +182,7 @@
                                 <c:forEach var="i" items="${completedList}">
                                     <tr>
                                         <td class="apColStar">★</td>
-                                        <td class="apColTitle"><a href="/approval/detail/${i.ID}">${i.TITLE}</a></td>
+                                        <td class="apColTitle" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">결재 완료</td>
                                         <td class="apColWriter">${i.DRAFTERNAME}</td>
                                         <td class="apColDate">${i.REGDATE}"</td>
@@ -222,7 +222,7 @@
                                 <c:forEach var="i" items="${reject}">
                                     <tr>
                                         <td class="apColStar">★</td>
-                                        <td class="apColTitle"><a href="/approval/detail/${i.ID}">${i.TITLE}</a></td>
+                                        <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">반려</td>
                                         <td class="apColWriter">${i.DRAFTERNAME}</td>
                                         <td class="apColDate">${i.REGDATE}"</td>

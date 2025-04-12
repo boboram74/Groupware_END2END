@@ -660,7 +660,7 @@
         <div class="projectHeader">
             <h2>프로젝트 : ${project.name}</h2>
             <div class="projectTime">
-                <span>기간: ${project.regDate} ~ ${project.deadLine}</span>
+                <span>기간: ${project.deadLine}</span>
 
             </div>
             <a href="/work/write/${project.id}">
@@ -756,6 +756,7 @@
                         <h5>게시물 type</h5>
                         <div id="workType">
                             <h2>게시물 type</h2></div>
+
                         <h5>중요도</h5>
                         <div id="workPriority"><h2>중요도</h2></div>
                         <h5>진행도</h5>
@@ -763,147 +764,312 @@
                         <h5>기간</h5>
                         <div id="workDate"><h2>기간</h2></div>
                         <h5>내용</h5>
-                        <div id="workContet"></div>
+                        <div id="workContent"></div>
                         <h5>파일 리스트</h5>
                         <div id="fileList"></div>
 
-
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="openupdateModal(currentWorkId)">수정하기
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <!-- 모달 구조 -->
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
 
-    <script>
-        function deleteWork(workId) {
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>게시물 title</h5>
+                        <div id="updateTitle">
 
-            console.log(workId);
-            $.ajax({
-                url: '/work/delete/',
-                type: 'POST',
-                data: {workId: workId},
-                success: function (response) {
-                    console.log('삭제 성공:', response);
-                    location.reload();
+                        </div>
+                        <h5>게시물 type</h5>
+                        <div id="updateType">
+                        </div>
+                        <h5>중요도</h5>
+                        <div id="updatePriority"></div>
+                        <h5>진행도</h5>
+                        <div id="updateState"></div>
+                        <h5>기간</h5>
+                        <div id="updateDate"></div>
+                        <h5>내용</h5>
+                        <div id="updateContet"></div>
+                        <h5>파일 리스트</h5>
+                        <div id="updatefileList"></div>
 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                onclick="closeupdateModal() ">Close
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="updateClick(currentWorkId)">수정완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                },
-                error: function (error) {
-                    console.error('저장 실패:', error);
-                }
-            });
-        }
+        <script>
 
-
-        function openWorkModal(workId) {
-            $.ajax({
-                url: '/work/detail/' + workId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (response) {
-                    console.log(response);
-                    const work = response.worksDTO;
-                    const files = response.files;
-
-                    $('#modalTitle').html(work.title);
-                    $('#workType').html(work.type);
-                    $('#workPriority').html(work.priority);
-                    $('#workState').html(work.state);
-                    $('#workDate').html(work.regDate + ' ~ ' + work.deadLine);
-                    $('#workContent').html(work.content);
-
-                    // 파일 목록 업데이트
-
-                    let fileList = "";
-                    if (files && files.length > 0) {
-                        files.forEach(function (file) {
-                            console.log(file);
-                            fileList += '<li class="mb-2">' +
-                                '<i class="bi bi-paperclip"></i> ' +
-                                '<a href="/download/' + file.filesId +
-                                '" class="text-decoration-none">' +
-
-                                file.originFileName
-                                + '</a></li>';
-                        });
-
-                    } else {
-                        filesList = '<li>첨부된 파일이 없습니다.</li>';
-                    }
-                    $('#fileList').html(fileList);
-
-                    // 모달 표시
-                    $('#workModal').modal('show');
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', error);
-                    console.error('Status:', status);
-                    console.error('Response:', xhr.responseText);
-                    alert('데이터를 불러오는데 실패했습니다.');
-                }
-            });
-
-
-        }
-
-        // 모달 코드
-
-
-        $(document).ready(function () {
-            let dragged = null;
-
-            $('.work-item').on('dragstart', function (e) {
-                dragged = this;
-
-            });
-
-            $('.work-item').on('dragend', function (e) {
-                dragged = null;
-
-                // 드래그가 끝난 후 처리할 일이 있다면 여기에 작성
-            });
-
-            $('.work-item').on('drag', function (e) {
-                // 드래그 중에 처리할 일이 있다면 여기에 작성
-            });
-
-            $('.movingBoardColumn'
-            ).on('drop', function (e) {
-                console.log("도착");
-                e.preventDefault();
-                $(this).append(dragged);
-
-                const columnState = $(this).data('state');
-                const workItemId = $(dragged).data('work-id');
-
-                $(this).find('.work-items').append(dragged);
-                console.log(columnState);
-                console.log(workItemId);
+            let currentWorkId = null; // 전역 변수
+            function openWorkModal(workId) {
+                currentWorkId = workId; // 전역 변수
                 $.ajax({
-                    url: '/work/updateState',
-                    type: 'POST',
-
-                    data: {
-                        workItemId: workItemId,
-                        state: columnState
-                    },
-
+                    url: '/work/detail/' + workId,
+                    type: 'GET',
+                    dataType: 'json',
                     success: function (response) {
-                        console.log('저장 성공:', response);
+                        console.log(response);
+                        const work = response.worksDTO;
+                        const files = response.files;
+
+                        $('#modalTitle').html(work.title);
+                        $('#workType').html(work.type);
+                        $('#workPriority').html(work.priority);
+                        $('#workState').html(work.state);
+                        $('#workDate').html(work.deadLine);
+                        $('#workContent').html(work.content);
+
+                        // 파일 목록 업데이트
+
+                        let fileList = "";
+                        if (files && files.length > 0) {
+                            files.forEach(function (file) {
+                                console.log(file);
+                                fileList += '<li class="mb-2">' +
+                                    '<i class="bi bi-paperclip"></i> ' +
+                                    '<a href="/download/' + file.filesId +
+                                    '" class="text-decoration-none">' +
+
+                                    file.originFileName
+                                    + '</a></li>';
+                            });
+
+                        } else {
+                            fileList = '<li>첨부된 파일이 없습니다.</li>';
+                        }
+                        $('#fileList').html('<ul>' + fileList + '</ul>');
+
+
+                        // 모달 표시
+                        $('#workModal').modal('show');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        console.error('Status:', status);
+                        console.error('Response:', xhr.responseText);
+                        alert('데이터를 불러오는데 실패했습니다.');
+                    }
+                });
+            }
+
+            function deleteWork(workId) {
+
+                $.ajax({
+                    url: '/work/delete/',
+                    type: 'POST',
+                    data: {workId: workId},
+                    success: function (response) {
+                        console.log('삭제 성공:', response);
+                        location.reload();
+
+
                     },
                     error: function (error) {
                         console.error('저장 실패:', error);
                     }
                 });
-            });
+            }
 
-            $('.movingBoardColumn').on('dragover', function (e) {
-                e.preventDefault();
-            });
+            function openupdateModal(currentWorkId) {
+                $('#updateModal').modal('show');
+                console.log("은총이가 궁금한 값" + currentWorkId);
+                // 이전 내용 초기화
+                $('#updateTitle').html('');
+                $('#updateType').html('');
+                $('#updatePriority').html('');
+                $('#updateState').html('');
+                $('#updateDate').html('');
+                $('#updateContet').html('');
+                $('#updatefileList').html('');
 
-        });
+                $.ajax({
+                    url: '/work/detail/' + currentWorkId,
+                    type: 'GET',
+
+                    success: function (response) {
+                        const work = response.worksDTO;
+                        const files = response.files;
+                        console.log("가져온값" + work.title)
+                        // 값 가져오고있음
+
+                        $('#updateTitle').html(`
+  <input type="text" class="form-control" name="title" value="` + work.title + `">
+`);
+
+                        $('#updateType').html(`
+                <select class="form-select" name="type">
+                    <option value="DOCUMENT"` + work.type + ` == 'DOCUMENT' ? 'selected' : ''>문서</option>
+                    <option value="REPORT"` + work.type + `== 'REPORT' ? 'selected' : ''>보고서</option>
+   <option value="WBS"` + work.type + `== 'WBS' ? 'selected' : ''>WBS</option>
+   <option value="MEETING"` + work.type + `== 'MEETING' ? 'selected' : ''>회의록</option>
+   <option value="SPECIFICATION"` + work.type + `== 'SPECIFICATION' ? 'selected' : ''>명세서</option>
+                </select>`);
+
+                        $('#updatePriority').html(`
+                <select class="form-select" name="priority">
+                    <option value="HIGH"` + work.priority + ` == 'HIGH' ? 'selected' : ''>높음</option>
+                    <option value="MIDDLE"` + work.priority + ` == 'MIDDLE' ? 'selected' : ''>중간</option>
+                    <option value="LOW" ` + work.priority + `== 'LOW' ? 'selected' : ''>낮음</option>
+                </select>`);
+
+                        $('#updateState').html(`
+                <select class="form-select" name="state">
+                    <option value="TODO" ` + work.state + ` == 'TODO' ? 'selected' : ''>해야 할 일</option>
+                    <option value="ONGOING"` + work.state + ` == 'ONGOING' ? 'selected' : ''}>진행중</option>
+                    <option value="FINISH"` + work.state + ` == 'FINISH' ? 'selected' : ''}>완료</option>
+                </select>`);
+
+                        $('#updateDate').html(`
+                <input type="date" class="form-control" name="deadLine" value=` + work.deadLine + ` >`);
+
+                        $('#updateContet').html(`
+                <textarea class="form-control" name="content">` + work.content + ` </textarea>`);
+
+                        // 파일 input
+                        $('#updatefileList').append('<input type="file" class="form-control" name="files" multiple>');
+
+                        // 기존 파일 목록
+                        let fileList = '';
+                        if (files && files.length > 0) {
+                            files.forEach(file => {
+                                fileList += `
+                        <li>
+                            <a href="/download/${file.filesId}" target="_blank">${file.originFileName}</a>
+                        </li>
+                    `;
+                            });
+                        } else {
+                            fileList = '<li>첨부된 파일이 없습니다.</li>';
+                        }
+
+                        $('#updatefileList').append(`<ul>${fileList}</ul>`);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('수정 모달 데이터 실패:', error);
+                        alert('작업 데이터를 불러오는 데 실패했습니다.');
+                    }
+                });
+            }
 
 
-    </script>
+            function closeupdateModal() {
+                $('#updateModal').modal('hide');
+            }
 
-    <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+            function updateClick(currentWorkId) {
+                let formData = new FormData();
+
+                const title = $('#updateTitle').html();
+                const type = $('#updateType').html();
+                const priority = $('#updatePriority').html();
+                const state = $('#updateState').html();
+                const deadLine = $('#updateDate').html();
+                const content = $('#updateContet').html();
+
+                formData.append("title", title);
+                formData.append("type", type);
+                formData.append("priority", priority);
+                formData.append("state", state);
+                formData.append("deadLine", deadLine);
+                formData.append("content", content);
+                formData.append("workId", currentWorkId);
+                // let files =
+                //     $("#updatefileList")[0].files;
+                // for (let i = 0; i < files.length; i++) {
+                //     formData.append("files", files[i]);
+                // }
+
+
+                $.ajax({
+                    url: '/work/update',
+                    type: 'POST',
+                    data: formData
+                    ,
+                    processData: false, // 필수!
+                    contentType: false, // 필수!
+                    success: function (response) {
+                        console.log(response);
+                        const work = response.worksDTO;
+                        const files = response.files;
+                        console.log("수정성공")
+                        location.href = 'project/detail/' + currentWorkId
+                    },
+                    error: function (error) {
+                        console.error('수정 실패:', error);
+                    }
+                })
+            }
+
+            // 모달 코드
+            $(document).ready(function () {
+                let dragged = null;
+
+                $('.work-item').on('dragstart', function (e) {
+                    dragged = this;
+
+                });
+
+                $('.work-item').on('dragend', function (e) {
+                    dragged = null;
+                    // 드래그가 끝난 후 처리할 일이 있다면 여기에 작성
+                });
+
+                $('.work-item').on('drag', function (e) {
+                    // 드래그 중에 처리할 일이 있다면 여기에 작성
+                });
+
+                $('.movingBoardColumn'
+                ).on('drop', function (e) {
+                    console.log("도착");
+                    e.preventDefault();
+                    $(this).append(dragged);
+
+                    const columnState = $(this).data('state');
+                    const workItemId = $(dragged).data('work-id');
+
+                    $(this).find('.work-items').append(dragged);
+                    console.log(columnState);
+                    console.log(workItemId);
+                    $.ajax({
+                        url: '/work/updateState',
+                        type: 'POST',
+
+                        data: {
+                            workItemId: workItemId,
+                            state: columnState
+                        },
+
+                        success: function (response) {
+                            console.log('저장 성공:', response);
+                        },
+                        error: function (error) {
+                            console.error('저장 실패:', error);
+                        }
+                    });
+                });
+
+                $('.movingBoardColumn').on('dragover', function (e) {
+                    e.preventDefault();
+                })
+            })
+
+        </script>
+
+        <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

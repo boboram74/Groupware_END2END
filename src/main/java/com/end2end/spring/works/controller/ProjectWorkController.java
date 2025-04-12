@@ -46,8 +46,6 @@ public class ProjectWorkController {
         return "/works/updatewrite";
     }
 
-
-
     @ResponseBody
     @RequestMapping("/detail/{id}")
     public Map<String, Object> toDetail(@PathVariable int id) {
@@ -63,9 +61,7 @@ public class ProjectWorkController {
         Map<String, Object> response = new HashMap<>();
         response.put("files", files);
         response.put("worksDTO", wdto);
-
         return response;
-
     }
 
     @RequestMapping("/insert")
@@ -82,12 +78,14 @@ public class ProjectWorkController {
 //    리다이렉트 헷갈리지말것 !- 이유: 폼 중복 제출 방지
 //- 브라우저 새로고침 시 POST 요청이 중복되는 것을 방지
 
-
+    @ResponseBody
     @RequestMapping("/update")
-    public String update(WorkUpdateDTO dto) {
+    public String update(ProjectWorkDTO dto,@RequestParam("files") MultipartFile[] files) throws Exception {
+        System.out.println(dto);
+        System.out.println("수정 컨트롤러 도착 ");
         // TODO: 게시글 수정을 받음
-        wserv.update(dto);
-        return "redirect:/work/" + dto.getId();
+        wserv.update(files,dto);
+        return "SUCCESS";
 
     }
     @ResponseBody

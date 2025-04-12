@@ -54,8 +54,14 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
 
 
     @Override
-    public void update(WorkUpdateDTO dto) {
-     dao.update(dto);
+    public void update(MultipartFile[]files,ProjectWorkDTO dto) throws Exception {
+        dao.update(dto);
+        int projectWorkId = dto.getProjectId();
+        FileDTO fileDTO = FileDTO.builder()
+                .projectWorkId(projectWorkId)
+                .build();
+        fileService.insert(files, fileDTO);
+
     }
 
     @Override

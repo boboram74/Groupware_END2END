@@ -273,12 +273,11 @@
                         프로젝트 기간 설정
                         <input type="date" name="deadLine" />
                     </div>
-                <div class="mb-3">
-                    <label class="form-label">프로젝트 진행에 필요한 works</label>
-                 <input type="number" value="6" min="6" step="1"/>
+<%--                <div class="mb-3">--%>
+<%--                    <label class="form-label">프로젝트 진행에 필요한 works</label>--%>
+<%--                 <input type="number" value="6" min="6" step="1"/>--%>
 
-                </div>
-
+<%--                </div>--%>
                     <div class="mb-3">
                         <label class="form-label">프로젝트 인원</label>
                         <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">

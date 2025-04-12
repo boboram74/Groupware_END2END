@@ -69,8 +69,9 @@
         state=#{state},
         priority=#{priority},
         type= #{type},
+        deadLine= #{deadLine}.
         content = #{content,jdbcType=VARCHAR}
-        where id =${id}
+        where id =#{id}
     </update>
 
 <!-- 프로젝트 진행중 보고된 게시물 수정-->

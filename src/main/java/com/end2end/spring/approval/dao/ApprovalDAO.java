@@ -62,4 +62,7 @@ public class ApprovalDAO {
         return mybatis.selectList("approval.search", map);
     }
 
+    public ApprovalDTO selectDTOById(String id) {
+        return mybatis.selectOne("approval.selectDTOById", id);
+    }
 }

@@ -26,6 +26,7 @@ const summernoteSetting = (target) => {
             callbacks : { //여기 부분이 이미지를 첨부하는 부분
                 onImageUpload : function(files) {
                     for(let i = 0; i < files.length; i++) {
+                        console.log(files);
                         uploadImage(files[i], this);
                     }
                 },
@@ -40,7 +41,6 @@ const summernoteSetting = (target) => {
                         if (item.kind === 'file'
                             && item.type.indexOf('image/') !== -1) {
                             e.preventDefault();
-
                         }
                     }
                 },

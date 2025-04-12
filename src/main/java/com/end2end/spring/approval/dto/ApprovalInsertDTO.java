@@ -17,4 +17,13 @@ public class ApprovalInsertDTO {
     private String title;
     private String content;
     List<String> approverId;
+
+    // 연장근무 신청용
+    private int commuteId;
+    private String workOffTime;
+
+    // 휴가 신청용
+    private String startDate;
+    private Double vacationDate;
+    private String vacationType;
 }

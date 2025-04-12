@@ -30,7 +30,7 @@
         <i class="material-icons">dashboard</i>
         <span>게시판</span>
       </div>
-      <div class="menu-item" onClick="location.href='/approval/list/1'">
+      <div class="menu-item" onClick="location.href='/approval/list'">
         <i class="material-icons">description</i>
         <span>전자결재</span>
       </div>

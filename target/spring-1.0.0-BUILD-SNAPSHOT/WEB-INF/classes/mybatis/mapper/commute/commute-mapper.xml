@@ -121,4 +121,8 @@
             TRUNC(regDate) BETWEEN #{startDate} AND #{endDate}
         ORDER BY dates
     </select>
+
+    <update id="update">
+        UPDATE COMMUTE SET regDate = #{updateDate} WHERE id = ${id}
+    </update>
 </mapper>

@@ -273,6 +273,11 @@
                         프로젝트 기간 설정
                         <input type="date" name="deadLine" />
                     </div>
+                <div class="mb-3">
+                    <label class="form-label">프로젝트 진행에 필요한 works</label>
+                 <input type="number" value="6" min="6" step="1"/>
+
+                </div>
 
                     <div class="mb-3">
                         <label class="form-label">프로젝트 인원</label>
@@ -516,6 +521,31 @@ function searchMembers() {
             $('.table tbody').append(tableHtml);
 
     }
+    //
+    // const stateScore = {
+    //     'TODO': 0,
+    //     'ONGOING': 0.5,
+    //     'FINISH': 1
+    // };
+    //
+    // const progressSum = works.reduce((sum, task) => sum + stateScore[task.state], 0);
+    // const progress = Math.round((progressSum / works.length) * 100);
+    //
+    // const ctx = document.getElementById('progressChart');
+    // const myChart = new Chart(ctx, {
+    //     type: 'doughnut',
+    //     data: {
+    //         labels: ['진행도'],
+    //         datasets: [{
+    //             label: '프로젝트 진행도',
+    //             data: [progress, 100 - progress],
+    //             backgroundColor: ['#4CAF50', '#e0e0e0'],
+    //             borderWidth: 1
+    //         }]
+    //     },
+    // });
+
+
 
 </script>
 

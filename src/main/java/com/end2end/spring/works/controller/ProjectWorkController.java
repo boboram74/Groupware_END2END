@@ -105,8 +105,8 @@ public class ProjectWorkController {
 }
 
     @RequestMapping("/delete")
-    public void deleteById(int id) {
-        wserv.deleteById(id);
+    public void deleteById(int workId) {
+        wserv.deleteById(workId);
         // TODO: 작업 번호로 작업게시글삭제
     }
 

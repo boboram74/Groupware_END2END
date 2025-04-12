@@ -64,8 +64,8 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     }
 
     @Override
-    public void deleteById(int id) {
-dao.deleteById(id);
+    public void deleteById(int workId) {
+dao.deleteById(workId);
     }
 
     @Override

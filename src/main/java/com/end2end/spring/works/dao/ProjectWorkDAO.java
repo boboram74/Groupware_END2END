@@ -51,8 +51,8 @@ mybatis.update("works.update",dto);
         mybatis.update("works.updateState",params);
     }
 
-    public void deleteById(int id) {
-    mybatis.delete("works.deleteById",id);
+    public void deleteById(int workId) {
+    mybatis.delete("works.deleteById",workId);
     }
         public ProjectWorkDTO selectByworksId(int id){
         return mybatis.selectOne("works.selectByworksId",id);

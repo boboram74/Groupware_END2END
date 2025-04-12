@@ -9,7 +9,7 @@ public interface ProjectWorkService {
     List<ProjectWorkDTO> selectAll(int id);
     void insert(MultipartFile[] files, ProjectWorkDTO dto) throws Exception;
     void update(WorkUpdateDTO dto);
-    void deleteById(int id);
+    void deleteById(int workId);
     void toggleState(int id);
     String selectByProjectIdAndEmployeeId(int projectId, String employeeId);
     void updateState(String state, int workItemId);

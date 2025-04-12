@@ -679,9 +679,13 @@
                         <c:if test="${work.state == 'READY'}">
                             <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
-                                <div class="closeBtn">
-                                    <button type="button" class="btn-close btn-sm" aria-label="Close"></button>
-                                </div>
+                                <c:if test="${employee.role != 'TeamLeader'}">
+                                    <div class="closeBtn">
+                                        <button type="button" class="btn-close btn-sm"
+                                                onclick="deleteWork(${work.id})
+                                                        "></button>
+                                    </div>
+                                </c:if>
                                 <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
@@ -693,20 +697,27 @@
             <!-- 작성중 -->
             <div class="movingBoardColumn ongoing-column surface-bright" data-state="ONGOING">
                 <h3 class="column-title">프로젝트 작업 진행중</h3>
+
+
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'ONGOING'}">
                             <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
-                                <div class="closeBtn">
-                                    <button type="button" class="btn-close" aria-label="Close"></button>
-                                </div>
+                                <c:if test="${employee.role != 'TeamLeader'}">
+                                    <div class="closeBtn">
+                                        <button type="button" class="btn-close btn-sm"
+                                                onclick="deleteWork(${work.id})
+                                                        "></button>
+                                    </div>
+                                </c:if>
                                 <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>
                     </c:forEach>
                 </div>
+
             </div>
 
             <!-- 완료 -->
@@ -717,9 +728,12 @@
                         <c:if test="${work.state == 'FINISH'}">
                             <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
-                                <c:if test="${employee.role == 'TeamLeader'}">
+                                <c:if test="${employee.role != 'TeamLeader'}">
+                                    <%--삭제 테스트를 위해 != 설정해둠--%>
                                     <div class="closeBtn">
-                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                        <button type="button" class="btn-close btn-sm"
+                                                onclick="deleteWork(${work.id})
+                                                        "></button>
                                     </div>
                                 </c:if> <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
@@ -739,7 +753,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- 업무 상세 정보 -->
                         <h5>게시물 type</h5>
                         <div id="workType">
                             <h2>게시물 type</h2></div>
@@ -751,8 +764,7 @@
                         <div id="workDate"><h2>기간</h2></div>
                         <h5>내용</h5>
                         <div id="workContet"></div>
-
-                        <!-- 파일 목록 표시 영역 -->
+                        <h5>파일 리스트</h5>
                         <div id="fileList"></div>
 
 
@@ -763,6 +775,26 @@
     </div>
 
     <script>
+        function deleteWork(workId) {
+
+            console.log(workId);
+            $.ajax({
+                url: '/work/delete/',
+                type: 'POST',
+                data: {workId: workId},
+                success: function (response) {
+                    console.log('삭제 성공:', response);
+                    location.reload();
+
+
+                },
+                error: function (error) {
+                    console.error('저장 실패:', error);
+                }
+            });
+        }
+
+
         function openWorkModal(workId) {
             $.ajax({
                 url: '/work/detail/' + workId,
@@ -813,10 +845,8 @@
 
 
         }
+
         // 모달 코드
-
-
-
 
 
         $(document).ready(function () {
@@ -843,7 +873,7 @@
                 e.preventDefault();
                 $(this).append(dragged);
 
-                 const columnState = $(this).data('state');
+                const columnState = $(this).data('state');
                 const workItemId = $(dragged).data('work-id');
 
                 $(this).find('.work-items').append(dragged);
@@ -872,33 +902,6 @@
             });
 
         });
-
-
-        // 처음 드래그 요소가 위치하고 있는 좌측 박스 영역
-        const readyBox = document.querySelector(".ready-column");
-
-        readyBox.addEventListener("dragenter", (e) => {
-            e.preventDefault();
-            console.log(e);
-            console.log("드래그 요소가 '첫' 번째 박스 영역에 최초로 진입했을 때");
-        });
-        readyBox.addEventListener("dragleave", (e) => {
-            e.preventDefault();
-            console.log(e);
-            console.log("드래그 요소가 '첫' 번째 박스 영역을 떠나면 발생하는 이벤트");
-        });
-
-        ongoingBox.addEventListener("dragenter", (e) => {
-            e.preventDefault();
-            console.log(e);
-            console.log("드래그 요소가 '두' 번째 박스 영역에 최초로 진입했을 때");
-        });
-        ongoingBox.addEventListener("dragleave", (e) => {
-            e.preventDefault();
-            console.log(e);
-            console.log("드래그 요소가 '두' 번째 박스 영역을 떠나면 발생하는 이벤트");
-        });
-
 
 
     </script>

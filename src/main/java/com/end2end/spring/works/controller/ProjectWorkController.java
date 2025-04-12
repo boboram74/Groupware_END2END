@@ -103,11 +103,13 @@ public class ProjectWorkController {
 
     return "SUCCESS";
 }
-
+    @ResponseBody
     @RequestMapping("/delete")
-    public void deleteById(int id) {
-        wserv.deleteById(id);
+    public String deleteById(int workId) {
+        System.out.println("작업번호 컨트롤러도착:"+workId);
+        wserv.deleteById(workId);
         // TODO: 작업 번호로 작업게시글삭제
+        return "SUCCESS";
     }
 
 }

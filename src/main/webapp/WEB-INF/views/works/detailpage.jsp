@@ -990,7 +990,8 @@
                 console.log($('input[name=regDate]').val());
                 console.log($('input[type="date"][name=deadLine]').val());
                 console.log(dtobox.regDate);
-                console.log(dtobox.deadLine);
+                console.log("날짜:"+dtobox.deadLine);
+                console.log("내용:"+dtobox.content);
 
                 // let files =
                 //     $("#updatefileList")[0].files;

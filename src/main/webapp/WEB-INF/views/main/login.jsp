@@ -8,6 +8,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/main/login.css" />
   <title>Login</title>
+  <style>
+    @media screen and (max-width: 992px) {
+        .loginContainer {
+          display: flex;
+          flex-direction: column;
+          height: auto;
+        }
+
+      .loginLeft {
+        width: 100%;
+      }
+
+      .loginRight {
+        width: 100%;
+        padding: 2rem;
+      }
+    }
+  </style>
 </head>
 
 <body>

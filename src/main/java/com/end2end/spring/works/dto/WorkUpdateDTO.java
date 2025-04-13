@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 public class WorkUpdateDTO {
 private int id;
     private String title;
-    private String content;
-    private String state;
-    private String priority;
     private String type;
-}
+    private String priority;
+    private String state;
+    private String content;
 
+
+}
 

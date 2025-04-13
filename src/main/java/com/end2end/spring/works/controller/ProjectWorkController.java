@@ -78,20 +78,36 @@ public class ProjectWorkController {
 //    리다이렉트 헷갈리지말것 !- 이유: 폼 중복 제출 방지
 //- 브라우저 새로고침 시 POST 요청이 중복되는 것을 방지
 
-    @ResponseBody
+//    @ResponseBody
+//    @RequestMapping("/update")
+//    public String update(ProjectWorkDTO dto,@RequestParam("files") MultipartFile[] files) throws Exception {
+//        System.out.println(dto);
+//        System.out.println("수정 컨트롤러 도착 ");
+//        // TODO: 게시글 수정을 받음
+//        wserv.update(files,dto);
+//        return "SUCCESS";
+//
+//    }
+
+
+        @ResponseBody
     @RequestMapping("/update")
-    public String update(ProjectWorkDTO dto,@RequestParam("files") MultipartFile[] files) throws Exception {
-        System.out.println(dto);
+    public String update(ProjectWorkDTO dto) throws Exception {
+
         System.out.println("수정 컨트롤러 도착 ");
         // TODO: 게시글 수정을 받음
-        wserv.update(files,dto);
-        return "SUCCESS";
+           wserv.update(dto);
+System.out.println(dto.getContent());
+            System.out.println(wserv.update(dto));
 
+//        return  "redirect:/project/detail/" + dto.getId();
+
+            return "SUCCESS";
     }
     @ResponseBody
     @RequestMapping("/updateState")
     public String updateState(int workItemId, String state) {
-        System.out.println("도착");
+
     // 클라이언트로부터 데이터 수신
 //    int workItemId = (int) data.get("workItemId");
 //    String state = (String) data.get("state");
@@ -104,7 +120,7 @@ public class ProjectWorkController {
     @ResponseBody
     @RequestMapping("/delete")
     public String deleteById(int workId) {
-        System.out.println("작업번호 컨트롤러도착:"+workId);
+
         wserv.deleteById(workId);
         // TODO: 작업 번호로 작업게시글삭제
         return "SUCCESS";

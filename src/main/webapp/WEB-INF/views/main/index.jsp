@@ -3,6 +3,61 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="/css/main/index.css" />
+<style>
+    /* 엑스트라 라지 사이즈 (1200px) */
+    @media screen and (max-width: 1200px) {
+        .rightContents {
+            display: none;
+        }
+
+        .boxContents {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* 1:2 비율로 설정 */
+            gap: 20px;
+        }
+
+        .leftContents {
+            width: 100%;
+        }
+
+        .centerContents {
+            width: 100%;
+        }
+    }
+
+    @media screen and (max-width: 992px) {
+        .boxContents {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            padding-bottom: 80px; /* 하단 패딩 추가 */
+        }
+
+        .leftContents,
+        .centerContents {
+            width: 100%;
+        }
+
+        /* leftContents와 centerContents의 그리드 해제 */
+        .leftContents,
+        .centerContents {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 각 박스들의 높이 조정 */
+        .logbox,
+        .commuteBox,
+        .calendarBox,
+        .boardBox,
+        .approvalBox {
+            grid-row: unset; /* 그리드 속성 해제 */
+            min-height: 300px; /* 최소 높이 설정 */
+        }
+    }
+</style>
 <script>
     function calculateAvailableDimensions() {
         const $container = $('.calendarBox');

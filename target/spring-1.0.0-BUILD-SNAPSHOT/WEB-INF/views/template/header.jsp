@@ -17,6 +17,15 @@
     let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
     $('html').addClass(mode);
   </script>
+  <style>
+    /* 모바일 반응형 */
+    @media (max-width: 768px) {
+      /* 기존 채팅 버튼 숨기기 */
+      #chatButton {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
 <div id="loading" style="display: none">
@@ -171,7 +180,7 @@
     <div class="mobile-nav sidebar-color">
       <div class="mobile-nav-scroll-container">
         <div class="mobile-menu">
-          <a href="#" class="mobile-menu-item">
+          <a href="#" class="mobile-menu-item open-mobile-menu">
             <i class="material-icons">list</i>
             <span>메뉴</span>
           </a>
@@ -194,6 +203,10 @@
           <a href="#" class="mobile-menu-item">
             <i class="material-icons">event_available</i>
             <span>예약</span>
+          </a>
+          <a href="#" class="mobile-menu-item mobile-chat-btn">
+            <i class="material-icons">chat</i>
+            <span>채팅</span>
           </a>
         </div>
       </div>
@@ -218,7 +231,7 @@
     })
 
     // 모바일 메뉴 열기
-    $('.mobile-menu-item').click(function(e) {
+    $('.open-mobile-menu').click(function(e) {
       e.preventDefault();
       $('.full-menu-modal').addClass('show');
       $('body').css('overflow', 'hidden');

@@ -438,9 +438,20 @@
 		const chatInput = $('#chat-input');
 		const sendButton = $('.chat-input-area button');
 
-		let isModalOpen = true; // 모달 상태를 추적하는 변수
+		let isModalOpen = false; // 모달 상태를 추적하는 변수
 
 		chatButton.on('click', function(e) {
+			e.stopPropagation(); // 이벤트 버블링 방지
+			isModalOpen = !isModalOpen;
+			if(isModalOpen) {
+				chatModal.addClass('active');
+			} else {
+				chatModal.removeClass('active');
+			}
+		});
+
+		$('.mobile-chat-btn').on('click', function(e) {
+			e.preventDefault();
 			e.stopPropagation(); // 이벤트 버블링 방지
 			isModalOpen = !isModalOpen;
 			if(isModalOpen) {

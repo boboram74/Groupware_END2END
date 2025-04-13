@@ -74,7 +74,7 @@
     }
 
     .notification-item:hover {
-      background-color: rgba(var(--md-sys-color-secondary-rgb), 0.1);
+      background-color: var(--md-sys-color-surface-container);
       color: var(--md-sys-color-primary);
     }
 
@@ -102,6 +102,26 @@
     .color-warning { color: #ff9800; }
     .color-info { color: #2196f3; }
     .color-danger { color: #f44336; }
+
+    /* 옵션 2: 더 세련된 스타일 */
+    .notification-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .notification-list::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      margin: 0;
+    }
+
+    .notification-list::-webkit-scrollbar-thumb {
+      background: var(--md-sys-color-surface-variant);
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .notification-list::-webkit-scrollbar-thumb:hover {
+      background: var(--md-sys-color-outline);
+    }
   </style>
 </head>
 <body>

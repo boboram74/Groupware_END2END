@@ -33,4 +33,12 @@ public class AlarmDTO {
 
         return new Gson().toJson(json);
     }
+
+    public static AlarmDTO of(AlarmType type, String message) {
+        return AlarmDTO.builder()
+                .icons(type.getIcons())
+                .description(type.getDescription())
+                .message(message)
+                .build();
+    }
 }

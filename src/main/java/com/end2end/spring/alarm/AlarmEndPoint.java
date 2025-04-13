@@ -6,6 +6,7 @@ import com.end2end.spring.messenger.config.WebSocketConfig;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,12 +32,14 @@ public class AlarmEndPoint {
         clients.values().removeIf(s -> s.equals(session));
     }
 
-    public static AlarmDTO of(AlarmType type, String message) {
-        return AlarmDTO.builder()
-                .icons(type.getIcons())
-                .description(type.getDescription())
-                .message(message)
-                .build();
+    public static void sendMessage(AlarmDTO dto, List<EmployeeDTO> employees) {
+        for (EmployeeDTO employee : employees) {
+            try {
+                clients.get(employee.getId()).getBasicRemote().sendText(dto.toJson());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

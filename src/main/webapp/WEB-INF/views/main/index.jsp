@@ -56,6 +56,11 @@
             grid-row: unset; /* 그리드 속성 해제 */
             min-height: 300px; /* 최소 높이 설정 */
         }
+
+        .information {
+            flex-direction: row;
+            justify-content: center;
+        }
     }
 </style>
 <script>

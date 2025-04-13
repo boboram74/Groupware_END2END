@@ -782,10 +782,12 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <form action="/work/update" method="post">
                     <div class="modal-body">
+                        <input tpye="hidden" name="id" value="1" />
+                        <input type="hidden" name="projectId" value="${project.id}"/>
                         <h5>게시물 title</h5>
                         <div id="updateTitle">
 
@@ -809,13 +811,37 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                 onclick="closeupdateModal() ">Close
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="updateClick(currentWorkId)">수정완료</button>
+                        <button type="submit" class="btn btn-primary">수정완료</button>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
 
         <script>
+            $('form').submit(function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                for(const [key, value] of formData.entries()) {
+                    console.log(key, value);
+                }
+                $.ajax({
+                    url: '/work/update',
+                    data: formData,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        console.error('Status:', status);
+                        console.error('Response:', xhr.responseText);
+                        }
+                }).done(function(response) {
+                    console.log(response);
+                    location.reload();
+                })
+            })
 
             let currentWorkId = null; // 전역 변수
             function openWorkModal(workId) {
@@ -909,7 +935,7 @@
                         const files = response.files;
                         console.log("가져온값" + work.title)
                         // 값 가져오고있음
-
+                        $('input[name="id"]').val(currentWorkId);
                         $('#updateTitle').html(`
   <input type="text" class="form-control" name="title" value="` + work.title + `">
 `);
@@ -932,13 +958,12 @@
 
                         $('#updateState').html(`
                 <select class="form-select" name="state">
-                    <option value="TODO" ` + work.state + ` == 'TODO' ? 'selected' : ''>해야 할 일</option>
+                    <option value="READY" ` + work.state + ` == 'READY' ? 'selected' : ''>해야 할 일</option>
                     <option value="ONGOING"` + work.state + ` == 'ONGOING' ? 'selected' : ''}>진행중</option>
                     <option value="FINISH"` + work.state + ` == 'FINISH' ? 'selected' : ''}>완료</option>
                 </select>`);
 
-                        $('#updateDate').html(`<input type="datetime-local" class="form-control" name="regDate" value=` + work.regDate + ` >
-                <input type="date" class="form-control" name="deadLine" value=` + work.deadLine + ` >`);
+                        $('#updateDate').html(`<input type="date" class="form-control" name="deadLine" value=` + work.deadLine + ` >`);
 
                         $('#updateContet').html(`
                 <textarea class="form-control" name="content">` + work.content + ` </textarea>`);

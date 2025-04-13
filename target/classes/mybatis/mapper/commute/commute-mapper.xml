@@ -123,6 +123,13 @@
     </select>
 
     <update id="update">
-        UPDATE COMMUTE SET regDate = #{updateDate} WHERE id = ${id}
+        UPDATE COMMUTE SET regDate = #{regDate} WHERE id = ${id}
     </update>
+
+    <insert id="insertWithRegDate">
+        INSERT INTO COMMUTE(id, state, employeeId, regDate) VALUES (COMMUTE_ID_SEQ.NEXTVAL, #{state}, #{employeeId}, #{regDate})
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT COMMUTE_ID_SEQ.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
 </mapper>

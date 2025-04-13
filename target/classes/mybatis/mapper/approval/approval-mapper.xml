@@ -20,6 +20,7 @@
                a.title AS TITLE,
                a.state AS STATE,
                a.regDate AS REGDATE,
+               e.profileImg AS profileImg,
                e.name AS DRAFTERNAME,
                af.name AS FORMNAME
         FROM approval a
@@ -32,7 +33,7 @@
 
     <insert id="insert">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">
-            SELECT CONCAT('문서-', APPROVAL_ID_SEQ.nextval) FROM DUAL
+            SELECT #{prefixes} || '-' || APPROVAL_ID_SEQ.nextval) FROM DUAL
         </selectKey>
         INSERT INTO APPROVAL(ID, EMPLOYEEID, APPROVALFORMID, DEPARTMENTID, TITLE, CONTENT)
                VALUES (#{id}, #{employeeId}, ${approvalFormId}, ${departmentId}, #{title}, #{content})
@@ -61,6 +62,7 @@
                a.title AS TITLE,
                a.state AS STATE,
                a.regDate AS REGDATE,
+               e.profileImg AS profileImg,
                e.name AS DRAFTERNAME,
                af.name AS FORMNAME
         FROM approval a

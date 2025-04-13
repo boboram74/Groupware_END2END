@@ -403,3 +403,20 @@ input::-moz-placeholder {
     display: flex; /* flex 컨테이너로 설정 */
     flex-direction: column; /* 세로 방향 정렬 */
 }
+
+.writer-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.profile-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid #eee;
+}

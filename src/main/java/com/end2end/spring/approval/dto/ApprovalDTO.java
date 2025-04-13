@@ -17,4 +17,5 @@ public class ApprovalDTO {
     private String content;
     private String state;
     private Timestamp regDate;
+    private String prefixes;
 }

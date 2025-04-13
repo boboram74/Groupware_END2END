@@ -31,6 +31,13 @@ public class VacationServiceImpl implements VacationService {
     public void insert(VacationDTO dto) {
         // TODO: 휴가 쓰기
         vacationDAO.insert(dto);
+
+        VacationManagementDTO vacationManagementDTO = VacationManagementDTO.builder()
+                .employeeId(dto.getEmployeeId())
+                .dates(-1 * dto.getVacationDate())
+                .reason(dto.getReason())
+                .build();
+        vacationDAO.insertUsableVacation(vacationManagementDTO);
     }
 
     @Transactional

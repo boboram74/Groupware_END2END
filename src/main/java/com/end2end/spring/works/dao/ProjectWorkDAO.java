@@ -23,8 +23,6 @@ public class ProjectWorkDAO {
         return   mybatis.selectList("works.selectAll",id);
     }
 
-
-
     public int getProjectId() {
    return  mybatis.selectOne("works.getProjectId");
     }
@@ -39,9 +37,10 @@ public class ProjectWorkDAO {
        mybatis.insert("works.insert",dto);
     }
 
-    public void update(WorkUpdateDTO dto) {
+    public void update(ProjectWorkDTO dto) {
 mybatis.update("works.update",dto);
     }
+
 
     public void updateState(String state, int workItemId) {
 

@@ -364,7 +364,7 @@
 <input type="hidden" id="sender-name" value="${employee.name}">
 <script>
 	$(document).ready(function() {
-		let ws = new WebSocket("ws://192.168.219.100/chat");
+		let ws = new WebSocket("ws://192.168.45.169/chat");
 		let employees = [];
 		let chatRooms = [];
 		let currentRoomId = 0;
@@ -508,11 +508,11 @@
 			}
 		});
 
-		const makeChatEmployeeList = (employee, type) => {
-			const div = $('<div>').addClass('employee-item ' + type).attr('data-id', employee.id).attr('data-name', employee.name);
+		const makeChatEmployeeList = (employee, index) => {
+			const div = $('<div>').addClass('employee-item invite-user').attr('data-id', employee.id).attr('data-name', employee.name);
 			const avatar = $('<div>')
 					.addClass('employee-avatar')
-					.css('background-image', "url('" + employee.profileImg + "')");
+					.css('background-image', "url('https://picsum.photos/200/" + (index + 1) + "')");
 			const info = $('<div>').addClass('employee-info');
 			const name = $('<div>').addClass('employee-name').html(employee.name);
 			const position = $('<div>').addClass('employee-position').text(employee.position);
@@ -523,14 +523,14 @@
 		}
 
 		// 사원 목록 렌더링
-		function renderEmployeeList(data, type) {
+		function renderEmployeeList(data) {
 			const listData = data || employees;
 			// $('.invite-sidebar .employee-list').empty();
 			// $('.chat-content .employee-list').empty();
 
 			listData.forEach((employee, index) => {
-				const employeeItem = makeChatEmployeeList(employee, type);
-				$('.invite-sidebar .employee-list').append(employeeItem.clone());
+				const employeeItem = makeChatEmployeeList(employee, index);
+				$('.invite-sidebar .employee-list').append(employeeItem.clone(true).addClass('invite-user'));
 				$('.chat-content .employee-list').append(employeeItem.clone());
 			});
 		}
@@ -544,7 +544,7 @@
 					emp.position.toLowerCase().includes(searchTerm)
 			);
 			// 필터링된 결과로 목록 다시 렌더링
-			renderEmployeeList(filteredEmployees, 'main-list');
+			renderEmployeeList(filteredEmployees);
 		});
 
 		//초대버튼 UI
@@ -555,13 +555,12 @@
 			} else {
 				$('.invite-sidebar, .employee-list, .search-box').show();
 				$('.chat-nav, .chat-content').css('margin-left', '280px');
-				renderEmployeeList('invite-list');
+				renderEmployeeList();
 			}
 		});
 		// 실제 초대 로직
-		$(document).on('click', '.invite-sidebar .employee-item', function() {
+		$(document).on('click', '.invite-sidebar .invite-user', function() {
 			const inviteeId = $(this).data('id');
-
 			if (!currentRoomId || currentRoomId === 0) {
 				alert("유효한 대화방 정보가 없습니다. 초대 전, 채팅방을 먼저 확인해주세요.");
 				return;
@@ -575,8 +574,6 @@
 			ws.send(JSON.stringify(payload));
 			$('.invite-sidebar').hide();
 			$('.chat-nav, .chat-content').css('margin-left', '0');
-			console.log('.chat-nav')
-			console.log(payload);
 		});
 
 		$(document).on('click', '.employee-item', function() {
@@ -589,11 +586,11 @@
 
 
 		// 사원 목록 렌더링 함수 수정
-		function renderEmployeeList(data, type) {
+		function renderEmployeeList(data) {
 			const listData = data || employees;
 			$('.invite-sidebar .employee-list, .chat-content .employee-list').empty();
-			listData.forEach((employee, type) => {
-				const employeeItem = makeChatEmployeeList(employee, type);
+			listData.forEach((employee, index) => {
+				const employeeItem = makeChatEmployeeList(employee, index);
 				$('.invite-sidebar .employee-list').append(employeeItem.clone(true));
 				$('.chat-content .employee-list').append(employeeItem.clone(true));
 			});
@@ -616,7 +613,7 @@
 			}
 		});
 
-		$(document).on('click', '.invite-item[data-id]', function() {
+		$(document).on('click', '.employee-item[data-id]', function() {
 			const employeeId = $(this).data('id');
 			const payload = {
 				type: "newRoom",
@@ -658,7 +655,6 @@
 		function makeChatRoomListItem(room) {
 			const roomId = room.roomId || room.messageRoomId;
 			const div = $('<div>').addClass('employee-item').attr('data-room-id', roomId);
-			/*			const div = $('<div>').addClass('employee-item').attr('data-room-id', room.messageRoomId);*/
 			const avatar = $('<div>').addClass('employee-avatar').css('background-color', '#bbb');
 			const info = $('<div>').addClass('employee-info');
 			const name = $('<div>').addClass('employee-name').text(room.roomName);
@@ -688,7 +684,7 @@
 			if(view === 'employees') {
 				$('.chat-room').hide();
 				$('.chat-content, .chat-nav').show();
-				renderEmployeeList('main-list');
+				renderEmployeeList();
 			} else if (view === 'rooms') {
 				$('.chat-room').hide();
 				$('.chat-content, .chat-nav, .room-list').show();
@@ -709,7 +705,7 @@
 				$('.search-box').show();
 				$('.chat-content').show();
 				$('.room-list').hide();
-				renderEmployeeList('main-list');
+				renderEmployeeList();
 			} else if (view === 'rooms') {
 				$('.employee-list').hide();
 				$('.search-box').hide();

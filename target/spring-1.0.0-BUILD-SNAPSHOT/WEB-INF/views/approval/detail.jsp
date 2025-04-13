@@ -108,7 +108,7 @@
             <input type="text" id="title" name="title" value="${approval.TITLE}" readonly>
         </div>
         <div class="contentsBox">
-            <textarea readonly>${approval.CONTENT}</textarea>
+            ${approval.CONTENT}
         </div>
     </div>
 

@@ -95,7 +95,7 @@
                     <option value="${form.id}">${form.name}</option>
                 </c:forEach>
             </select>
-            <button class="secondary" onclick="location.href='/mail/write'">상세 조회</button>
+            <button class="secondary apBtnRefresh">상세 조회</button>
         </div>
         <div class="approval-list-wrapper">
             <div class="box surface-bright">

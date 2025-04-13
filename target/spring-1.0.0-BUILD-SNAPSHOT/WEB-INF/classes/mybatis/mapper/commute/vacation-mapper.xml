@@ -5,7 +5,7 @@
 <mapper namespace="vacation">
     <insert id="insertUsableVacation">
         INSERT INTO VACATION_MANAGEMENT(id, employeeId, dates, reason)
-        VALUES (VACATION_MENAGEMENT_ID_SEQ.nextval, #{employeeId}, ${dates}, #{reason})
+        VALUES (VACATION_MANAGEMENT_ID_SEQ.nextval, #{employeeId}, ${dates}, #{reason})
     </insert>
 
     <insert id="insert">

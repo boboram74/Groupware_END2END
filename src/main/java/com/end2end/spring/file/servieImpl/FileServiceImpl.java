@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -28,8 +29,11 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void insert(MultipartFile[] files, FileDTO dto) {
-        FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
+        if (Arrays.stream(files).allMatch(MultipartFile::isEmpty)) {
+            return;
+        }
 
+        FileColumnMapperDTO fileColumnMapperDTO = FileColumnMapperDTO.of(dto);
         dao.insert(fileColumnMapperDTO);
 
         List<String> uploadedFilePathList = new ArrayList<>();

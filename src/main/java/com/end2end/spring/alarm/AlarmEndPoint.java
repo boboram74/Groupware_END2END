@@ -2,12 +2,10 @@ package com.end2end.spring.alarm;
 
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.messenger.config.WebSocketConfig;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

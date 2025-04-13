@@ -25,6 +25,83 @@
         display: none;
       }
     }
+
+    .notification-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .notification-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 300px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      margin-top: 8px;
+    }
+
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+    }
+
+    .notification-header h5 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .close-notification {
+      cursor: pointer;
+    }
+
+    .notification-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notification-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      cursor: pointer;
+    }
+
+    .notification-item:hover {
+      background-color: rgba(var(--md-sys-color-secondary-rgb), 0.1);
+      color: var(--md-sys-color-primary);
+    }
+
+    .notification-item .material-icons {
+      margin-right: 12px;
+      font-size: 20px;
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-text {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .notification-date {
+      font-size: 12px;
+      color: var(--md-sys-color-secondary);
+    }
+
+    .color-primary { color: #1976d2; }
+    .color-success { color: #4caf50; }
+    .color-warning { color: #ff9800; }
+    .color-info { color: #2196f3; }
+    .color-danger { color: #f44336; }
   </style>
 </head>
 <body>
@@ -79,10 +156,93 @@
       <div class="logo" onClick="location.href='/'"></div>
       <div class="header-icons">
         <!-- 알람 아이콘 -->
-        <button class="icon-button" id="notificationBtn">
-          <span class="material-icons">notifications</span>
-          <span class="notification-badge">0</span>
-        </button>
+        <!-- 기존 알람 버튼을 아래 코드로 대체 -->
+        <div class="notification-container">
+          <button class="icon-button" id="notificationBtn">
+            <span class="material-icons">notifications</span>
+            <span class="notification-badge">0</span>
+          </button>
+          <div class="notification-menu surface-bright" id="notificationMenu">
+            <div class="notification-header">
+              <h5>알림</h5>
+              <span class="material-icons close-notification">close</span>
+            </div>
+            <div class="notification-list">
+              <div class="notification-list">
+                <div class="notification-item">
+                  <span class="material-icons color-primary">mail</span>
+                  <div class="notification-content">
+                    <div class="notification-text">새로운 메일이 도착했습니다.</div>
+                    <div class="notification-date">2024.02.15 14:30</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-success">description</span>
+                  <div class="notification-content">
+                    <div class="notification-text">휴가신청이 승인되었습니다.</div>
+                    <div class="notification-date">2024.02.15 11:20</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-warning">event</span>
+                  <div class="notification-content">
+                    <div class="notification-text">팀 회의가 30분 후에 시작됩니다.</div>
+                    <div class="notification-date">2024.02.15 09:45</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-info">people</span>
+                  <div class="notification-content">
+                    <div class="notification-text">프로젝트 팀원이 추가되었습니다.</div>
+                    <div class="notification-date">2024.02.14 17:15</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-danger">priority_high</span>
+                  <div class="notification-content">
+                    <div class="notification-text">긴급 화상회의가 소집되었습니다.</div>
+                    <div class="notification-date">2024.02.14 16:50</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-success">check_circle</span>
+                  <div class="notification-content">
+                    <div class="notification-text">업무 보고서가 승인되었습니다.</div>
+                    <div class="notification-date">2024.02.14 15:20</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-warning">schedule</span>
+                  <div class="notification-content">
+                    <div class="notification-text">프로젝트 마감기한이 임박했습니다.</div>
+                    <div class="notification-date">2024.02.14 14:10</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-info">announcement</span>
+                  <div class="notification-content">
+                    <div class="notification-text">전체 공지사항이 등록되었습니다.</div>
+                    <div class="notification-date">2024.02.14 11:30</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-primary">share</span>
+                  <div class="notification-content">
+                    <div class="notification-text">새로운 문서가 공유되었습니다.</div>
+                    <div class="notification-date">2024.02.14 10:15</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-success">cake</span>
+                  <div class="notification-content">
+                    <div class="notification-text">오늘은 김철수 님의 생일입니다.</div>
+                    <div class="notification-date">2024.02.14 09:00</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- 조직도 아이콘 -->
         <button class="icon-button" id="orgChartBtn">
@@ -237,6 +397,28 @@
         $('#notificationBtn').addClass('notification-badge-active');
       }
     }
+
+    // 기존 ready 함수 내부에 추가
+    $('#notificationBtn').on('click', function(e) {
+      e.stopPropagation();
+      $('#notificationMenu').toggle(0, function() {
+        if($(this).is(':visible')) {
+          const notificationList = $('.notification-list');
+          notificationList.scrollTop(notificationList[0].scrollHeight);
+        }
+      });
+    });
+
+    $('.close-notification').on('click', function(e) {
+      e.stopPropagation();
+      $('#notificationMenu').hide();
+    });
+
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('.notification-container').length) {
+        $('#notificationMenu').hide();
+      }
+    });
   });
 </script>
 <script>

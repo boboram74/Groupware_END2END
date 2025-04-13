@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/commute/commute-header.jsp"/>
-<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/list/main.js'></script>
-<link href='https://cdn.jsdelivr.net/npm/@fullcalendar/list/main.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.17/index.global.min.js'></script>
+
 <style>
     .box {
         display: flex;
@@ -29,7 +29,6 @@
     .commute-list-wrapper {
         display: grid;
         gap: 20px;
-        flex: 1;
     }
 
     .department-info-box {
@@ -39,22 +38,17 @@
     .group-schedule-list-box {
         flex: 1;
     }
-</style>
-<div class="search">
-    <div>
-        <select id="searchOption">
-            <option>선택</option>
-            <option>선택</option>
-            <option>선택</option>
-        </select>
-    </div>
-    <div class="searchInput">
-        <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-    </div>
-    <div>
-        <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
-    </div>
-</div>
+
+    .resource-title {
+        display: flex;
+        gap: 10px;
+        align-content: center;
+    }
+
+    .resource-title span {
+        text-align: center;
+    }
+</style>    
 <div class="commute-list-wrapper">
     <div class="box department-info-box surface-bright">
         <div class="box-title">
@@ -71,23 +65,94 @@
 </div>
 <script>
     $(document).ready(function() {
-        const employeeList = [[${employeeList}]]
-
         const calender = new FullCalendar.Calendar(document.getElementById('calender'), {
-            resources: [],
+            locale: 'ko',
+            resources: function (fetchInfo, successCallback, failureCallback) {
+                $.ajax({
+                    url: '/employee/department/${employee.departmentId}'
+                }).done(function(data) {
+                    console.log(data);
+
+                    const resources = data.map((employee) => {
+                        return {
+                            id: String(employee.id),
+                            name: employee.name,
+                            profileImg: employee.profileImg
+                        }
+                    })
+                    successCallback(resources);
+                })
+            },
+            resourceLabelContent: function(arg) {
+                console.log(arg.resource.extendedProps.profileImg);
+                return {
+                    html: "<div class=resource-title><div class='profile-img' style='background-image: url('"
+                        + arg.resource.extendedProps.profileImg + "');'></div><span>" + arg.resource.extendedProps.name + "</span></div>"
+                }
+            },
             initialView: 'resourceTimelineWeek',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'listWeek'
+                right: ''
             },
-            events: [
-                {}
-            ],
+            events: function(info, successCallback) {
+                const startDate = info.start;
+                const endDate = info.end;
+                loadEvents(startDate, endDate, successCallback);
+            },
             eventClick: function (info) {
                 window.location.href = "/commute/detail?id=" + info.event.id;
             }
         });
+
+        function parseDate(dates) {
+            return dates.getFullYear() + '-' + (dates.getMonth() + 1) + '-' + dates.getDate();
+        }
+
+        function loadEvents(startDate, endDate, successCallback) {
+            const startDateStr = parseDate(startDate);
+            const endDateStr = parseDate(endDate);
+            $.ajax({
+                url: '/commute/select/period/list?startDate=' + startDateStr + '&endDate=' + endDateStr,
+                type: 'GET',
+                error : function(request, status, error) {
+                    console.log("code: " + request.status)
+                    console.log("message: " + request.responseText)
+                    console.log("error: " + error);
+                }
+            }).done(function(data) {
+                calender.removeAllEvents();
+                console.log(data);
+
+                const events = Object.entries(data).map(([key, value]) => {
+                    console.log(key);
+                    return value.map((event) => {
+                        if (event.eventName === 'period') {
+                            return {
+                                resourcesId: String(key),
+                                title: event.title,
+                                start: new Date(event.startDate),
+                                end: new Date(event.endDate),
+                                allDay: true,
+                                display: 'block',
+                            }
+                        }
+                        return {
+                            resourcesId: String(key),
+                            title: event.title,
+                            start: new Date(event.startDate),
+                            allDay: event.allDay,
+                            display: 'block',
+                        }
+                    })
+                })
+
+                console.log(events);
+                successCallback(events);
+            })
+        }
+
         calender.render();
     })
 </script>

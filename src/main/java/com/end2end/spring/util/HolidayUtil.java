@@ -106,7 +106,6 @@ public class HolidayUtil {
     }
 
     public static boolean isHoliday(LocalDate date) throws IOException {
-        System.out.println(date.getDayOfWeek().toString());
         if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
             return true;
         }

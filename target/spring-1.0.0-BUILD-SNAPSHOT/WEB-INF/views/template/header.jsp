@@ -107,7 +107,7 @@
         <ul class="full-menu-list">
           <li>
             <a href="/">
-              <i class="material-icons">home</i>
+              <i class="material-icons">list</i>
               <span>홈</span>
             </a>
           </li>
@@ -136,9 +136,27 @@
             </a>
           </li>
           <li>
-            <a href="/schedule/list/1">
+            <a href="/schedule/list">
               <i class="material-icons">event_available</i>
               <span>예약</span>
+            </a>
+          </li>
+          <li>
+            <a href="/hr/list">
+              <i class="material-icons">people</i>
+              <span>인사관리</span>
+            </a>
+          </li>
+          <li>
+            <a href="/project/main">
+              <i class="material-icons">description</i>
+              <span>works</span>
+            </a>
+          </li>
+          <li>
+            <a href="/contact">
+              <i class="material-icons">contacts</i>
+              <span>주소록</span>
             </a>
           </li>
         </ul>
@@ -150,8 +168,8 @@
       <div class="mobile-nav-scroll-container">
         <div class="mobile-menu">
           <a href="#" class="mobile-menu-item">
-            <i class="material-icons">home</i>
-            <span>홈</span>
+            <i class="material-icons">list</i>
+            <span>메뉴</span>
           </a>
           <a href="#" class="mobile-menu-item">
             <i class="material-icons">dashboard</i>

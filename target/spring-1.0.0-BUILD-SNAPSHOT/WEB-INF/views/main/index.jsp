@@ -309,23 +309,28 @@
         setInterval(updateDateTime, 1000);
 
         // 출퇴근 버튼 클릭 이벤트 (필요한 경우)
-        $('.startWork').click(function() {
-            // 출근 버튼 클릭 시 동작
-            console.log('출근');
-
+        $('.startWork').click(function () {
             $.ajax({
                 url: '/commute/workOn'
-            }).done(function(data) {
-                if(data) {
+            }).done(function (data) {
+                if (data) {
                     alert("출근하셨습니다.");
-                    $(this).attr('disabled', true);
+                    location.reload();
                 }
             })
         });
 
-        $('.endWork').click(function() {
-            // 퇴근 버튼 클릭 시 동작
-            console.log('퇴근');
+        $('.endWork').click(function () {
+            if(confirm("퇴근하시겠습니까?")) {
+                $.ajax({
+                    url: '/commute/workOff'
+                }).done(function (data) {
+                    if (data) {
+                        alert("퇴근했습니다.");
+                        location.reload();
+                    }
+                })
+            }
         });
 
         $('.board-type-btn').click(function() {

@@ -79,4 +79,10 @@
     <select id="selectDTOById" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
         SELECT * FROM APPROVAL WHERE ID = #{id}
     </select>
+
+    <select id="selectFormLikeName" resultType="com.end2end.spring.approval.dto.ApprovalFormDTO">
+        SELECT *
+        FROM APPROVAL_FORM
+        WHERE NAME LIKE '%' || #{name} || '%'
+    </select>
 </mapper>

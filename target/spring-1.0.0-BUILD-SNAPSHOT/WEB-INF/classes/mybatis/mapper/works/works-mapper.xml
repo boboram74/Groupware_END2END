@@ -26,6 +26,7 @@
         priority,
         type,
         finishdate,
+        regDate,
         deadline,
         regdate,
         content
@@ -39,7 +40,7 @@
         #{state, jdbcType=VARCHAR},
         #{priority},
         #{type},
-        null,
+        #{regDate},
         #{deadLine},
         SYSDATE,
         #{content, jdbcType=VARCHAR}
@@ -63,17 +64,31 @@
 </select>
 
 
-    <update id="update" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO" >
-        update project_work set
-        title= #{title},
-        state=#{state},
-        priority=#{priority},
-        type= #{type},
-        content = #{content,jdbcType=VARCHAR}
-        where id =${id}
+    <update id="update" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        UPDATE project_work
+        SET
+        title = #{title, jdbcType=VARCHAR},
+        type = #{type, jdbcType=VARCHAR},
+        priority = #{priority, jdbcType=VARCHAR},
+        regDate = #{regDate,jdbcType=TIMESTAMP},
+        deadLine = #{deadLine,jdbcType=DATE},
+        state = #{state, jdbcType=VARCHAR},
+        content = #{content, jdbcType=VARCHAR}
+        WHERE id = #{id}
     </update>
+<!--    UPDATE project_work-->
+<!--    SET-->
+<!--    title = '엥',-->
+<!--    type = 'DOCUMENT',-->
+<!--    priority = 'HIGH',-->
+<!--    regDate = TO_DATE('2025-04-12 12:10:10', 'YYYY-MM-DD HH24:MI:SS'),-->
+<!--    deadLine = TO_DATE('2025-06-10', 'YYYY-MM-DD'),-->
+<!--    state = 'READY',-->
+<!--    content = 'test'-->
+<!--    WHERE id = 35;-->
 
-<!-- 프로젝트 진행중 보고된 게시물 수정-->
+
+    <!-- 프로젝트 진행중 보고된 게시물 수정-->
 
 
     <update id="updateState" parameterType="java.util.Map">

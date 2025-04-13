@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProjectWorkService {
     List<ProjectWorkDTO> selectAll(int id);
     void insert(MultipartFile[] files, ProjectWorkDTO dto) throws Exception;
-    void update(WorkUpdateDTO dto);
+    ProjectWorkDTO update(ProjectWorkDTO dto) throws Exception;
     void deleteById(int workId);
     void toggleState(int id);
     String selectByProjectIdAndEmployeeId(int projectId, String employeeId);

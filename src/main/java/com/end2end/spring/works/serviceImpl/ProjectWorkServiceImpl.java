@@ -1,11 +1,9 @@
 package com.end2end.spring.works.serviceImpl;
 
-import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
-import com.end2end.spring.works.dto.WorkUpdateDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,12 +49,23 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
 
         return dao.selectByworksId(id);
     }
-
-
     @Override
-    public void update(WorkUpdateDTO dto) {
-     dao.update(dto);
+    public ProjectWorkDTO update(ProjectWorkDTO dto) {
+        dao.update(dto);
+
+        return dto;
     }
+
+//    @Override
+//    public void update(MultipartFile[]files,ProjectWorkDTO dto) throws Exception {
+//        dao.update(dto);
+//        int projectWorkId = dto.getProjectId();
+//        FileDTO fileDTO = FileDTO.builder()
+//                .projectWorkId(projectWorkId)
+//                .build();
+//        fileService.insert(files, fileDTO);
+//
+//    }
 
     @Override
     public void updateState(String state, int workItemId) {

@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="/css/template/header.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
+    $('html').addClass(mode);
+  </script>
 </head>
 <body>
 <div id="loading" style="display: none">
@@ -201,9 +205,6 @@
 
 <script>
   $(document).ready(function() {
-    let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
-    $('html').addClass(mode);
-
     $('#darkModeBtn').on('click', function() {
       if (mode === 'light') {
         mode = 'dark';
@@ -268,25 +269,4 @@
       }
     });
   });
-
-  $(document).ready(function() {
-    // 페이지 로드 시작할 때 로딩 표시
-    showLoading();
-
-    function showLoading() {
-      $('#loading').show();
-    }
-
-    function hideLoading() {
-      $('#loading').hide();
-    }
-
-    // 모든 초기 데이터 로딩이 완료되면
-    Promise.all([
-      // 필요한 다른 초기 데이터 로딩
-      // 예: 사용자 정보, 설정 등
-    ]).finally(() => {
-      hideLoading();
-    });
-  })
 </script>

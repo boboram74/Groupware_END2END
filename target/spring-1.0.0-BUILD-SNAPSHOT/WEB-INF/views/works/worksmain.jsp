@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Title</title>
-    <jsp:include page="/WEB-INF/views/template/header.jsp" />
+    <jsp:include page="/WEB-INF/views/template/header.jsp"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     <link
@@ -40,186 +40,192 @@
     tbody tr:hover {
         background-color: #f0f8ff;
     }
-  .profile{
-      width: 35px;
-      height: 35px;
-      margin-right: -20px;
-      }
+
+    .profile {
+        width: 35px;
+        height: 35px;
+        margin-right: -20px;
+    }
 </style>
 
-        <div class="pageName">
-            <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="35"
-                    height="35"
-                    fill="currentColor"
-                    class="bi bi-bar-chart-fill"
-                    viewBox="0 0 16 16"
-            >
-                <path
-                        d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"
-                /></svg
-            >업무 통계
-        </div>
-        <div class="btnBox">
+<div class="pageName">
+    <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="35"
+            height="35"
+            fill="currentColor"
+            class="bi bi-bar-chart-fill"
+            viewBox="0 0 16 16"
+    >
+        <path
+                d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"
+        />
+    </svg
+    >
+    업무 통계
+</div>
+<div class="btnBox">
 
-            <button class="projectBtn" onclick="openProjectModal()"
-            >프로젝트 생성</button>
+    <button class="projectBtn" onclick="openProjectModal()"
+    >프로젝트 생성
+    </button>
 
-        </div>
+</div>
 
-        <div class="selectBox">
-            <select>
-                <option>선택하십시오</option>
-                <option>주제1</option>
-                <option>주제2</option>
-            </select>
-            <button class="selectBtn">적용하기</button>
-        </div>
+<div class="selectBox">
+    <select>
+        <option>선택하십시오</option>
+        <option>주제1</option>
+        <option>주제2</option>
+    </select>
+    <button class="selectBtn">적용하기</button>
+</div>
 
-        <div class="row boxContents">
-            <div class="col-12 col-sm-4 order-sm-12">
-                <canvas id="myChart1" style="height: 50vh"></canvas>
-            </div>
+<div class="row boxContents">
+    <div class="col-12 col-sm-4 order-sm-12">
+        <canvas id="myChart1" style="height: 50vh"></canvas>
+    </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            <script>
-                const ctx1 = document.getElementById("myChart1");
+    <script>
+        const ctx1 = document.getElementById("myChart1");
 
-                new Chart(ctx1, {
-                    type: "bar",
-                    data: {
-                        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                        datasets: [
-                            {
-                                label: "# of Votes",
-                                data: [12, 19, 3, 5, 2, 3],
-                                borderWidth: 1,
-                            },
-                        ],
+        new Chart(ctx1, {
+            type: "bar",
+            data: {
+                labels: ["", "Blue", "Yellow", "Green", "Purple", "Orange"],
+               //주제입력
+                datasets: [
+                    {
+                        label: "# of Votes",
+                        data: [12, 19, 3, 5, 2, 3],
+                        borderWidth: 1,
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                        scales: {
-                            y: {
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    </script>
+    <div class="col-12 col-sm-4 order-sm-12">
+        <canvas id="myChart2" style="height: 50vh"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx2 = document.getElementById("myChart2");
+
+        new Chart(ctx2, {
+            type: "pie",
+            data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [
+                    {
+                        label: "# of Votes",
+                        data: [12, 19, 3, 5, 2, 3],
+                        borderWidth: 1,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    </script>
+    <div class="col-12 col-sm-4 order-sm-12">
+        <canvas id="myChart3" style="height: 50vh"></canvas>
+    </div>
+    <script>
+        // 여기부터 도넛그래프
+        var ctx3 = document.getElementById("myChart3").getContext("2d");
+        var myChart = new Chart(ctx3, {
+            type: "line",
+            data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [
+                    {
+                        label: "# of Votes",
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            "rgba(255, 99, 132, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(255, 206, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 159, 64, 0.2)",
+                        ],
+                        borderColor: [
+                            "rgba(255, 99, 132, 1)",
+                            "rgba(54, 162, 235, 1)",
+                            "rgba(255, 206, 86, 1)",
+                            "rgba(75, 192, 192, 1)",
+                            "rgba(153, 102, 255, 1)",
+                            "rgba(255, 159, 64, 1)",
+                        ],
+                        borderWidth: 1,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
                                 beginAtZero: true,
                             },
                         },
-                    },
-                });
-            </script>
-            <div class="col-12 col-sm-4 order-sm-12">
-                <canvas id="myChart2" style="height: 50vh"></canvas>
-            </div>
-
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-            <script>
-                const ctx2 = document.getElementById("myChart2");
-
-                new Chart(ctx2, {
-                    type: "pie",
-                    data: {
-                        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                        datasets: [
-                            {
-                                label: "# of Votes",
-                                data: [12, 19, 3, 5, 2, 3],
-                                borderWidth: 1,
-                            },
-                        ],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                            },
-                        },
-                    },
-                });
-            </script>
-            <div class="col-12 col-sm-4 order-sm-12">
-                <canvas id="myChart3" style="height: 50vh"></canvas>
-            </div>
-            <script>
-                // 여기부터 도넛그래프
-                var ctx3 = document.getElementById("myChart3").getContext("2d");
-                var myChart = new Chart(ctx3, {
-                    type: "line",
-                    data: {
-                        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                        datasets: [
-                            {
-                                label: "# of Votes",
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: [
-                                    "rgba(255, 99, 132, 0.2)",
-                                    "rgba(54, 162, 235, 0.2)",
-                                    "rgba(255, 206, 86, 0.2)",
-                                    "rgba(75, 192, 192, 0.2)",
-                                    "rgba(153, 102, 255, 0.2)",
-                                    "rgba(255, 159, 64, 0.2)",
-                                ],
-                                borderColor: [
-                                    "rgba(255, 99, 132, 1)",
-                                    "rgba(54, 162, 235, 1)",
-                                    "rgba(255, 206, 86, 1)",
-                                    "rgba(75, 192, 192, 1)",
-                                    "rgba(153, 102, 255, 1)",
-                                    "rgba(255, 159, 64, 1)",
-                                ],
-                                borderWidth: 1,
-                            },
-                        ],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                        scales: {
-                            yAxes: [
-                                {
-                                    ticks: {
-                                        beginAtZero: true,
-                                    },
-                                },
-                            ],
-                        },
-                    },
-                });
-            </script>
-        </div>
+                    ],
+                },
+            },
+        });
+    </script>
+</div>
 <div class="projectList">
-        <div class="tableBox">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>제목</th>
-                    <th>등록일자</th>
-                    <th>프로젝트 기간</th>
-                    <th>참여 인원</th>
-                    <th>상태</th>
-                    <c:if test="${employee.role.equals('TEAM_LEADER')}}">
-                        <th>관리</th>
-                    </c:if>
+    <div class="tableBox">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>제목</th>
+                <th>등록일자</th>
+                <th>프로젝트 기간</th>
+                <th>참여 인원</th>
+                <th>상태</th>
+                <c:if test="${employee.role!=('TEAM_LEADER')}}">
+                    <th>수정</th>
+                </c:if>
+                <th>숨김</th>
 
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${projects}" var="list">
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${projects}" var="list">
 
-                    <tr onclick="location.href='/project/detail/${list.id}'">
+                <tr id="changeRow-${list.id}" onclick="location.href='/project/detail/${list.id}'">
 
-                        <td>${list.name}</td>
-                        <td>${list.regDate}</td>
-                        <td> ${list.deadLine}</td>
-                        <td>
-                            <div class="member-profiles">
-                                <!-- 프로필 이미지 리스트 -->
-                                <c:forEach items="${list.profileImg}" var="img">
+                    <td>${list.name}</td>
+                    <td>${list.regDate}</td>
+                    <td> ${list.deadLine}</td>
+                    <td>
+                        <div class="member-profiles">
+                            <!-- 프로필 이미지 리스트 -->
+                            <c:forEach items="${list.profileImg}" var="img">
                                 <c:choose>
                                     <c:when test="${img == null}">
                                         <img class="profile" src="/image/defaultImg.jpg">
@@ -228,27 +234,42 @@
                                         <img class="profile" src="${img}">
                                     </c:otherwise>
                                 </c:choose>
-                                </c:forEach>
-                            </div>
-                        </td>
-<%--                        <td>${list.hideYn}</td>--%>
+                            </c:forEach>
+                        </div>
+                    </td>
+
+                    <c:if test="${projectFinish}">
                         <td>${list.status}</td>
-                        <c:if test="${employee.role.equals('TEAM_LEADER')}">
-                            <td>
-                                <button class="updateProjectBtn" onclick="updateProject(${list.id})">수정</button>
-                                <button  onclick="deleteProject(${list.id})">삭제</button>
-                            </td>
+                    </c:if>
+                    <c:if test="${employee.role!='TEAM_LEADER'}">
+                        <td>
+
+                            <button class="updateProjectBtn" onclick="updateProject(${list.id})">수정</button>
+
+                        </td>
+                        <td><c:if test="${list.status!=('FINISH')}">
+                            <%-- 상태가 피니쉬면 숨김버튼을 볼수있고 check하면 hideYn에서 Y 값을줘야됨<td>${list.hideYn}</td>--%>
+                            <div class="form-check form-switch">
+
+                                <input class="form-check-input" type="checkbox" id="hidetarget-${list.id}"
+                                       onchange="handleHide(${list.id})">
+
+                                <label class="form-check-label" for="hidetarget-${list.id}"></label>
+
+                            </div>
                         </c:if>
+                        </td>
+                    </c:if>
 
-                    </tr>
+                </tr>
 
 
-                </c:forEach>
+            </c:forEach>
 
-                </tbody>
-            </table>
-        </div>
-        </div>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <%--프로젝트 생성모달 --%>
 <div class="modal fade" id="projectModal" tabindex="-1">
@@ -261,7 +282,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="projectForm" action="/project/insert" method="post" enctype="multipart/form-data">
-            <div class="modal-body">
+                <div class="modal-body">
 
                     <div class="mb-3">
                         <label class="form-label">프로젝트 제목</label>
@@ -271,26 +292,26 @@
                     <div class="mb-3">
                         <!-- 프로젝트 기간 설정 버튼 -->
                         프로젝트 기간 설정
-                        <input type="date" name="deadLine" />
+                        <input type="date" name="deadLine"/>
                     </div>
-<%--                <div class="mb-3">--%>
-<%--                    <label class="form-label">프로젝트 진행에 필요한 works</label>--%>
-<%--                 <input type="number" value="6" min="6" step="1"/>--%>
+                    <%--                <div class="mb-3">--%>
+                    <%--                    <label class="form-label">프로젝트 진행에 필요한 works</label>--%>
+                    <%--                 <input type="number" value="6" min="6" step="1"/>--%>
 
-<%--                </div>--%>
+                    <%--                </div>--%>
                     <div class="mb-3">
                         <label class="form-label">프로젝트 인원</label>
                         <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">
                             인원 추가
                         </button>
-                        <div id="selectedMembers" class="mt-2" >
+                        <div id="selectedMembers" class="mt-2">
                             <div class="selectedUser" data-id="">
-                           <div >선택된 멤버가 없습니다</div>
+                                <div>선택된 멤버가 없습니다</div>
                             </div>
                         </div>
                     </div>
 
-            </div>
+                </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" onclick="createProject()">생성하기</button>
                 </div>
@@ -353,7 +374,8 @@
             <div class="modal-body">
                 <!-- 멤버이름 검색 -->
                 <div class="mb-3">
-                    <input type="text" class="form-control" id="memberSearchInput" placeholder="멤버 이름 검색" onkeyup="searchMembers()">
+                    <input type="text" class="form-control" id="memberSearchInput" placeholder="멤버 이름 검색"
+                           onkeyup="searchMembers()">
                 </div>
 
                 <!-- 검색 결과 리스트 -->
@@ -398,9 +420,10 @@
     // }
 
     function deleteProject(id) {
-        if(confirm("정말 프로젝트를 삭제 하시겠습니까?"))
-        location.href = '/project/delete/' + id;
+        if (confirm("정말 프로젝트를 삭제 하시겠습니까?"))
+            location.href = '/project/delete/' + id;
     }
+
     function openProjectModal() {
         $('#projectModal').modal('show');
     }
@@ -409,60 +432,81 @@
         $('#updateProjectModal').modal('show');
         $('#updateProjectId').val(id);
     }
+
     function openMemberSearch() {
         $('#memberSearchModal').modal('show');
     }
+
     function closeMemberSearch() {
-        $('#memberSearchModal').modal('hide');}
+        $('#memberSearchModal').modal('hide');
+    }
 
 
-function searchMembers() {
-    console.log($('#memberSearchInput').val());
-    $.ajax({
-        url: '/project/searchUser/',
-        type: 'GET',
-        data: {
-            name: $('#memberSearchInput').val()
-        },
-        success: function (data) {
-            console.log(data);
+    function searchMembers() {
+        console.log($('#memberSearchInput').val());
+        $.ajax({
+            url: '/project/searchUser/',
+            type: 'GET',
+            data: {
+                name: $('#memberSearchInput').val()
+            },
+            success: function (data) {
+                console.log(data);
 
-            let memberList = '';
-            for(let i = 0; i < data.length; i++){
-                console.log(data[i]);
-                memberList += '<div class="user-item" data-id="' + data[i].id + '" data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].jobName + ' ' + data[i].departmentName + '</div>'
-                console.log(memberList);
-            }
-            console.log($('#memberSearchResults'));
-            console.log($('#memberSearchResults').html());
-            $('#memberSearchResults').html(memberList);
-
-            // 사용자 선택 시 selectedMembersList에 추가하는 이벤트 처리
-            $('#memberSearchResults .user-item').click(function() {
-                var userId = $(this).data('id');
-                var userName = $(this).data('name');
-                console.log(userId, userName);
-                // 이미 선택된 사용자인지 확인
-                if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
-
-                    console.log('추가한 새로운 멤버:', userId, userName);
-
-                    // selectedMembersList에 사용자 추가
-                    $('#selectedMembersList').append(
-                        $('<div>').addClass('selected-user').attr('data-id', userId)
-                            .append($('<span>').html(userName))
-                            .append($('<button>').addClass("remove-user").html('삭제').click(function() {
-                                    $(this).parent().remove();
-                                })
-                            )
-                            .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
-                    );
+                let memberList = '';
+                for (let i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    memberList += '<div class="user-item" data-id="' + data[i].id + '" data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].jobName + ' ' + data[i].departmentName + '</div>'
+                    console.log(memberList);
                 }
-            });
+                console.log($('#memberSearchResults'));
+                console.log($('#memberSearchResults').html());
+                $('#memberSearchResults').html(memberList);
 
+                // 사용자 선택 시 selectedMembersList에 추가하는 이벤트 처리
+                $('#memberSearchResults .user-item').click(function () {
+                    var userId = $(this).data('id');
+                    var userName = $(this).data('name');
+                    console.log(userId, userName);
+                    // 이미 선택된 사용자인지 확인
+                    if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
+
+                        console.log('추가한 새로운 멤버:', userId, userName);
+
+                        // selectedMembersList에 사용자 추가
+                        $('#selectedMembersList').append(
+                            $('<div>').addClass('selected-user').attr('data-id', userId)
+                                .append($('<span>').html(userName))
+                                .append($('<button>').addClass("remove-user").html('삭제').click(function () {
+                                        $(this).parent().remove();
+                                    })
+                                )
+                                .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
+                        );
+                    }
+                });
+
+            }
+        })
+    }
+
+
+    function handleHide(projectId) {
+
+        const row = $(`changeRow-${projectId}`);
+        const checkbox = $(`#hidetarget-${projectId}`);
+
+        if (checkbox.prop('checked')) {
+            //속성의 현재 상태 제어를 위해 prop씀
+            row.css('opacity', '0.3');
+            // 숨김처리하면 팀리더만 투명하게 보임
+            // 서버에 hideYn = 'Y' 전송하는 AJAX 추가 가능
+        } else {
+            row.css('opacity', '1');
+            //서버에 hideYn = 'N' 전송 가능
         }
-    })
-}
+    }
+
 
     function confirmSelectedMembers() {
 
@@ -481,30 +525,30 @@ function searchMembers() {
 
     }
 
-        // 선택한 멤버 수집 함수
-        function getSelectedMembers() {
-            let selectedMembers = [];
+    // 선택한 멤버 수집 함수
+    function getSelectedMembers() {
+        let selectedMembers = [];
 
-            $('#selectedMembers .selectedUser').each(function() {
+        $('#selectedMembers .selectedUser').each(function () {
 
-                const id = $(this).attr('data-id');
+            const id = $(this).attr('data-id');
+            console.log(id);
+
+            if (id) {
                 console.log(id);
-
-                if (id) {
-                    console.log(id);
-                    selectedMembers.push(id[1]);
-                }
-            });
-            console.log(selectedMembers);
-
-            if (selectedMembers.length === 0) {
-                console.warn("선택된 멤버가 없습니다. 선택자를 확인하세요.");
+                selectedMembers.push(id[1]);
             }
-            return selectedMembers;
-        }
+        });
+        console.log(selectedMembers);
 
-        function addProjectToTable(response) {
-            const tableHtml = `
+        if (selectedMembers.length === 0) {
+            console.warn("선택된 멤버가 없습니다. 선택자를 확인하세요.");
+        }
+        return selectedMembers;
+    }
+
+    function addProjectToTable(response) {
+        const tableHtml = `
         <tr onClick="location.href='/works/work/${response.id}'">
             <td>${response.name}</td>
             <td>${response.regDate}</td>
@@ -517,9 +561,10 @@ function searchMembers() {
                 <button class="deleteProjectBtn" onClick="deleteProject(${response.id})">삭제</button>
         </tr>
     `;
-            $('.table tbody').append(tableHtml);
+        $('.table tbody').append(tableHtml);
 
     }
+
     //
     // const stateScore = {
     //     'TODO': 0,
@@ -545,8 +590,7 @@ function searchMembers() {
     // });
 
 
-
 </script>
 
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp" />
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

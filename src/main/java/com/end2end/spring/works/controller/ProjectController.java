@@ -29,17 +29,18 @@ public class ProjectController {
     private ProjectWorkService wserv;
 
 
-        @RequestMapping("/main")
-        public String main(HttpSession session,Model model) {
-            EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
+    @RequestMapping("/main")
+    public String main(HttpSession session, Model model) {
+        EmployeeDTO EmployeeDTO = (EmployeeDTO) session.getAttribute("employee");
 
-            List<ProjectSelectDTO> projects = projectService.selectAllProject();
+        List<ProjectSelectDTO> projects = projectService.selectAllProject();
 
 
-            model.addAttribute("projects",projects);
+        model.addAttribute("projects", projects);
 
-            return   "works/worksmain";
-        }
+
+        return "works/worksmain";
+    }
 
 //    @RequestMapping("/profileSelect")
 //    public String selectProjectMemberProfiles(Model model, @RequestParam int id) {
@@ -57,36 +58,45 @@ public class ProjectController {
 //
 //            model.addAttribute("projects",  projectService.selectAll());
 //
-////            employeedto에 role 에서 권한부분에 팀리더만 버튼 보이도록 설정
+
+    /// /            employeedto에 role 에서 권한부분에 팀리더만 버튼 보이도록 설정
 //            return     "works/worksmain";
 //        }
+    @RequestMapping("/insert")
+    public String insert(@ModelAttribute ProjectInsertDTO dto) {
+        System.out.println(dto);
+        System.out.println("프로젝트컨트롤러도착");
 
-        @RequestMapping("/insert")
-        public String insert(@ModelAttribute ProjectInsertDTO dto) {
-            System.out.println(dto);
-            System.out.println("프로젝트컨트롤러도착");
+        projectService.insert(dto);
 
-            projectService.insert(dto);
-
-            // TODO: 프로젝트 생성
-            return "redirect:/project/main";
-        }
+        // TODO: 프로젝트 생성
+        return "redirect:/project/main";
+    }
 
 
     @RequestMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model) {
 
-            ProjectDTO project = projectService.selectById(id);//프로젝트 아이디를 받아서 정보를 가져오도록
-        List<ProjectWorkDTO>list =  wserv.selectAll(id);
-
+        ProjectDTO project = projectService.selectById(id);
+        List<ProjectWorkDTO> list = wserv.selectAll(id);
+        List<ProjectSelectDTO> projects = projectService.selectAllProject();
+        boolean isProjectFinish = list.stream()
+                .allMatch(dto -> "FINISH".equals(dto.getState()));
+        if (isProjectFinish) {
+            for (ProjectSelectDTO dto : projects) {
+                if (dto.getId() == id) {
+                    dto.setStatus("FINISH");
+                    break;
+                }
+            }
+        }
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
         model.addAttribute("works", list);
-
+        model.addAttribute("isProjectFinish", isProjectFinish);
         return "works/detailpage";
     }
 
-    // Update
     @ResponseBody
     @RequestMapping("/update/{id}")
     public ProjectDTO updateForm(@PathVariable int id) {
@@ -114,11 +124,12 @@ public class ProjectController {
         //jsp에서 검색해서 나오는 부분에 projects로 c:foreach로 풀어줘야됨
         return "works/worksmain";
     }
+
     @ResponseBody
     @RequestMapping("/searchUser")
     public List<EmployeeDTO> selectByUser(@RequestParam String name) {
 
-        return    projectService.selectByUser(name);
+        return projectService.selectByUser(name);
     }
 
 }

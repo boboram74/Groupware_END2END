@@ -203,6 +203,29 @@
             approvalList.forEach(employee => {
                 formData.append('approverId', employee.id);
             });
+
+            const type = $('.container').attr('type');
+            if (type === 'vacation') {
+                const date = $('#date').val();
+                const time = $('.time:visible').val();
+
+                const vacationType = formData.get('vacationType');
+
+                console.log(vacationType);
+
+                if (vacationType === 'ANNUAL') {
+                    formData.append('startDate', date + " 00:00:00");
+                } else {
+                    console.log(date, time);
+                    formData.append('startDate', date + " " + time);
+                    $('input [name="vacationDate"]').val(0.5);
+                }
+            }
+
+            for (const key of formData.keys()) {
+                console.log(key +": " + formData.get(key));
+            }
+
             $.ajax({
                 url: '/approval/insert',
                 method: 'POST',

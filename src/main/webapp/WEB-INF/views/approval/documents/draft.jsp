@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <input type="hidden" name="approvalFormId" value="1" />
-<div class="container">
+<div class="container" type="draft">
     <table>
         <th>
             기 안 문

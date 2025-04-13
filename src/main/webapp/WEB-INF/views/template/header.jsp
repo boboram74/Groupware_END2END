@@ -30,7 +30,7 @@
         <i class="material-icons">dashboard</i>
         <span>게시판</span>
       </div>
-      <div class="menu-item" onClick="location.href='/approval/list/1'">
+      <div class="menu-item" onClick="location.href='/approval/list'">
         <i class="material-icons">description</i>
         <span>전자결재</span>
       </div>
@@ -240,16 +240,6 @@
   $(document).ready(function() {
     // 페이지 로드 시작할 때 로딩 표시
     showLoading();
-
-    // 모든 Ajax 요청 시작 시 로딩 표시
-    $(document).ajaxStart(function() {
-      showLoading();
-    });
-
-    // 모든 Ajax 요청 완료 시 로딩 숨김
-    $(document).ajaxStop(function() {
-      hideLoading();
-    });
 
     function showLoading() {
       $('#loading').show();

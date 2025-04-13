@@ -1,6 +1,7 @@
 package com.end2end.spring.commute.service;
 
 import com.end2end.spring.commute.dto.CommuteDTO;
+import com.end2end.spring.commute.dto.ExtendedCommuteDTO;
 import com.end2end.spring.commute.dto.SelectPeriodDTO;
 import com.end2end.spring.util.EventDTO;
 

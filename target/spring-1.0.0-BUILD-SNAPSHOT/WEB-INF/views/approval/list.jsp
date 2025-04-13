@@ -3,6 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/approval/list.css">
+<link ref="stylesheet" href="/css/temapalte/exam.css"/>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <style>
     .searchBox {
@@ -202,9 +203,6 @@
     </div>
 </div>
 
-<div class="bottomButton">
-    <button class="btnChat"> 채팅</button>
-</div>
 
 <script>
     $(".apBtnNewDoc").on("change", function () {

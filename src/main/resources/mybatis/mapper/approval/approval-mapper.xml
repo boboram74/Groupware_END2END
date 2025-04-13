@@ -74,4 +74,7 @@
             OR af.name LIKE '%' || #{keyword} || '%')
     </select>
 
+    <select id="selectDTOById" resultType="com.end2end.spring.approval.dto.ApprovalDTO">
+        SELECT * FROM APPROVAL WHERE ID = #{id}
+    </select>
 </mapper>

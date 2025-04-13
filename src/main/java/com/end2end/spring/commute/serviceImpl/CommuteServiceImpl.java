@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
@@ -57,7 +58,7 @@ public class CommuteServiceImpl implements CommuteService {
 
         LocalDateTime date = LocalDateTime.now();
         if (date.getHour() > Statics.WORK_ON_CHECK_TIME) {
-            if (vacationDAO.isOnVacation(employeeId) == 0 || !HolidayUtil.isHoliday(LocalDate.now())) {
+            if (vacationDAO.isOnVacation(employeeId) == 0 && !HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
                         .commuteId(dto.getId())
@@ -94,7 +95,7 @@ public class CommuteServiceImpl implements CommuteService {
         commuteDAO.insert(dto);
 
         if(workTime.isAfter(LocalDateTime.now())) {
-            if ( vacationDAO.isOnVacation(employeeId) == 0 || !HolidayUtil.isHoliday(LocalDate.now())) {
+            if ( vacationDAO.isOnVacation(employeeId) == 0 && !HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
                         .commuteId(dto.getId())

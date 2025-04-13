@@ -215,7 +215,30 @@
     <!-- 콘텐츠 영역 -->
     <div class="boxContents">
       <!-- 메인 콘텐츠가 들어갈 자리 -->
+<script>
+  $(document).ready(function() {
+    const alarm = new WebSocket('ws://localhost/alarm');
 
+    alarm.onopen = function() {
+      console.log('알람 웹소켓 연결됨');
+    };
+
+    alarm.onerror = function(error) {
+      console.log('알람 웹소켓 에러:', error);
+    };
+
+    alarm.onclose = function(event) {
+      console.log('알람 웹소켓 닫힘:', event.code, event.reason);
+    };
+
+    alarm.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      if (data.type === 'alarm') {
+        $('#notificationBtn').addClass('notification-badge-active');
+      }
+    }
+  });
+</script>
 <script>
   $(document).ready(function() {
     $('#darkModeBtn').on('click', function() {

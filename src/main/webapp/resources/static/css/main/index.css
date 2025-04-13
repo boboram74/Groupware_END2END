@@ -141,7 +141,7 @@
 .info-summary {
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--md-sys-color-outline);
     width: 100%; /* information 전체 너비만큼 확장 */
     box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
 }

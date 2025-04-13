@@ -86,21 +86,16 @@ public class ProjectWorkController {
 //
 //    }
 
-
-        @ResponseBody
+    @ResponseBody
     @RequestMapping("/update")
-    public String update(ProjectWorkDTO dto) throws Exception {
+    public void update(ProjectWorkDTO dto) throws Exception {
 
         System.out.println("수정 컨트롤러 도착 ");
         // TODO: 게시글 수정을 받음
-           wserv.update(dto);
-System.out.println(dto.getContent());
-            System.out.println(wserv.update(dto));
-
-//        return  "redirect:/project/detail/" + dto.getId();
-
-            return "SUCCESS";
+        wserv.update(dto);
+        System.out.println(dto.getContent());
     }
+
     @ResponseBody
     @RequestMapping("/updateState")
     public String updateState(int workItemId, String state) {

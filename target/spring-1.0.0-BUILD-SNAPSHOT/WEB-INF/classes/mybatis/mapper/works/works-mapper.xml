@@ -70,7 +70,6 @@
         title = #{title, jdbcType=VARCHAR},
         type = #{type, jdbcType=VARCHAR},
         priority = #{priority, jdbcType=VARCHAR},
-        regDate = #{regDate,jdbcType=TIMESTAMP},
         deadLine = #{deadLine,jdbcType=DATE},
         state = #{state, jdbcType=VARCHAR},
         content = #{content, jdbcType=VARCHAR}

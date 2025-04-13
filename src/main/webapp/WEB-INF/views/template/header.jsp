@@ -103,7 +103,6 @@
     .color-info { color: #2196f3; }
     .color-danger { color: #f44336; }
 
-    /* 옵션 2: 더 세련된 스타일 */
     .notification-list::-webkit-scrollbar {
       width: 6px;
     }

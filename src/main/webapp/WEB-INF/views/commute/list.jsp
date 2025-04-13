@@ -48,7 +48,7 @@
     .resource-title span {
         text-align: center;
     }
-</style>    
+</style>
 <div class="commute-list-wrapper">
     <div class="box department-info-box surface-bright">
         <div class="box-title">
@@ -101,9 +101,22 @@
                 const endDate = info.end;
                 loadEvents(startDate, endDate, successCallback);
             },
-            eventClick: function (info) {
-                window.location.href = "/commute/detail?id=" + info.event.id;
-            }
+            slotDuration: '24:00:00',     // 24시간(하루) 단위로 표시
+            duration: { days: 7 },        // 7일 표시
+            slotMinTime: '00:00:00',      // 시작 시간
+            slotMaxTime: '24:00:00',      // 종료 시간
+
+            // 날짜 헤더 포맷 설정
+            views: {
+                resourceTimelineWeek: {
+                    type: 'resourceTimeline',
+                    duration: { days: 7 },
+                    slotDuration: { days: 1 },
+                    headerToolbar: {
+                        start: 'M/D'
+                    }
+                }
+            },
         });
 
         function parseDate(dates) {
@@ -125,12 +138,13 @@
                 calender.removeAllEvents();
                 console.log(data);
 
+                let result = [];
                 const events = Object.entries(data).map(([key, value]) => {
                     console.log(key);
                     return value.map((event) => {
                         if (event.eventName === 'period') {
                             return {
-                                resourcesId: String(key),
+                                resourceId: String(key),
                                 title: event.title,
                                 start: new Date(event.startDate),
                                 end: new Date(event.endDate),
@@ -139,7 +153,7 @@
                             }
                         }
                         return {
-                            resourcesId: String(key),
+                            resourceId: String(key),
                             title: event.title,
                             start: new Date(event.startDate),
                             allDay: event.allDay,
@@ -148,8 +162,11 @@
                     })
                 })
 
-                console.log(events);
-                successCallback(events);
+                events.forEach((event) => {
+                    result = result.concat(event);
+                })
+                console.log(result);
+                successCallback(result);
             })
         }
 

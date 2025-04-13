@@ -235,7 +235,7 @@
 
     <div class="rightContents">
         <div class="btnBox">
-            <button type="button" class="surface-bright">
+            <button type="button" class="surface-bright" onclick="location.href='/board/write'">
                 <span class="material-icons">article</span>
                 <span class="btn-text">게시글 작성</span>
             </button>
@@ -243,11 +243,11 @@
                 <span class="material-icons">mail</span>
                 <span class="btn-text">메일 작성</span>
             </button>
-            <button type="button" class="surface-bright">
+            <button type="button" class="surface-bright" onClick="location.href='/approval/list'">
                 <span class="material-icons">edit_note</span>
                 <span class="btn-text">결재 작성</span>
             </button>
-            <button type="button" class="surface-bright">
+            <button type="button" class="surface-bright" onclick="location.href='/project/main'">
                 <span class="material-icons">work</span>
                 <span class="btn-text">보고서 작성</span>
             </button>

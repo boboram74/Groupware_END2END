@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="ko" class="light">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -201,6 +201,20 @@
 
 <script>
   $(document).ready(function() {
+    let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
+    $('html').addClass(mode);
+
+    $('#darkModeBtn').on('click', function() {
+      if (mode === 'light') {
+        mode = 'dark';
+        sessionStorage.setItem('mode', 'dark');
+        $('html').removeClass('light').addClass('dark');
+      } else {
+        mode = 'light';
+        sessionStorage.setItem('mode', 'light');
+        $('html').removeClass('dark').addClass('light');
+      }
+    })
 
     // 모바일 메뉴 열기
     $('.mobile-menu-item').click(function(e) {

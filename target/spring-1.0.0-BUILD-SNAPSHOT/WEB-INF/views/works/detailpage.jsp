@@ -785,34 +785,34 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="/work/update" method="post">
-                    <div class="modal-body">
-                        <input tpye="hidden" name="id" value="1" />
-                        <input type="hidden" name="projectId" value="${project.id}"/>
-                        <h5>게시물 title</h5>
-                        <div id="updateTitle">
+                        <div class="modal-body">
+                            <input tpye="hidden" name="id" value="1" />
+                            <input type="hidden" name="projectId" value="${project.id}"/>
+                            <h5>게시물 title</h5>
+                            <div id="updateTitle">
+
+                            </div>
+                            <h5>게시물 type</h5>
+                            <div id="updateType">
+                            </div>
+                            <h5>중요도</h5>
+                            <div id="updatePriority"></div>
+                            <h5>진행도</h5>
+                            <div id="updateState"></div>
+                            <h5>기간</h5>
+                            <div id="updateDate"></div>
+                            <h5>내용</h5>
+                            <div id="updateContet"></div>
+                            <h5>파일 리스트</h5>
+                            <div id="updatefileList"></div>
 
                         </div>
-                        <h5>게시물 type</h5>
-                        <div id="updateType">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    onclick="closeupdateModal() ">Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">수정완료</button>
                         </div>
-                        <h5>중요도</h5>
-                        <div id="updatePriority"></div>
-                        <h5>진행도</h5>
-                        <div id="updateState"></div>
-                        <h5>기간</h5>
-                        <div id="updateDate"></div>
-                        <h5>내용</h5>
-                        <div id="updateContet"></div>
-                        <h5>파일 리스트</h5>
-                        <div id="updatefileList"></div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                onclick="closeupdateModal() ">Close
-                        </button>
-                        <button type="submit" class="btn btn-primary">수정완료</button>
-                    </div>
                     </form>
                 </div>
             </div>
@@ -836,7 +836,7 @@
                         console.error('Error:', error);
                         console.error('Status:', status);
                         console.error('Response:', xhr.responseText);
-                        }
+                    }
                 }).done(function(response) {
                     console.log(response);
                     location.reload();

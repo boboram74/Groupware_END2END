@@ -14,5 +14,7 @@ public interface ProjectWorkService {
     String selectByProjectIdAndEmployeeId(int projectId, String employeeId);
     void updateState(String state, int workItemId);
     ProjectWorkDTO selectByworksId(int id);
-    int getChartDataCount(int id);
+    int getChartDataCount(int selectedId);
+    int countByState(int selectedId, String state);
+    int countByType(int selectedId, String type);
 }

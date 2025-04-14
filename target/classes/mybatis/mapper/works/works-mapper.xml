@@ -25,10 +25,8 @@
         state,
         priority,
         type,
-        finishdate,
         regDate,
         deadline,
-        regdate,
         content
         )
         VALUES
@@ -40,9 +38,8 @@
         #{state, jdbcType=VARCHAR},
         #{priority},
         #{type},
-        #{regDate},
-        #{deadLine},
         SYSDATE,
+        #{deadLine},
         #{content, jdbcType=VARCHAR}
         )
     </insert>
@@ -51,17 +48,27 @@
     <select id="countFinishedWorks" resultType="int">
         SELECT COUNT(*)
         FROM PROJECT_WORK
-        WHERE id = #{projectId}
-        AND status = 'FINISH';
+        WHERE projectId = #{selectedId}
+        AND state = 'FINISH'
     </select>
 
     <select id="countTotalWorks" resultType="int">
         SELECT COUNT(*)
-        FROM posts
-        WHERE project_id = #{projectId}
+        FROM PROJECT_WORK
+        WHERE projectId = #{selectedId}
     </select>
-
-
+    <select id="countByState" resultType="int">
+        SELECT COUNT(*)
+        FROM project_work
+        WHERE projectId = #{selectedId}
+        AND state = #{state}
+    </select>
+    <select id="countByType" resultType="int">
+        SELECT COUNT(*)
+        FROM project_work
+        WHERE projectId = #{selectedId}
+        AND type = #{type}
+    </select>
 
     <select id="selectByProjectIdAndEmployeeId" parameterType="java.util.Map"
             resultType="String">

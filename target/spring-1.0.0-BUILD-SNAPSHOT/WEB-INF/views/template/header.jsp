@@ -102,7 +102,7 @@
     .color-warning { color: #ff9800; }
     .color-info { color: #2196f3; }
     .color-danger { color: #f44336; }
-    
+
     .notification-list::-webkit-scrollbar {
       width: 6px;
     }

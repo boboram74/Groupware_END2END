@@ -14,6 +14,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <script
@@ -73,157 +74,346 @@
 </div>
 
 <div class="selectBox">
-    <select>
-        <c:forEach var="project" items="${projectList}">
-            <option value="${project.projectId}">${project.projectName}</option>
+    <select id="projectSelect">
+        <c:forEach var="project" items="${projects}">
+            console.log(${project.id}s)
+            <option value="${project.id}" }>프로젝트이름
+                :${project.name}</option>
         </c:forEach>
     </select>
-    <button class="selectBtn">적용하기</button>
+    <button class="selectBtn" onclick="applyProject()">적용하기</button>
 </div>
 
 <div class="row boxContents">
     <div class="col-12 col-sm-4 order-sm-12">
-        <canvas id="myChart1" style="height: 50vh"></canvas>
+        <canvas id="myChart" style="height: 50vh"></canvas>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        const ctx1 = document.getElementById("myChart1").getContext('2d');
 
-        new Chart(ctx1, {
-            type: "bar",
-            data: {
-                labels: ["", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                //주제입력
-                datasets: [
-                    {
-                        label: '진행률 (%)',
-                        data: [12, 19, 3, 5, 2, 3],
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
+        let myChartInstance = null;
+        let myChart2Instance = null;
+        let myChart3Instance = null;
+
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '/project/latestProjectId',
+                type: 'GET',
+                success: function (latestId) {
+                    console.log("최신 프로젝트 ID:", latestId);
+                    $("#projectSelect").val(latestId);  // 드롭다운에도 선택 반영
+                    applyProjectById(latestId);         // 선택된 ID로 차트 렌더링
                 },
-            },
-        });
-
-        let finishedData = ${chartData};
-
-        // Chart.js를 사용하여 진행률 차트 그리기
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['진행률'],
-                datasets: [{
-                    label: '진행률',
-                    data: [ChartData],
-                    backgroundColor: ['rgba(75, 192, 192, 0.2)'],
-                    borderColor: ['rgba(75, 192, 192, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, // div 크기에 맞게 조정
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100 // 최대값을 100으로 설정 (100%)
-                    }
+                error: function () {
+                    alert("최신 프로젝트 정보를 가져오지 못했습니다.");
                 }
-            }
+            });
         });
+
+        function applyProject() {
+            const selectedId = $("#projectSelect").val();
+            applyProjectById(selectedId);
+        }
+
+        function applyProjectById(projectId) {
+            console.log("선택된 프로젝트 ID:", projectId);
+
+            // 진행률 차트
+            $.ajax({
+                url: '/work/chartData/' + projectId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const progress = data.progress;
+                    const notProgress = 100 - progress;
+                    const ctx = document.getElementById('myChart').getContext('2d');
+
+                    if (myChartInstance) myChartInstance.destroy();
+                    myChartInstance = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['진행률', '미진행률'],
+                            datasets: [{
+                                data: [progress, notProgress],
+                                backgroundColor: ['#4bc0c0', '#edf2f0'],
+                                borderColor: ['#4bc0c0', '#4bc0c0'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                }
+            });
+
+            // 상태 차트
+            $.ajax({
+                url: '/work/statusChartData/' + projectId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const ctx2 = document.getElementById('myChart2').getContext('2d');
+                    if (myChart2Instance) myChart2Instance.destroy();
+                    myChart2Instance = new Chart(ctx2, {
+                        type: 'pie',
+                        data: {
+                            labels: ['READY', 'ONGOING', 'FINISH'],
+                            datasets: [{
+                                data: [data.READY, data.ONGOING, data.FINISH],
+                                backgroundColor: ['rgba(255, 99, 132, 0.5)',   // 진행전
+                                    'rgba(54, 162, 235, 0.5)',   // 진행중
+                                    'rgba(75, 192, 192, 0.5)'    // 완료
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(75, 192, 192, 1)'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {legend: {position: 'bottom'}}
+                        }
+                    });
+                }
+            });
+
+            // 타입 차트
+            $.ajax({
+                url: '/work/typeChartData/' + projectId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const ctx3 = document.getElementById('myChart3').getContext('2d');
+                    if (myChart3Instance) myChart3Instance.destroy();
+                    myChart3Instance = new Chart(ctx3, {
+                        type: 'line',
+                        data: {
+                            labels: ['DOCUMENT', 'REPORT', 'WBS', 'MEETING_FOLDER', 'SPECIFICATION'],
+                            datasets: [{
+                                label: '업무 유형별 개수',
+                                data: [
+                                    data.DOCUMENT,
+                                    data.REPORT,
+                                    data.WBS,
+                                    data.MEETING_FOLDER,
+                                    data.SPECIFICATION
+                                ],
+                                backgroundColor: [
+                                    "rgba(255, 99, 132, 0.2)",
+                                    "rgba(54, 162, 235, 0.2)",
+                                    "rgba(255, 206, 86, 0.2)",
+                                    "rgba(75, 192, 192, 0.2)",
+                                    "rgba(153, 102, 255, 0.2)",
+
+                                ],
+                                borderColor: [
+                                    "rgba(255, 99, 132, 1)",
+                                    "rgba(54, 162, 235, 1)",
+                                    "rgba(255, 206, 86, 1)",
+                                    "rgba(75, 192, 192, 1)",
+                                    "rgba(153, 102, 255, 1)"],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {beginAtZero: true}
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+
+        //선택하면 적용되는 차트 스트립트코드
+
+        function applyProject() {
+            const selectedId = $("#projectSelect").val();
+
+            console.log("선택된 프로젝트 ID:", selectedId);
+
+            $.ajax({
+
+                url: '/work/chartData/' + selectedId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const chartData = data.progress;
+                    console.log("진행률 데이터:", chartData);
+
+                    const data2 = 100 - chartData;
+
+                    const ctx = document.getElementById('myChart').getContext('2d');
+
+                    if (myChartInstance) {
+                        myChartInstance.destroy();
+                    }
+
+                    myChartInstance = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['진행률', '미진행률'],
+                            datasets: [{
+                                label: '진행률',
+                                data: [chartData, data2],
+                                backgroundColor: ['rgba(75, 192, 192, 0.2)', '#edf2f0'],
+                                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 1)'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false, // div 크기에 맞게 조정
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100 // 최대값을 100으로 설정 (100%)
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX 오류:', error);
+                }
+            });
+
+
+            $.ajax({
+                url: '/work/statusChartData/' + selectedId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const chartData = data;
+                    console.log("진행률차트2 데이터:", chartData);
+
+                    const labels = ["READY", "ONGOING", "FINISH"];
+                    const values = [chartData.READY, chartData.ONGOING, chartData.FINISH];
+
+                    const ctx2 = document.getElementById('myChart2').getContext('2d');
+
+                    if (myChart2Instance) {
+                        myChart2Instance.destroy();
+                    }
+
+
+                    myChart2Instance = new Chart(ctx2, {
+                        type: "pie",
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "업무 상태 비율",
+                                    data: values,
+                                    // 각각의 상태별 비율이 들어가야됨
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.5)',   // 진행전
+                                        'rgba(54, 162, 235, 0.5)',   // 진행중
+                                        'rgba(75, 192, 192, 0.5)'    // 완료
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(75, 192, 192, 1)'
+                                    ],
+                                    borderWidth: 1,
+                                },
+                            ],
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                },
+                            },
+                        },
+                    });
+                }
+            });
+            $.ajax({
+                url: '/work/typeChartData/' + selectedId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const labels = ["DOCUMENT", "REPORT", "WBS", "MEETING_FOLDER", "SPECIFICATION"];
+                    const values = [
+                        data.DOCUMENT,
+                        data.REPORT,
+                        data.WBS,
+                        data.MEETING_FOLDER,
+                        data.SPECIFICATION
+                    ];
+
+                    if (myChart3Instance) {
+                        myChart3Instance.destroy();
+                    }
+
+                    const ctx3 = document.getElementById("myChart3").getContext("2d");
+                    myChart3Instance = new Chart(ctx3, {
+                        type: "line",
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "업무 유형별 개수",
+                                    data: values,
+                                    backgroundColor: [
+                                        "rgba(255, 99, 132, 0.2)",
+                                        "rgba(54, 162, 235, 0.2)",
+                                        "rgba(255, 206, 86, 0.2)",
+                                        "rgba(75, 192, 192, 0.2)",
+                                        "rgba(153, 102, 255, 0.2)",
+
+                                    ],
+                                    borderColor: [
+                                        "rgba(255, 99, 132, 1)",
+                                        "rgba(54, 162, 235, 1)",
+                                        "rgba(255, 206, 86, 1)",
+                                        "rgba(75, 192, 192, 1)",
+                                        "rgba(153, 102, 255, 1)",
+
+                                    ],
+                                    borderWidth: 1,
+                                },
+                            ],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
+                            scales: {
+                                yAxes: [
+                                    {
+                                        ticks: {
+                                            beginAtZero: true,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    });
+                }
+            });
+        }
+
     </script>
     <div class="col-12 col-sm-4 order-sm-12">
         <canvas id="myChart2" style="height: 50vh"></canvas>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        const ctx2 = document.getElementById("myChart2");
-
-        new Chart(ctx2, {
-            type: "pie",
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                datasets: [
-                    {
-                        label: "# of Votes",
-                        data: [12, 19, 3, 5, 2, 3],
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-    </script>
     <div class="col-12 col-sm-4 order-sm-12">
         <canvas id="myChart3" style="height: 50vh"></canvas>
     </div>
-    <script>
-        // 여기부터 도넛그래프
-        var ctx3 = document.getElementById("myChart3").getContext("2d");
-        var myChart = new Chart(ctx3, {
-            type: "line",
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                datasets: [
-                    {
-                        label: "# of Votes",
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: [
-                            "rgba(255, 99, 132, 0.2)",
-                            "rgba(54, 162, 235, 0.2)",
-                            "rgba(255, 206, 86, 0.2)",
-                            "rgba(75, 192, 192, 0.2)",
-                            "rgba(153, 102, 255, 0.2)",
-                            "rgba(255, 159, 64, 0.2)",
-                        ],
-                        borderColor: [
-                            "rgba(255, 99, 132, 1)",
-                            "rgba(54, 162, 235, 1)",
-                            "rgba(255, 206, 86, 1)",
-                            "rgba(75, 192, 192, 1)",
-                            "rgba(153, 102, 255, 1)",
-                            "rgba(255, 159, 64, 1)",
-                        ],
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true,
-                            },
-                        },
-                    ],
-                },
-            },
-        });
-    </script>
+
 </div>
 <div class="projectList">
     <div class="tableBox">
@@ -245,13 +435,13 @@
             <tbody>
             <c:forEach items="${projects}" var="list">
 
-                <tr id="changeRow-${list.id}" onclick="location.href='/project/detail/${list.id}'">
+                <tr id="changeRow-${list.id}">
 
-                    <td>${list.name}</td>
-                    <td>${list.regDate}</td>
-                    <td> ${list.deadLine}</td>
+                    <td onclick="location.href='/project/detail/${list.id}'">${list.name}</td>
+                    <td onclick="location.href='/project/detail/${list.id}'">${list.regDate}</td>
+                    <td onclick="location.href='/project/detail/${list.id}'"> ${list.deadLine}</td>
                     <td>
-                        <div class="member-profiles">
+                        <div class="member-profiles" onclick="location.href='/project/detail/${list.id}'">
                             <!-- 프로필 이미지 리스트 -->
                             <c:forEach items="${list.profileImg}" var="img">
                                 <c:choose>
@@ -304,11 +494,12 @@
     <div class="modal-dialog">
 
         <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title">프로젝트 생성</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+            <c:if test="${employee.role!='TEAM_LEADER'}">
+                <div class="modal-header">
+                    <h5 class="modal-title">프로젝트 생성</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            </c:if>
             <form id="projectForm" action="/project/insert" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
 
@@ -367,7 +558,7 @@
                     <div class="mb-3">
                         <input type="text" id="title" value="${project.name}">
                     </div>
-<%--projectinsertDTO 가져와야됨--%>
+                    <%--projectinsertDTO 가져와야됨--%>
                     <div class="mb-3">
                         <!-- 프로젝트 기간 설정 버튼 -->
                         프로젝트 기간 설정
@@ -451,7 +642,7 @@
         e.preventDefault();
 
         const formData = new FormData(this);
-        for(const [key, value] of formData.entries()) {
+        for (const [key, value] of formData.entries()) {
             console.log(key, value);
         }
         $.ajax({
@@ -465,7 +656,7 @@
                 console.error('Status:', status);
                 console.error('Response:', xhr.responseText);
             }
-        }).done(function(response) {
+        }).done(function (response) {
             console.log(response);
             location.reload();
         })
@@ -476,7 +667,7 @@
         $('#projectModal').modal('show');
     }
 
-    function updateProject(${list.id}){
+    function updateProject(${list.id}) {
         $('#updateModal').modal('show');
         // $('#updateProjectId').val(id);
     }

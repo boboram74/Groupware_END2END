@@ -69,11 +69,28 @@ public class ProjectWorkDAO {
 
         //아니면 값으로 string state 를 받는 방법도 있음
     }
-public int countTotalWorks(int id) {
-        return mybatis.selectOne("works.countTotalWorks", id);
-}
-    public int countFinishedWorks(int id) {
-        return mybatis.selectOne("works.countFinishedWorks", id);
+
+    public int countByState(int selectedId, String state) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("state", state);
+        params.put("selectedId", selectedId);
+        return mybatis.selectOne("works.countByState", params);
+
     }
+
+    public int countByType(int selectedId, String type) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("type",type);
+        params.put("selectedId", selectedId);
+        return mybatis.selectOne("works.countByType", params);
+
+    }
+public int countTotalWorks(int selectedId) {
+        return mybatis.selectOne("works.countTotalWorks", selectedId);
+}
+    public int countFinishedWorks(int selectedId) {
+        return mybatis.selectOne("works.countFinishedWorks", selectedId);
+    }
+
 
 }

@@ -414,28 +414,6 @@
         $('#notificationBtn').addClass('notification-badge-active');
       }
     }
-
-    // 기존 ready 함수 내부에 추가
-    $('#notificationBtn').on('click', function(e) {
-      e.stopPropagation();
-      $('#notificationMenu').toggle(0, function() {
-        if($(this).is(':visible')) {
-          const notificationList = $('.notification-list');
-          notificationList.scrollTop(notificationList[0].scrollHeight);
-        }
-      });
-    });
-
-    $('.close-notification').on('click', function(e) {
-      e.stopPropagation();
-      $('#notificationMenu').hide();
-    });
-
-    $(document).on('click', function(e) {
-      if (!$(e.target).closest('.notification-container').length) {
-        $('#notificationMenu').hide();
-      }
-    });
   });
 </script>
 <script>
@@ -505,6 +483,27 @@
         window.location.href = '/mypage/${employee.id}';
       } else if (id === 'logout') {
         window.location.href = '/employee/logout';
+      }
+    });
+
+    $('#notificationBtn').on('click', function(e) {
+      e.stopPropagation();
+      $('#notificationMenu').toggle(0, function() {
+        if($(this).is(':visible')) {
+          const notificationList = $('.notification-list');
+          notificationList.scrollTop(notificationList[0].scrollHeight);
+        }
+      });
+    });
+
+    $('.close-notification').on('click', function(e) {
+      e.stopPropagation();
+      $('#notificationMenu').hide();
+    });
+
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('.notification-container').length) {
+        $('#notificationMenu').hide();
       }
     });
   });

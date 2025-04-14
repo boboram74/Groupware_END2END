@@ -51,6 +51,7 @@ public class EmployeeController {
             session.setAttribute("isWorkOn", isWorkOn);
             boolean isWorkOff = commuteService.isExistByState(employee.getId(), "WORK_OFF");
             session.setAttribute("isWorkOff", isWorkOff);
+            session.setAttribute("accessIp", SecurityUtil.getClientIp(request));
         }
         return "redirect:/";
     }

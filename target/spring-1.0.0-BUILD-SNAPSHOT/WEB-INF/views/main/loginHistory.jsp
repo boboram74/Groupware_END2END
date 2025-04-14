@@ -1,13 +1,13 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <link rel="stylesheet" href="/css/template/exam.css"/>
 
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
-            <span class="material-icons">mail</span>
+            <span class="material-icons">person</span>
             <span>마이페이지</span>
         </div>
         <button class="detail-menu-toggle-btn">
@@ -16,15 +16,13 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item">
-                <span class="material-icons">star</span>
-                <span>중요 메일함</span>
-                <span class="detail-badge">5</span>
+            <li class="detail-menu-item" onclick="location.href='/mypage/${employee.id}'">
+                <span class="material-icons">person</span>
+                <span>사원 정보</span>
             </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">all_inbox</span>
-                <span>전체 메일함</span>
-                <span class="detail-badge">32</span>
+            <li class="detail-menu-item active" onclick="location.href='/login/history'">
+                <span class="material-icons">login</span>
+                <span>로그인 기록</span>
             </li>
         </ul>
         <button class="detail-modal-close">
@@ -64,9 +62,9 @@
                     <tbody>
                         <c:forEach items="${loginHistoryList}" var="item">
                             <tr>
-                                <th>${item.accessIp}</th>
-                                <th>${item.state.equals('LOGIN') ? '로그인' : '로그아웃'}</th>
-                                <th>${item.regDate}</th>
+                                <td>${item.accessIp}</td>
+                                <td>${item.state.equals('LOGIN') ? '로그인' : '로그아웃'}</td>
+                                <td><fmt:formatDate value="${item.regDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
                             </tr>
                         </c:forEach>
                     </tbody>

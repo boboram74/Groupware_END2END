@@ -385,7 +385,6 @@ input::-moz-placeholder {
 .box {
     display: flex;
     flex-direction: column;
-    height: 100%; /* 전체 높이 사용 */
     border-radius: 8px;
 }
 

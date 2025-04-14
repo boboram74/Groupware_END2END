@@ -3,7 +3,40 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/template/exam.css"/>
-
+<style>
+    .pageNavi{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        padding-top: 0;
+    }
+    .paging {
+        display: inline-block;
+        margin: 5px 3px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 5px;
+        background: var(--md-sys-color-secondary);
+        color: var(--md-sys-color-on-secondary);
+        border: 1px solid #ccc;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+    }
+    .paging:hover {
+        background: var(--md-sys-color-secondary-hover);
+        transform: translateY(-2px);
+    }
+    .paging.active {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        transform: none;
+    }
+</style>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
@@ -67,30 +100,26 @@
                                 <td><fmt:formatDate value="${item.regDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
                             </tr>
                         </c:forEach>
-                        <tr>
-                            <td colspan="3">
-                                <div>
-                                    <c:if test="${pageNavi.hasPrev}">
-                                        <span class="material-icons">chevron_left</span>
-                                    </c:if>
-                                    <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
-                                        <c:choose>
-                                            <c:when test="${item == page}">
-                                                <span class="active" onClick="location.href='/login/history?page=${item}">${item}</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span onClick="location.href='/login/history?page=${item}">${item}</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:forEach>
-                                    <c:if test="${pageNavi.hasNext}">
-                                        <span class="material-icons">chevron_right</span>
-                                    </c:if>
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="pageNavi">
+                <c:if test="${pageNavi.hasPrev}">
+                    <span class="material-icons paging" onclick="location.href='/login/history?page=${pageNavi.start - 1}'">chevron_left</span>
+                </c:if>
+                <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
+                    <c:choose>
+                        <c:when test="${item == page}">
+                            <span class="paging active" onClick="location.href='/login/history?page=${item}">${item}</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="paging" onClick="location.href='/login/history?page=${item}">${item}</span>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+                <c:if test="${pageNavi.hasNext}">
+                <span class="material-icons paging" onclick="location.href='/login/history?page=${pageNavi.end + 1}'>chevron_right</span>
+                </c:if>
             </div>
         </div>
     </div>
@@ -127,5 +156,5 @@
             });
         });
     </script>
-    <script src="/js/main/contact.js" type="text/javascript"></script>
+    <script src="/js/main/contact.js" type="text/javascript"></div>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

@@ -35,7 +35,7 @@ public class PageNaviUtil {
     }
 
     public PageNavi generate() {
-        return new PageNavi(getStartNavi(), getEndNavi(), isFirst(), isEnd());
+        return new PageNavi(getStartNavi(), getEndNavi(), !isFirst(), !isEnd());
     }
 
     @Data

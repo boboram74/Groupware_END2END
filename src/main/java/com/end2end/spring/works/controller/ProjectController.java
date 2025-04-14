@@ -90,11 +90,21 @@ public class ProjectController {
                 }
             }
         }
+        //isProjectFinish는 완료된 프로젝트만 숨길수있도록 조건을 걸어서 필요한거임 !!!!
+        System.out.println(isProjectFinish);
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
         model.addAttribute("works", list);
         model.addAttribute("isProjectFinish", isProjectFinish);
         return "works/detailpage";
+    }
+    @ResponseBody
+    @RequestMapping("/latestProjectId")
+    public int findLatestProject(Model model) {
+        ProjectDTO latestProject = projectService.findLatestProject();
+        System.out.println("최근프로젝트번호:"+latestProject);
+        model.addAttribute("latestProjectId", latestProject != null ? latestProject.getId() : -1);
+        return latestProject.getId();
     }
 
     @ResponseBody
@@ -131,5 +141,6 @@ public class ProjectController {
 
         return projectService.selectByUser(name);
     }
+
 
 }

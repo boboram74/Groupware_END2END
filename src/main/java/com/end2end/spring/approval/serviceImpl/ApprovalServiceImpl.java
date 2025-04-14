@@ -152,10 +152,15 @@ public class ApprovalServiceImpl implements ApprovalService {
             ApproverDTO approverDTO = ApproverDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(approverId)
-                    .orders(order++)
+                    .orders(order)
                     .build();
             approverDAO.insertApprover(approverDTO);
             added.add(approverId);
+
+            if (order == 1) {
+                alarmService.sendApproveCheckAlarm("/approval/detail/" + approvalDTO.getId(), approverId);
+                order++;
+            }
         }
     }
 
@@ -181,6 +186,8 @@ public class ApprovalServiceImpl implements ApprovalService {
             alarmService.sendApprovalResultAlarm("/approval/detail/" + approvalId, approvalId);
         } else {
             approvalDAO.updateState(approvalId, "ONGOING");
+
+            alarmService.sendApproveCheckAlarm("/approval/detail/" + approvalId, nextApprovers.get(0).getEmployeeId());
         }
 
     }
@@ -194,6 +201,8 @@ public class ApprovalServiceImpl implements ApprovalService {
         approverDAO.updateSubmitYn(rejectDTO.getApproverId(), "N", new Timestamp(System.currentTimeMillis()));
 
         approvalDAO.updateState(rejectDTO.getApprovalId(), "REJECT");
+
+        alarmService.sendApprovalResultAlarm("/approval/detail/" + rejectDTO.getApprovalId(), rejectDTO.getApprovalId());
     }
 
     @Override

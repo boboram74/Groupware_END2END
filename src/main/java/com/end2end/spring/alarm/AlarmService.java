@@ -4,15 +4,19 @@ import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.EmailAddressUserDTO;
+import com.end2end.spring.works.dao.ProjectDAO;
+import com.end2end.spring.works.dto.ProjectUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
 public class AlarmService {
     @Autowired private MailDAO mailDAO;
     @Autowired private ApprovalDAO approvalDAO;
+    @Autowired private ProjectDAO projectDAO;
 
     public void sendMailAlarm(String url, String email) {
         List<EmailAddressUserDTO> emailAddressUserList =
@@ -40,7 +44,14 @@ public class AlarmService {
         send(AlarmDTO.of(AlarmType.CHECK_APPROVAL, employeeId, url), employeeId);
     }
 
+    public void sendProjectEmergencyCheck(String url, String projectId) {
+        List<ProjectUserDTO> projectUserList = projectDAO.
+    }
+
     private void send(AlarmDTO dto, String employeeId) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        dto.setSendTime(timestamp);
+
         AlarmEndPoint.sendMessage(dto, employeeId);
     }
 }

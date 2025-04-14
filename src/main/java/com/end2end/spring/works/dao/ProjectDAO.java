@@ -29,7 +29,12 @@ public class ProjectDAO {
         return mybatis.selectList("project.selectAll");
 
     }
-
+public int update(ProjectDTO dto) {
+        return mybatis.update("project.updateProject", dto);
+}
+    public ProjectDTO findLatestProject(){
+       return mybatis.selectOne("project.findLatestProject");
+    }
     public int deleteById(int id){
         return mybatis.delete("project.deleteBySeq",id);
     }

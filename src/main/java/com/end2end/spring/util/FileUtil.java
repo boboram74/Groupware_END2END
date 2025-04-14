@@ -94,4 +94,8 @@ public class FileUtil {
             }
         }
     }
+
+    private static String getExtension(String filePath) {
+        return "." + filePath.substring(filePath.lastIndexOf(".") + 1);
+    }
 }

@@ -120,4 +120,7 @@ public class MailDAO {
         return mybatis.update("mail.insertDelete", esId);
     }
 
+    public List<EmailAddressUserDTO> selectEmailAddressUserByEmailAddress(String email) {
+        return mybatis.selectList("mail.selectEmailAddressUserByEmailAddress", email);
+    }
 }

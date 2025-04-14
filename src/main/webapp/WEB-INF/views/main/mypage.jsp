@@ -23,8 +23,14 @@
             <input type="hidden" name="id" value="${employeeDetail.id}" />
             <div class="content">
                 <div class="leftPage">
-                <div class="hrProfile" style="background-image: url(${employeeDetail.profileImg});">
-                </div>
+                    <div class="hrProfile">
+                        <label for="profileInput" style="cursor: pointer;">
+                            <img id="profilePreview" src="${empty employeeDetail.profileImg ? '/image/defaultImg.jpg' : employeeDetail.profileImg}" alt="프로필 이미지">
+                            <span class="material-icons">add_a_photo</span>
+                        </label>
+                        <input type="file" id="profileInput" name="file" accept="image/*" style="display: none;">
+                        <input type="hidden" name="profileImg" value="${empty employeeDetail.profileImg ? '/image/defaultImg.jpg' : employeeDetail.profileImg}"/>
+                    </div>
                 <div class="name">
                     <label>이름</label>
                     <span id="nameText">${employeeDetail.name}</span>

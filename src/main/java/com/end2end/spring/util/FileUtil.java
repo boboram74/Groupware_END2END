@@ -56,10 +56,16 @@ public class FileUtil {
 
         filePath.mkdir();
 
-        String systemFileName = String.valueOf(UUID.randomUUID());
+        // 원본 파일명에서 확장자만 추출
+        String originalFilename = file.getOriginalFilename();
+        String fileExtension = "";
+        if (originalFilename != null && originalFilename.contains(".")) {
+            fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        }
 
+        // UUID에 확장자만 붙여서 고유 파일명을 생성
+        String systemFileName = UUID.randomUUID().toString() + fileExtension;
         file.transferTo(new File(uploadPath + "/" + systemFileName));
-
         return mappedPath + "/" + systemFileName;
     }
 

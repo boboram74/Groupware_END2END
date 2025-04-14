@@ -54,12 +54,46 @@
 }
 
 .hrProfile {
+    position: relative;
     width: 250px;
     height: 250px;
+    margin:10px;
+}
+
+.hrProfile label {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
     border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-    margin-bottom: 20px;
+    padding: 5px;
+    pointer-events: none;
+    cursor: default;
+}
+
+.hrProfile.editable label {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.hrProfile img#profilePreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid dimgray;
+}
+
+.hrProfile .material-icons {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 8px;
+    font-size: 20px;
+    color: #333;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
 .name, .contact, .birthday, .position, .department, .email, .postCode, .address, .detailAddress {

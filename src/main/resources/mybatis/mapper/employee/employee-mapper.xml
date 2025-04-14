@@ -47,6 +47,7 @@
         departmentId = #{departmentId},
         jobId = #{jobId},
         name = #{name},
+        profileImg = #{profileImg},
         contact = #{contact}
         WHERE id = #{id}
     </update>

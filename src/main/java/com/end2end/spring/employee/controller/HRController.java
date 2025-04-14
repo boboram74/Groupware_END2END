@@ -82,7 +82,7 @@ public class HRController {
         // TODO: 직원 데이터 수정
        employeeService.update(dto);
         String employeeId = dto.getId();
-        return "redirect:/mypage/"+employeeId;
+        return "redirect:/mypage/" + employeeId;
     }
 
     @RequestMapping("/deleteById/{id}")

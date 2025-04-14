@@ -14,7 +14,7 @@ public interface EmployeeService {
     void logout();
     void insert(EmployeeDetailDTO dto, MultipartFile file);
     void roleUpdate(String id);
-    void update(EmployeeDetailDTO dto);
+    void update(EmployeeDetailDTO dto, MultipartFile file);
     void deleteById(String id);
     boolean idVali(String loginId);
     List<EmployeeDTO> selectByDepartmentId(int departmentId);

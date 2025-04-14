@@ -35,8 +35,8 @@ public class ProjectController {
 
         List<ProjectSelectDTO> projects = projectService.selectAllProject();
 
-System.out.println("도착체크"+projects);
-System.out.println(projects.get(0));
+        System.out.println("도착체크" + projects);
+        System.out.println(projects.get(0));
         model.addAttribute("projects", projects);
         model.addAttribute("employee", EmployeeDTO);
 
@@ -73,15 +73,19 @@ System.out.println(projects.get(0));
         // TODO: 프로젝트 생성
         return "redirect:/project/main";
     }
+
     @ResponseBody
     @GetMapping("/members/{projectId}")
     public List<EmployeeDTO> getProjectMembers(@PathVariable int projectId) {
         return projectService.getMembersByProjectId(projectId);
     }
 
+
+
     @RequestMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model) {
-
+        List<EmployeeDTO> selectedMembers = projectService.getMembersByProjectId(id);
+        model.addAttribute("selectedMembers", selectedMembers);
         ProjectDTO project = projectService.selectById(id);
         List<ProjectWorkDTO> list = wserv.selectAll(id);
         List<ProjectSelectDTO> projects = projectService.selectAllProject();
@@ -103,11 +107,12 @@ System.out.println(projects.get(0));
         model.addAttribute("isProjectFinish", isProjectFinish);
         return "works/detailpage";
     }
+
     @ResponseBody
     @RequestMapping("/latestProjectId")
     public int findLatestProject(Model model) {
         ProjectDTO latestProject = projectService.findLatestProject();
-        System.out.println("최근프로젝트번호:"+latestProject);
+        System.out.println("최근프로젝트번호:" + latestProject);
         model.addAttribute("latestProjectId", latestProject != null ? latestProject.getId() : -1);
         return latestProject.getId();
     }

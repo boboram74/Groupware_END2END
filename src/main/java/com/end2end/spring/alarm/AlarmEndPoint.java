@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,8 +15,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AlarmEndPoint {
     private static final Gson g = new Gson();
 
-    private static Map<String, Session> clients = new ConcurrentHashMap<>();
-    private static Map<String, EvictingQueue<AlarmDTO>> alarmQueues = new ConcurrentHashMap<>();
+    private static final Map<String, Session> clients = new ConcurrentHashMap<>();
+    private static final Map<String, EvictingQueue<AlarmDTO>> alarmQueues = new ConcurrentHashMap<>();
+
+    private static long id = 0L;
 
     private static EvictingQueue<AlarmDTO> getOrCreateQueue(String employeeId) {
         return alarmQueues.computeIfAbsent(employeeId, k -> EvictingQueue.create(20));
@@ -53,6 +54,28 @@ public class AlarmEndPoint {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @OnMessage
+    public void onMessage(String message) {
+        Map<String, Object> json = g.fromJson(message, Map.class);
+
+        System.out.println("onMessage : " + message);
+
+        long id = (Long) json.get("id");
+        String employeeId = (String) json.get("employeeId");
+
+        EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employeeId);
+        for (AlarmDTO dto : queue) {
+            if (dto.getId() == id) {
+                dto.read();
+                break;
+            }
+        }
+    }
+
+    public static long getId() {
+        return id++;
     }
 }
 

@@ -4,6 +4,28 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="/css/main/index.css" />
 <style>
+    .birth-item {
+        height: 60px; /* 원하는 높이로 조절 */
+        min-height: 60px; /* 최소 높이 지정 */
+        max-height: 60px; /* 최대 높이 지정 */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* 내부 요소들의 정렬을 위해 */
+    .birth-profile {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    .birth-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
     /* 엑스트라 라지 사이즈 (1200px) */
     @media screen and (max-width: 1200px) {
         .rightContents {

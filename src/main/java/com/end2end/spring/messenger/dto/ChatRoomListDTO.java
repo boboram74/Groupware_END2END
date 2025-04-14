@@ -14,4 +14,5 @@ import java.sql.Timestamp;
 public class ChatRoomListDTO {
     private Integer messageRoomId;
     private String roomName;
+    private String lastMessage;
 }

@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 public class ProjectWorkDTO {
     private int id;
     private int projectId;
-    private String projectUserId;
+    private String projectUserId;   
     private String title;
     private String type;
     private String content;

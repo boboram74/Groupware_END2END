@@ -1,6 +1,7 @@
 package com.end2end.spring.commute.serviceImpl;
 
 import com.end2end.spring.commute.dao.CommuteDAO;
+import com.end2end.spring.commute.dao.ExtendedCommuteDAO;
 import com.end2end.spring.commute.dao.SolderingDAO;
 import com.end2end.spring.commute.dao.VacationDAO;
 import com.end2end.spring.commute.dto.*;
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.Duration;
+import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
@@ -30,6 +32,7 @@ public class CommuteServiceImpl implements CommuteService {
     @Autowired private CommuteDAO commuteDAO;
     @Autowired private SolderingDAO solderingDAO;
     @Autowired private VacationDAO vacationDAO;
+    @Autowired private ExtendedCommuteDAO extendedCommuteDAO;
 
     @Transactional
     @Override
@@ -55,9 +58,10 @@ public class CommuteServiceImpl implements CommuteService {
 
         LocalDateTime date = LocalDateTime.now();
         if (date.getHour() > Statics.WORK_ON_CHECK_TIME) {
-            if (vacationDAO.isOnVacation(employeeId) == 0 || !HolidayUtil.isHoliday(LocalDate.now())) {
+            if (vacationDAO.isOnVacation(employeeId) == 0 && !HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
+                        .commuteId(dto.getId())
                         .state("LATE")
                         .build();
                 solderingDAO.insert(solderingDTO);
@@ -82,22 +86,55 @@ public class CommuteServiceImpl implements CommuteService {
         if (commuteDAO.isExistByState(dto) > 0) {
             return false;
         }
-        commuteDAO.insert(dto);
-        CommuteDTO workOnDTO = commuteDAO.selectByStateAndEmployeeId(dto);
 
-        long workHour = Duration.between(workOnDTO.getRegDate().toLocalDateTime(), LocalDateTime.now()).toHours();
-        if(workHour < Statics.WORK_HOUR) {
-            if ( vacationDAO.isOnVacation(employeeId) == 0 || !HolidayUtil.isHoliday(LocalDate.now())) {
+        dto.setState("WORK_ON");
+        CommuteDTO workOnDTO = commuteDAO.selectByStateAndEmployeeId(dto);
+        LocalDateTime workTime = workOnDTO.getRegDate().toLocalDateTime().plusHours(Statics.WORK_HOUR);
+
+        dto.setState("WORK_OFF");
+        commuteDAO.insert(dto);
+
+        if(workTime.isAfter(LocalDateTime.now())) {
+            if ( vacationDAO.isOnVacation(employeeId) == 0 && !HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)
+                        .commuteId(dto.getId())
                         .state("LEAVE_EARLY")
                         .build();
                 solderingDAO.insert(solderingDTO);
             }
+        } else {
+            List<ExtendedCommuteDTO> extendedCommuteDTOList = extendedCommuteDAO.selectTodayByEmployeeId(employeeId);
+
+            if (extendedCommuteDTOList.isEmpty()) {
+                dto.setRegDate(Timestamp.valueOf(workTime));
+                commuteDAO.insertWithRegDate(dto);
+            } else {
+                Timestamp regDate = Timestamp.valueOf(workTime);
+                for (ExtendedCommuteDTO extendedCommuteDTO : extendedCommuteDTOList) {
+                    if (regDate.before(extendedCommuteDTO.getRegDate())) {
+                        regDate = extendedCommuteDTO.getRegDate();
+                    }
+                }
+
+                if(regDate.after(Timestamp.valueOf(LocalDateTime.now()))) {
+                    dto.setRegDate(Timestamp.valueOf(LocalDateTime.now()));
+                    commuteDAO.insertWithRegDate(dto);
+
+                    SolderingDTO solderingDTO = SolderingDTO.builder()
+                            .employeeId(employeeId)
+                            .commuteId(dto.getId())
+                            .state("LEAVE_EARLY")
+                            .build();
+                    solderingDAO.insert(solderingDTO);
+                } else {
+                    dto.setRegDate(regDate);
+                    commuteDAO.insertWithRegDate(dto);
+                }
+            }
         }
 
         return true;
-
     }
 
     @Override
@@ -186,5 +223,16 @@ public class CommuteServiceImpl implements CommuteService {
                         .collect(Collectors.toList()));
 
         return result;
+    }
+
+    @Override
+    public void update(ExtendedCommuteDTO dto) {
+        extendedCommuteDAO.insert(dto);
+
+        CommuteDTO commuteDTO = commuteDAO.selectById(dto.getCommuteId());
+        commuteDTO.setRegDate(dto.getWorkOffTime());
+
+        commuteDAO.update(commuteDTO);
+        solderingDAO.deleteByCommuteId(dto.getCommuteId());
     }
 }

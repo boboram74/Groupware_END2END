@@ -36,10 +36,10 @@ public class MessengerDAO {
         return (int) param.get("id");
     }
 
-    public void messageFirstContentInsert(int roomId, int roomUserId, String messageContent) {
+    public void messageFirstContentInsert(int messageRoomId, int messageRoomUserId, String messageContent) {
         Map<String, Object> param = new HashMap<>();
-        param.put("roomId", roomId);
-        param.put("roomUserId", roomUserId);
+        param.put("messageRoomId", messageRoomId);
+        param.put("messageRoomUserId", messageRoomUserId);
         param.put("messageContent", messageContent);
         mybatis.insert("messenger.messageFirstContentInsert", param);
     }
@@ -51,8 +51,8 @@ public class MessengerDAO {
         return mybatis.selectList("messenger.selectByRoomId", roomId);
     }
 
-    public int findByRoomId(int roomId) {
-        return mybatis.selectOne("messenger.findByRoomId", roomId);
+    public int findByRoomId(String roomName) {
+        return mybatis.selectOne("messenger.findByRoomId", roomName);
     }
 
     public Integer findRoomUser(int roomId, String employeeId) {
@@ -60,5 +60,20 @@ public class MessengerDAO {
         param.put("roomId", roomId);
         param.put("employeeId", employeeId);
         return mybatis.selectOne("messenger.findRoomUser", param);
+    }
+
+    public List<String> selectRoomMemberIds(int roomId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("roomId", roomId);
+        return mybatis.selectList("messenger.selectRoomMemberIds", param);
+    }
+    public Integer selectRoomByName(String roomName) {
+        return mybatis.selectOne("messenger.selectRoomByName", roomName);
+    }
+    public void messageRoomInvite(int roomId, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("roomId", roomId);
+        param.put("employeeId", employeeId);
+        mybatis.update("messenger.messageRoomInvite", param);
     }
  }

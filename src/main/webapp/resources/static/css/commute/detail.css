@@ -297,7 +297,18 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
+    .commute-detail-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .status-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
     .weekly-status-grid {
         grid-template-columns: repeat(2, 1fr); /* 2열로 변경 */
         grid-template-rows: auto auto auto auto; /* 4행으로 변경 */

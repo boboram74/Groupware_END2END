@@ -5,7 +5,7 @@
 <mapper namespace="board">
 
     <select id="toList" resultType="com.end2end.spring.board.dto.BoardDTO">
-    select * from board ORDER BY ID DESC
+      select * from board ORDER BY ID DESC
     </select>
 
     <select id="selectByCategoryId" resultType="com.end2end.spring.board.dto.BoardDTO">
@@ -19,6 +19,15 @@
     <select id="selectById" resultType="com.end2end.spring.board.dto.BoardDTO">
         select * from board where id = #{id}
     </select>
+
+    <select id="selectCategoryByName" resultType="com.end2end.spring.board.dto.BoardCategoryDTO">
+        SELECT * FROM BOARD_CATEGORY WHERE NAME = #{name}
+    </select>
+
+    <insert id="insertBoardCtUser">
+        INSERT INTO BOARD_CT_USER(id,employeeId, boardCtId)
+        VALUES (BOARD_CT_USER_ID_SEQ.NEXTVAL,#{employeeId},${boardCtId})
+    </insert>
 
     <insert id="insert" parameterType="com.end2end.spring.board.dto.BoardDTO">
         insert into board (id, boardCtId, employeeId, title, content) values (board_id_seq.nextval, #{boardCtId,jdbcType=INTEGER}, #{employeeId}, #{title}, #{content})

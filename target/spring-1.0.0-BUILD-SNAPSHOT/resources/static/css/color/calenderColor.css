@@ -1,9 +1,10 @@
 :root {
     --fc-border-color: var(--md-sys-color-outline);
     --fc-button-text-color: var(--md-sys-color-on-primary);
-    --fc-button-bg-color: var(--md-sys-color-primary);
+    --fc-button-bg-color: var(--md-sys-color-secondary);
     --fc-button-hover-bg-color: var(--md-sys-color-primary-hover);
     --fc-page-bg-color: var(--md-sys-color-outline);
     --fc-button-border-color: none;
     --fc-today-bg-color: var(--md-sys-color-outline-variant);
+    --fc-button-active-bg-color: var(--md-sys-color-primary);
 }

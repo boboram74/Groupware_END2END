@@ -5,7 +5,7 @@
 <mapper namespace="vacation">
     <insert id="insertUsableVacation">
         INSERT INTO VACATION_MANAGEMENT(id, employeeId, dates, reason)
-        VALUES (VACATION_MENAGEMENT_ID_SEQ.nextval, #{employeeId}, ${dates}, #{reason})
+        VALUES (VACATION_MANAGEMENT_ID_SEQ.nextval, #{employeeId}, ${dates}, #{reason})
     </insert>
 
     <insert id="insert">
@@ -29,8 +29,15 @@
                 WHEN SUM(vacationDate) IS NULL THEN 0
                 ELSE SUM(vacationDate)
             END
-        FROM VACATION
-        WHERE employeeId = #{employeeId}
+        FROM
+            VACATION
+        JOIN
+            APPROVAL
+        ON VACATION.approvalId = APPROVAL.id
+        WHERE
+            VACATION.employeeId = #{employeeId}
+        AND
+            APPROVAL.state = 'SUBMIT'
     </select>
 
     <select id="sumUsedThisMonthVacationDates" resultType="Double">
@@ -39,29 +46,50 @@
                 WHEN SUM(vacationDate) IS NULL THEN 0
                 ELSE SUM(vacationDate)
             END
-        FROM VACATION
+        FROM
+            VACATION
+        JOIN
+            APPROVAL
+        ON
+            VACATION.approvalId = APPROVAL.id
         WHERE
-            employeeId = #{employeeId}
+            VACATION.employeeId = #{employeeId}
         AND
-            TRUNC(regDate, 'MM') = TRUNC(SYSDATE, 'MM')
+            TRUNC(VACATION.regDate, 'MM') = TRUNC(SYSDATE, 'MM')
+        AND
+            APPROVAL.state = 'SUBMIT'
     </select>
 
     <select id="isOnVacation" resultType="Integer">
         SELECT COUNT(*)
-        FROM VACATION
+        FROM
+            VACATION
+        JOIN
+            APPROVAL
+        ON
+            VACATION.approvalId = APPROVAL.id
         WHERE
-            employeeId = #{employeeId}
+            VACATION.employeeId = #{employeeId}
         AND
             SYSDATE >= STARTDATE + NUMTODSINTERVAL(VACATIONDATE, 'DAY')
+        AND
+            APPROVAL.state = 'SUBMIT'
     </select>
 
     <select id="selectNotCurrentVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">
         SELECT *
-        FROM VACATION
+        FROM
+            VACATION
+        JOIN
+            APPROVAL
+        ON
+            VACATION.approvalId = APPROVAL.id
         WHERE
             startDate + NUMTODSINTERVAL(vacationDate, 'DAY') > SYSDATE
         AND
-            employeeId NOT IN
+            APPROVAL.state = 'SUBMIT'
+        AND
+            VACATION.employeeId NOT IN
         <foreach collection="list" item="employeeId" open="(" separator="," close=")">
             #{employeeId}
         </foreach>
@@ -69,11 +97,16 @@
 
     <select id="selectNotTodayVacation" resultType="com.end2end.spring.commute.dto.VacationDTO">
         SELECT employeeId as id
-        FROM VACATION
+        FROM
+            VACATION
+        JOIN
+            APPROVAL
+        ON
+            VACATION.approvalId = APPROVAL.id
         WHERE
             startDate + NUMTODSINTERVAL(vacationDate, 'DAY') > TRUNC(SYSDATE)
         AND
-            employeeId NOT IN
+            VACATION.employeeId NOT IN
         <foreach collection="list" item="employeeId" open="(" separator="," close=")">
             #{employeeId}
         </foreach>
@@ -83,12 +116,18 @@
         SELECT *
         FROM (
             SELECT startDate + NUMTODSINTERVAL(vacationDate, 'DAY') as endDate, VACATION.*
-            FROM VACATION)
+            FROM
+                VACATION
+            JOIN
+                APPROVAL
+            ON VACATION.approvalId = APPROVAL.id
+            WHERE
+                APPROVAL.state = 'SUBMIT') A
         WHERE
-            employeeId = #{employeeId}
+            A.employeeId = #{employeeId}
         AND (
             TRUNC(endDate) BETWEEN #{startDate} AND #{endDate}
-        OR
+            OR
             TRUNC(startDate) BETWEEN #{startDate} AND #{endDate}
         )
     </select>
@@ -97,16 +136,15 @@
         SELECT
             startDate + NUMTODSINTERVAL(vacationDate, 'DAY') as endDate,
             VACATION.*,
-            CASE
-                WHEN APPROVAL.STATE = 'ONGOING' THEN 'N'
-                ELSE 'Y'
-            END AS submitYn
+            APPROVAL.state
         FROM
             VACATION
         JOIN
             APPROVAL
-        ON VACATION.approvalId = APPROVAL.id
-        WHERE VACATION.employeeID = #{employeeId}
+        ON
+            VACATION.approvalId = APPROVAL.id
+        WHERE
+            VACATION.employeeID = #{employeeId}
     </select>
 
     <select id="selectGetVacationForHired1st" resultType="com.end2end.spring.commute.dto.GetVacationDTO">

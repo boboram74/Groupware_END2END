@@ -1,8 +1,10 @@
 package com.end2end.spring.commute.controller;
 
+import com.end2end.spring.approval.service.ApprovalFormService;
 import com.end2end.spring.commute.dto.CommuteDTO;
 import com.end2end.spring.commute.dto.SelectPeriodDTO;
 import com.end2end.spring.commute.dto.SolderingDTO;
+import com.end2end.spring.commute.dto.VacationDTO;
 import com.end2end.spring.commute.service.CommuteService;
 import com.end2end.spring.commute.service.SolderingService;
 import com.end2end.spring.commute.service.VacationService;
@@ -12,12 +14,15 @@ import com.end2end.spring.util.EventDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/commute")
 @Controller
@@ -26,6 +31,7 @@ public class CommuteController {
     @Autowired private CommuteService commuteService;
     @Autowired private SolderingService solderingService;
     @Autowired private VacationService vacationService;
+    @Autowired private ApprovalFormService approvalFormService;
 
     @RequestMapping("/detail")
     public String toDetail(HttpSession session, Model model) {
@@ -67,9 +73,9 @@ public class CommuteController {
         model.addAttribute("totalUsedVacationDates", vacationService.sumTotalUsedVacationDates(employee.getId()));
         model.addAttribute("thisMonthUsedVacationDates", vacationService.sumThisMonthUsedVacationDates(employee.getId()));
 
-        model.addAttribute("vacationList", vacationService.selectByEmployeeId(employee.getId()));
-
         model.addAttribute("active", 0);
+
+        model.addAttribute("vacationApprovalFormId", approvalFormService.selectLikeName("휴가").getId());
 
         return "commute/detail";
     }
@@ -111,6 +117,27 @@ public class CommuteController {
         dto.setEmployeeId(employee.getId());
 
         return commuteService.selectPeriodWorkState(dto);
+    }
+
+    @ResponseBody
+    @RequestMapping("/select/period/list")
+    public Map<String, List<EventDTO>> selectListPeriodWorkState(HttpSession session, SelectPeriodDTO dto) throws IOException {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        List<EmployeeDTO> employeeList = employeeService.selectByDepartmentId(employee.getDepartmentId());
+
+        Map<String, List<EventDTO>> map = new HashMap<>();
+        for (EmployeeDTO employeeDTO : employeeList) {
+            dto.setEmployeeId(employeeDTO.getId());
+            map.put(employeeDTO.getId(), commuteService.selectPeriodWorkState(dto));
+        }
+
+        return map;
+    }
+
+    @ResponseBody
+    @RequestMapping("/vacation/list/{employeeId}")
+    public List<VacationDTO> vacationList(@PathVariable String employeeId) throws IOException {
+        return vacationService.selectByEmployeeId(employeeId);
     }
 
     @ResponseBody

@@ -65,4 +65,9 @@ public class ApprovalFormServiceImpl implements ApprovalFormService {
     public void deleteFrequencyById(int id) {
         // TODO: 해당 id의 자주 쓰는 결재 문서 양식 삭제
     }
+
+    @Override
+    public ApprovalFormDTO selectLikeName(String name) {
+        return approvalDAO.selectFormLikeName(name);
+    }
 }

@@ -56,7 +56,7 @@ public class FileUtil {
 
         filePath.mkdir();
 
-        String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
+        String systemFileName = String.valueOf(UUID.randomUUID());
 
         file.transferTo(new File(uploadPath + "/" + systemFileName));
 

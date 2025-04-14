@@ -45,4 +45,12 @@ public class CommuteDAO {
     public List<CommuteStateDTO> selectByPeriod(SelectPeriodDTO dto) {
         return mybatis.selectList("commute.selectByPeriod", dto);
     }
+
+    public void update(CommuteDTO dto) {
+        mybatis.update("commute.update", dto);
+    }
+
+    public void insertWithRegDate(CommuteDTO dto) {
+        mybatis.insert("commute.insertWithRegDate", dto);
+    }
 }

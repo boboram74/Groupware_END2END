@@ -13,5 +13,6 @@ public class Statics {
     public static int recordCountPerPage = 10;
     public static int naaviCountPerPage = 10;
 
+    // API 서비스키
     public static String apiServiceKey =  "NWIrVZ45vQRGOrgG1lzJk3edmMTejzwM6zNqwKU8dfW8dfsoyWiQ9pKZi0HfpkxbUxqyLGFSVJM8SESuqt1L5w%3D%3D";
 }

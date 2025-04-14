@@ -1,18 +1,19 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-    <title>프로젝트 상세</title>
+<title>프로젝트 상세</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <!-- Date Range Picker CSS & JS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
 <!-- Bootstrap 5 JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -38,8 +39,8 @@
     }
 
     .mainContainer {
-        width: calc(100% - 200px);  /* boxContents 전체 너비에서 mainHeader(200px)만큼 뺌 */
-        margin-left: 200px;  /* mainHeader 너비만큼 왼쪽 마진 */
+        width: calc(100% - 200px); /* boxContents 전체 너비에서 mainHeader(200px)만큼 뺌 */
+        margin-left: 200px; /* mainHeader 너비만큼 왼쪽 마진 */
         min-height: 100vh;
         background-color: #fff;
         padding: 20px;
@@ -52,7 +53,7 @@
         max-width: 1200px;
         width: 100%;
         padding: 0;
-        gap: 20px;  /* 자식 요소들 간의 간격 */
+        gap: 20px; /* 자식 요소들 간의 간격 */
 
     }
 
@@ -80,7 +81,7 @@
         border-radius: 15px;
         display: flex;
         justify-content: space-evenly;
-height: 80%;
+        height: 80%;
 
 
     }
@@ -90,13 +91,13 @@ height: 80%;
         background: #ffffff;
         border-radius: 12px;
         padding: 20px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
     }
 
     .movingBoardColumn:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     }
 
     .column-title {
@@ -122,7 +123,7 @@ height: 80%;
 
     .work-item:hover {
         transform: translateY(-3px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         border-color: #4a90e2;
     }
 
@@ -201,7 +202,7 @@ height: 80%;
         font-size: 12px;
     }
 
-    .detail-menu-item>.material-icons {
+    .detail-menu-item > .material-icons {
         font-size: 18px;
         color: var(--md-sys-color-secondary);
     }
@@ -286,7 +287,7 @@ height: 80%;
 
     /* 모바일 메뉴 버튼 */
     .detail-menu-toggle-btn {
-        display: none;  /* 기본적으로 숨김 */
+        display: none; /* 기본적으로 숨김 */
         padding: 8px;
         background: #fff;
         border: 1px solid #e0e0e0;
@@ -307,7 +308,7 @@ height: 80%;
 
     /* 모달 닫기 버튼 */
     .detail-modal-close {
-        display: none;  /* 기본적으로 숨김 */
+        display: none; /* 기본적으로 숨김 */
         position: absolute;
         top: 10px;
         right: 10px;
@@ -341,11 +342,11 @@ height: 80%;
         }
 
         .detail-menu-toggle-btn {
-            display: flex;  /* 모바일에서만 보이게 */
+            display: flex; /* 모바일에서만 보이게 */
         }
 
         .detail-modal-close {
-            display: block;  /* 모바일에서만 보이게 */
+            display: block; /* 모바일에서만 보이게 */
             position: absolute;
             top: 10px;
             right: 10px;
@@ -360,24 +361,24 @@ height: 80%;
         }
 
         .detail-menu-list {
-            margin-top: 30px;  /* 닫기 버튼과의 간격 */
+            margin-top: 30px; /* 닫기 버튼과의 간격 */
             max-height: 80vh;
             overflow-y: auto;
-            padding-top: 10px;  /* 리스트 상단 간격 */
+            padding-top: 10px; /* 리스트 상단 간격 */
         }
 
         .detail-menu-modal {
             display: none;
             position: absolute;
-            top: 100%;  /* 헤더 바로 아래에 위치 */
-            width: 250px;  /* 너비 250px로 설정 */
+            top: 100%; /* 헤더 바로 아래에 위치 */
+            width: 250px; /* 너비 250px로 설정 */
             right: 0;
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 1100;
-            margin-top: 10px;  /* 헤더와의 간격 */
+            margin-top: 10px; /* 헤더와의 간격 */
         }
 
         .detail-menu-modal.active {
@@ -398,7 +399,7 @@ height: 80%;
             min-height: calc(100vh - 70px);
         }
 
-        .projectTime{
+        .projectTime {
             font-size: 1rem;
             color: #666;
         }
@@ -477,6 +478,10 @@ height: 80%;
             background: #ffffff;
         }
 
+        .work-item:active {
+            cursor: grabbing;
+        }
+
         /* 우선순위 뱃지 */
         .priority {
             display: inline-block;
@@ -488,10 +493,21 @@ height: 80%;
             text-transform: uppercase;
         }
 
-        .priority.high { background: #e74c3c; } /* 높은 우선순위 */
-        .priority.middle { background: #f1c40f; } /* 중간 우선순위 */
-        .priority.low { background: #2ecc71; } /* 낮은 우선순위 */
+        .priority.high {
+            background: #e74c3c;
+        }
 
+        /* 높은 우선순위 */
+        .priority.middle {
+            background: #f1c40f;
+        }
+
+        /* 중간 우선순위 */
+        .priority.low {
+            background: #2ecc71;
+        }
+
+        /* 낮은 우선순위 */
         /* 드래그 상태 강조 */
         .work-items.drag-over {
             background: rgba(0, 123, 255, 0.1);
@@ -499,18 +515,16 @@ height: 80%;
             border-radius: 8px;
         }
 
-        .movingBoardColumn h3 {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #333;
-            background: #f5f5f5;
-            padding: 10px;
-            border-radius: 8px;
-
+        .movingBoardColumn.drag-over {
+            border: 2px dashed #007bff;
+            background-color: rgba(0, 123, 255, 0.1);
         }
+
         .work-items {
             min-height: 300px;
             margin-top: 20px;
+            cursor: grab;
+
         }
 
         /* 작업 카드 */
@@ -564,23 +578,22 @@ height: 80%;
             border: 2px dashed #00aaff;
             border-radius: 8px;
         }
+
         .closeBtn {
             display: flex;
-            justify-content: flex-end;  /* 오른쪽 정렬 */
-            margin-bottom: 5px;        /* 아래 내용과의 간격 */
+            justify-content: flex-end; /* 오른쪽 정렬 */
+            margin-bottom: 5px; /* 아래 내용과의 간격 */
         }
 
         .btn-close {
-            padding: 0.15rem !important;  /* 패딩 줄임 */
+            padding: 0.15rem !important; /* 패딩 줄임 */
             font-size: 0.6rem !important; /* 글자 크기 줄임 */
-            opacity: 0.5;                 /* 투명도 조절 */
+            opacity: 0.5; /* 투명도 조절 */
         }
 
         .btn-close:hover {
-            opacity: 1;  /* 호버시 완전 불투명 */
+            opacity: 1; /* 호버시 완전 불투명 */
         }
-
-
 
 
     }
@@ -647,27 +660,32 @@ height: 80%;
         <div class="projectHeader">
             <h2>프로젝트 : ${project.name}</h2>
             <div class="projectTime">
-                <span>기간: ${project.regDate} ~ ${project.deadLine}</span>
+                <span>기간: ${project.deadLine}</span>
 
             </div>
             <a href="/work/write/${project.id}">
-            <button>작성하기</button></a>
+                <button>작성하기</button>
+            </a>
 
         </div>
 
         <!-- 칸반보드 -->
         <div class="movingBoard">
             <!-- 시작전 -->
-            <div class="movingBoardColumn ready-column surface-bright" data-status="READY" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 class="column-title">시작전</h3>
+            <div class="movingBoardColumn ready-column surface-bright" data-state="READY">
+                <h3 class="column-title">프로젝트 작업 진행전</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
-                        <c:if test="${work.state == 'ONGOING'}">
-                            <div class="work-item" draggable="true" ondragstart="drag(event)"
+                        <c:if test="${work.state == 'READY'}">
+                            <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
-                                <div class="closeBtn">
-                                    <button type="button" class="btn-close btn-sm
-" aria-label="Close" ></button></div>
+                                <c:if test="${employee.role != 'TeamLeader'}">
+                                    <div class="closeBtn">
+                                        <button type="button" class="btn-close btn-sm"
+                                                onclick="deleteWork(${work.id})
+                                                        "></button>
+                                    </div>
+                                </c:if>
                                 <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
@@ -677,32 +695,47 @@ height: 80%;
             </div>
 
             <!-- 작성중 -->
-            <div class="movingBoardColumn ongoing-column surface-bright" data-status="ONGOING" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 class="column-title">작성 중</h3>
+            <div class="movingBoardColumn ongoing-column surface-bright" data-state="ONGOING">
+                <h3 class="column-title">프로젝트 작업 진행중</h3>
+
+
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'ONGOING'}">
-                            <div class="work-item" draggable="true" ondragstart="drag(event)"
+                            <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
-                                <div class="closeBtn">
-                                <button type="button" class="btn-close" aria-label="Close"></button></div>
+                                <c:if test="${employee.role != 'TeamLeader'}">
+                                    <div class="closeBtn">
+                                        <button type="button" class="btn-close btn-sm"
+                                                onclick="deleteWork(${work.id})
+                                                        "></button>
+                                    </div>
+                                </c:if>
                                 <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>
                     </c:forEach>
                 </div>
+
             </div>
 
             <!-- 완료 -->
-            <div class="movingBoardColumn finish-column surface-bright" data-status="FINISH" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <div class="movingBoardColumn finish-column surface-bright" data-state="FINISH">
                 <h3 class="column-title">완료</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'FINISH'}">
-                            <div class="work-item" draggable="true" ondragstart="drag(event)"
+                            <div class="work-item" draggable="true"
                                  data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
-                                <h4>${work.title}</h4>
+                                <c:if test="${employee.role != 'TeamLeader'}">
+                                    <%--삭제 테스트를 위해 != 설정해둠--%>
+                                    <div class="closeBtn">
+                                        <button type="button" class="btn-close btn-sm"
+                                                onclick="deleteWork(${work.id})
+                                                        "></button>
+                                    </div>
+                                </c:if> <h4>${work.title}</h4>
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>
@@ -710,7 +743,6 @@ height: 80%;
                 </div>
             </div>
         </div>
-
 
         <!-- 모달 구조 -->
         <div class="modal fade" id="workModal" tabindex="-1" aria-hidden="true">
@@ -721,36 +753,104 @@ height: 80%;
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- 업무 상세 정보 -->
                         <h5>게시물 type</h5>
                         <div id="workType">
                             <h2>게시물 type</h2></div>
-                        <h5>중요도</h5>
-                        <div id="workPriority"> <h2>중요도</h2></div>
-                        <h5>진행도</h5>
-                        <div id="workState"> <h2>진행도</h2></div>
-                        <h5>기간</h5>
-                        <div id="workDate"> <h2>기간</h2></div>
-                        <h5>내용</h5>
-                        <div id="workContet"> </div>
 
-                        <!-- 파일 목록 -->
-                        <div id="fileList" class="mt-3">
-                            <h6>첨부 파일</h6>
-                            <ul class="list-unstyled" id="fileListContent"></ul>
-                        </div>
+                        <h5>중요도</h5>
+                        <div id="workPriority"><h2>중요도</h2></div>
+                        <h5>진행도</h5>
+                        <div id="workState"><h2>진행도</h2></div>
+                        <h5>기간</h5>
+                        <div id="workDate"><h2>기간</h2></div>
+                        <h5>내용</h5>
+                        <div id="workContent"></div>
+                        <h5>파일 리스트</h5>
+                        <div id="fileList"></div>
+
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="openupdateModal(currentWorkId)">수정하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 모달 구조 -->
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/work/update" method="post">
+                        <div class="modal-body">
+                            <input tpye="hidden" name="id" value="1" />
+                            <input type="hidden" name="projectId" value="${project.id}"/>
+                            <h5>게시물 title</h5>
+                            <div id="updateTitle">
+
+                            </div>
+                            <h5>게시물 type</h5>
+                            <div id="updateType">
+                            </div>
+                            <h5>중요도</h5>
+                            <div id="updatePriority"></div>
+                            <h5>진행도</h5>
+                            <div id="updateState"></div>
+                            <h5>기간</h5>
+                            <div id="updateDate"></div>
+                            <h5>내용</h5>
+                            <div id="updateContet"></div>
+                            <h5>파일 리스트</h5>
+                            <div id="updatefileList"></div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    onclick="closeupdateModal() ">Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">수정완료</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
 
         <script>
+            $('form').submit(function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                for(const [key, value] of formData.entries()) {
+                    console.log(key, value);
+                }
+                $.ajax({
+                    url: '/work/update',
+                    data: formData,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        console.error('Status:', status);
+                        console.error('Response:', xhr.responseText);
+                    }
+                }).done(function(response) {
+                    console.log(response);
+                    location.reload();
+                })
+            })
+
+            let currentWorkId = null; // 전역 변수
             function openWorkModal(workId) {
+                currentWorkId = workId; // 전역 변수
                 $.ajax({
                     url: '/work/detail/' + workId,
                     type: 'GET',
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
                         console.log(response);
                         const work = response.worksDTO;
                         const files = response.files;
@@ -759,31 +859,34 @@ height: 80%;
                         $('#workType').html(work.type);
                         $('#workPriority').html(work.priority);
                         $('#workState').html(work.state);
-                        $('#workDate').html(work.regDate + ' ~ ' + work.deadLine);
+                        $('#workDate').html(work.regDate +"~"+work.deadLine);
                         $('#workContent').html(work.content);
-                        $('#fileListContent').html(files);
+
                         // 파일 목록 업데이트
-                        let filesHtml = '';
+
+                        let fileList = "";
                         if (files && files.length > 0) {
-                            files.forEach(file => {
-                                filesHtml += `
-                        <li class="mb-2">
-                            <i class="bi bi-paperclip"></i>
-                            <a href="${pageContext.request.contextPath}/download/${files.id}" class="text-decoration-none">
-                                ${files.originalFileName}
-                            </a>
-                        </li>
-                    `;
+                            files.forEach(function (file) {
+                                console.log(file);
+                                fileList += '<li class="mb-2">' +
+                                    '<i class="bi bi-paperclip"></i> ' +
+                                    '<a href="/download/' + file.filesId +
+                                    '" class="text-decoration-none">' +
+
+                                    file.originFileName
+                                    + '</a></li>';
                             });
+
                         } else {
-                            filesHtml = '<li>첨부된 파일이 없습니다.</li>';
+                            fileList = '<li>첨부된 파일이 없습니다.</li>';
                         }
-                        $('#fileListContent').html(filesHtml);
+                        $('#fileList').html('<ul>' + fileList + '</ul>');
+
 
                         // 모달 표시
                         $('#workModal').modal('show');
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error:', error);
                         console.error('Status:', status);
                         console.error('Response:', xhr.responseText);
@@ -792,62 +895,208 @@ height: 80%;
                 });
             }
 
-// function getBadgeClass(status) {
-//     switch(status) {
-//         case '진행중':
-//             return 'bg-primary';
-//         case '완료':
-//             return 'bg-success';
-//         case '대기':
-//             return 'bg-warning';
-//         default:
-//             return 'bg-secondary';
-//     }
-// }
+            function deleteWork(workId) {
+                if (confirm("정말 삭제하시겠습니까?")) {
+                    $.ajax({
+                        url: '/work/delete/',
+                        type: 'POST',
+                        data: {workId: workId},
+                        success: function (response) {
+                            console.log('삭제 성공:', response);
+                            location.reload();
 
 
-//드래그 시작
-//         function drag(event) {
-//         event.dataTransfer.setData("workId", event.target.dataset.workId);
-//         }
-//
-//         // 드래그 가능한 공간으로 이동 가능
-//         function allowDrop(event) {
-//         event.preventDefault();
-//         const target = event.target.closest(".work-items");
-//         if (target) {
-//         target.classList.add("drag-over"); // 드래그 오버 강조 효과
-//         }
-//         }
-//
-//         // 드래그가 공간을 벗어났을 때
-//         function leaveDrop(event) {
-//         const target = event.target.closest(".work-items");
-//         if (target) {
-//         target.classList.remove("drag-over"); // 오버 강조 효과 제거
-//         }
-//         }
-//
-//         // 드롭된 상태
-//         async function drop(event) {
-//         event.preventDefault();
-//         const workId = event.dataTransfer.getData("workId");
-//         const target = event.target.closest(".work-items");
-//         const newState = target.closest(".section").dataset.status; // 상태 변경
-//
-//         if (target) {
-//         target.classList.remove("drag-over"); // 드래그 강조 해제
-//         }
-//
-//         try {
-//         await updateWorkStatus(workId, newState);
-//         location.reload(); // 상태 변경 후 리프레시
-//         } catch (error) {
-//         console.error("업데이트 실패:", error);
-//         }
-//         }
-// }
+                        },
+                        error: function (error) {
+                            console.error('저장 실패:', error);
+                        }
+                    });
+                }
+            }
+
+            function openupdateModal(currentWorkId) {
+                $('#updateModal').modal('show');
+
+                // 이전 내용 초기화
+                $('#updateTitle').html('');
+                $('#updateType').html('');
+                $('#updatePriority').html('');
+                $('#updateState').html('');
+                $('#updateDate').html('');
+                $('#updateContet').html('');
+                $('#updatefileList').html('');
+
+                $.ajax({
+                    url: '/work/detail/' + currentWorkId,
+                    type: 'GET',
+
+                    success: function (response) {
+                        const work = response.worksDTO;
+                        const files = response.files;
+                        console.log("가져온값" + work.title)
+                        // 값 가져오고있음
+                        $('input[name="id"]').val(currentWorkId);
+                        $('#updateTitle').html(`
+  <input type="text" class="form-control" name="title" value="` + work.title + `">
+`);
+
+                        $('#updateType').html(`
+                <select class="form-select" name="type">
+                    <option value="DOCUMENT"` + work.type + ` == 'DOCUMENT' ? 'selected' : ''>문서</option>
+                    <option value="REPORT"` + work.type + `== 'REPORT' ? 'selected' : ''>보고서</option>
+   <option value="WBS"` + work.type + `== 'WBS' ? 'selected' : ''>WBS</option>
+   <option value="MEETING"` + work.type + `== 'MEETING' ? 'selected' : ''>회의록</option>
+   <option value="SPECIFICATION"` + work.type + `== 'SPECIFICATION' ? 'selected' : ''>명세서</option>
+                </select>`);
+
+                        $('#updatePriority').html(`
+                <select class="form-select" name="priority">
+                    <option value="HIGH"` + work.priority + ` == 'HIGH' ? 'selected' : ''>높음</option>
+                    <option value="MIDDLE"` + work.priority + ` == 'MIDDLE' ? 'selected' : ''>중간</option>
+                    <option value="LOW" ` + work.priority + `== 'LOW' ? 'selected' : ''>낮음</option>
+                </select>`);
+
+                        $('#updateState').html(`
+                <select class="form-select" name="state">
+                    <option value="READY" ` + work.state + ` == 'READY' ? 'selected' : ''>해야 할 일</option>
+                    <option value="ONGOING"` + work.state + ` == 'ONGOING' ? 'selected' : ''}>진행중</option>
+                    <option value="FINISH"` + work.state + ` == 'FINISH' ? 'selected' : ''}>완료</option>
+                </select>`);
+
+                        $('#updateDate').html(`<input type="date" class="form-control" name="deadLine" value=` + work.deadLine + ` >`);
+
+                        $('#updateContet').html(`
+                <textarea class="form-control" name="content">` + work.content + ` </textarea>`);
+
+                        // 파일 input
+                        // $('#updatefileList').append('<input type="file" class="form-control" name="files" multiple>');
+
+                        // 파일 안나와서 주석처리해둠
+                        <%--    let fileList = '';--%>
+                        <%--    if (files && files.length > 0) {--%>
+                        <%--        files.forEach(file => {--%>
+                        <%--            fileList += `--%>
+                        <%--    <li>--%>
+                        <%--        <a href="/download/${file.filesId}" target="_blank">${file.originFileName}</a>--%>
+                        <%--    </li>--%>
+                        <%--`;--%>
+                        <%--        });--%>
+                        <%--    } else {--%>
+                        <%--        fileList = '<li>첨부된 파일이 없습니다.</li>';--%>
+                        <%--    }--%>
+
+                        <%--$('#updatefileList').append(`<ul>${fileList}</ul>`);--%>
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('수정 모달 데이터 실패:', error);
+                        alert('작업 데이터를 불러오는 데 실패했습니다.');
+                    }
+                });
+            }
+
+
+            function closeupdateModal() {
+                $('#updateModal').modal('hide');
+            }
+
+            function updateClick(currentWorkId) {
+                let dtobox = {
+
+                    title: $('#updateTitle input').val(),
+                    type: $('#updateType select').val(),
+                    priority: $('#updatePriority select').val(),
+                    state: $('#updateState select').val(),
+                    regDate: $('input[name=regDate]').val(),
+                    deadLine: $('input[type="date"][name=deadLine]').val(),
+                    content: $('#updateContet textarea').val(),
+                    id: currentWorkId
+
+                };
+                console.log($('input[name=regDate]').val());
+                console.log($('input[type="date"][name=deadLine]').val());
+                console.log(dtobox.regDate);
+                console.log(dtobox.deadLine);
+
+                // let files =
+                //     $("#updatefileList")[0].files;
+                // for (let i = 0; i < files.length; i++) {
+                //     formData.append("files", files[i]);
+                // }
+
+
+                $.ajax({
+                    url: '/work/update',
+                    type: 'POST',
+                    data: {"dto": dtobox},
+
+                    // processData: false, // 필수!
+                    // contentType: false, // 필수!
+                    success: function (result) {
+                        console.log("ajax성공" + result)
+                        if (result) {
+                            alert("글이 정상적으로 수정되었습니다.");
+                            $('#updateModal').modal('hide');
+                            location.reload();
+
+                        }
+
+                    }
+                })
+            }
+
+            // 모달 코드
+            $(document).ready(function () {
+                let dragged = null;
+
+                $('.work-item').on('dragstart', function (e) {
+                    dragged = this;
+
+                });
+
+                $('.work-item').on('dragend', function (e) {
+                    dragged = null;
+                    // 드래그가 끝난 후 처리할 일이 있다면 여기에 작성
+                });
+
+                $('.work-item').on('drag', function (e) {
+                    // 드래그 중에 처리할 일이 있다면 여기에 작성
+                });
+
+                $('.movingBoardColumn'
+                ).on('drop', function (e) {
+                    console.log("도착");
+                    e.preventDefault();
+                    $(this).append(dragged);
+
+                    const columnState = $(this).data('state');
+                    const workItemId = $(dragged).data('work-id');
+
+                    $(this).find('.work-items').append(dragged);
+                    console.log(columnState);
+                    console.log(workItemId);
+                    $.ajax({
+                        url: '/work/updateState',
+                        type: 'POST',
+
+                        data: {
+                            workItemId: workItemId,
+                            state: columnState
+                        },
+
+                        success: function (response) {
+                            console.log('저장 성공:', response);
+                        },
+                        error: function (error) {
+                            console.error('저장 실패:', error);
+                        }
+                    });
+                });
+
+                $('.movingBoardColumn').on('dragover', function (e) {
+                    e.preventDefault();
+                })
+            })
 
         </script>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp" />
+        <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

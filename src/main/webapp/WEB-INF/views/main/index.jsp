@@ -3,6 +3,66 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="/css/main/index.css" />
+<style>
+    /* 엑스트라 라지 사이즈 (1200px) */
+    @media screen and (max-width: 1200px) {
+        .rightContents {
+            display: none;
+        }
+
+        .boxContents {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* 1:2 비율로 설정 */
+            gap: 20px;
+        }
+
+        .leftContents {
+            width: 100%;
+        }
+
+        .centerContents {
+            width: 100%;
+        }
+    }
+
+    @media screen and (max-width: 992px) {
+        .boxContents {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            padding-bottom: 80px; /* 하단 패딩 추가 */
+        }
+
+        .leftContents,
+        .centerContents {
+            width: 100%;
+        }
+
+        /* leftContents와 centerContents의 그리드 해제 */
+        .leftContents,
+        .centerContents {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 각 박스들의 높이 조정 */
+        .logbox,
+        .commuteBox,
+        .calendarBox,
+        .boardBox,
+        .approvalBox {
+            grid-row: unset; /* 그리드 속성 해제 */
+            min-height: 300px; /* 최소 높이 설정 */
+        }
+
+        .information {
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+</style>
 <script>
     function calculateAvailableDimensions() {
         const $container = $('.calendarBox');
@@ -235,7 +295,7 @@
 
     <div class="rightContents">
         <div class="btnBox">
-            <button type="button" class="surface-bright">
+            <button type="button" class="surface-bright" onclick="location.href='/board/write'">
                 <span class="material-icons">article</span>
                 <span class="btn-text">게시글 작성</span>
             </button>
@@ -243,11 +303,11 @@
                 <span class="material-icons">mail</span>
                 <span class="btn-text">메일 작성</span>
             </button>
-            <button type="button" class="surface-bright">
+            <button type="button" class="surface-bright" onClick="location.href='/approval/list'">
                 <span class="material-icons">edit_note</span>
                 <span class="btn-text">결재 작성</span>
             </button>
-            <button type="button" class="surface-bright">
+            <button type="button" class="surface-bright" onclick="location.href='/project/main'">
                 <span class="material-icons">work</span>
                 <span class="btn-text">보고서 작성</span>
             </button>
@@ -309,23 +369,28 @@
         setInterval(updateDateTime, 1000);
 
         // 출퇴근 버튼 클릭 이벤트 (필요한 경우)
-        $('.startWork').click(function() {
-            // 출근 버튼 클릭 시 동작
-            console.log('출근');
-
+        $('.startWork').click(function () {
             $.ajax({
                 url: '/commute/workOn'
-            }).done(function(data) {
-                if(data) {
+            }).done(function (data) {
+                if (data) {
                     alert("출근하셨습니다.");
-                    $(this).attr('disabled', true);
+                    location.reload();
                 }
             })
         });
 
-        $('.endWork').click(function() {
-            // 퇴근 버튼 클릭 시 동작
-            console.log('퇴근');
+        $('.endWork').click(function () {
+            if(confirm("퇴근하시겠습니까?")) {
+                $.ajax({
+                    url: '/commute/workOff'
+                }).done(function (data) {
+                    if (data) {
+                        alert("퇴근했습니다.");
+                        location.reload();
+                    }
+                })
+            }
         });
 
         $('.board-type-btn').click(function() {

@@ -4,7 +4,6 @@ import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,9 +28,10 @@ public class FileController {
     }
 
     @ResponseBody
-    @RequestMapping("/delete/image/{path}")
-    public void deleteImage(@PathVariable String path) {
+    @RequestMapping("/delete/image")
+    public void deleteImage(String path) {
         // TODO: 이미지 지우기
+        FileUtil.removeImage(path);
     }
 
     @RequestMapping("/download")

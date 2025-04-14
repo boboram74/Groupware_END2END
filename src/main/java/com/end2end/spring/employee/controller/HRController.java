@@ -78,8 +78,11 @@ public class HRController {
     }
 
     @RequestMapping("/update")
-    public void update(EmployeeDetailDTO dto) {
+    public String update(EmployeeDetailDTO dto) {
         // TODO: 직원 데이터 수정
+       employeeService.update(dto);
+        String employeeId = dto.getId();
+        return "redirect:/mypage/"+employeeId;
     }
 
     @RequestMapping("/deleteById/{id}")

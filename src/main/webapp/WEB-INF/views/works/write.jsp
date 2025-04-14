@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
+<%--<link rel="stylesheet" href="/css/write.css" />--%>
 
-<link rel="stylesheet" href="/css/write.css">
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
 <!-- FullCalendar JS -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
@@ -59,7 +59,8 @@
                 <div>
                     작업상태
                     <select name="state">
-                        <option value="ONGOING">진행중</option>
+                        <option value="READY">프로젝트 진행 전 작업</option>
+                        <option value="ONGOING">프로젝트 진행중</option>
                         <option value="FINISH">완료</option>
                     </select>
 
@@ -103,8 +104,8 @@
     </div>
 </div>
 
-
-<script src="/js/main/write.js" type="text/javascript" />
 <script src="/js/template/summernote.js" type="text/javascript"></script>
+<script src="/js/main/write.js" type="text/javascript" />
+
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />

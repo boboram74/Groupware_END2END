@@ -31,17 +31,24 @@ public class VacationServiceImpl implements VacationService {
     public void insert(VacationDTO dto) {
         // TODO: 휴가 쓰기
         vacationDAO.insert(dto);
+
+        VacationManagementDTO vacationManagementDTO = VacationManagementDTO.builder()
+                .employeeId(dto.getEmployeeId())
+                .dates(-1 * dto.getVacationDate())
+                .reason(dto.getReason())
+                .build();
+        vacationDAO.insertUsableVacation(vacationManagementDTO);
     }
 
     @Transactional
     @Override
     public void insertUsableVacationHired1st() throws IOException {
         List<GetVacationDTO> employeeList = vacationDAO.selectGetVacationForHired1st();
-/*
+
         if (employeeList.isEmpty()) {
             return;
         }
-*/
+
         LocalDate today = LocalDate.now();
         LocalDate startDate = today.minusDays(30);
 
@@ -80,11 +87,56 @@ public class VacationServiceImpl implements VacationService {
         }
     }
 
+    /**
+     * 1년 이상 근무자의 휴가를 넣어주는 메서드
+     */
     @Transactional
     @Override
     public void insertUsableVacation() throws IOException {
-        // TODO: 사용 가능한 휴가 생성
+        List<GetVacationDTO> employeeList = vacationDAO.selectGetVacationList();
 
+        if (employeeList.isEmpty()) {
+            return;
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalDate startDate = today.minusYears(1);
+
+        int workingDays = HolidayUtil.getWorkingDaysBetween(startDate, today);
+
+        for( GetVacationDTO getVacationDTO : employeeList) {
+            SelectPeriodDTO selectPeriodDTO = SelectPeriodDTO.builder()
+                    .startDate(Date.valueOf(startDate))
+                    .endDate(Date.valueOf(today))
+                    .employeeId(getVacationDTO.getEmployeeId())
+                    .build();
+            List<CommuteStateDTO> solderingList = solderingDAO.selectByPeriod(selectPeriodDTO);
+
+            int count = 0;
+            int countCount = 0;
+
+            for (CommuteStateDTO commuteStateDTO : solderingList) {
+                if (commuteStateDTO.getState().equals("ABSENCE")) {
+                    count++;
+                } else {
+                    countCount++;
+                    if (countCount == 3) {
+                        count++;
+                    }
+                }
+            }
+
+            if ((count / workingDays) * 10 < 2) {
+                int bonusVacation = getVacationDTO.getYearOfService() / 2;
+
+                VacationManagementDTO vacationManagementDTO = VacationManagementDTO.builder()
+                        .dates(15 + bonusVacation)
+                        .reason("연차")
+                        .employeeId(getVacationDTO.getEmployeeId())
+                        .build();
+                vacationDAO.insertUsableVacation(vacationManagementDTO);
+            }
+        }
     }
 
     @Override

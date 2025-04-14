@@ -29,10 +29,14 @@ public class SolderingDAO {
         return mybatis.selectList("soldering.selectByState", state);
     }
     public List<EmployeeDTO> selectNotCheck() {
-        return mybatis.selectList("soldering.selectByNotCheck");
+        return mybatis.selectList("soldering.selectNotCheck");
     }
 
     public List<CommuteStateDTO> selectByPeriod(SelectPeriodDTO dto) {
         return mybatis.selectList("soldering.selectByPeriod", dto);
+    }
+
+    public void deleteByCommuteId(int commuteId) {
+        mybatis.delete("soldering.deleteByCommuteId", commuteId);
     }
 }

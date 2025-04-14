@@ -5,12 +5,13 @@
 <mapper namespace="works">
 
 <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
-    SELECT * FROM project_work order by id desc
+    SELECT * FROM project_work WHERE projectid = #{id}
+    order by id desc
 </select>
 <!-- 프로젝트 진행중 보고된 게시물 모아보기-->
 
     <delete id="deleteById">
-        delete from project_work where id=${value}
+        delete from project_work where id=#{workId}
     </delete>
 <!-- 프로젝트 진행중 보고된 게시물 삭제-->
 
@@ -25,6 +26,7 @@
         priority,
         type,
         finishdate,
+        regDate,
         deadline,
         regdate,
         content
@@ -38,7 +40,7 @@
         #{state, jdbcType=VARCHAR},
         #{priority},
         #{type},
-        null,
+        #{regDate},
         #{deadLine},
         SYSDATE,
         #{content, jdbcType=VARCHAR}
@@ -54,24 +56,48 @@
         PROJECTID =#{projectId}
         AND
         EMPLOYEEID =#{employeeId}
-
     </select>
+
 <select id="selectByworksId" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
     SELECT * FROM PROJECT_WORK
     WHERE ID = #{id}
 </select>
 
 
-    <!-- 프로젝트 진행중 보고된 게시물 추가 -->
+    <update id="update" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        UPDATE project_work
+        SET
+        title = #{title, jdbcType=VARCHAR},
+        type = #{type, jdbcType=VARCHAR},
+        priority = #{priority, jdbcType=VARCHAR},
+        deadLine = #{deadLine,jdbcType=DATE},
+        state = #{state, jdbcType=VARCHAR},
+        content = #{content, jdbcType=VARCHAR}
+        WHERE id = #{id}
+    </update>
+<!--    UPDATE project_work-->
+<!--    SET-->
+<!--    title = '엥',-->
+<!--    type = 'DOCUMENT',-->
+<!--    priority = 'HIGH',-->
+<!--    regDate = TO_DATE('2025-04-12 12:10:10', 'YYYY-MM-DD HH24:MI:SS'),-->
+<!--    deadLine = TO_DATE('2025-06-10', 'YYYY-MM-DD'),-->
+<!--    state = 'READY',-->
+<!--    content = 'test'-->
+<!--    WHERE id = 35;-->
 
-    <update id="updateById" >
+
+    <!-- 프로젝트 진행중 보고된 게시물 수정-->
+
+
+    <update id="updateState" parameterType="java.util.Map">
         update project_work set
-        title=?,content=?,state=?,priority=?, deadLine=? where id =${value}
+    state=#{state} where id =#{workId}
     </update>
 
-<!-- 프로젝트 진행중 보고된 게시물 수정-->
+
 <select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">
 
-    SELECT * FROM project_user where projectId = ${id}
+    SELECT * FROM project_user where projectId = #{id}
 </select>
 </mapper>

@@ -1,13 +1,31 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<link rel="stylesheet" href="/css/main/contact.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-<div class="mainContainer">
-    <div class="mainHeader">
-        <div class="title">
-            <h2><span class="material-icons">phone_in_talk</span>연락처</h2>
+<link rel="stylesheet" href="/css/template/exam.css"/>
+<link rel="stylesheet" href="/css/main/contact.css"/>
+
+<div class="mainHeader surface-bright">
+    <div class="detail-menu-header">
+        <div class="detail-menu-title">
+            <span class="material-icons">phone_in_talk</span>
+            <span>연락처</span>
         </div>
+        <button class="detail-menu-toggle-btn">
+            <span class="material-icons">menu</span>
+        </button>
+    </div>
+    <div class="detail-menu-modal">
+        <ul class="detail-menu-list">
+        </ul>
+        <button class="detail-modal-close">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
+</div>
+
+<div class="mainContainer">
+    <div class="mainBody">
         <div class="search">
             <div>
                 <select id="searchOption">
@@ -19,13 +37,11 @@
                 <input id="input" type="text" name="keyword" placeholder="검색어 입력">
             </div>
             <div>
-                <button id="searchBtn"> <span class="material-icons">search</span> 검색</button>
+                <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
             </div>
         </div>
-    </div>
-    <div class="mainBody">
-        <div class="content">
-            <table>
+        <div class="bord-table-container">
+            <table class="board-table">
                 <thead>
                 <tr>
                     <th>이름</th>
@@ -37,7 +53,10 @@
                 <tbody>
                 <c:forEach items="${contactList}" var="contact">
                     <tr>
-                        <td>${contact.name}</td>
+                        <td class="writer-info">
+                            <div class="profile-img" style="background-image: url('${contact.profileImg}')"></div>
+                            <span>${contact.name}</span>
+                        </td>
                         <td>${contact.departmentName}</td>
                         <td>${contact.jobName}</td>
                         <td>${contact.contact}</td>
@@ -47,10 +66,8 @@
             </table>
         </div>
         <div class="pageNavi">
-            1 2 3 4 5
         </div>
     </div>
-</div>
 
 <script src="/js/main/contact.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

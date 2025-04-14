@@ -138,7 +138,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void update(EmployeeDetailDTO dto) {
+    public void update(EmployeeDetailDTO dto, MultipartFile file) {
         // TODO: 사원 수정
         EmployeeDTO employeeDTO = EmployeeDTO.builder()
                 .id(dto.getId()) // 업데이트 대상 사원 식별 (DTO에 employeeId 포함)

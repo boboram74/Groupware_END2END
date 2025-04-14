@@ -7,7 +7,6 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-    // 로그인 사용자 기준으로 전체 수정 권한 판단
     let isHR = ("<c:out value='${sessionScope.employee.departmentName}'/>" === "인사팀") ||
         ("<c:out value='${sessionScope.employee.role}'/>" === "ADMIN");
 </script>
@@ -15,17 +14,24 @@
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
-            <h2><span class="material-icons">supervisor_account</span>사원 정보</h2>
+            <h2><span class="material-icons">supervisor_account</span>${employeeDetail.name}${employeeDetail.departmentName} MyPage</h2>
         </div>
     </div>
     <div class="mainBody">
         <form action="/hr/update" method="post" id="frm">
             <input type="hidden" name="id" value="${employeeDetail.id}" />
             <div class="content">
-                <div class="hrProfile" style="background-image: url(${employeeDetail.profileImg});">
-                </div>
+                <div class="leftPage">
+                    <div class="hrProfile">
+                        <label for="profileInput" style="cursor: pointer;">
+                            <img id="profilePreview" src="${empty employeeDetail.profileImg ? '/image/defaultImg.jpg' : employeeDetail.profileImg}" alt="프로필 이미지">
+                            <span class="material-icons">add_a_photo</span>
+                        </label>
+                        <input type="file" id="profileInput" name="file" accept="image/*" style="display: none;">
+                        <input type="hidden" name="profileImg" value="${empty employeeDetail.profileImg ? '/image/defaultImg.jpg' : employeeDetail.profileImg}"/>
+                    </div>
                 <div class="name">
-                    이름 :
+                    <label>이름</label>
                     <span id="nameText">${employeeDetail.name}</span>
                     <c:if test="${sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN'}">
                         <input type="text" id="nameInput" name="name" value="${employeeDetail.name}" style="display:none;" />
@@ -35,7 +41,7 @@
                     </c:if>
                 </div>
                 <div class="contact">
-                    연락처 :
+                    <label>연락처</label>
                     <span id="contactText">${employeeDetail.contact}</span>
                     <c:if test="${sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN'}">
                         <input type="text" id="contactInput" name="contact" value="${employeeDetail.contact}" style="display:none;" />
@@ -45,11 +51,13 @@
                     </c:if>
                 </div>
                 <div class="birthday">
-                    생년월일 :
+                    <label>생년월일</label>
                     <span id="birthdayText">${employeeDetail.birthday}</span>
                 </div>
+            </div>
+            <div class="rightPage">
                 <div class="position">
-                    직급 :
+                    <label>직급</label>
                     <span id="positionText">${employeeDetail.jobName}</span>
                     <c:if test="${sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN'}">
                         <select name="jobId" id="positionInput" style="display:none;">
@@ -65,7 +73,7 @@
                     </c:if>
                 </div>
                 <div class="department">
-                    부서 :
+                    <label>부서</label>
                     <span id="departmentText">${employeeDetail.departmentName}</span>
                     <c:if test="${sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN'}">
                         <select name="departmentId" id="departmentInput" style="display:none;">
@@ -81,33 +89,34 @@
                     </c:if>
                 </div>
                 <div class="email">
-                    이메일 :
+                    <label>이메일</label>
                     <span id="emailText">${employeeDetail.email}</span>
                 </div>
 
                 <div class="postCode">
-                    우편번호 :
+                    <label>우편 번호</label>
                     <span id="zipCodeText">${employeeDetail.postCode}</span>
                     <input type="text" id="zipCodeInput" name="postCode" value="${employeeDetail.postCode}" style="display:none;" />
                     <button type="button" id="searchAddressBtn" style="display:none;">주소검색</button>
                 </div>
                 <div class="address">
-                    주소 :
+                    <label>주소</label>
                     <span id="addressText">${employeeDetail.address}</span>
                     <input type="text" id="addressInput" name="address" value="${employeeDetail.address}" style="display:none;" readonly />
                 </div>
                 <div class="detailAddress">
-                    상세주소 :
+                    <label>상세 주소</label>
                     <span id="detailAddressText">${employeeDetail.detailAddress}</span>
                     <input type="text" id="detailAddressInput" name="detailAddress" value="${employeeDetail.detailAddress}" style="display:none;" />
                 </div>
-
+                <div class="btn">
+                    <button type="button" id="passwordChangeBtn">패스워드 변경</button>
+                    <button type="button" id="editBtn">수정하기</button>
+                    <button type="submit" id="saveBtn" style="display:none;">수정완료</button>
+                    <button type="button" id="backBtn">메인으로</button>
+                    <button type="button" id="cancelBtn" style="display:none;">수정취소</button>
+                </div>
             </div>
-        <div class="btn">
-            <button type="button" id="editBtn">수정하기</button>
-            <button type="submit" id="saveBtn" style="display:none;">수정완료</button>
-            <button type="button" id="backBtn">돌아가기</button>
-        </div>
         </form>
     </div>
 </div>

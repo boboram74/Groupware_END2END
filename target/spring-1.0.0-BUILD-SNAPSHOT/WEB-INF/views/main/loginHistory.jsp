@@ -67,6 +67,28 @@
                                 <td><fmt:formatDate value="${item.regDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
                             </tr>
                         </c:forEach>
+                        <tr>
+                            <td colspan="3">
+                                <div>
+                                    <c:if test="${pageNavi.hasPrev}">
+                                        <span class="material-icons">chevron_left</span>
+                                    </c:if>
+                                    <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
+                                        <c:choose>
+                                            <c:when test="${item == page}">
+                                                <span class="active" onClick="location.href='/login/history?page=${item}">${item}</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span onClick="location.href='/login/history?page=${item}">${item}</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                    <c:if test="${pageNavi.hasNext}">
+                                        <span class="material-icons">chevron_right</span>
+                                    </c:if>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class VacationScheduler {
     @Autowired private VacationService vacationService;
 
-    @Scheduled(cron= "0 0 0 * * ?")
+    @Scheduled(cron= "0 0 10 * * ?")
     public void workOnCheck() throws Exception {
         // TODO: 연차 지급 확인
         vacationService.insertUsableVacationHired1st();

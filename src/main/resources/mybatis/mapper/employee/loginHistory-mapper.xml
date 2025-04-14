@@ -11,6 +11,15 @@
         SELECT * FROM LOGIN_HISTORY WHERE employeeId = #{employeeId}
     </select>
 
+    <select id="selectByEmployeeIdFromTo" resultType="com.end2end.spring.main.dto.LoginHistoryDTO">
+        SELECT *
+        FROM (
+            SELECT LOGIN_HISTORY.*, ROW_NUMBER() over (ORDER BY regDate DESC) AS RNUM
+            FROM LOGIN_HISTORY
+            WHERE employeeId = #{employeeId}) A
+        WHERE A.RNUM BETWEEN ${start} AND ${end}
+    </select>
+
     <select id="selectByAccessIpAndEmployeeId" resultType="com.end2end.spring.main.dto.LoginHistoryDTO">
         SELECT * FROM LOGIN_HISTORY WHERE accessIp = #{accessIp} AND employeeId = #{employeeId} AND STATE = 'LOGIN'
     </select>

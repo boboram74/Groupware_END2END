@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface LoginHistoryService {
     List<LoginHistoryDTO> selectByEmployeeId(String employeeId);
+    List<LoginHistoryDTO> selectByEmployeeId(String employeeId, int page);
     void insert(LoginHistoryDTO dto);
 }

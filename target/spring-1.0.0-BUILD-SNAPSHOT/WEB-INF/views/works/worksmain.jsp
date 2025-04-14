@@ -14,6 +14,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <script
@@ -73,129 +74,346 @@
 </div>
 
 <div class="selectBox">
-    <select>
-        <option>선택하십시오</option>
-        <option>주제1</option>
-        <option>주제2</option>
+    <select id="projectSelect">
+        <c:forEach var="project" items="${projects}">
+            console.log(${project.id}s)
+            <option value="${project.id}" }>프로젝트이름
+                :${project.name}</option>
+        </c:forEach>
     </select>
-    <button class="selectBtn">적용하기</button>
+    <button class="selectBtn" onclick="applyProject()">적용하기</button>
 </div>
 
 <div class="row boxContents">
     <div class="col-12 col-sm-4 order-sm-12">
-        <canvas id="myChart1" style="height: 50vh"></canvas>
+        <canvas id="myChart" style="height: 50vh"></canvas>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        const ctx1 = document.getElementById("myChart1");
 
-        new Chart(ctx1, {
-            type: "bar",
-            data: {
-                labels: ["", "Blue", "Yellow", "Green", "Purple", "Orange"],
-               //주제입력
-                datasets: [
-                    {
-                        label: "# of Votes",
-                        data: [12, 19, 3, 5, 2, 3],
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
+        let myChartInstance = null;
+        let myChart2Instance = null;
+        let myChart3Instance = null;
+
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '/project/latestProjectId',
+                type: 'GET',
+                success: function (latestId) {
+                    console.log("최신 프로젝트 ID:", latestId);
+                    $("#projectSelect").val(latestId);  // 드롭다운에도 선택 반영
+                    applyProjectById(latestId);         // 선택된 ID로 차트 렌더링
                 },
-            },
+                error: function () {
+                    alert("최신 프로젝트 정보를 가져오지 못했습니다.");
+                }
+            });
         });
+
+        function applyProject() {
+            const selectedId = $("#projectSelect").val();
+            applyProjectById(selectedId);
+        }
+
+        function applyProjectById(projectId) {
+            console.log("선택된 프로젝트 ID:", projectId);
+
+            // 진행률 차트
+            $.ajax({
+                url: '/work/chartData/' + projectId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const progress = data.progress;
+                    const notProgress = 100 - progress;
+                    const ctx = document.getElementById('myChart').getContext('2d');
+
+                    if (myChartInstance) myChartInstance.destroy();
+                    myChartInstance = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['진행률', '미진행률'],
+                            datasets: [{
+                                data: [progress, notProgress],
+                                backgroundColor: ['#4bc0c0', '#edf2f0'],
+                                borderColor: ['#4bc0c0', '#4bc0c0'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                }
+            });
+
+            // 상태 차트
+            $.ajax({
+                url: '/work/statusChartData/' + projectId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const ctx2 = document.getElementById('myChart2').getContext('2d');
+                    if (myChart2Instance) myChart2Instance.destroy();
+                    myChart2Instance = new Chart(ctx2, {
+                        type: 'pie',
+                        data: {
+                            labels: ['READY', 'ONGOING', 'FINISH'],
+                            datasets: [{
+                                data: [data.READY, data.ONGOING, data.FINISH],
+                                backgroundColor: ['rgba(255, 99, 132, 0.5)',   // 진행전
+                                    'rgba(54, 162, 235, 0.5)',   // 진행중
+                                    'rgba(75, 192, 192, 0.5)'    // 완료
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(75, 192, 192, 1)'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {legend: {position: 'bottom'}}
+                        }
+                    });
+                }
+            });
+
+            // 타입 차트
+            $.ajax({
+                url: '/work/typeChartData/' + projectId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const ctx3 = document.getElementById('myChart3').getContext('2d');
+                    if (myChart3Instance) myChart3Instance.destroy();
+                    myChart3Instance = new Chart(ctx3, {
+                        type: 'line',
+                        data: {
+                            labels: ['DOCUMENT', 'REPORT', 'WBS', 'MEETING_FOLDER', 'SPECIFICATION'],
+                            datasets: [{
+                                label: '업무 유형별 개수',
+                                data: [
+                                    data.DOCUMENT,
+                                    data.REPORT,
+                                    data.WBS,
+                                    data.MEETING_FOLDER,
+                                    data.SPECIFICATION
+                                ],
+                                backgroundColor: [
+                                    "rgba(255, 99, 132, 0.2)",
+                                    "rgba(54, 162, 235, 0.2)",
+                                    "rgba(255, 206, 86, 0.2)",
+                                    "rgba(75, 192, 192, 0.2)",
+                                    "rgba(153, 102, 255, 0.2)",
+
+                                ],
+                                borderColor: [
+                                    "rgba(255, 99, 132, 1)",
+                                    "rgba(54, 162, 235, 1)",
+                                    "rgba(255, 206, 86, 1)",
+                                    "rgba(75, 192, 192, 1)",
+                                    "rgba(153, 102, 255, 1)"],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {beginAtZero: true}
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+
+        //선택하면 적용되는 차트 스트립트코드
+
+        function applyProject() {
+            const selectedId = $("#projectSelect").val();
+
+            console.log("선택된 프로젝트 ID:", selectedId);
+
+            $.ajax({
+
+                url: '/work/chartData/' + selectedId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const chartData = data.progress;
+                    console.log("진행률 데이터:", chartData);
+
+                    const data2 = 100 - chartData;
+
+                    const ctx = document.getElementById('myChart').getContext('2d');
+
+                    if (myChartInstance) {
+                        myChartInstance.destroy();
+                    }
+
+                    myChartInstance = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['진행률', '미진행률'],
+                            datasets: [{
+                                label: '진행률',
+                                data: [chartData, data2],
+                                backgroundColor: ['rgba(75, 192, 192, 0.2)', '#edf2f0'],
+                                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 1)'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false, // div 크기에 맞게 조정
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100 // 최대값을 100으로 설정 (100%)
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX 오류:', error);
+                }
+            });
+
+
+            $.ajax({
+                url: '/work/statusChartData/' + selectedId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const chartData = data;
+                    console.log("진행률차트2 데이터:", chartData);
+
+                    const labels = ["READY", "ONGOING", "FINISH"];
+                    const values = [chartData.READY, chartData.ONGOING, chartData.FINISH];
+
+                    const ctx2 = document.getElementById('myChart2').getContext('2d');
+
+                    if (myChart2Instance) {
+                        myChart2Instance.destroy();
+                    }
+
+
+                    myChart2Instance = new Chart(ctx2, {
+                        type: "pie",
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "업무 상태 비율",
+                                    data: values,
+                                    // 각각의 상태별 비율이 들어가야됨
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.5)',   // 진행전
+                                        'rgba(54, 162, 235, 0.5)',   // 진행중
+                                        'rgba(75, 192, 192, 0.5)'    // 완료
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(75, 192, 192, 1)'
+                                    ],
+                                    borderWidth: 1,
+                                },
+                            ],
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                },
+                            },
+                        },
+                    });
+                }
+            });
+            $.ajax({
+                url: '/work/typeChartData/' + selectedId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const labels = ["DOCUMENT", "REPORT", "WBS", "MEETING_FOLDER", "SPECIFICATION"];
+                    const values = [
+                        data.DOCUMENT,
+                        data.REPORT,
+                        data.WBS,
+                        data.MEETING_FOLDER,
+                        data.SPECIFICATION
+                    ];
+
+                    if (myChart3Instance) {
+                        myChart3Instance.destroy();
+                    }
+
+                    const ctx3 = document.getElementById("myChart3").getContext("2d");
+                    myChart3Instance = new Chart(ctx3, {
+                        type: "line",
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "업무 유형별 개수",
+                                    data: values,
+                                    backgroundColor: [
+                                        "rgba(255, 99, 132, 0.2)",
+                                        "rgba(54, 162, 235, 0.2)",
+                                        "rgba(255, 206, 86, 0.2)",
+                                        "rgba(75, 192, 192, 0.2)",
+                                        "rgba(153, 102, 255, 0.2)",
+
+                                    ],
+                                    borderColor: [
+                                        "rgba(255, 99, 132, 1)",
+                                        "rgba(54, 162, 235, 1)",
+                                        "rgba(255, 206, 86, 1)",
+                                        "rgba(75, 192, 192, 1)",
+                                        "rgba(153, 102, 255, 1)",
+
+                                    ],
+                                    borderWidth: 1,
+                                },
+                            ],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
+                            scales: {
+                                yAxes: [
+                                    {
+                                        ticks: {
+                                            beginAtZero: true,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    });
+                }
+            });
+        }
+
     </script>
     <div class="col-12 col-sm-4 order-sm-12">
         <canvas id="myChart2" style="height: 50vh"></canvas>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        const ctx2 = document.getElementById("myChart2");
-
-        new Chart(ctx2, {
-            type: "pie",
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                datasets: [
-                    {
-                        label: "# of Votes",
-                        data: [12, 19, 3, 5, 2, 3],
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-    </script>
     <div class="col-12 col-sm-4 order-sm-12">
         <canvas id="myChart3" style="height: 50vh"></canvas>
     </div>
-    <script>
-        // 여기부터 도넛그래프
-        var ctx3 = document.getElementById("myChart3").getContext("2d");
-        var myChart = new Chart(ctx3, {
-            type: "line",
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                datasets: [
-                    {
-                        label: "# of Votes",
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: [
-                            "rgba(255, 99, 132, 0.2)",
-                            "rgba(54, 162, 235, 0.2)",
-                            "rgba(255, 206, 86, 0.2)",
-                            "rgba(75, 192, 192, 0.2)",
-                            "rgba(153, 102, 255, 0.2)",
-                            "rgba(255, 159, 64, 0.2)",
-                        ],
-                        borderColor: [
-                            "rgba(255, 99, 132, 1)",
-                            "rgba(54, 162, 235, 1)",
-                            "rgba(255, 206, 86, 1)",
-                            "rgba(75, 192, 192, 1)",
-                            "rgba(153, 102, 255, 1)",
-                            "rgba(255, 159, 64, 1)",
-                        ],
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true,
-                            },
-                        },
-                    ],
-                },
-            },
-        });
-    </script>
+
 </div>
 <div class="projectList">
     <div class="tableBox">
@@ -217,13 +435,13 @@
             <tbody>
             <c:forEach items="${projects}" var="list">
 
-                <tr id="changeRow-${list.id}" onclick="location.href='/project/detail/${list.id}'">
+                <tr id="changeRow-${list.id}">
 
-                    <td>${list.name}</td>
-                    <td>${list.regDate}</td>
-                    <td> ${list.deadLine}</td>
+                    <td onclick="location.href='/project/detail/${list.id}'">${list.name}</td>
+                    <td onclick="location.href='/project/detail/${list.id}'">${list.regDate}</td>
+                    <td onclick="location.href='/project/detail/${list.id}'"> ${list.deadLine}</td>
                     <td>
-                        <div class="member-profiles">
+                        <div class="member-profiles" onclick="location.href='/project/detail/${list.id}'">
                             <!-- 프로필 이미지 리스트 -->
                             <c:forEach items="${list.profileImg}" var="img">
                                 <c:choose>
@@ -276,11 +494,12 @@
     <div class="modal-dialog">
 
         <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title">프로젝트 생성</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+            <c:if test="${employee.role!='TEAM_LEADER'}">
+                <div class="modal-header">
+                    <h5 class="modal-title">프로젝트 생성</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            </c:if>
             <form id="projectForm" action="/project/insert" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
 
@@ -325,45 +544,52 @@
 
 
 <%--프로젝트수정모달--%>
-<div class="modal fade" id="updateProjectModal" tabindex="-1">
+<div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">프로젝트 수정</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="updateProjectForm">
-                    <!-- 수정할 데이터를 담는 입력 필드 -->
+            <form action="/project/update" method="post">
+                <div class="modal-body">
+                    <input tpye="hidden" name="id" value="1"/>
+                    <input type="hidden" name="projectId" value="${project.id}"/>
+                    <h5>프로젝트 title</h5>
                     <div class="mb-3">
-                        <label class="form-label">프로젝트 제목</label>
-                        <input type="text" class="form-control" name="name" id="updateProjectName" required>
+                        <input type="text" id="title" value="${project.name}">
                     </div>
+                    <%--projectinsertDTO 가져와야됨--%>
                     <div class="mb-3">
-                        <label class="form-label">프로젝트 기간</label>
-                        <input type="text" class="form-control" id="updateProjectPeriod">
-                        <input type="hidden" name="regDate" id="updateRegDate">
-                        <input type="hidden" name="deadLine" id="updateDeadLine">
+                        <!-- 프로젝트 기간 설정 버튼 -->
+                        프로젝트 기간 설정
+                        <input type="date" name="deadLine" value="${project.deadLine}"/>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">프로젝트 인원</label>
                         <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">
                             인원 추가
                         </button>
-                        <div id="updateSelectedMembers" class="mt-2"></div>
+                        <div id="updateMembers" class="mt-2">
+                            <div class="selectedUser" val>
+                                <div>선택된 멤버가 없습니다</div>
+                            </div>
+                        </div>
                     </div>
-                    <input type="hidden" name="id" id="updateProjectId"> <!-- 프로젝트 ID 숨김 필드 -->
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="updateProject()">수정하기</button>
-            </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="closeupdateModal() ">Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">수정완료</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 
-<%--프로젝트 수정에서 인원변경모달라인--%>
+<%--프로젝트 추가 및 수정에서 인원변경모달라인--%>
 <div class="modal fade" id="memberSearchModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -377,20 +603,16 @@
                     <input type="text" class="form-control" id="memberSearchInput" placeholder="멤버 이름 검색"
                            onkeyup="searchMembers()">
                 </div>
-
                 <!-- 검색 결과 리스트 -->
                 <div id="memberSearchResults" class="mb-3">
                     <p>검색 결과가 표시됩니다.</p>
                 </div>
-
                 <!-- 선택된 멤버 리스트 -->
                 <div>
                     <h6 class="mt-3">선택된 멤버</h6>
                     <div id="selectedMembersList" class="d-flex flex-wrap">
 
-
                     </div>
-
                 </div>
             </div>
             <div class="modal-footer">
@@ -415,22 +637,39 @@
     </div>
 </div>
 <script>
-    // function  updateProject(id) {
-    //     location.href = '/project/update/' + id;
-    // }
 
-    function deleteProject(id) {
-        if (confirm("정말 프로젝트를 삭제 하시겠습니까?"))
-            location.href = '/project/delete/' + id;
-    }
+    $('form').submit(function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+        $.ajax({
+            url: '/work/update',
+            data: formData,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+                console.error('Status:', status);
+                console.error('Response:', xhr.responseText);
+            }
+        }).done(function (response) {
+            console.log(response);
+            location.reload();
+        })
+    })
+
 
     function openProjectModal() {
         $('#projectModal').modal('show');
     }
 
-    function openUpdateProjectModal(id) {
-        $('#updateProjectModal').modal('show');
-        $('#updateProjectId').val(id);
+    function updateProject(${list.id}) {
+        $('#updateModal').modal('show');
+        // $('#updateProjectId').val(id);
     }
 
     function openMemberSearch() {
@@ -455,19 +694,17 @@
 
                 let memberList = '';
                 for (let i = 0; i < data.length; i++) {
-                    console.log(data[i]);
+
                     memberList += '<div class="user-item" data-id="' + data[i].id + '" data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].jobName + ' ' + data[i].departmentName + '</div>'
-                    console.log(memberList);
+
                 }
-                console.log($('#memberSearchResults'));
-                console.log($('#memberSearchResults').html());
                 $('#memberSearchResults').html(memberList);
 
                 // 사용자 선택 시 selectedMembersList에 추가하는 이벤트 처리
                 $('#memberSearchResults .user-item').click(function () {
                     var userId = $(this).data('id');
                     var userName = $(this).data('name');
-                    console.log(userId, userName);
+
                     // 이미 선택된 사용자인지 확인
                     if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
 

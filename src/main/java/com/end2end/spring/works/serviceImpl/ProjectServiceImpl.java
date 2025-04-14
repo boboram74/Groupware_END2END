@@ -66,7 +66,10 @@ public class ProjectServiceImpl implements ProjectService {
             projectUserDao.insert(projectUserDTO);
         }
     }
-
+    @Override
+    public ProjectDTO findLatestProject(){
+        return projectDao.findLatestProject();
+    }
 
     @Override
     public List<ProjectSelectDTO> selectAllProject() {
@@ -145,4 +148,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectDao.selectByUser(target);
     }
+
+
+
 }

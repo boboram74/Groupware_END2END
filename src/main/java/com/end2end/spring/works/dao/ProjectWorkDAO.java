@@ -20,25 +20,27 @@ public class ProjectWorkDAO {
 
     public List<ProjectWorkDTO> selectAll(int id) {
 
-        return   mybatis.selectList("works.selectAll",id);
+        return mybatis.selectList("works.selectAll", id);
     }
 
     public int getProjectId() {
-   return  mybatis.selectOne("works.getProjectId");
+        return mybatis.selectOne("works.getProjectId");
     }
-    public String selectByProjectIdAndEmployeeId(int projectId,String employeeId) {
+
+    public String selectByProjectIdAndEmployeeId(int projectId, String employeeId) {
         Map<String, Object> params = new HashMap<>();
         params.put("projectId", projectId);
         params.put("employeeId", employeeId);
         return mybatis.selectOne("works.selectByProjectIdAndEmployeeId", params);
 
     }
-        public void insert(ProjectWorkDTO dto) {
-       mybatis.insert("works.insert",dto);
+
+    public void insert(ProjectWorkDTO dto) {
+        mybatis.insert("works.insert", dto);
     }
 
     public void update(ProjectWorkDTO dto) {
-mybatis.update("works.update",dto);
+        mybatis.update("works.update", dto);
     }
 
 
@@ -46,17 +48,18 @@ mybatis.update("works.update",dto);
 
         Map<String, Object> params = new HashMap<>();
         params.put("state", state);
-        params.put("workId",workItemId);
-        mybatis.update("works.updateState",params);
+        params.put("workId", workItemId);
+        mybatis.update("works.updateState", params);
     }
 
     public void deleteById(int workId) {
-        System.out.println("dao 도착"+workId);
-    mybatis.delete("works.deleteById",workId);
+        System.out.println("dao 도착" + workId);
+        mybatis.delete("works.deleteById", workId);
     }
-        public ProjectWorkDTO selectByworksId(int id){
-        return mybatis.selectOne("works.selectByworksId",id);
-        }
+
+    public ProjectWorkDTO selectByworksId(int id) {
+        return mybatis.selectOne("works.selectByworksId", id);
+    }
 
     public void toggleState(int id) {
         // select * from POJECT_WORK WHERE id = ${id} => state값 추출
@@ -66,4 +69,28 @@ mybatis.update("works.update",dto);
 
         //아니면 값으로 string state 를 받는 방법도 있음
     }
+
+    public int countByState(int selectedId, String state) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("state", state);
+        params.put("selectedId", selectedId);
+        return mybatis.selectOne("works.countByState", params);
+
+    }
+
+    public int countByType(int selectedId, String type) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("type",type);
+        params.put("selectedId", selectedId);
+        return mybatis.selectOne("works.countByType", params);
+
+    }
+public int countTotalWorks(int selectedId) {
+        return mybatis.selectOne("works.countTotalWorks", selectedId);
+}
+    public int countFinishedWorks(int selectedId) {
+        return mybatis.selectOne("works.countFinishedWorks", selectedId);
+    }
+
+
 }

@@ -17,6 +17,7 @@
         FROM EMPLOYEE e
         JOIN DEPARTMENT d ON e.departmentId = d.id
         JOIN JOB j ON e.jobId = j.id
+        ORDER BY e.name ASC
     </select>
 
     <select id="selectAllDepartment" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
@@ -46,6 +47,7 @@
         departmentId = #{departmentId},
         jobId = #{jobId},
         name = #{name},
+        profileImg = #{profileImg},
         contact = #{contact}
         WHERE id = #{id}
     </update>
@@ -142,6 +144,7 @@
         FROM EMPLOYEE e
         JOIN DEPARTMENT d ON e.departmentId = d.id
         JOIN JOB j ON e.jobId = j.id
+        ORDER BY e.name ASC
     </select>
 
     <select id="countNoAuth" resultType="Integer">

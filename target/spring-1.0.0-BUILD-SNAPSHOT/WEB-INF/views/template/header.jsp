@@ -97,12 +97,18 @@
       color: var(--md-sys-color-secondary);
     }
 
+    .notification-content.read .notification-text,
+    .notification-content.read .notification-date {
+      opacity: 0.4; /* 투명도를 40% 낮춤 */
+    }
+
+
     .color-primary { color: #1976d2; }
     .color-success { color: #4caf50; }
     .color-warning { color: #ff9800; }
     .color-info { color: #2196f3; }
     .color-danger { color: #f44336; }
-    
+
     .notification-list::-webkit-scrollbar {
       width: 6px;
     }
@@ -121,6 +127,30 @@
     .notification-list::-webkit-scrollbar-thumb:hover {
       background: var(--md-sys-color-outline);
     }
+
+    @keyframes notificationAnimation {
+      0% {
+        transform: scale(1) rotate(0deg);
+      }
+      25% {
+        transform: scale(1.2) rotate(20deg);
+      }
+      50% {
+        transform: scale(1.2) rotate(-15deg);
+      }
+      75% {
+        transform: scale(1.1) rotate(10deg);
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .notification-animate {
+      animation: notificationAnimation 0.8s ease-in-out;
+      transform-origin: center;
+    }
+
   </style>
 </head>
 <body>
@@ -174,12 +204,10 @@
     <header class="header">
       <div class="logo" onClick="location.href='/'"></div>
       <div class="header-icons">
-        <!-- 알람 아이콘 -->
-        <!-- 기존 알람 버튼을 아래 코드로 대체 -->
         <div class="notification-container">
           <button class="icon-button" id="notificationBtn">
             <span class="material-icons">notifications</span>
-            <span class="notification-badge">0</span>
+            <span class="notification-badge" style="display: none;">0</span>
           </button>
           <div class="notification-menu surface-bright" id="notificationMenu">
             <div class="notification-header">
@@ -187,76 +215,11 @@
               <span class="material-icons close-notification">close</span>
             </div>
             <div class="notification-list">
-              <div class="notification-list">
-                <div class="notification-item">
-                  <span class="material-icons color-primary">mail</span>
-                  <div class="notification-content">
-                    <div class="notification-text">새로운 메일이 도착했습니다.</div>
-                    <div class="notification-date">2024.02.15 14:30</div>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <span class="material-icons color-success">description</span>
-                  <div class="notification-content">
-                    <div class="notification-text">휴가신청이 승인되었습니다.</div>
-                    <div class="notification-date">2024.02.15 11:20</div>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <span class="material-icons color-warning">event</span>
-                  <div class="notification-content">
-                    <div class="notification-text">팀 회의가 30분 후에 시작됩니다.</div>
-                    <div class="notification-date">2024.02.15 09:45</div>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <span class="material-icons color-info">people</span>
-                  <div class="notification-content">
-                    <div class="notification-text">프로젝트 팀원이 추가되었습니다.</div>
-                    <div class="notification-date">2024.02.14 17:15</div>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <span class="material-icons color-danger">priority_high</span>
-                  <div class="notification-content">
-                    <div class="notification-text">긴급 화상회의가 소집되었습니다.</div>
-                    <div class="notification-date">2024.02.14 16:50</div>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <span class="material-icons color-success">check_circle</span>
-                  <div class="notification-content">
-                    <div class="notification-text">업무 보고서가 승인되었습니다.</div>
-                    <div class="notification-date">2024.02.14 15:20</div>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <span class="material-icons color-warning">schedule</span>
-                  <div class="notification-content">
-                    <div class="notification-text">프로젝트 마감기한이 임박했습니다.</div>
-                    <div class="notification-date">2024.02.14 14:10</div>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <span class="material-icons color-info">announcement</span>
-                  <div class="notification-content">
-                    <div class="notification-text">전체 공지사항이 등록되었습니다.</div>
-                    <div class="notification-date">2024.02.14 11:30</div>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <span class="material-icons color-primary">share</span>
-                  <div class="notification-content">
-                    <div class="notification-text">새로운 문서가 공유되었습니다.</div>
-                    <div class="notification-date">2024.02.14 10:15</div>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <span class="material-icons color-success">cake</span>
-                  <div class="notification-content">
-                    <div class="notification-text">오늘은 김철수 님의 생일입니다.</div>
-                    <div class="notification-date">2024.02.14 09:00</div>
-                  </div>
+              <div class="notification-item">
+                <span class="material-icons color-info">notifications_paused</span>
+                <div class="notification-content">
+                  <div class="notification-text">현재 알람이 없습니다.</div>
+                  <div class="notification-date"></div>
                 </div>
               </div>
             </div>
@@ -412,98 +375,155 @@
 
     alarm.onmessage = function(e) {
       const data = JSON.parse(e.data);
-      if (data.type === 'alarm') {
-        $('#notificationBtn').addClass('notification-badge-active');
+      console.log(data);
+
+      if (data.length > 0) {
+        $('#notificationBtn .notification-badge').show().text(data.length);
+
+        $('#notificationBtn .material-icons').removeClass('notification-animate');
+        $('#notificationBtn .material-icons')[0].offsetWidth;
+        $('#notificationBtn .material-icons').addClass('notification-animate')
+                .one('animationend', function() {
+                  $(this).removeClass('notification-animate');
+                });
+      } else {
+        return;
+      }
+
+      $('#notificationMenu .notification-list').empty();
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i];
+
+        const div = $('<div class="notification-item">');
+        div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
+                .append($('<div class="notification-content">')
+                        .append($('<div class="notification-text">').text(item.message))
+                        .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
+
+        if (item.url !== '') {
+          div.on('click', function() {
+            alarm.send(JSON.stringify({
+              'id': item.id,
+              'employeeId': ${employee.id}
+            }));
+
+            location.href = item.url;
+          })
+        }
+
+        $('#notificationMenu .notification-list').append(div);
       }
     }
 
-    // 기존 ready 함수 내부에 추가
-    $('#notificationBtn').on('click', function(e) {
-      e.stopPropagation();
-      $('#notificationMenu').toggle(0, function() {
-        if($(this).is(':visible')) {
-          const notificationList = $('.notification-list');
-          notificationList.scrollTop(notificationList[0].scrollHeight);
-        }
-      });
-    });
-
-    $('.close-notification').on('click', function(e) {
-      e.stopPropagation();
-      $('#notificationMenu').hide();
-    });
-
-    $(document).on('click', function(e) {
-      if (!$(e.target).closest('.notification-container').length) {
-        $('#notificationMenu').hide();
-      }
-    });
+    function parseTime(time) {
+      const date = new Date(time);
+      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    }
   });
 </script>
-<script>
-  $(document).ready(function() {
-    $('#darkModeBtn').on('click', function() {
-      if (mode === 'light') {
-        mode = 'dark';
-        sessionStorage.setItem('mode', 'dark');
-        $('html').removeClass('light').addClass('dark');
-      } else {
-        mode = 'light';
-        sessionStorage.setItem('mode', 'light');
-        $('html').removeClass('dark').addClass('light');
-      }
-    })
+      <script>
+        $(document).ready(function () {
+          $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
 
-    // 모바일 메뉴 열기
-    $('.open-mobile-menu').click(function(e) {
-      e.preventDefault();
-      $('.full-menu-modal').addClass('show');
-      $('body').css('overflow', 'hidden');
-    });
+          $('#darkModeBtn').on('click', function () {
+            if (mode === 'light') {
+              mode = 'dark';
+              sessionStorage.setItem('mode', 'dark');
+              $('html').removeClass('light').addClass('dark');
+            } else {
+              mode = 'light';
+              sessionStorage.setItem('mode', 'light');
+              $('html').removeClass('dark').addClass('light');
+            }
 
-    // 모바일 메뉴 닫기 (수정된 부분)
-    $('.close-menu-btn').click(function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      $('.full-menu-modal').removeClass('show');
-      $('body').css('overflow', '');
-    });
+            $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
+          })
 
-    // 모달 배경 클릭 시 닫기
-    $('.full-menu-modal').click(function(e) {
-      if ($(e.target).hasClass('full-menu-modal')) {
-        $('.full-menu-modal').removeClass('show');
-        $('body').css('overflow', '');
-      }
-    });
+          // 모바일 메뉴 열기
+          $('.open-mobile-menu').click(function(e) {
+            e.preventDefault();
+            $('.full-menu-modal').addClass('show');
+            $('body').css('overflow', 'hidden');
+          });
 
-    // 메뉴 컨텐츠 클릭 시 이벤트 전파 중지
-    $('.full-menu-content').click(function(e) {
-      e.stopPropagation();
-    });
+          // 모바일 메뉴 닫기 (수정된 부분)
+          $('.close-menu-btn').click(function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $('.full-menu-modal').removeClass('show');
+            $('body').css('overflow', '');
+          });
 
-    // 프로필 이미지 클릭 이벤트
-    $('.profile').on('click', function(e) {
-      e.stopPropagation(); // 이벤트 버블링 방지
-      $('#profileMenu').toggle();
-    });
+          // 모달 배경 클릭 시 닫기
+          $('.full-menu-modal').click(function(e) {
+            if ($(e.target).hasClass('full-menu-modal')) {
+              $('.full-menu-modal').removeClass('show');
+              $('body').css('overflow', '');
+            }
+          });
 
-    // 문서 전체 클릭 이벤트 (메뉴 외부 클릭시 닫기)
-    $(document).on('click', function(e) {
-      if (!$(e.target).closest('.profile-container').length) {
-        $('#profileMenu').hide();
-      }
-    });
+          // 메뉴 컨텐츠 클릭 시 이벤트 전파 중지
+          $('.full-menu-content').click(function(e) {
+            e.stopPropagation();
+          });
 
-    // 선택적: 메뉴 아이템 클릭 이벤트 예시
-    $('.menu-item').on('click', function() {
-      const id = $(this).attr('id');
+          // 프로필 이미지 클릭 이벤트
+          $('.profile').on('click', function(e) {
+            e.stopPropagation(); // 이벤트 버블링 방지
+            $('#profileMenu').toggle();
+          });
 
-      if (id === 'mypage') {
-        window.location.href = '/mypage/${employee.id}';
-      } else if (id === 'logout') {
-        window.location.href = '/employee/logout';
-      }
-    });
-  });
-</script>
+          // 문서 전체 클릭 이벤트 (메뉴 외부 클릭시 닫기)
+          $(document).on('click', function(e) {
+            if (!$(e.target).closest('.profile-container').length) {
+              $('#profileMenu').hide();
+            }
+          });
+
+          // 선택적: 메뉴 아이템 클릭 이벤트 예시
+          $('.menu-item').on('click', function() {
+            const id = $(this).attr('id');
+
+            if (id === 'mypage') {
+              window.location.href = '/mypage/${employee.id}';
+            } else if (id === 'logout') {
+              window.location.href = '/employee/logout';
+            }
+          });
+
+          $('#notificationBtn').on('click', function(e) {
+            e.stopPropagation();
+            $('#notificationMenu').toggle(0, function() {
+              if($(this).is(':visible')) {
+                const notificationList = $('.notification-list');
+                notificationList.scrollTop(notificationList[0].scrollHeight);
+              }
+            });
+          });
+
+          $('.close-notification').on('click', function(e) {
+            e.stopPropagation();
+            $('#notificationMenu').hide();
+          });
+
+          $(document).on('click', function(e) {
+            if (!$(e.target).closest('.notification-container').length) {
+              $('#notificationMenu').hide();
+            }
+          });
+        });
+
+        $(document).ready(function() {
+          $('form').off('submit').on('submit', function(e) {
+            console.log('폼 제출 시도');
+            // 이벤트 전파 강제
+            e.stopPropagation();
+            e.preventDefault();
+
+            // 직접 submit 호출
+            this.submit();
+            // 또는
+            // $(this)[0].submit();
+          });
+        });
+      </script>

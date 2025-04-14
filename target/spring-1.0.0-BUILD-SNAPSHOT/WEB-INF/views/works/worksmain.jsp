@@ -36,7 +36,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <link rel="stylesheet" href="/css/worksmain.css">
-
+<link rel="stylesheet" href="/css/color/newColor.css"/>
 <style>
     tbody tr:hover {
         background-color: #f0f8ff;
@@ -46,6 +46,16 @@
         width: 35px;
         height: 35px;
         margin-right: -20px;
+    }
+    .detail-badge {
+        background-color: var(--md-sys-color-error);
+        color: var(--md-sys-color-on-error);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        min-width: 20px;
+        text-align: center;
+        margin-left: 10px;
     }
 </style>
 
@@ -132,6 +142,7 @@
 
                     if (myChartInstance) myChartInstance.destroy();
                     myChartInstance = new Chart(ctx, {
+
                         type: 'doughnut',
                         data: {
                             labels: ['진행률', '미진행률'],
@@ -144,7 +155,18 @@
                         },
                         options: {
                             responsive: true,
-                            maintainAspectRatio: false
+                            maintainAspectRatio: false,
+                            cutout: '60%',                  // 차트의 중앙 부분을 비우도록 설정
+                            rotation: -90,                  // 차트를 반시계 방향으로 180도 회전
+                            circumference: 180,             // 반도넛 형태를 만들기 위해 차트의 원둘레를 180도로 설정
+                            // rotation: 1 * Math.PI,       // 차트를 반시계 방향으로 180도 회전               		- 구버전에서 사용
+                            // circumference: 1 * Math.PI,  // 반도넛 형태를 만들기 위해 차트의 원둘레를 180도로 설정 - 구버전에서 사용
+                            animation: {
+                                duration: 1000              // 애니메이션 속도 1000 = 1초
+                            },
+                            plugins: {
+                                legend: {display: true}     // 범례 사용 여부
+                            }
                         }
                     });
                 }
@@ -437,7 +459,7 @@
 
                 <tr id="changeRow-${list.id}">
 
-                    <td onclick="location.href='/project/detail/${list.id}'">${list.name}</td>
+                    <td onclick="location.href='/project/detail/${list.id}'">${list.name}<span class="detail-badge">긴급</span></td>
                     <td onclick="location.href='/project/detail/${list.id}'">${list.regDate}</td>
                     <td onclick="location.href='/project/detail/${list.id}'"> ${list.deadLine}</td>
                     <td>
@@ -552,8 +574,9 @@
             </div>
             <form action="/project/update" method="post">
                 <div class="modal-body">
-                    <input tpye="hidden" name="id" value="1"/>
+
                     <input type="hidden" name="projectId" value="${project.id}"/>
+
                     <h5>프로젝트 title</h5>
                     <div class="mb-3">
                         <input type="text" id="title" value="${project.name}">
@@ -637,6 +660,29 @@
     </div>
 </div>
 <script>
+$.ajax({
+    url: '/project/members/'+applyProjectById,
+    type : 'GET',
+    success : function(members){
+        if (members.length > 0) {
+            members.forEach(member => {
+                $('#updateMembers').append(
+                    $('<div>').addClass('selected-user').attr('data-id', member.id)
+                        .append($('<span>').html(member.name))
+                        .append($('<button>').addClass("remove-user").html('삭제').click(function () {
+                            $(this).parent().remove();
+                        }))
+                        .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(member.id))
+                );
+            });
+        } else {
+            $('#updateMembers').html('<div class="selectedUser"><div>선택된 멤버가 없습니다</div></div>');
+        }
+    },
+    error: function (xhr, status, err) {
+        console.error("멤버 불러오기 실패", err);
+    }
+});
 
     $('form').submit(function (e) {
         e.preventDefault();
@@ -659,6 +705,7 @@
         }).done(function (response) {
             console.log(response);
             location.reload();
+            alert("수정이 완료되었습니다")
         })
     })
 
@@ -669,7 +716,6 @@
 
     function updateProject(${list.id}) {
         $('#updateModal').modal('show');
-        // $('#updateProjectId').val(id);
     }
 
     function openMemberSearch() {
@@ -699,12 +745,62 @@
 
                 }
                 $('#memberSearchResults').html(memberList);
-
+                $('#memberSearchResults').html(memberList);
                 // 사용자 선택 시 selectedMembersList에 추가하는 이벤트 처리
                 $('#memberSearchResults .user-item').click(function () {
                     var userId = $(this).data('id');
                     var userName = $(this).data('name');
+                    <%--if ($('#selectedMembersList').find(`[data-id="${userId}"]`)){--%>
+                    <%--    alert("이미 선택된 사용자입니다")--%>
+                    <%--}--%>
+                    // 이미 선택된 사용자인지 확인
+                    if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
 
+                        console.log('추가한 새로운 멤버:', userId, userName);
+
+                        // selectedMembersList에 사용자 추가
+                        $('#selectedMembersList').append(
+                            $('<div>').addClass('selected-user').attr('data-id', userId)
+                                .append($('<span>').html(userName))
+                                .append($('<button>').addClass("remove-user").html('삭제').click(function () {
+                                        $(this).parent().remove();
+                                    })
+                                )
+                                .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
+                        );
+                    }
+                });
+
+            }
+        })
+    }
+
+    function searchMembers() {
+        console.log($('#memberSearchInput').val());
+        $.ajax({
+            url: '/project/searchUser/',
+            type: 'GET',
+            data: {
+                name: $('#memberSearchInput').val()
+            },
+            success: function (data) {
+                console.log(data);
+
+                let memberList = '';
+                for (let i = 0; i < data.length; i++) {
+
+                    memberList += '<div class="user-item" data-id="' + data[i].id + '" data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].jobName + ' ' + data[i].departmentName + '</div>'
+
+                }
+                $('#memberSearchResults').html(memberList);
+                $('#memberSearchResults').html(memberList);
+                // 사용자 선택 시 selectedMembersList에 추가하는 이벤트 처리
+                $('#memberSearchResults .user-item').click(function () {
+                    var userId = $(this).data('id');
+                    var userName = $(this).data('name');
+                    <%--if ($('#selectedMembersList').find(`[data-id="${userId}"]`)){--%>
+                    <%--    alert("이미 선택된 사용자입니다")--%>
+                    <%--}--%>
                     // 이미 선택된 사용자인지 확인
                     if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
 
@@ -802,29 +898,7 @@
 
     }
 
-    //
-    // const stateScore = {
-    //     'TODO': 0,
-    //     'ONGOING': 0.5,
-    //     'FINISH': 1
-    // };
-    //
-    // const progressSum = works.reduce((sum, task) => sum + stateScore[task.state], 0);
-    // const progress = Math.round((progressSum / works.length) * 100);
-    //
-    // const ctx = document.getElementById('progressChart');
-    // const myChart = new Chart(ctx, {
-    //     type: 'doughnut',
-    //     data: {
-    //         labels: ['진행도'],
-    //         datasets: [{
-    //             label: '프로젝트 진행도',
-    //             data: [progress, 100 - progress],
-    //             backgroundColor: ['#4CAF50', '#e0e0e0'],
-    //             borderWidth: 1
-    //         }]
-    //     },
-    // });
+
 
 
 </script>

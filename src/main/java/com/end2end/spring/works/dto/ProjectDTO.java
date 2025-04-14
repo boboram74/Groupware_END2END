@@ -22,6 +22,7 @@ public class ProjectDTO {
 //프로젝트도 진행중과 완료로 상태가 나뉠거니까 필요한것같음
     private Timestamp regDate;
     private Date deadLine;
+    private String nearDeadline;
 
 
 }

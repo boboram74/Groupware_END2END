@@ -1,9 +1,5 @@
 Manifest-Version: 1.0
 Created-By: IntelliJ IDEA
-<<<<<<< HEAD
 Built-By: rkddb
-=======
-Built-By: keduit
->>>>>>> 031aa11e09b58c107006ea41fca0bbdbab664b64
 Build-Jdk: 11.0.15
 

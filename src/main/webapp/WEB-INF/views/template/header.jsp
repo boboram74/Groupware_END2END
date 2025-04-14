@@ -13,8 +13,11 @@
   <link rel="stylesheet" href="/css/template/header.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap CSS (이미 있을 확률 높음) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap JS (이게 없으면 모달 안 열림!) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
     let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
     $('html').addClass(mode);
@@ -130,7 +133,6 @@
       background: var(--md-sys-color-outline);
     }
 
-    /*조직도 CSS*/
     /*조직도 CSS*/
     .org-chart ul {
       padding-top: 20px;
@@ -313,21 +315,21 @@
           <span class="material-icons">account_tree</span>
         </button>
 
-        <div class="modal" id="orgChartModal" tabindex="-1" style="display: none;">
+        <!-- Bootstrap 모달 -->
+        <div class="modal fade" id="orgChartModal" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">사내 조직도</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body org-chart">
-                <div id="orgChartContainer">
-                </div>
+                <div id="orgChartContainer"></div>
               </div>
             </div>
           </div>
         </div>
-
+        
         <!-- 다크모드 토글 아이콘 -->
         <button class="icon-button" id="darkModeBtn">
           <span class="material-icons">dark_mode</span>
@@ -504,31 +506,13 @@
           }).done(function(data) {
             $('#orgChartContainer').empty();
             const employeeList = [
-              {
-                name: '대표',
-                id: 6,
-                employee: []
-              }, {
-                name: '경영팀',
-                id: 1,
-                employee: []
-              }, {
-                name: '인사팀',
-                id: 2,
-                employee: []
-              }, {
-                name: '총무팀',
-                id: 3,
-                employee: []
-              }, {
-                name: '운영지원팀',
-                id: 4,
-                employee: []
-              }, {
-                name: '연구팀',
-                id: 5,
-                employee: []
-              }]
+              { name: '대표', id: 6, employee: [] },
+              { name: '경영팀', id: 1, employee: [] },
+              { name: '인사팀', id: 2, employee: [] },
+              { name: '총무팀', id: 3, employee: [] },
+              { name: '운영지원팀', id: 4, employee: [] },
+              { name: '연구팀', id: 5, employee: [] }
+            ];
 
             for(let i = 0; i < data.length; i++) {
               const employee = data[i];
@@ -560,8 +544,10 @@
               }
               $('#orgChartContainer').append(title, departmentDiv);
             }
-
-            $('.modal').show();
+            // 모달 객체 생성
+            const modalElement = document.getElementById('orgChartModal');
+            const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+            modal.show();
           });
         }
       </script>

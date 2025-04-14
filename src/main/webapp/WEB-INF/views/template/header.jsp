@@ -13,9 +13,7 @@
   <link rel="stylesheet" href="/css/template/header.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <!-- Bootstrap CSS (이미 있을 확률 높음) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap JS (이게 없으면 모달 안 열림!) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
@@ -167,10 +165,15 @@
     .org-chart li:only-child::after, .org-chart li:only-child::before {
       display: none;
     }
+
     .modal-title{
       font-weight: bold;
       margin-left: 20px;
       font-size: 22px;
+    }
+    
+    .modal-backdrop {
+      z-index: -1;
     }
   </style>
 </head>
@@ -329,7 +332,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- 다크모드 토글 아이콘 -->
         <button class="icon-button" id="darkModeBtn">
           <span class="material-icons">dark_mode</span>
@@ -499,7 +502,6 @@
 
       <script>
         function orgChartModal() {
-          console.log("1");
           $.ajax({
             url: '/employee/orgChart',
             method: 'GET'
@@ -511,8 +513,7 @@
               { name: '인사팀', id: 2, employee: [] },
               { name: '총무팀', id: 3, employee: [] },
               { name: '운영지원팀', id: 4, employee: [] },
-              { name: '연구팀', id: 5, employee: [] }
-            ];
+              { name: '연구팀', id: 5, employee: [] } ];
 
             for(let i = 0; i < data.length; i++) {
               const employee = data[i];

@@ -131,14 +131,7 @@
     }
 
     /*조직도 CSS*/
-    .org-chart {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      overflow: auto;
-    }
-
+    /*조직도 CSS*/
     .org-chart ul {
       padding-top: 20px;
       position: relative;
@@ -172,15 +165,11 @@
     .org-chart li:only-child::after, .org-chart li:only-child::before {
       display: none;
     }
-
-    .org-chart .node {
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      border-radius: 5px;
-      font-weight: 500;
+    .modal-title{
+      font-weight: bold;
+      margin-left: 20px;
+      font-size: 22px;
     }
-
   </style>
 </head>
 <body>
@@ -328,7 +317,7 @@
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">조직도</h5>
+                <h5 class="modal-title">사내 조직도</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
               <div class="modal-body org-chart">
@@ -338,8 +327,6 @@
             </div>
           </div>
         </div>
-        <script>
-        </script>
 
         <!-- 다크모드 토글 아이콘 -->
         <button class="icon-button" id="darkModeBtn">
@@ -502,7 +489,6 @@
                   location.href = item.url;
                 })
               }
-
               $('#notificationMenu .notification-list').append(div);
             }
           }
@@ -516,8 +502,13 @@
             url: '/employee/orgChart',
             method: 'GET'
           }).done(function(data) {
+            $('#orgChartContainer').empty();
             const employeeList = [
               {
+                name: '대표',
+                id: 6,
+                employee: []
+              }, {
                 name: '경영팀',
                 id: 1,
                 employee: []
@@ -552,14 +543,19 @@
 
             for (let i = 0; i < employeeList.length; i++) {
               const departmentList = employeeList[i];
-              const title = $('<div>').html(departmentList.name)
-              const departmentDiv = $('<ul>')
+              const title = $('<div>').html(departmentList.name).css({
+                'background-color': '#2c3e50',
+                'color': 'white',
+                'text-align':'center'
+              });
+              const departmentDiv = $('<ul>').css({
+                'border':'3px solid black'
+              });
 
               for (let j = 0; j < departmentList.employee.length; j++) {
                 const employee = departmentList.employee[j];
-                console.log(employee);
 
-                const div = $('<li>').html(employee.name + " " + employee.departmentName);
+                const div = $('<li>').html(employee.name + "<br>" + employee.jobName);
                 departmentDiv.append(div);
               }
               $('#orgChartContainer').append(title, departmentDiv);

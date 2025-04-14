@@ -20,4 +20,5 @@ public interface ProjectService {
 
     List<ProjectSelectDTO> selectAllProject();
 
+    ProjectDTO findLatestProject();
 }

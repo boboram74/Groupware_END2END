@@ -1,8 +1,5 @@
 package com.end2end.spring.approval.serviceImpl;
 
-import com.end2end.spring.alarm.AlarmDTO;
-import com.end2end.spring.alarm.AlarmEndPoint;
-import com.end2end.spring.alarm.AlarmType;
 import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dao.ApprovalRejectDAO;
 import com.end2end.spring.approval.dao.ApproverDAO;
@@ -209,5 +206,11 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public List<Map<String, Object>> selectApproversList(String approvalId) {
         return approverDAO.selectApproversList(approvalId);
+    }
+
+    @Transactional
+    @Override
+    public List<Map<String, Object>> searchDetail(Map<String, Object> paramMap) {
+        return approvalDAO.searchDetail(paramMap);
     }
 }

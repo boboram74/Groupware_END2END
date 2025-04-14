@@ -85,4 +85,20 @@
         FROM APPROVAL_FORM
         WHERE NAME LIKE '%' || #{name} || '%'
     </select>
+
+    <select id="searchDetail" resultType="map">
+        SELECT
+            a.*,
+            f.name AS formName,
+            e.*
+        FROM approval a
+                 JOIN approval_form f ON a.approvalformid = f.id
+                 JOIN employee e ON a.employeeid = e.id
+        WHERE
+            (#{form, jdbcType=VARCHAR} IS NULL OR f.name = #{form})
+          AND (#{state, jdbcType=VARCHAR} IS NULL OR a.state = #{state})
+          AND (#{drafter, jdbcType=VARCHAR} IS NULL OR e.name LIKE '%' || #{drafter} || '%')
+          AND (#{startDate, jdbcType=TIMESTAMP} IS NULL OR a.regdate >= #{startDate})
+          AND (#{endDate, jdbcType=TIMESTAMP} IS NULL OR #{endDate}>=a.regdate)
+    </select>
 </mapper>

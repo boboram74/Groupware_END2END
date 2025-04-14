@@ -1,6 +1,7 @@
 package com.end2end.spring.approval.service;
 
 import com.end2end.spring.approval.dto.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -37,4 +38,7 @@ public interface ApprovalService {
     void approve(String approvalId, int approverId);
     void rejectApproval(ApprovalRejectDTO rejectDTO);
     void submit(boolean isSubmit);
+
+    @Transactional
+    List<Map<String, Object>> searchDetail(Map<String, Object> paramMap);
 }

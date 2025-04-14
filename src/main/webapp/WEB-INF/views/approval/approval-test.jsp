@@ -33,7 +33,129 @@
         background-color: var(--md-sys-color-surface-bright);
         color: var(--md-sys-color-surface);
     }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+
+    .form-group {
+        display: flex;
+        margin-bottom: 15px;
+        align-items: center;
+    }
+
+    .form-group label {
+        width: 80px;
+        flex-shrink: 0;
+    }
+
+    .form-group select,
+    .form-group input[type="text"],
+    .form-group input[type="date"] {
+        flex-grow: 1;
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .date-range {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .radio-group {
+        margin-bottom: 15px;
+    }
+
+    .radio-group label {
+        margin-right: 15px;
+    }
+
+    .search-button {
+        width: 100%;
+        padding: 8px;
+        background-color: #999;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .search-button:hover {
+        background-color: #777;
+    }
 </style>
+<form action="/approval/searchDetail" method="get" id="search-form">
+    <div class="modal-overlay">
+        <div class="modal-container">
+
+            <div class="form-group">
+                <label>양식</label>
+                <select name="form">
+                    <option value="">(선택)</option>
+                    <option value="기안문">기안문</option>
+                    <option value="휴가계">휴가계</option>
+                    <option value="지출결의서">지출결의서</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>기간</label>
+                <div class="date-range">
+                    <input type="date" name="startDate"> ~
+                    <input type="date" name="endDate">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>상태</label>
+                <select name="state">
+                    <option value="">(선택)</option>
+                    <option value="WAITING">대기 중</option>
+                    <option value="ONGOING">진행 중</option>
+                    <option value="SUBMIT">완료</option>
+                    <option value="REJECT">반려</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>기안자</label>
+                <input type="text" name="EMPLOYEENAME">
+            </div>
+
+            <div class="radio-group">
+                <label>검색 조건</label>
+                <input type="radio" name="searchType" id="r1" value="any" checked>
+                <label for="r1">하나만 만족</label>
+                <input type="radio" name="searchType" id="r2" value="all">
+                <label for="r2">모두 만족</label>
+            </div>
+
+            <button class="search-button">검색</button>
+        </div>
+    </div>
+</form>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
@@ -85,7 +207,7 @@
                 <input id="input" type="text" name="keyword" placeholder="중요메일함">
             </div>
             <div>
-                <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
+                <button id="searchBtn"><span class="material-icons" onClick="location.href='/approval/search?keyword=' + $('input[name=keyword]').val()" class="searchBtn"/>검색</button>
             </div>
         </div>
         <div class="button-container">
@@ -274,24 +396,38 @@
     </div>
 </div>
 <script>
+    const detailButtons = document.querySelectorAll('.secondary');
+    const modalOverlay = document.querySelector('.modal-overlay');
+
+    detailButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            modalOverlay.style.display = 'flex';
+        });
+    });
+
+
+    // 모달 외부 클릭 시 모달 숨기기
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            modalOverlay.style.display = 'none';
+        }
+    });
+
     $(document).ready(function() {
         $('.detail-menu-item').on('click', function() {
             $('.detail-menu-item').removeClass('active');
             $(this).addClass('active');
-            // 클릭 이벤트 처리 로직
         });
 
         const $menuBtn = $('.detail-menu-toggle-btn');
         const $detailMenuModal = $('.detail-menu-modal');
         const $closeBtn = $('.detail-modal-close');
 
-        // 메뉴 버튼 클릭 시 모달 열기
         $menuBtn.on('click', function() {
             $detailMenuModal.addClass('active');
             $('body').css('overflow', 'hidden');
         });
 
-        // 닫기 버튼 클릭 시 모달 닫기
         $closeBtn.on('click', function() {
             $detailMenuModal.removeClass('active');
             $('body').css('overflow', '');
@@ -304,6 +440,49 @@
                 $('body').css('overflow', '');
             }
         });
+    });
+
+    $('#search-form').on('submit', function(e) {
+
+        const form = $(this);
+
+
+        const formValue = form.find('select[name="form"]').val();
+        if (!formValue) {
+            alert('양식을 선택해주세요.');
+            return false;
+        }
+
+
+        const startDate = form.find('input[name="startDate"]').val();
+        const endDate = form.find('input[name="endDate"]').val();
+        if (!startDate || !endDate) {
+            alert('기간을 선택해주세요.');
+            return false;
+        }
+
+        const stateValue = form.find('select[name="state"]').val();
+        if (!stateValue) {
+            alert('상태를 선택해주세요.');
+            return false;
+        }
+
+        const EMPLOYEENAME = form.find('input[name="EMPLOYEENAME"]').val();
+        if (!EMPLOYEENAME) {
+            alert('기안자를 입력해주세요.');
+            return false;
+        }
+
+        if (startDate && endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+
+            if (start > end) {
+                alert('시작 날짜가 종료 날짜보다 늦을 수 없습니다.');
+                return false;
+            }
+        }
+        this.submit();
     });
 
     $(".apBtnNewDoc").on("change", function () {

@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -197,6 +198,7 @@ public class ApprovalController {
 
     @RequestMapping("/search")
     public String search(HttpSession session, String keyword, Model model) {
+        System.out.println("도착2");
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
 
@@ -211,7 +213,58 @@ public class ApprovalController {
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("keyword", keyword);
 
-        return "approval/list";
+        return "approval/approval-test";
     }
+
+    @GetMapping("/searchDetail")
+    public String searchDetail(@RequestParam Map<String, Object> searchParams, HttpSession session, Model model) {
+        System.out.println("도착");
+
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        String employeeId = employee.getId();
+        System.out.println("employeeId: " + employeeId);
+
+        searchParams.put("employeeId", employeeId);
+        System.out.println("searchParams: " + searchParams);
+
+        List<Map<String, Object>> approvalList = approvalService.searchDetail(searchParams);
+        System.out.println("approvalList: " + approvalList);
+
+        List<Map<String, Object>> waitingList = new ArrayList<>();
+        List<Map<String, Object>> goingList = new ArrayList<>();
+        List<Map<String, Object>> completedList = new ArrayList<>();
+        List<Map<String, Object>> rejectList = new ArrayList<>();
+
+        for (Map<String, Object> approval : approvalList) {
+            String STATE = (String) approval.get("STATE");
+            System.out.println("STATE: " + STATE);
+            if ("WAITING".equals(STATE)) {
+                waitingList.add(approval);
+            } else if ("ONGOING".equals(STATE)) {
+                goingList.add(approval);
+            } else if ("SUBMIT".equals(STATE)) {
+                completedList.add(approval);
+            } else if ("REJECT".equals(STATE)) {
+                rejectList.add(approval);
+            }
+        }
+        System.out.println("waitingList: " + waitingList);
+        System.out.println("goingList: " + goingList);
+        System.out.println("completedList: " + completedList);
+        System.out.println("rejectList: " + rejectList);
+
+
+        model.addAttribute("waitingList", waitingList);
+        model.addAttribute("goingList", goingList);
+        model.addAttribute("completedList", completedList);
+        model.addAttribute("rejectList", rejectList);
+        model.addAttribute("searchParams", searchParams);
+
+        return "approval/approval-test";
+    }
+
 
 }

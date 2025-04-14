@@ -3,40 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/template/exam.css"/>
-<style>
-    .pageNavi{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        padding-top: 0;
-    }
-    .paging {
-        display: inline-block;
-        margin: 5px 3px;
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        border-radius: 5px;
-        background: var(--md-sys-color-secondary);
-        color: var(--md-sys-color-on-secondary);
-        border: 1px solid #ccc;
-        text-align: center;
-        vertical-align: middle;
-        cursor: pointer;
-        transition: background 0.3s, transform 0.2s;
-    }
-    .paging:hover {
-        background: var(--md-sys-color-secondary-hover);
-        transform: translateY(-2px);
-    }
-    .paging.active {
-        background-color: var(--md-sys-color-primary);
-        color: var(--md-sys-color-on-primary);
-        transform: none;
-    }
-</style>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">

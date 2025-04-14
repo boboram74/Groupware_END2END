@@ -81,7 +81,7 @@ public class HRController {
     @RequestMapping("/update")
     public String update(HttpSession session, EmployeeDetailDTO dto, MultipartFile file) {
         // TODO: 직원 데이터 수정
-       employeeService.update(dto,file);
+        employeeService.update(dto,file);
         String employeeId = dto.getId();
 
         session.setAttribute("employee", employeeService.selectById(employeeId));

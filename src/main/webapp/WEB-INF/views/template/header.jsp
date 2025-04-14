@@ -131,7 +131,7 @@
       background: var(--md-sys-color-outline);
     }
 
-<<<<<<< HEAD
+
     /*조직도 CSS*/
     .org-chart ul {
       padding-top: 20px;
@@ -176,7 +176,7 @@
     .modal-backdrop {
       z-index: -1;
     }
-=======
+
     @keyframes notificationAnimation {
       0% {
         transform: scale(1) rotate(0deg);
@@ -200,7 +200,6 @@
       transform-origin: center;
     }
 
->>>>>>> 8fc1d83316e8e7c7ce5fba036cae2e89e0044b4f
   </style>
 </head>
 <body>
@@ -268,76 +267,8 @@
               <div class="notification-item">
                 <span class="material-icons color-info">notifications_paused</span>
                 <div class="notification-content">
-<<<<<<< HEAD
-                  <div class="notification-text">새로운 메일이 도착했습니다.</div>
-                  <div class="notification-date">2024.02.15 14:30</div>
-                </div>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-success">description</span>
-                <div class="notification-content">
-                  <div class="notification-text">휴가신청이 승인되었습니다.</div>
-                  <div class="notification-date">2024.02.15 11:20</div>
-                </div>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-warning">event</span>
-                <div class="notification-content">
-                  <div class="notification-text">팀 회의가 30분 후에 시작됩니다.</div>
-                  <div class="notification-date">2024.02.15 09:45</div>
-                </div>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-info">people</span>
-                <div class="notification-content">
-                  <div class="notification-text">프로젝트 팀원이 추가되었습니다.</div>
-                  <div class="notification-date">2024.02.14 17:15</div>
-                </div>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-danger">priority_high</span>
-                <dsiv class="notification-content">
-                  <div class="notification-text">긴급 화상회의가 소집되었습니다.</div>
-                  <div class="notification-date">2024.02.14 16:50</div>
-                </dsiv>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-success">check_circle</span>
-                <div class="notification-content">
-                  <div class="notification-text">업무 보고서가 승인되었습니다.</div>
-                  <div class="notification-date">2024.02.14 15:20</div>
-                </div>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-warning">schedule</span>
-                <div class="notification-content">
-                  <div class="notification-text">프로젝트 마감기한이 임박했습니다.</div>
-                  <div class="notification-date">2024.02.14 14:10</div>
-                </div>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-info">announcement</span>
-                <div class="notification-content">
-                  <div class="notification-text">전체 공지사항이 등록되었습니다.</div>
-                  <div class="notification-date">2024.02.14 11:30</div>
-                </div>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-primary">share</span>
-                <div class="notification-content">
-                  <div class="notification-text">새로운 문서가 공유되었습니다.</div>
-                  <div class="notification-date">2024.02.14 10:15</div>
-                </div>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-success">cake</span>
-                <div class="notification-content">
-                  <div class="notification-text">오늘은 김철수 님의 생일입니다.</div>
-                  <div class="notification-date">2024.02.14 09:00</div>
-=======
                   <div class="notification-text">현재 알람이 없습니다.</div>
                   <div class="notification-date"></div>
->>>>>>> 8fc1d83316e8e7c7ce5fba036cae2e89e0044b4f
                 </div>
               </div>
             </div>
@@ -507,33 +438,56 @@
             console.log('알람 웹소켓 닫힘:', event.code, event.reason);
           };
 
-<<<<<<< HEAD
           alarm.onmessage = function(e) {
             const data = JSON.parse(e.data);
             console.log(data);
 
-            for (let i = 0; i < data.length; i++) {
-              const item = data[i];
+      let notReadCount = 0;
+      $('#notificationMenu .notification-list').empty();
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i];
 
-              const div = $('<div class="notification-item">');
-              div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
-                      .append($('<div class="notification-content">')
-                              .append($('<div class="notification-text">').text(item.message))
-                              .append($('<div class="notification-date">').text(new Date().toLocaleDateString())))
+        const readYn = (item.isRead) ? 'read' : '';
+        if (!item.isRead) {
+          notReadCount++;
+        }
 
-              if (item.url !== '') {
-                div.on('click', function() {
-                  location.href = item.url;
-                })
-              }
-              $('#notificationMenu .notification-list').append(div);
-            }
-          }
-        });
-      </script>
+        const div = $('<div class="notification-item">');
+        div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
+                .append($('<div class="notification-content">').addClass(readYn)
+                        .append($('<div class="notification-text">').text(item.message))
+                        .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
 
-      <script>
-        function orgChartModal() {
+        if (item.url !== '') {
+          div.on('click', function() {
+            alarm.send(JSON.stringify({
+              'id': Number(item.id),
+              'employeeId': String(${employee.id})
+            }));
+
+            location.href = item.url;
+          })
+        $('#notificationMenu .notification-list').append(div);
+      }
+
+      if (notReadCount > 0) {
+        $('#notificationBtn .notification-badge').show().text(notReadCount);
+
+        $('#notificationBtn .material-icons').removeClass('notification-animate');
+        $('#notificationBtn .material-icons')[0].offsetWidth;
+        $('#notificationBtn .material-icons').addClass('notification-animate')
+                .one('animationend', function() {
+                  $(this).removeClass('notification-animate');
+                });
+      }
+    }
+
+    function parseTime(time) {
+      const date = new Date(time);
+      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    }
+            
+      function orgChartModal() {
           $.ajax({
             url: '/employee/orgChart',
             method: 'GET'
@@ -557,7 +511,6 @@
                 }
               }
             }
-
             for (let i = 0; i < employeeList.length; i++) {
               const departmentList = employeeList[i];
               const title = $('<div>').html(departmentList.name).css({
@@ -582,56 +535,8 @@
             const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
             modal.show();
           });
-=======
-      if (data.length > 0) {
-        $('#notificationBtn .notification-badge').show().text(data.length);
-
-        $('#notificationBtn .material-icons').removeClass('notification-animate');
-        $('#notificationBtn .material-icons')[0].offsetWidth;
-        $('#notificationBtn .material-icons').addClass('notification-animate')
-                .one('animationend', function() {
-                  $(this).removeClass('notification-animate');
-                });
-      } else {
-        return;
-      }
-
-      $('#notificationMenu .notification-list').empty();
-      for (let i = 0; i < data.length; i++) {
-        const item = data[i];
-
-        const div = $('<div class="notification-item">');
-        div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
-                .append($('<div class="notification-content">')
-                        .append($('<div class="notification-text">').text(item.message))
-                        .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
-
-        if (item.url !== '') {
-          div.on('click', function() {
-            alarm.send(JSON.stringify({
-              'id': item.id,
-              'employeeId': ${employee.id}
-            }));
-
-            location.href = item.url;
-          })
->>>>>>> 8fc1d83316e8e7c7ce5fba036cae2e89e0044b4f
-        }
-      </script>
-
-<<<<<<< HEAD
-=======
-        $('#notificationMenu .notification-list').append(div);
-      }
-    }
-
-    function parseTime(time) {
-      const date = new Date(time);
-      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    }
   });
 </script>
->>>>>>> 8fc1d83316e8e7c7ce5fba036cae2e89e0044b4f
       <script>
         $(document).ready(function () {
           $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
@@ -678,14 +583,11 @@
             e.stopPropagation();
           });
 
-<<<<<<< HEAD
-=======
           // 프로필 이미지 클릭 이벤트
           $('.profile').on('click', function(e) {
             e.stopPropagation(); // 이벤트 버블링 방지
             $('#profileMenu').toggle();
           });
->>>>>>> 8fc1d83316e8e7c7ce5fba036cae2e89e0044b4f
 
           // 문서 전체 클릭 이벤트 (메뉴 외부 클릭시 닫기)
           $(document).on('click', function(e) {
@@ -720,7 +622,6 @@
             $('#notificationMenu').hide();
           });
 
-<<<<<<< HEAD
     $(document).on('click', function(e) {
       if (!$(e.target).closest('.notification-container').length) {
         $('#notificationMenu').hide();
@@ -728,8 +629,7 @@
     });
   });
 </script>
-
-=======
+<script>
           $(document).on('click', function(e) {
             if (!$(e.target).closest('.notification-container').length) {
               $('#notificationMenu').hide();
@@ -750,5 +650,4 @@
             // $(this)[0].submit();
           });
         });
-      </script>
->>>>>>> 8fc1d83316e8e7c7ce5fba036cae2e89e0044b4f
+</script>

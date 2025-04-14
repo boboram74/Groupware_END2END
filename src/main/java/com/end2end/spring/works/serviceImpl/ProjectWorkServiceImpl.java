@@ -1,5 +1,7 @@
 package com.end2end.spring.works.serviceImpl;
 
+import com.end2end.spring.alarm.AlarmService;
+import com.end2end.spring.alarm.AlarmType;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
@@ -19,6 +21,9 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     @Autowired
     FileService fileService;
 
+    @Autowired
+    private AlarmService alarmService;
+
     @Override
     public List<ProjectWorkDTO> selectAll(int id) {
         return dao.selectAll(id)  ;
@@ -35,6 +40,9 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
                 .projectWorkId(projectWorkId)
                 .build();
         fileService.insert(files, fileDTO);
+
+        alarmService.sendProjectAlarm(
+                AlarmType.PROJECT_WORK_CREATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
     }
 
     @Override
@@ -52,6 +60,9 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     @Override
     public ProjectWorkDTO update(ProjectWorkDTO dto) {
         dao.update(dto);
+
+        alarmService.sendProjectAlarm(
+                AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
 
         return dto;
     }
@@ -89,6 +100,7 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     @Override
     public void updateState(String state, int workItemId) {
         dao.updateState(state,workItemId);
+        alarmService.sendProjectWorkStateChangeAlarm(workItemId);
     }
 
     @Override

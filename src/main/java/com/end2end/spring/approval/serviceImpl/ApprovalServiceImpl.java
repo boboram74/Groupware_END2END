@@ -194,6 +194,8 @@ public class ApprovalServiceImpl implements ApprovalService {
         approverDAO.updateSubmitYn(rejectDTO.getApproverId(), "N", new Timestamp(System.currentTimeMillis()));
 
         approvalDAO.updateState(rejectDTO.getApprovalId(), "REJECT");
+
+        alarmService.sendApprovalResultAlarm("/approval/detail/" + rejectDTO.getApprovalId(), rejectDTO.getApprovalId());
     }
 
     @Override

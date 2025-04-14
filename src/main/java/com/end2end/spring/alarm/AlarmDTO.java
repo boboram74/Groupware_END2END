@@ -23,17 +23,6 @@ public class AlarmDTO {
     private Timestamp sendTime;
     private boolean isRead;
 
-    public String toJson() {
-        Map<String, Object> json = new HashMap<>();
-        json.put("employeeId", employeeId);
-        json.put("icons", icons);
-        json.put("message", message);
-        json.put("url", url);
-        json.put("sendTime", sendTime);
-
-        return new Gson().toJson(json);
-    }
-
     public static AlarmDTO of(AlarmType type, String employeeId, String url) {
         return AlarmDTO.builder()
                 .employeeId(employeeId)
@@ -51,6 +40,7 @@ public class AlarmDTO {
                 .icons(type.getIcons())
                 .isRead(false)
                 .message(type.getDescription())
+                .type(type.getType())
                 .build();
     }
 

@@ -7,6 +7,7 @@ import com.end2end.spring.mail.dto.EmailAddressUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -41,6 +42,9 @@ public class AlarmService {
     }
 
     private void send(AlarmDTO dto, String employeeId) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        dto.setSendTime(timestamp);
+
         AlarmEndPoint.sendMessage(dto, employeeId);
     }
 }

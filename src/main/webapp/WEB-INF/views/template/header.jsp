@@ -423,7 +423,7 @@
         div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
                 .append($('<div class="notification-content">')
                         .append($('<div class="notification-text">').text(item.message))
-                        .append($('<div class="notification-date">').text(new Date().toLocaleDateString())))
+                        .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
 
         if (item.url !== '') {
           div.on('click', function() {
@@ -433,6 +433,11 @@
 
         $('#notificationMenu .notification-list').append(div);
       }
+    }
+
+    function parseTime(time) {
+      const date = new Date(time);
+      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
     }
   });
 </script>

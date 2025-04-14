@@ -6,6 +6,7 @@ import com.end2end.spring.employee.dto.LoginDTO;
 import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.main.dto.LoginHistoryDTO;
 import com.end2end.spring.main.service.LoginHistoryService;
+import com.end2end.spring.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +42,7 @@ public class EmployeeController {
             LoginHistoryDTO loginHistoryDTO = LoginHistoryDTO.builder()
                     .employeeId(employee.getId())
                     .state("LOGIN")
-                    .accessIp(request.getRemoteAddr())
+                    .accessIp(SecurityUtil.getClientIp(request))
                     .build();
             loginHistoryService.insert(loginHistoryDTO);
 
@@ -55,8 +56,18 @@ public class EmployeeController {
     }
 
     @RequestMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, HttpServletRequest request) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+
         session.invalidate();
+
+        LoginHistoryDTO loginHistoryDTO = LoginHistoryDTO.builder()
+                .employeeId(employee.getId())
+                .state("LOGOUT")
+                .accessIp(SecurityUtil.getClientIp(request))
+                .build();
+        loginHistoryService.insert(loginHistoryDTO);
+
         return "redirect:/";
     }
 

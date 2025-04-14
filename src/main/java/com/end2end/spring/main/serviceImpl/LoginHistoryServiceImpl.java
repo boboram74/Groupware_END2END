@@ -23,10 +23,12 @@ public class LoginHistoryServiceImpl implements LoginHistoryService {
     public void insert(LoginHistoryDTO dto) {
         loginHistoryDAO.insert(dto);
 
-        List<LoginHistoryDTO> loginHistoryList = loginHistoryDAO.selectByAccessIpAndEmployeeId(dto);
+        if (dto.getState().equals("LOGIN")) {
+            List<LoginHistoryDTO> loginHistoryList = loginHistoryDAO.selectByAccessIpAndEmployeeId(dto);
 
-        if (loginHistoryList.isEmpty()) {
-            alarmService.sendNewLoginIpAlarm(dto.getEmployeeId());
+            if (loginHistoryList.isEmpty()) {
+                alarmService.sendNewLoginIpAlarm(dto.getEmployeeId());
+            }
         }
     }
 }

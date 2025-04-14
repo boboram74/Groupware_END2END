@@ -4,23 +4,20 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project">
 
-    <select id="">
-        select
-        project_work.*,
-        CASE
-        WHEN DEADLINE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE + 7) THEN '긴급'
-        ELSE '안전'
-        END as 긴급여부
-        from project_work
-    </select>
-
     <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectDTO">
-        SELECT * from project order by id desc,
+        SELECT
+        p.*,
         CASE
-        WHEN DEADLINE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE + 7) THEN 'Y'
+        WHEN p.DEADLINE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE + 5) THEN 'Y'
         ELSE 'N'
-        END as nearDeadline
-        from project
+        END AS nearDeadline
+        FROM project p
+        ORDER BY p.id DESC,
+        CASE
+        WHEN p.DEADLINE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE + 5) THEN 1
+        ELSE 2
+        END
+
     </select>
     <!-- 프로젝트 모아보기-->
 
@@ -50,36 +47,12 @@
     </insert>
     <!-- 프로젝트추가 -->
 
-<!--   -->
-<!--    <select id="selectProjectMemberProfiles"  parameterType="int" resultType="com.end2end.spring.employee.dto.EmployeeDTO">-->
-<!--        SELECT-->
-<!--        e.profileImg-->
-<!--        FROM-->
-<!--        project_user p-->
-<!--        INNER JOIN-->
-<!--        employee e ON p.employeeId = e.id-->
-<!--        WHERE-->
-<!--        p.projectId = #{id}-->
-
-<!--    </select>-->
-
-
-<!--    <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">-->
-<!--        INSERT INTO PROJECT_USER (id, projectId, employeeId, regDate)-->
-<!--        SELECT PROJECT_USER_SEQ.NEXTVAL, #{projectId}, e.employee_id, SYSDATE-->
-<!--        FROM EMPLOYEE e-->
-<!--        WHERE e.employee_id IN-->
-<!--        <foreach item="employeeId" collection="employeeIds" open="(" separator="," close=")">-->
-<!--            #{employeeId}-->
-<!--        </foreach>-->
-<!--    </insert>-->
 
     <insert id="insertProjectUser" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">
         INSERT INTO PROJECT_USER (id,projectId, employeeId)
         VALUES (PROJECT_USER_ID_SEQ.NEXTVAL,#{projectId}, #{employeeId})
     </insert>
     <!-- 프로젝트인원추가 -->
-
 
 
     <insert id="insertAllProjectUser">
@@ -121,4 +94,24 @@
         WHERE EMPLOYEE.NAME LIKE #{name}
 
     </select>
+
+<!--프로젝트에 추가되어 있던 멤버-->
+    <select id="getMembersByProjectId"   resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT
+        e.name,
+        d.name AS departmentName,
+        j.name AS jobName
+        FROM
+        project_user pu
+        JOIN
+        employee e ON pu.employeeId = e.id
+        JOIN
+        department d ON e.departmentId = d.id
+        JOIN
+        job j ON e.jobId = j.id
+        WHERE
+        pu.projectId = #{projectId}
+
+    </select>
+
 </mapper>

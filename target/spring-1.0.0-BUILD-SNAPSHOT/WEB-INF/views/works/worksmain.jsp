@@ -459,12 +459,13 @@
 
                 <tr id="changeRow-${list.id}">
 
-                    <td onclick="location.href='/project/detail/${list.id}'">${list.name}<span class="detail-badge">긴급</span></td>
+                    <td onclick="location.href='/project/detail/${list.id}'">${list.name}<c:if test="${list.nearDeadline == 'Y'}"><span class="detail-badge">긴급</span></c:if> </td>
                     <td onclick="location.href='/project/detail/${list.id}'">${list.regDate}</td>
                     <td onclick="location.href='/project/detail/${list.id}'"> ${list.deadLine}</td>
                     <td>
                         <div class="member-profiles" onclick="location.href='/project/detail/${list.id}'">
                             <!-- 프로필 이미지 리스트 -->
+                            <c:if test="${not empty list.profileImg}">
                             <c:forEach items="${list.profileImg}" var="img">
                                 <c:choose>
                                     <c:when test="${img == null}">
@@ -475,6 +476,7 @@
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
+                            </c:if>
                         </div>
                     </td>
 
@@ -566,50 +568,50 @@
 
 
 <%--프로젝트수정모달--%>
-<div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="/project/update" method="post">
-                <div class="modal-body">
+<%--<div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">--%>
+<%--    <div class="modal-dialog">--%>
+<%--        <div class="modal-content">--%>
+<%--            <div class="modal-header">--%>
+<%--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--%>
+<%--            </div>--%>
+<%--            <form action="/project/update" method="post">--%>
+<%--                <div class="modal-body">--%>
 
-                    <input type="hidden" name="projectId" value="${project.id}"/>
+<%--                    <input type="hidden" name="projectId" value="${project.id}"/>--%>
 
-                    <h5>프로젝트 title</h5>
-                    <div class="mb-3">
-                        <input type="text" id="title" value="${project.name}">
-                    </div>
-                    <%--projectinsertDTO 가져와야됨--%>
-                    <div class="mb-3">
-                        <!-- 프로젝트 기간 설정 버튼 -->
-                        프로젝트 기간 설정
-                        <input type="date" name="deadLine" value="${project.deadLine}"/>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">프로젝트 인원</label>
-                        <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">
-                            인원 추가
-                        </button>
-                        <div id="updateMembers" class="mt-2">
-                            <div class="selectedUser" val>
-                                <div>선택된 멤버가 없습니다</div>
-                            </div>
-                        </div>
-                    </div>
+<%--                    <h5>프로젝트 title</h5>--%>
+<%--                    <div class="mb-3">--%>
+<%--                        <input type="text" id="title" value="${project.name}">--%>
+<%--                    </div>--%>
+<%--                    &lt;%&ndash;projectinsertDTO 가져와야됨&ndash;%&gt;--%>
+<%--                    <div class="mb-3">--%>
+<%--                        <!-- 프로젝트 기간 설정 버튼 -->--%>
+<%--                        프로젝트 기간 설정--%>
+<%--                        <input type="date" name="deadLine" value="${project.deadLine}"/>--%>
+<%--                    </div>--%>
+<%--                    <div class="mb-3">--%>
+<%--                        <label class="form-label">프로젝트 인원</label>--%>
+<%--                        <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">--%>
+<%--                            인원 추가--%>
+<%--                        </button>--%>
+<%--                        <div id="updateMembers" class="mt-2">--%>
+<%--                            <div class="selectedUser" val>--%>
+<%--                                <div>선택된 멤버가 없습니다</div>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            onclick="closeupdateModal() ">Close
-                    </button>
-                    <button type="submit" class="btn btn-primary">수정완료</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<%--                </div>--%>
+<%--                <div class="modal-footer">--%>
+<%--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"--%>
+<%--                            onclick="closeupdateModal() ">Close--%>
+<%--                    </button>--%>
+<%--                    <button type="submit" class="btn btn-primary">수정완료</button>--%>
+<%--                </div>--%>
+<%--            </form>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 
 <%--프로젝트 추가 및 수정에서 인원변경모달라인--%>
@@ -660,55 +662,55 @@
     </div>
 </div>
 <script>
-$.ajax({
-    url: '/project/members/'+applyProjectById,
-    type : 'GET',
-    success : function(members){
-        if (members.length > 0) {
-            members.forEach(member => {
-                $('#updateMembers').append(
-                    $('<div>').addClass('selected-user').attr('data-id', member.id)
-                        .append($('<span>').html(member.name))
-                        .append($('<button>').addClass("remove-user").html('삭제').click(function () {
-                            $(this).parent().remove();
-                        }))
-                        .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(member.id))
-                );
-            });
-        } else {
-            $('#updateMembers').html('<div class="selectedUser"><div>선택된 멤버가 없습니다</div></div>');
-        }
-    },
-    error: function (xhr, status, err) {
-        console.error("멤버 불러오기 실패", err);
-    }
-});
-
-    $('form').submit(function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(this);
-        for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
-        $.ajax({
-            url: '/work/update',
-            data: formData,
-            type: 'POST',
-            processData: false,
-            contentType: false,
-            error: function (xhr, status, error) {
-                console.error('Error:', error);
-                console.error('Status:', status);
-                console.error('Response:', xhr.responseText);
-            }
-        }).done(function (response) {
-            console.log(response);
-            location.reload();
-            alert("수정이 완료되었습니다")
-        })
-    })
-
+// $.ajax({
+//     url: '/project/members/'+applyProjectById,
+//     type : 'GET',
+//     success : function(members){
+//         if (members.length > 0) {
+//             members.forEach(member => {
+//                 $('#updateMembers').append(
+//                     $('<div>').addClass('selected-user').attr('data-id', member.id)
+//                         .append($('<span>').html(member.name))
+//                         .append($('<button>').addClass("remove-user").html('삭제').click(function () {
+//                             $(this).parent().remove();
+//                         }))
+//                         .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(member.id))
+//                 );
+//             });
+//         } else {
+//             $('#updateMembers').html('<div class="selectedUser"><div>선택된 멤버가 없습니다</div></div>');
+//         }
+//     },
+//     error: function (xhr, status, err) {
+//         console.error("멤버 불러오기 실패", err);
+//     }
+// });
+//
+//     $('form').submit(function (e) {
+//         e.preventDefault();
+//
+//         const formData = new FormData(this);
+//         for (const [key, value] of formData.entries()) {
+//             console.log(key, value);
+//         }
+//         $.ajax({
+//             url: '/work/update',
+//             data: formData,
+//             type: 'POST',
+//             processData: false,
+//             contentType: false,
+//             error: function (xhr, status, error) {
+//                 console.error('Error:', error);
+//                 console.error('Status:', status);
+//                 console.error('Response:', xhr.responseText);
+//             }
+//         }).done(function (response) {
+//             console.log(response);
+//             location.reload();
+//             alert("수정이 완료되었습니다")
+//         })
+//     })
+//
 
     function openProjectModal() {
         $('#projectModal').modal('show');

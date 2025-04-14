@@ -70,7 +70,10 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDTO findLatestProject(){
         return projectDao.findLatestProject();
     }
-
+@Override
+public List<EmployeeDTO> getMembersByProjectId(int projectId){
+        return projectDao.getMembersByProjectId(projectId);
+}
     @Override
     public List<ProjectSelectDTO> selectAllProject() {
         List<ProjectDTO> projectDTO = projectDao.selectAll();

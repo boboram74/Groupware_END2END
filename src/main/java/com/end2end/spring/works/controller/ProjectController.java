@@ -35,9 +35,10 @@ public class ProjectController {
 
         List<ProjectSelectDTO> projects = projectService.selectAllProject();
 
-
+System.out.println("도착체크"+projects);
+System.out.println(projects.get(0));
         model.addAttribute("projects", projects);
-
+        model.addAttribute("employee", EmployeeDTO);
 
         return "works/worksmain";
     }
@@ -72,7 +73,11 @@ public class ProjectController {
         // TODO: 프로젝트 생성
         return "redirect:/project/main";
     }
-
+    @ResponseBody
+    @GetMapping("/members/{projectId}")
+    public List<EmployeeDTO> getProjectMembers(@PathVariable int projectId) {
+        return projectService.getMembersByProjectId(projectId);
+    }
 
     @RequestMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model) {

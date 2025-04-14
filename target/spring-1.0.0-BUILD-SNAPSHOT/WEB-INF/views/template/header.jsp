@@ -102,7 +102,7 @@
     .color-warning { color: #ff9800; }
     .color-info { color: #2196f3; }
     .color-danger { color: #f44336; }
-    
+
     .notification-list::-webkit-scrollbar {
       width: 6px;
     }
@@ -174,8 +174,6 @@
     <header class="header">
       <div class="logo" onClick="location.href='/'"></div>
       <div class="header-icons">
-        <!-- 알람 아이콘 -->
-        <!-- 기존 알람 버튼을 아래 코드로 대체 -->
         <div class="notification-container">
           <button class="icon-button" id="notificationBtn">
             <span class="material-icons">notifications</span>
@@ -442,6 +440,8 @@
 </script>
 <script>
   $(document).ready(function() {
+    $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
+
     $('#darkModeBtn').on('click', function() {
       if (mode === 'light') {
         mode = 'dark';
@@ -452,6 +452,8 @@
         sessionStorage.setItem('mode', 'light');
         $('html').removeClass('dark').addClass('light');
       }
+
+      $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
     })
 
     // 모바일 메뉴 열기

@@ -13,5 +13,9 @@ public class MessageDTO {
     private Integer id;
     private Integer messagerRoomId;
     private Integer messagerRoomuserId;
+    private String employeeId;
+    private String name;
     private String content;
+    private Timestamp regDate;
+    private String profileImg;
 }

@@ -12,5 +12,7 @@ public class MessageUserDTO {
     private int id;
     private int messagerRoomId;
     private String employeeId;
+    private String name;
+    private String profileImg;
     private Timestamp regDate;
 }

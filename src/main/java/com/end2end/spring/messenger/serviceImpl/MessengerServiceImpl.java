@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MessengerServiceImpl implements MessengerService {
@@ -31,17 +33,6 @@ public class MessengerServiceImpl implements MessengerService {
     }
 
     @Override
-    public int selectRoomByName(String roomName) {
-        Integer result = messengerDAO.selectRoomByName(roomName);
-        return result == null ? 0 : result;
-    }
-
-    @Override
-    public void messageRoomInvite(int roomId, String employeeId) {
-        messengerDAO.messageRoomInvite(roomId, employeeId);
-    }
-
-    @Override
     public int findByRoomId(String roomName) {
         Integer roomResult = messengerDAO.selectRoomByName(roomName);
         return roomResult == null ? 0 : roomResult;
@@ -49,30 +40,15 @@ public class MessengerServiceImpl implements MessengerService {
 
     @Transactional
     @Override
-    public void createChatRoom(String employeeId, String roomName) {
+    public Map<String, Object> createChatRoom(String employeeId, String senderId, String roomName) {
         //새로운 채팅방 일때
         int messageRoomId = messengerDAO.messageFirstInsert(roomName);
         int messageRoomUserId = messengerDAO.messageFirstRoomInsert(messageRoomId, employeeId);
-    }
-
-    @Transactional
-    @Override
-    public void insertMessageToRoom(int roomId, String employeeId, String messageContent) {
-        Integer roomUserId = messengerDAO.findRoomUser(roomId, employeeId);
-        if (roomUserId == null) {
-            roomUserId = messengerDAO.messageFirstRoomInsert(roomId, employeeId);
-        }
-        messengerDAO.messageFirstContentInsert(roomId, roomUserId, messageContent);
-    }
-
-    @Override
-    public void insertInviteUser(int roomId, String employeeId) {
-        messengerDAO.messageFirstRoomInsert(roomId, employeeId);
-    }
-
-    @Override
-    public int findByRoomSeq() {
-        return messengerDAO.findByRoomSeq();
+        messengerDAO.messageFirstRoomInsert(messageRoomId, senderId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("messageRoomId", messageRoomId);
+        result.put("messageRoomUserId", messageRoomUserId);
+        return result;
     }
 
     @Override
@@ -88,6 +64,11 @@ public class MessengerServiceImpl implements MessengerService {
     @Override
     public List<MessageUserListDTO> selectRoomById(int roomId) {
         return messengerDAO.selectRoomById(roomId);
+    }
+
+    @Override
+    public int selectByName(String roomName) {
+        return messengerDAO.selectByName(roomName);
     }
 
 }

@@ -23,6 +23,7 @@ public class ChatEndPoint {
 
     // 사용자 ID로 세션 매핑 (동시성 처리)
     private static final Map<String, Session> clientSessions = new ConcurrentHashMap<>();
+
     private HttpSession hSession = null;
     private EmployeeDTO dto = null;
     private final Gson gson = new Gson();
@@ -60,20 +61,38 @@ public class ChatEndPoint {
                 processAndBroadcastMessage(parsedMessage, roomId);
                 break;
             default:
-                System.out.println("ERROR");
+                System.out.println("기본출력");
         }
     }
 
-    // newRoom -> 클라이언트가 어쩔때 newRoom처리할지?
-    public void addEmployeeToRoom(JsonObject parsedMessage, int roomId) {
+    // newRoom
+    public void addEmployeeToRoom(JsonObject parsedMessage, int roomId) throws IOException {
         String employeeId = parsedMessage.get("employeeId").getAsString();
         String id1 = dto.getId();
         String id2 = employeeId;
-        // 숫자로 변환하여 비교한 후, 항상 작은 값이 앞에 오도록 roomName 생성
         long num1 = Long.parseLong(id1);
         long num2 = Long.parseLong(id2);
         String roomName = (num1 < num2) ? id1 + "|" + id2 : id2 + "|" + id1;
-        messengerService.createChatRoom(employeeId, roomName); //insert table message_room,message_room_user
+         int selectByName = messengerService.selectByName(roomName); // <- SELECT COUNT(*) FROM MEESAGE_ROOM WHERE NAME = #{}
+         if (selectByName == 0) {
+             Map<String,Object> result = messengerService.createChatRoom(employeeId,dto.getId(), roomName);
+             String newRoomId = result.get("messageRoomId").toString();
+             String messageRoomUserId = result.get("messageRoomUserId").toString();
+             JsonObject response = new JsonObject();
+             response.addProperty("type", "NEW_CHAT_ROOM");
+             response.addProperty("roomId", newRoomId);
+             response.addProperty("messageRoomUserId", messageRoomUserId);
+
+             clientSessions.get(employeeId).getBasicRemote().sendText(gson.toJson(response));
+             clientSessions.get(dto.getId()).getBasicRemote().sendText(gson.toJson(response));
+         } else {
+             int newRoomId = messengerService.findByRoomId(roomName);
+             JsonObject response = new JsonObject();
+             response.addProperty("type", "NEW_CHAT_ROOM");
+             response.addProperty("roomId", newRoomId);
+             clientSessions.get(employeeId).getBasicRemote().sendText(gson.toJson(response));
+             clientSessions.get(dto.getId()).getBasicRemote().sendText(gson.toJson(response));
+         }
     }
 
     // invite
@@ -100,32 +119,39 @@ public class ChatEndPoint {
     // roomEnter
     public void loadAndSendChatHistory(JsonObject parsedMessage, int roomId) throws IOException {
         // select count(*) from message_room where id = roomId;
-        List<MessageHistoryDTO> messages = messengerService.selectMessageByRoomId(roomId); //message 테이블에 messageRoomId로 조회
+        List<MessageHistoryDTO> messages = messengerService.selectMessageByRoomId(roomId);
         String employeeId = parsedMessage.get("employeeId").getAsString();
-        clientSessions.get(employeeId).getBasicRemote().sendText(gson.toJson(messages)); //리스트 자체를 던짐
+        JsonObject response = new JsonObject();
+        response.addProperty("type", "history");
+        // messages 배열을 JSON 트리 형태로 추가합니다.
+        response.add("messages", gson.toJsonTree(messages));
+
+        String jsonResponse = gson.toJson(response);
+        try {
+            clientSessions.get(dto.getId()).getBasicRemote().sendText(jsonResponse);
+        } catch (NullPointerException ignored) {}
     }
 
     // message
     public void processAndBroadcastMessage(JsonObject parsedMessage, int roomId) throws IOException {
         MessageUserDTO dto = messengerService.selectUserByEmployeeIdAndRoomId(parsedMessage.get("employeeId").getAsString(), roomId);
+        System.out.println(parsedMessage.get("employeeId").getAsString()+ " : " + roomId);
+        //{"type":"message","employeeId":"2307276","message":"안녕하세요ㅎ","roomId":"428"}
         MessageDTO messageDTO = MessageDTO.builder()
                 .messagerRoomId(roomId)
-                .messagerRoomuserId(dto.getMessagerRoomId())
+                .messagerRoomuserId(dto.getId())
                 .content(parsedMessage.get("message").getAsString())
+                .name(dto.getName())
                 .build();
         messengerService.insertMessage(messageDTO);
 
         List<MessageUserListDTO> dtos = messengerService.selectRoomById(roomId);
         for (MessageUserListDTO dto2 : dtos) {
             String employeeId = dto2.getEmployeeId();
-            clientSessions.get(employeeId).getBasicRemote().sendText(gson.toJson(messageDTO));
+            try {
+                clientSessions.get(employeeId).getBasicRemote().sendText(gson.toJson(messageDTO));
+            } catch (NullPointerException ignored) {}
         }
-    }
-    //roomEnter
-    public void enterChatRoom(JsonObject message) {
-        //채팅 내용이 뜨고 그걸 클라이언트 전달
-        //List<qwe> qwe =  select * from message where messageRoomId = #{Value}
-        //클라이언트에게 메세지 기록
     }
 
     @OnClose

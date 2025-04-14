@@ -386,28 +386,31 @@
 			}
 			if (msg.type === "NEW_CHAT_ROOM") {
 				currentRoomId = msg.roomId;
+				alert(currentRoomId);
 				addNewChatRoomItem(msg);
-				const employeeId = $('#selected-employee-id').val();
-				const employeeName = $('.employee-item[data-id="' + employeeId + '"]').data('name');
-				showChatRoom(employeeId, employeeName, currentRoomId);
 				return;
 			} else if(msg.type === "history") {
-				console.log(msg.roomId);
-				console.log("roomID");
-				currentRoomId = msg.roomId;
-				let historyChat = $("<div>")
-						.addClass(msg.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
-						.html(msg.sender + " : " + msg.message);
-				$(".chat-messages").append(historyChat);
+				if (msg.roomId) {
+					currentRoomId = msg.roomId;
+				}
+				$(".chat-messages").empty();
+				msg.messages.forEach(function(m) {
+					let chat = $("<div>")
+							.addClass(m.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
+							.html(m.name + " : " + m.content);
+					$(".chat-messages").append(chat);
+				});
 				$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
 				return;
 			}
+
+
 			let chat = $("<div>")
-					.addClass(msg.senderId === $("#sender-employee-id").val() ? "chat me" : "chat")
-					.html(msg.sender + " : " + msg.message);
+					.addClass(msg.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
+					.html(msg.name + " : " + msg.content);
 			$(".chat-messages").append(chat);
 			$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
-			updateLastMessageInRoom(msg);
+			// updateLastMessageInRoom(msg);
 		}
 
 		//사원 목록 출력
@@ -481,9 +484,10 @@
 		function updateLastMessageInRoom(msg) {
 			let updatedRoom = null;
 			for (let i = 0; i < chatRooms.length; i++) {
-				let roomIdValue = chatRooms[i].roomId || chatRooms[i].messageRoomId;
+				let roomIdValue = chatRooms[i].roomId || chatRooms[i].messagerRoomId;
 				if (String(roomIdValue) === String(msg.roomId)) {
-					chatRooms[i].lastMessage = msg.message || "No messages yet";
+					chatRooms[i].lastMessage = msg.content || "No messages yet";
+					updatedRoom = chatRooms[i];
 					chatRooms.splice(i, 1);
 					chatRooms.unshift(updatedRoom);
 					break;
@@ -511,7 +515,8 @@
 				return;
 			}
 			const payload = {
-				id: $('#sender-employee-id').val(),
+				type: "message",
+				employeeId: $('#sender-employee-id').val(),
 				message: message,
 				roomId: currentRoomId
 			};
@@ -631,52 +636,14 @@
 			}
 		});
 
-		$(document).on('click', '.employee-item[data-id]', function() {
-			const employeeId = $(this).data('id');
-			const employeeName = $(this).data('name');
-
-			// 기존 채팅방 확인
-			const existingRoom = findExistingChatRoom(employeeId);
-
-			if (existingRoom) {
-				// 기존 채팅방이 있으면 해당 방으로 입장
-				showChatRoom(employeeId, employeeName, existingRoom.roomId);
-			} else {
-				// 새 채팅방 생성 요청
-				const payload = {
-					type: "newRoom",
-					employeeId: employeeId
-				};
-				ws.send(JSON.stringify(payload));
-			}
-		});
-		function findExistingChatRoom(employeeId) {
-			const currentUserId = $('#sender-employee-id').val();
-
-			// 1:1 채팅방 찾기 (두 사용자 ID로 구성된 방 이름)
-			const roomName1 = currentUserId + "|" + employeeId;
-			const roomName2 = employeeId + "|" + currentUserId;
-
-			for (const room of chatRooms) {
-				if (room.roomName === roomName1 || room.roomName === roomName2) {
-					return room;
-				}
-				// 1:N 채팅방 확인 (초대된 방인지 확인)
-				if (room.participants && room.participants.includes(employeeId)) {
-					return room;
-				}
-			}
-			return null;
-		}
-
-		function selectEmployee(employeeId) {
-
-			const payload = {
-				type: "roomEnter",
-				emplpyeeId: roomId
-			};
-			ws.send(JSON.stringify(payload));
-		}
+		// $(document).on('click', '.employee-item[data-id]', function() {
+		// 		// 새 채팅방 생성 요청
+		// 		const payload = {
+		// 			type: "newRoom",
+		// 			employeeId: employeeId
+		// 		};
+		// 		ws.send(JSON.stringify(payload));
+		// });
 
 		//채팅방 생성
 		function showChatRoom(employeeId, employeeName, roomId) {
@@ -700,11 +667,22 @@
 			$('.invite-sidebar').hide();
 			$('.chat-nav, .chat-content').css('margin-left', '0');
 			currentRoomId = roomId;
-			const payload = {
-				type: "roomEnter",
-				roomId: roomId
-			};
-			ws.send(JSON.stringify(payload));
+			if (roomId === 0) {
+				const payload = {
+					type: "newRoom",
+					employeeId: employeeId
+				};
+				ws.send(JSON.stringify(payload));
+			} else {
+				// 기존 채팅방 입장 요청
+				const payload = {
+					type: "roomEnter",
+					roomId: roomId,
+					employeeId: $('#sender-employee-id').val()
+				};
+				ws.send(JSON.stringify(payload));
+				currentRoomId = roomId;
+			}
 		}
 
 		function makeChatRoomListItem(room) {

@@ -67,23 +67,13 @@
     </select>
 
     <select id="selectMessageByRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageHistoryDTO">
-        SELECT MESSAGE.id, employee.id employeeId, MESSAGE.content , EMPLOYEE.NAME, EMPLOYEE.PROFILEIMG, JOB.NAME jName, DEPARTMENT.NAME dName, MESSAGE.REGDATE
-        FROM
-        MESSAGE
-        JOIN
-        MESSAGE_ROOM_USER
-        ON MESSAGE.MESSAGEROOMUSERID = MESSAGE_ROOM_USER.ID
-        JOIN
-        EMPLOYEE
-        ON MESSAGE_ROOM_USER.EMPLOYEEID = EMPLOYEE.ID
-        JOIN
-        JOB
-        ON EMPLOYEE.JOBID = JOB.ID
-        JOIN
-        DEPARTMENT
-        ON DEPARTMENT.ID = EMPLOYEE.DEPARTMENTID
-        WHERE
-        MESSAGE.MESSAGEROOMID = #{value}
+        select mru.*, m.content, e.name, e.profileImg
+        from message_room_user mru
+        join message m
+        on m.MESSAGEROOMID = mru.MESSAGEROOMID
+        join employee e
+        on e.id = mru.employeeId
+        where mru.MESSAGEROOMID = #{value}
     </select>
 
     <select id="findByRoomId" resultType="int">
@@ -102,19 +92,27 @@
         select message_room_id_seq.nextval from dual
     </select>
 
-    <select id="selectRoomById" parameterType="map" resultType="int">
-        select * from message where messageRoomId = #{value}
-    </select>
-
-    <select id="selectUserByEmployeeIdAndRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageHistoryDTO">
-        select * from message_room_user where employeeId = #{employeeId} and messageRoomId = #{roomId}
+    <select id="selectUserByEmployeeIdAndRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageUserDTO">
+        select mru.* ,e.name, e.profileImg
+        from
+        message_room_user mru
+        join employee e
+        on e.ID = mru.employeeId
+        where mru.employeeId = #{employeeId}
+        and mru.messageRoomId = #{roomId}
     </select>
 
     <insert id="insertMessage">
         insert into message(id, messageRoomId, messageRoomuserId, content)
         values (message_id_seq.nextval, #{messagerRoomId} , #{messagerRoomuserId}, #{content})
     </insert>
-    <select id="selectRoomById" resultType="int">
+
+    <select id="selectRoomById" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageUserListDTO">
         select * from message_room_user where MESSAGEROOMID = #{value}
     </select>
+
+    <select id="selectByName" resultType="int">
+        SELECT COUNT(*) FROM message_room WHERE NAME = #{value}
+    </select>
+
 </mapper>

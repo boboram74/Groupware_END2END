@@ -83,7 +83,7 @@ public class MessengerDAO {
         Map<String, Object> param = new HashMap<>();
         param.put("employeeId", employeeId);
         param.put("roomId", roomId);
-        return (MessageUserDTO) mybatis.selectList("messenger.selectUserByEmployeeIdAndRoomId",param);
+        return mybatis.selectOne("messenger.selectUserByEmployeeIdAndRoomId",param);
     }
 
     public int insertMessage(MessageDTO messageDTO) {
@@ -92,5 +92,9 @@ public class MessengerDAO {
 
     public List<MessageUserListDTO> selectRoomById(int roomId) {
         return mybatis.selectList("messenger.selectRoomById", roomId);
+    }
+
+    public int selectByName(String roomName) {
+        return mybatis.selectOne("messenger.selectByName", roomName);
     }
 }

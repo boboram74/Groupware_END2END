@@ -14,7 +14,12 @@ public enum AlarmType {
     NOTICE_INSERT("notification", "새로운 공지사항이 있습니다.", "info"),
     PROJECT_CREATE("add_circle", "새로운 프로젝트가 생성되었습니다.", "success"),
     PROJECT_UPDATE("update", "프로젝트에 변경 사항이 생겼습니다.", "warning"),
-    PROJECT_DEADLINE("schedule", "프로젝트의 마감 기한이 곧입니다.", "danger")
+    PROJECT_DEADLINE("schedule", "프로젝트의 마감 기한이 곧입니다.", "danger"),
+    PROJECT_WORK_CREATE("note_add", "프로젝트 작업이 추가되었습니다.", "info"),
+    PROJECT_WORK_UPDATE("edit_document", "프로젝트 작업이 업데이트 되었습니다.", "warning"),
+    PROJECT_WORK_ONGOING("flag_2", "진행중으로 변경된 프로젝트 작업이 있습니다.", "info"),
+    PROJECT_WORK_FINISH("flag_2", "종료된 프로젝트 작업이 있습니다.", "success"),
+    PROJECT_WORK_DEADLINE("schedule", "마감일이 얼마 남지 않은 프로젝트 작업이 있습니다.", "danger")
     ;
 
     private final String icons;

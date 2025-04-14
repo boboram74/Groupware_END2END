@@ -5,9 +5,9 @@ import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.EmailAddressUserDTO;
-import com.end2end.spring.works.dao.ProjectDAO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
-import com.end2end.spring.works.dto.ProjectUserDTO;
+import com.end2end.spring.works.dao.ProjectWorkDAO;
+import com.end2end.spring.works.dto.ProjectWorkDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class AlarmService {
     @Autowired private MailDAO mailDAO;
     @Autowired private ApprovalDAO approvalDAO;
-    @Autowired private ProjectDAO projectDAO;
+    @Autowired private ProjectWorkDAO projectWorkDAO;
     @Autowired private ProjectUserDAO projectUserDAO;
 
     public void sendMailAlarm(String url, String email) {
@@ -52,6 +52,26 @@ public class AlarmService {
 
         for (EmployeeDTO employeeDTO : projectUserList) {
             send(AlarmDTO.of(alarmType, employeeDTO.getId(), url), employeeDTO.getId());
+        }
+    }
+
+    public void sendProjectWorkStateChangeAlarm(int projectWorkId) {
+        ProjectWorkDTO projectWorkDTO = projectWorkDAO.selectByworksId(projectWorkId);
+
+        AlarmType alarmType = null;
+        if (projectWorkDTO.getState().equals("ONGOING")) {
+            alarmType = AlarmType.PROJECT_WORK_ONGOING;
+        } else if (projectWorkDTO.getState().equals("FINISH")) {
+            alarmType = AlarmType.PROJECT_WORK_FINISH;
+        } else {
+            return;
+        }
+
+        List<EmployeeDTO> projectUserList = projectUserDAO.selectByprojectId(projectWorkDTO.getProjectId());
+
+        for (EmployeeDTO employeeDTO : projectUserList) {
+            send(AlarmDTO.of(alarmType, employeeDTO.getId(), "/project/detail/" + projectWorkDTO.getProjectId()),
+                    employeeDTO.getId());
         }
     }
 

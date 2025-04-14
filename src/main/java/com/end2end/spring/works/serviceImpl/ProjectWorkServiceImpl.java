@@ -56,6 +56,16 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
         return dto;
     }
 
+    @Override
+    public   int getChartDataCount(int id){
+        int total = dao.countTotalWorks(id);
+        int finished = dao.countFinishedWorks(id);
+        if (total == 0) return 0; // 나눗셈 방지
+        return (int) Math.round((finished * 100.0) / total);
+    }
+
+
+
 //    @Override
 //    public void update(MultipartFile[]files,ProjectWorkDTO dto) throws Exception {
 //        dao.update(dto);

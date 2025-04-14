@@ -117,5 +117,13 @@ public class ProjectWorkController {
         // TODO: 작업 번호로 작업게시글삭제
         return "SUCCESS";
     }
+    @ResponseBody
+    @RequestMapping("chartData/{id}")
+    public String getChartDataCount(@PathVariable("id") int id,Model model) {
+        int chartData = wserv.getChartDataCount(id);
+        model.addAttribute("chartData", chartData); // 진행률을 JSP에 전달
+        return "/project/detail/" + id;
 
+
+    }
 }

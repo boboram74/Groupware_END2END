@@ -4,16 +4,16 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="works">
 
-<select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
-    SELECT * FROM project_work WHERE projectid = #{id}
-    order by id desc
-</select>
-<!-- 프로젝트 진행중 보고된 게시물 모아보기-->
+    <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        SELECT * FROM project_work WHERE projectid = #{id}
+        order by id desc
+    </select>
+    <!-- 프로젝트 진행중 보고된 게시물 모아보기-->
 
     <delete id="deleteById">
         delete from project_work where id=#{workId}
     </delete>
-<!-- 프로젝트 진행중 보고된 게시물 삭제-->
+    <!-- 프로젝트 진행중 보고된 게시물 삭제-->
 
     <insert id="insert" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO">
         INSERT INTO project_work
@@ -47,6 +47,21 @@
         )
     </insert>
 
+    <!--차트에 보낼 데이터 완료된 게시물 수-->
+    <select id="countFinishedWorks" resultType="int">
+        SELECT COUNT(*)
+        FROM PROJECT_WORK
+        WHERE id = #{projectId}
+        AND status = 'FINISH';
+    </select>
+
+    <select id="countTotalWorks" resultType="int">
+        SELECT COUNT(*)
+        FROM posts
+        WHERE project_id = #{projectId}
+    </select>
+
+
 
     <select id="selectByProjectIdAndEmployeeId" parameterType="java.util.Map"
             resultType="String">
@@ -58,10 +73,10 @@
         EMPLOYEEID =#{employeeId}
     </select>
 
-<select id="selectByworksId" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
-    SELECT * FROM PROJECT_WORK
-    WHERE ID = #{id}
-</select>
+    <select id="selectByworksId" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        SELECT * FROM PROJECT_WORK
+        WHERE ID = #{id}
+    </select>
 
 
     <update id="update" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO">
@@ -75,16 +90,6 @@
         content = #{content, jdbcType=VARCHAR}
         WHERE id = #{id}
     </update>
-<!--    UPDATE project_work-->
-<!--    SET-->
-<!--    title = '엥',-->
-<!--    type = 'DOCUMENT',-->
-<!--    priority = 'HIGH',-->
-<!--    regDate = TO_DATE('2025-04-12 12:10:10', 'YYYY-MM-DD HH24:MI:SS'),-->
-<!--    deadLine = TO_DATE('2025-06-10', 'YYYY-MM-DD'),-->
-<!--    state = 'READY',-->
-<!--    content = 'test'-->
-<!--    WHERE id = 35;-->
 
 
     <!-- 프로젝트 진행중 보고된 게시물 수정-->
@@ -92,12 +97,12 @@
 
     <update id="updateState" parameterType="java.util.Map">
         update project_work set
-    state=#{state} where id =#{workId}
+        state=#{state} where id =#{workId}
     </update>
 
 
-<select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">
+    <select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">
 
-    SELECT * FROM project_user where projectId = #{id}
-</select>
+        SELECT * FROM project_user where projectId = #{id}
+    </select>
 </mapper>

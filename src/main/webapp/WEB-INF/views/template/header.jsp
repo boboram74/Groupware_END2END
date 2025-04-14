@@ -127,6 +127,30 @@
     .notification-list::-webkit-scrollbar-thumb:hover {
       background: var(--md-sys-color-outline);
     }
+
+    @keyframes notificationAnimation {
+      0% {
+        transform: scale(1) rotate(0deg);
+      }
+      25% {
+        transform: scale(1.2) rotate(20deg);
+      }
+      50% {
+        transform: scale(1.2) rotate(-15deg);
+      }
+      75% {
+        transform: scale(1.1) rotate(10deg);
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .notification-animate {
+      animation: notificationAnimation 0.8s ease-in-out;
+      transform-origin: center;
+    }
+
   </style>
 </head>
 <body>
@@ -183,7 +207,7 @@
         <div class="notification-container">
           <button class="icon-button" id="notificationBtn">
             <span class="material-icons">notifications</span>
-            <span class="notification-badge">0</span>
+            <span class="notification-badge" style="display: none;">0</span>
           </button>
           <div class="notification-menu surface-bright" id="notificationMenu">
             <div class="notification-header">
@@ -217,13 +241,6 @@
                 <div class="notification-content">
                   <div class="notification-text">프로젝트 팀원이 추가되었습니다.</div>
                   <div class="notification-date">2024.02.14 17:15</div>
-                </div>
-              </div>
-              <div class="notification-item">
-                <span class="material-icons color-danger">priority_high</span>
-                <div class="notification-content">
-                  <div class="notification-text">긴급 화상회의가 소집되었습니다.</div>
-                  <div class="notification-date">2024.02.14 16:50</div>
                 </div>
               </div>
               <div class="notification-item">
@@ -416,6 +433,18 @@
       const data = JSON.parse(e.data);
       console.log(data);
 
+      if (data.length > 0) {
+        $('#notificationBtn .notification-badge').show().text(data.length);
+
+        $('#notificationBtn .material-icons').removeClass('notification-animate');
+        $('#notificationBtn .material-icons')[0].offsetWidth;
+        $('#notificationBtn .material-icons').addClass('notification-animate')
+                .one('animationend', function() {
+                  $(this).removeClass('notification-animate');
+                });
+      }
+
+      $('#notificationMenu .notification-list').empty();
       for (let i = 0; i < data.length; i++) {
         const item = data[i];
 

@@ -364,7 +364,7 @@
 <input type="hidden" id="sender-name" value="${employee.name}">
 <script>
 	$(document).ready(function() {
-		let ws = new WebSocket("ws://192.168.219.100/chat");
+		let ws = new WebSocket("ws://10.10.55.9/chat");
 		let employees = [];
 		let chatRooms = [];
 		let currentRoomId = 0;
@@ -387,9 +387,14 @@
 			if (msg.type === "NEW_CHAT_ROOM") {
 				currentRoomId = msg.roomId;
 				addNewChatRoomItem(msg);
+				const employeeId = $('#selected-employee-id').val();
+				const employeeName = $('.employee-item[data-id="' + employeeId + '"]').data('name');
+				showChatRoom(employeeId, employeeName, currentRoomId);
 				return;
 			} else if(msg.type === "history") {
-				console.log(msg);
+				console.log(msg.roomId);
+				console.log("roomID");
+				currentRoomId = msg.roomId;
 				let historyChat = $("<div>")
 						.addClass(msg.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
 						.html(msg.sender + " : " + msg.message);
@@ -427,6 +432,7 @@
 			}).done(function (resp) {
 				chatRooms = resp.chatListAll;
 				renderRoomList(chatRooms);
+				setTimeout(renderRoomList, 30000);
 			});
 		}
 
@@ -500,12 +506,13 @@
 				chatInput.val('');
 			} else if(message == '') {
 				return;
+			} else if(currentRoomId === 0 ) {
+				alert("유효한 채팅방이 아닙니다. 상대방을 먼저 선택해주세요.");
+				return;
 			}
 			const payload = {
 				id: $('#sender-employee-id').val(),
 				message: message,
-				recipient: $('#selected-employee-id').val(),
-				recipientName: $('#selected-recipient-name').val(),
 				roomId: currentRoomId
 			};
 			ws.send(JSON.stringify(payload));
@@ -579,7 +586,7 @@
 			alert("초대한ID : " + inviteeId + " 현재 채팅방 이름 : " + currentRoomId);
 			let payload = {
 				type: "invite",
-				recipientId: inviteeId,
+				inviteeId: inviteeId,
 				roomId: currentRoomId
 			};
 			ws.send(JSON.stringify(payload));
@@ -590,7 +597,7 @@
 		$(document).on('click', '.employee-item', function() {
 			const employeeId = $(this).data('id');
 			const employeeName = $(this).data('name');
-			const roomId = $(this).data('room-id');
+			const roomId = $(this).data('room-id') || 0;
 			$('#selected-employee-id').val(employeeId);
 			showChatRoom(employeeId, employeeName, roomId);
 		});
@@ -626,12 +633,50 @@
 
 		$(document).on('click', '.employee-item[data-id]', function() {
 			const employeeId = $(this).data('id');
+			const employeeName = $(this).data('name');
+
+			// 기존 채팅방 확인
+			const existingRoom = findExistingChatRoom(employeeId);
+
+			if (existingRoom) {
+				// 기존 채팅방이 있으면 해당 방으로 입장
+				showChatRoom(employeeId, employeeName, existingRoom.roomId);
+			} else {
+				// 새 채팅방 생성 요청
+				const payload = {
+					type: "newRoom",
+					employeeId: employeeId
+				};
+				ws.send(JSON.stringify(payload));
+			}
+		});
+		function findExistingChatRoom(employeeId) {
+			const currentUserId = $('#sender-employee-id').val();
+
+			// 1:1 채팅방 찾기 (두 사용자 ID로 구성된 방 이름)
+			const roomName1 = currentUserId + "|" + employeeId;
+			const roomName2 = employeeId + "|" + currentUserId;
+
+			for (const room of chatRooms) {
+				if (room.roomName === roomName1 || room.roomName === roomName2) {
+					return room;
+				}
+				// 1:N 채팅방 확인 (초대된 방인지 확인)
+				if (room.participants && room.participants.includes(employeeId)) {
+					return room;
+				}
+			}
+			return null;
+		}
+
+		function selectEmployee(employeeId) {
+
 			const payload = {
-				type: "newRoom",
-				employeeId: employeeId
+				type: "roomEnter",
+				emplpyeeId: roomId
 			};
 			ws.send(JSON.stringify(payload));
-		});
+		}
 
 		//채팅방 생성
 		function showChatRoom(employeeId, employeeName, roomId) {
@@ -657,8 +702,7 @@
 			currentRoomId = roomId;
 			const payload = {
 				type: "roomEnter",
-				roomId: roomId,
-				recipient: employeeId
+				roomId: roomId
 			};
 			ws.send(JSON.stringify(payload));
 		}

@@ -20,17 +20,21 @@
         insert into message_room(id, name) values (#{value1}, #{value2})
     </insert>
 
+    <!-- 방 초대 -->
+    <update id="messageRoomInvite">
+        UPDATE message_room
+        SET name = name || '|' || #{employeeId}
+        WHERE id = #{roomId}
+    </update>
+
+    <!-- 방 개설 -->
     <insert id="messageFirstInsert" parameterType="map">
         insert into message_room(id, name) values (message_room_id_seq.nextval, #{value})
         <selectKey order="AFTER" keyProperty="id" resultType="int">
             select message_room_id_seq.currval from dual
         </selectKey>
     </insert>
-    <update id="messageRoomInvite">
-        UPDATE message_room
-        SET name = name || '|' || #{employeeId}
-        WHERE id = #{roomId}
-    </update>
+
     <!-- 방 입장 처리 -->
     <insert id="messageFirstRoomInsert" parameterType="map">
         insert into message_room_user(id, messageRoomId, employeeId) values (message_room_user_id_seq.nextval, #{roomSeq}, #{employeeId})
@@ -38,6 +42,7 @@
             select message_room_user_id_seq.currval from dual
         </selectKey>
     </insert>
+
     <!--메세지 insert-->
     <insert id="messageFirstContentInsert">
         insert into message(id, messageRoomId, messageRoomuserId, content)
@@ -61,7 +66,7 @@
         order by t.MESSAGEROOMID desc
     </select>
 
-    <select id="selectByRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageHistoryDTO">
+    <select id="selectMessageByRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageHistoryDTO">
         SELECT MESSAGE.id, employee.id employeeId, MESSAGE.content , EMPLOYEE.NAME, EMPLOYEE.PROFILEIMG, JOB.NAME jName, DEPARTMENT.NAME dName, MESSAGE.REGDATE
         FROM
         MESSAGE
@@ -81,10 +86,7 @@
         MESSAGE.MESSAGEROOMID = #{value}
     </select>
 
-    <select id="findByRoomId" resultType="int" >
-<!--        select count(*) as total-->
-<!--        from message_room_user-->
-<!--        where messageRoomId = #{value}-->
+    <select id="findByRoomId" resultType="int">
         select id from MESSAGE_ROOM where name = #{value}
     </select>
 
@@ -96,49 +98,23 @@
         select id from message_room where name = #{value}
     </select>
 
+    <select id="findByRoomSeq" resultType="int">
+        select message_room_id_seq.nextval from dual
+    </select>
+
+    <select id="selectRoomById" parameterType="map" resultType="int">
+        select * from message where messageRoomId = #{value}
+    </select>
+
+    <select id="selectUserByEmployeeIdAndRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageHistoryDTO">
+        select * from message_room_user where employeeId = #{employeeId} and messageRoomId = #{roomId}
+    </select>
+
+    <insert id="insertMessage">
+        insert into message(id, messageRoomId, messageRoomuserId, content)
+        values (message_id_seq.nextval, #{messagerRoomId} , #{messagerRoomuserId}, #{content})
+    </insert>
+    <select id="selectRoomById" resultType="int">
+        select * from message_room_user where MESSAGEROOMID = #{value}
+    </select>
 </mapper>
-
-        <!--        SELECT * FROM MESSAGE_ROOM;-->
-
-        <!--        INSERT INTO MESSAGE_ROOM(ID, NAME) VALUES (MEETING_ROOM_ID_SEQ.nextval, 'END2END');-->
-
-        <!--        INSERT INTO MESSAGE_ROOM_USER(ID, MESSAGEROOMID, EMPLOYEEID)-->
-        <!--        VALUES (MESSAGE_ROOM_USER_ID_SEQ.nextval, 5, '2002183');-->
-
-        <!--        SELECT *-->
-        <!--        FROM MESSAGE_ROOM-->
-        <!--        JOIN MESSAGE_ROOM_USER-->
-        <!--        ON MESSAGE_ROOM.ID = MESSAGE_ROOM_USER.MESSAGEROOMID;-->
-
-        <!--        SELECT *-->
-        <!--        FROM MESSAGE_ROOM_USER-->
-        <!--        WHERE MESSAGEROOMID = 5;-->
-
-        <!--        //초대 -->
-        <!--        INSERT INTO MESSAGE_ROOM_USER(ID, MESSAGEROOMID, EMPLOYEEID)-->
-        <!--        VALUES (MESSAGE_ROOM_USER_ID_SEQ.nextval, 5, '20062210');-->
-
-        <!--        INSERT INTO MESSAGE(ID, MESSAGEROOMID, MESSAGEROOMUSERID, CONTENT)-->
-        <!--        VALUES (MESSAGE_ID_SEQ.nextval, 5, 1, '안녕하세요1');-->
-
-        <!--        SELECT *-->
-        <!--        FROM MESSAGE_ROOM_USER-->
-        <!--        WHERE MESSAGEROOMID = 5;-->
-
-        <!--        채팅 상세보기-->
-        <!--        SELECT MESSAGE.*, EMPLOYEE.NAME, EMPLOYEE.PROFILEIMG, JOB.NAME, DEPARTMENT.NAME-->
-        <!--        FROM-->
-        <!--        MESSAGE-->
-        <!--        JOIN-->
-        <!--        MESSAGE_ROOM_USER-->
-        <!--        ON MESSAGE.MESSAGEROOMUSERID = MESSAGE_ROOM_USER.ID-->
-        <!--        JOIN-->
-        <!--        EMPLOYEE-->
-        <!--        ON MESSAGE_ROOM_USER.EMPLOYEEID = EMPLOYEE.ID-->
-        <!--        JOIN-->
-        <!--        JOB-->
-        <!--        ON EMPLOYEE.JOBID = JOB.ID-->
-        <!--        JOIN-->
-        <!--        DEPARTMENT-->
-        <!--        ON DEPARTMENT.ID = EMPLOYEE.DEPARTMENTID-->
-        <!--        WHERE MESSAGE.MESSAGEROOMID = 5;-->

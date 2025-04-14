@@ -97,6 +97,12 @@
       color: var(--md-sys-color-secondary);
     }
 
+    .notification-content.read .notification-text,
+    .notification-content.read .notification-date {
+      opacity: 0.4; /* 투명도를 40% 낮춤 */
+    }
+
+
     .color-primary { color: #1976d2; }
     .color-success { color: #4caf50; }
     .color-warning { color: #ff9800; }

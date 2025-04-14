@@ -17,7 +17,6 @@ import java.util.Map;
 public class AlarmDTO {
     private String employeeId;
     private String icons;
-    private String description;
     private String message;
     private String url;
     private Timestamp sendTime;
@@ -27,7 +26,6 @@ public class AlarmDTO {
         Map<String, Object> json = new HashMap<>();
         json.put("employeeId", employeeId);
         json.put("icons", icons);
-        json.put("description", description);
         json.put("message", message);
         json.put("url", url);
         json.put("sendTime", sendTime);
@@ -35,24 +33,22 @@ public class AlarmDTO {
         return new Gson().toJson(json);
     }
 
-    public static AlarmDTO of(AlarmType type, String employeeId, String message, String url) {
+    public static AlarmDTO of(AlarmType type, String employeeId, String url) {
         return AlarmDTO.builder()
                 .employeeId(employeeId)
                 .icons(type.getIcons())
-                .description(type.getDescription())
                 .url(url)
                 .isRead(false)
-                .message(message)
+                .message(type.getDescription())
                 .build();
     }
 
-    public static AlarmDTO of(AlarmType type, String employeeId, String message) {
+    public static AlarmDTO of(AlarmType type, String employeeId) {
         return AlarmDTO.builder()
                 .employeeId(employeeId)
                 .icons(type.getIcons())
-                .description(type.getDescription())
                 .isRead(false)
-                .message(message)
+                .message(type.getDescription())
                 .build();
     }
 

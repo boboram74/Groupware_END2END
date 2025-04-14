@@ -2,6 +2,7 @@ package com.end2end.spring.alarm;
 
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.messenger.config.WebSocketConfig;
+import com.google.common.collect.EvictingQueue;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
@@ -13,6 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value="/alarm", configurator = WebSocketConfig.class)
 public class AlarmEndPoint {
     private static Map<String, Session> clients = new ConcurrentHashMap<>();
+    private static Map<String, EvictingQueue<AlarmDTO>> alarmQueues = new ConcurrentHashMap<>();
+
+    private static EvictingQueue<AlarmDTO> getOrCreateQueue(String employeeId) {
+        return alarmQueues.computeIfAbsent(employeeId, k -> EvictingQueue.create(20));
+    }
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
@@ -32,13 +38,11 @@ public class AlarmEndPoint {
         clients.values().removeIf(s -> s.equals(session));
     }
 
-    public static void sendMessage(AlarmDTO dto, List<EmployeeDTO> employees) {
-        for (EmployeeDTO employee : employees) {
-            try {
-                clients.get(employee.getId()).getBasicRemote().sendText(dto.toJson());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public static void sendMessage(AlarmDTO dto, String employeeId) {
+        try {
+            clients.get(employeeId).getBasicRemote().sendText(dto.toJson());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

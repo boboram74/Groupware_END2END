@@ -359,4 +359,8 @@
     <select id="selectByEmail" resultType="com.end2end.spring.mail.dto.MailDetailDTO">
         select id, SENDEREMAILADDRESS as sender, title as subject, content from email where id = #{value}
     </select>
+
+    <select id="selectEmailAddressUserByEmailAddress" resultType="com.end2end.spring.mail.dto.EmailAddressUserDTO">
+        SELECT * FROM EMAIL_ADDRESS_USER WHERE emailAddress = #{email}
+    </select>
 </mapper>

@@ -152,13 +152,14 @@ public class ApprovalServiceImpl implements ApprovalService {
             ApproverDTO approverDTO = ApproverDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(approverId)
-                    .orders(order++)
+                    .orders(order)
                     .build();
             approverDAO.insertApprover(approverDTO);
             added.add(approverId);
 
             if (order == 1) {
                 alarmService.sendApproveCheckAlarm("/approval/detail/" + approvalDTO.getId(), approverId);
+                order++;
             }
         }
     }

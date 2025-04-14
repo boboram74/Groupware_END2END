@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="/css/template/header.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
     $('html').addClass(mode);
@@ -127,6 +129,58 @@
     .notification-list::-webkit-scrollbar-thumb:hover {
       background: var(--md-sys-color-outline);
     }
+
+    /*조직도 CSS*/
+    .org-chart {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: auto;
+    }
+
+    .org-chart ul {
+      padding-top: 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .org-chart li {
+      list-style-type: none;
+      text-align: center;
+      position: relative;
+      padding: 20px 5px;
+    }
+
+    .org-chart li::before, .org-chart li::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 50%;
+      border-top: 1px solid #ccc;
+      width: 50%;
+      height: 20px;
+    }
+
+    .org-chart li::after {
+      right: auto;
+      left: 50%;
+      border-left: 1px solid #ccc;
+    }
+
+    .org-chart li:only-child::after, .org-chart li:only-child::before {
+      display: none;
+    }
+
+    .org-chart .node {
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      border-radius: 5px;
+      font-weight: 500;
+    }
+
   </style>
 </head>
 <body>
@@ -221,10 +275,10 @@
               </div>
               <div class="notification-item">
                 <span class="material-icons color-danger">priority_high</span>
-                <div class="notification-content">
+                <dsiv class="notification-content">
                   <div class="notification-text">긴급 화상회의가 소집되었습니다.</div>
                   <div class="notification-date">2024.02.14 16:50</div>
-                </div>
+                </dsiv>
               </div>
               <div class="notification-item">
                 <span class="material-icons color-success">check_circle</span>
@@ -266,9 +320,26 @@
         </div>
 
         <!-- 조직도 아이콘 -->
-        <button class="icon-button" id="orgChartBtn">
+        <button class="icon-button" id="orgChartBtn" onclick="orgChartModal()">
           <span class="material-icons">account_tree</span>
         </button>
+
+        <div class="modal" id="orgChartModal" tabindex="-1" style="display: none;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">조직도</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body org-chart">
+                <div id="orgChartContainer">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+        </script>
 
         <!-- 다크모드 토글 아이콘 -->
         <button class="icon-button" id="darkModeBtn">
@@ -396,46 +467,109 @@
     <!-- 콘텐츠 영역 -->
     <div class="boxContents">
       <!-- 메인 콘텐츠가 들어갈 자리 -->
-<script>
-  $(document).ready(function() {
-    const alarm = new WebSocket('ws://localhost/alarm');
 
-    alarm.onopen = function() {
-      console.log('알람 웹소켓 연결됨');
-    };
+      <script>
+        $(document).ready(function() {
+          const alarm = new WebSocket('ws://localhost/alarm');
 
-    alarm.onerror = function(error) {
-      console.log('알람 웹소켓 에러:', error);
-    };
+          alarm.onopen = function() {
+            console.log('알람 웹소켓 연결됨');
+          };
 
-    alarm.onclose = function(event) {
-      console.log('알람 웹소켓 닫힘:', event.code, event.reason);
-    };
+          alarm.onerror = function(error) {
+            console.log('알람 웹소켓 에러:', error);
+          };
 
-    alarm.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      console.log(data);
+          alarm.onclose = function(event) {
+            console.log('알람 웹소켓 닫힘:', event.code, event.reason);
+          };
 
-      for (let i = 0; i < data.length; i++) {
-        const item = data[i];
+          alarm.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
 
-        const div = $('<div class="notification-item">');
-        div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
-                .append($('<div class="notification-content">')
-                        .append($('<div class="notification-text">').text(item.message))
-                        .append($('<div class="notification-date">').text(new Date().toLocaleDateString())))
+            for (let i = 0; i < data.length; i++) {
+              const item = data[i];
 
-        if (item.url !== '') {
-          div.on('click', function() {
-            location.href = item.url;
-          })
+              const div = $('<div class="notification-item">');
+              div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
+                      .append($('<div class="notification-content">')
+                              .append($('<div class="notification-text">').text(item.message))
+                              .append($('<div class="notification-date">').text(new Date().toLocaleDateString())))
+
+              if (item.url !== '') {
+                div.on('click', function() {
+                  location.href = item.url;
+                })
+              }
+
+              $('#notificationMenu .notification-list').append(div);
+            }
+          }
+        });
+      </script>
+
+      <script>
+        function orgChartModal() {
+          console.log("1");
+          $.ajax({
+            url: '/employee/orgChart',
+            method: 'GET'
+          }).done(function(data) {
+            const employeeList = [
+              {
+                name: '경영팀',
+                id: 1,
+                employee: []
+              }, {
+                name: '인사팀',
+                id: 2,
+                employee: []
+              }, {
+                name: '총무팀',
+                id: 3,
+                employee: []
+              }, {
+                name: '운영지원팀',
+                id: 4,
+                employee: []
+              }, {
+                name: '연구팀',
+                id: 5,
+                employee: []
+              }]
+
+            for(let i = 0; i < data.length; i++) {
+              const employee = data[i];
+
+              for(let j = 0; j < employeeList.length; j++) {
+                const departments = employeeList[j];
+                if(departments.id == employee.departmentId) {
+                  departments.employee.push(employee);
+                }
+              }
+            }
+
+            for (let i = 0; i < employeeList.length; i++) {
+              const departmentList = employeeList[i];
+              const title = $('<div>').html(departmentList.name)
+              const departmentDiv = $('<ul>')
+
+              for (let j = 0; j < departmentList.employee.length; j++) {
+                const employee = departmentList.employee[j];
+                console.log(employee);
+
+                const div = $('<li>').html(employee.name + " " + employee.departmentName);
+                departmentDiv.append(div);
+              }
+              $('#orgChartContainer').append(title, departmentDiv);
+            }
+
+            $('.modal').show();
+          });
         }
+      </script>
 
-        $('#notificationMenu .notification-list').append(div);
-      }
-    }
-  });
-</script>
       <script>
         $(document).ready(function () {
           $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
@@ -482,11 +616,6 @@
       e.stopPropagation();
     });
 
-    // 프로필 이미지 클릭 이벤트
-    $('.profile').on('click', function(e) {
-      e.stopPropagation(); // 이벤트 버블링 방지
-      $('#profileMenu').toggle();
-    });
 
     // 문서 전체 클릭 이벤트 (메뉴 외부 클릭시 닫기)
     $(document).on('click', function(e) {
@@ -528,3 +657,4 @@
     });
   });
 </script>
+

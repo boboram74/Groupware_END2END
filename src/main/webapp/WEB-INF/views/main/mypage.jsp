@@ -7,7 +7,6 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-    // 로그인 사용자 기준으로 전체 수정 권한 판단
     let isHR = ("<c:out value='${sessionScope.employee.departmentName}'/>" === "인사팀") ||
         ("<c:out value='${sessionScope.employee.role}'/>" === "ADMIN");
 </script>

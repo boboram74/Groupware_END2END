@@ -88,6 +88,14 @@
     </select>
 
     <!--프로젝트 찾기 -->
+    <select id="findLatestProject" resultType="com.end2end.spring.works.dto.ProjectDTO">
+        SELECT * FROM (
+        SELECT * FROM project
+        ORDER BY id DESC
+        ) WHERE ROWNUM = 1
+
+    </select>
+
 
 <!--  모달창에서 추가할 프로젝트 인원 검색-->
     <select id="selectByUser"  resultType="com.end2end.spring.employee.dto.EmployeeDTO">

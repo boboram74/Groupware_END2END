@@ -1,54 +1,139 @@
-*{
-/*    border: 1px solid red;*/
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
-.mainContainer{
+
+.mainContainer {
     width: 90%;
-    height: 100vh;
-    margin: auto;
-    padding: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
-.mainHeader{
-    width: 100%;
-    height: 10%;
-    margin: 10px;
-}
-.title{
-    width: 100%;
-    height: 40%;
-}
-.title span {
-    font-size: 60px;
-}
-.title h2 {
+
+.mainHeader {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
 }
-.title h2 .material-icons {
-    font-size: 65px;
-    margin-right: 8px;
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
-.mainBody{
-    width: 100%;
-    height: 90%;
+
+.title span {
+    font-size: 50px;
+    margin: 5px;
 }
+
+.title h2 {
+    font-size: 25px;
+}
+
+.mainBody {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
 .content {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     width: 100%;
 }
-.btn{
+.leftPage,.rightPage{
+    width: 50%;
     display: flex;
-    justify-content: end;
-    gap: 10px;
+    flex-direction: column;
 }
+.rightPage{
+    margin-top: 20px;
+    gap: 12px;
+}
+
 .hrProfile {
-    width: 200px;
-    height: 200px;
-    margin-bottom: 12px;
-    border-radius: 30%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin:10px;
 }
+
+.hrProfile label {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 50%;
+    padding: 5px;
+    pointer-events: none;
+    cursor: default;
+}
+
+.hrProfile.editable label {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.hrProfile img#profilePreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid dimgray;
+}
+
+.hrProfile .material-icons {
+    display: none;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 8px;
+    font-size: 20px;
+    color: #333;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.hrProfile.editable .material-icons {
+    display: block;
+}
+
+.name, .contact, .birthday, .position, .department, .email, .postCode, .address, .detailAddress {
+    background: #ffffff;
+    margin:10px;
+    display: flex;
+}
+
+.btn {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.btn button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background: #2c3e50;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+label{
+    background: #2c3e50;
+    color: white;
+    width: 30%;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+span {
+    padding: 10px;
+}
+

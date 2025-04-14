@@ -29,7 +29,7 @@ public class HRController {
         List<EmployeeDTO> list = employeeService.selectAll();
         model.addAttribute("employeeList", list);
         model.addAttribute("isNoAuthExist", employeeService.isNoAuthExist());
-        return "hr/hr-test";
+        return "hr/list";
     }
 
     @RequestMapping("/list/search")

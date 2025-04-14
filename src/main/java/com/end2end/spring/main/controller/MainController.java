@@ -59,7 +59,7 @@ public class MainController {
 	public String selectContactList(Model model) {
 		List<EmployeeDTO> contactList = employeeService.selectContactList();
 		model.addAttribute("contactList", contactList);
-		return "main/contact-test";
+		return "main/contact";
 	}
 
 	@RequestMapping("/worktree")

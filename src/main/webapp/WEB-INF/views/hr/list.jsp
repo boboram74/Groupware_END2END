@@ -37,9 +37,9 @@
         <div class="search">
             <div>
                 <select id="searchOption">
-                    <option>선택</option>
-                    <option>선택</option>
-                    <option>선택</option>
+                    <option>이름</option>
+                    <option>부서</option>
+                    <option>직급</option>
                 </select>
             </div>
             <div class="searchInput">

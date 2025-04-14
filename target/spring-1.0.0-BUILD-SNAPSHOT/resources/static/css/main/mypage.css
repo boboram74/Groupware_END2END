@@ -85,6 +85,7 @@
 }
 
 .hrProfile .material-icons {
+    display: none;
     position: absolute;
     bottom: 5px;
     right: 5px;
@@ -94,6 +95,10 @@
     font-size: 20px;
     color: #333;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.hrProfile.editable .material-icons {
+    display: block;
 }
 
 .name, .contact, .birthday, .position, .department, .email, .postCode, .address, .detailAddress {

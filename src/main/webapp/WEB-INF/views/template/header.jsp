@@ -442,100 +442,102 @@
             const data = JSON.parse(e.data);
             console.log(data);
 
-      let notReadCount = 0;
-      $('#notificationMenu .notification-list').empty();
-      for (let i = 0; i < data.length; i++) {
-        const item = data[i];
+            let notReadCount = 0;
+            $('#notificationMenu .notification-list').empty();
+            for (let i = 0; i < data.length; i++) {
+              const item = data[i];
 
-        const readYn = (item.isRead) ? 'read' : '';
-        if (!item.isRead) {
-          notReadCount++;
-        }
+              const readYn = (item.isRead) ? 'read' : '';
+              if (!item.isRead) {
+                notReadCount++;
+              }
 
-        const div = $('<div class="notification-item">');
-        div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
-                .append($('<div class="notification-content">').addClass(readYn)
-                        .append($('<div class="notification-text">').text(item.message))
-                        .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
+              const div = $('<div class="notification-item">');
+              div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
+                      .append($('<div class="notification-content">').addClass(readYn)
+                              .append($('<div class="notification-text">').text(item.message))
+                              .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
 
-        if (item.url !== '') {
-          div.on('click', function() {
-            alarm.send(JSON.stringify({
-              'id': Number(item.id),
-              'employeeId': String(${employee.id})
-            }));
+              if (item.url !== '') {
+                div.on('click', function() {
+                  alarm.send(JSON.stringify({
+                    'id': Number(item.id),
+                    'employeeId': String(${employee.id})
+                  }));
 
-            location.href = item.url;
-          })
-        $('#notificationMenu .notification-list').append(div);
-      }
+                  location.href = item.url;
+                })
+                $('#notificationMenu .notification-list').append(div);
+              }
 
-      if (notReadCount > 0) {
-        $('#notificationBtn .notification-badge').show().text(notReadCount);
+              if (notReadCount > 0) {
+                $('#notificationBtn .notification-badge').show().text(notReadCount);
 
-        $('#notificationBtn .material-icons').removeClass('notification-animate');
-        $('#notificationBtn .material-icons')[0].offsetWidth;
-        $('#notificationBtn .material-icons').addClass('notification-animate')
-                .one('animationend', function() {
-                  $(this).removeClass('notification-animate');
-                });
-      }
-    }
+                $('#notificationBtn .material-icons').removeClass('notification-animate');
+                $('#notificationBtn .material-icons')[0].offsetWidth;
+                $('#notificationBtn .material-icons').addClass('notification-animate')
+                        .one('animationend', function() {
+                          $(this).removeClass('notification-animate');
+                        });
+              }
+            }
 
-    function parseTime(time) {
-      const date = new Date(time);
-      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    }
+            function parseTime(time) {
+              const date = new Date(time);
+              return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            }
+          }
+        });
             
       function orgChartModal() {
-          $.ajax({
-            url: '/employee/orgChart',
-            method: 'GET'
-          }).done(function(data) {
-            $('#orgChartContainer').empty();
-            const employeeList = [
-              { name: '대표', id: 6, employee: [] },
-              { name: '경영팀', id: 1, employee: [] },
-              { name: '인사팀', id: 2, employee: [] },
-              { name: '총무팀', id: 3, employee: [] },
-              { name: '운영지원팀', id: 4, employee: [] },
-              { name: '연구팀', id: 5, employee: [] } ];
+        $.ajax({
+          url: '/employee/orgChart',
+          method: 'GET'
+        }).done(function (data) {
+          $('#orgChartContainer').empty();
+          const employeeList = [
+            {name: '대표', id: 6, employee: []},
+            {name: '경영팀', id: 1, employee: []},
+            {name: '인사팀', id: 2, employee: []},
+            {name: '총무팀', id: 3, employee: []},
+            {name: '운영지원팀', id: 4, employee: []},
+            {name: '연구팀', id: 5, employee: []}];
 
-            for(let i = 0; i < data.length; i++) {
-              const employee = data[i];
+          for (let i = 0; i < data.length; i++) {
+            const employee = data[i];
 
-              for(let j = 0; j < employeeList.length; j++) {
-                const departments = employeeList[j];
-                if(departments.id == employee.departmentId) {
-                  departments.employee.push(employee);
-                }
+            for (let j = 0; j < employeeList.length; j++) {
+              const departments = employeeList[j];
+              if (departments.id == employee.departmentId) {
+                departments.employee.push(employee);
               }
             }
-            for (let i = 0; i < employeeList.length; i++) {
-              const departmentList = employeeList[i];
-              const title = $('<div>').html(departmentList.name).css({
-                'background-color': '#2c3e50',
-                'color': 'white',
-                'text-align':'center'
-              });
-              const departmentDiv = $('<ul>').css({
-                'border':'3px solid black'
-              });
+          }
+          for (let i = 0; i < employeeList.length; i++) {
+            const departmentList = employeeList[i];
+            const title = $('<div>').html(departmentList.name).css({
+              'background-color': '#2c3e50',
+              'color': 'white',
+              'text-align': 'center'
+            });
+            const departmentDiv = $('<ul>').css({
+              'border': '3px solid black'
+            });
 
-              for (let j = 0; j < departmentList.employee.length; j++) {
-                const employee = departmentList.employee[j];
+            for (let j = 0; j < departmentList.employee.length; j++) {
+              const employee = departmentList.employee[j];
 
-                const div = $('<li>').html(employee.name + "<br>" + employee.jobName);
-                departmentDiv.append(div);
-              }
-              $('#orgChartContainer').append(title, departmentDiv);
+              const div = $('<li>').html(employee.name + "<br>" + employee.jobName);
+              departmentDiv.append(div);
             }
-            // 모달 객체 생성
-            const modalElement = document.getElementById('orgChartModal');
-            const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-            modal.show();
-          });
-  });
+            $('#orgChartContainer').append(title, departmentDiv);
+          }
+          // 모달 객체 생성
+          const modalElement = document.getElementById('orgChartModal');
+          const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+          modal.show();
+        });
+      }
 </script>
       <script>
         $(document).ready(function () {

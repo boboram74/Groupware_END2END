@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="/css/template/header.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
     let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
     $('html').addClass(mode);
@@ -128,6 +131,52 @@
       background: var(--md-sys-color-outline);
     }
 
+
+    /*조직도 CSS*/
+    .org-chart ul {
+      padding-top: 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .org-chart li {
+      list-style-type: none;
+      text-align: center;
+      position: relative;
+      padding: 20px 5px;
+    }
+
+    .org-chart li::before, .org-chart li::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 50%;
+      border-top: 1px solid #ccc;
+      width: 50%;
+      height: 20px;
+    }
+
+    .org-chart li::after {
+      right: auto;
+      left: 50%;
+      border-left: 1px solid #ccc;
+    }
+
+    .org-chart li:only-child::after, .org-chart li:only-child::before {
+      display: none;
+    }
+
+    .modal-title{
+      font-weight: bold;
+      margin-left: 20px;
+      font-size: 22px;
+    }
+    
+    .modal-backdrop {
+      z-index: -1;
+    }
+
     @keyframes notificationAnimation {
       0% {
         transform: scale(1) rotate(0deg);
@@ -227,9 +276,24 @@
         </div>
 
         <!-- 조직도 아이콘 -->
-        <button class="icon-button" id="orgChartBtn">
+        <button class="icon-button" id="orgChartBtn" onclick="orgChartModal()">
           <span class="material-icons">account_tree</span>
         </button>
+
+        <!-- Bootstrap 모달 -->
+        <div class="modal fade" id="orgChartModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">사내 조직도</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body org-chart">
+                <div id="orgChartContainer"></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- 다크모드 토글 아이콘 -->
         <button class="icon-button" id="darkModeBtn">
@@ -357,73 +421,123 @@
     <!-- 콘텐츠 영역 -->
     <div class="boxContents">
       <!-- 메인 콘텐츠가 들어갈 자리 -->
-<script>
-  $(document).ready(function() {
-    const alarm = new WebSocket('ws://localhost/alarm');
 
-    alarm.onopen = function() {
-      console.log('알람 웹소켓 연결됨');
-    };
+      <script>
+        $(document).ready(function() {
+          const alarm = new WebSocket('ws://localhost/alarm');
 
-    alarm.onerror = function(error) {
-      console.log('알람 웹소켓 에러:', error);
-    };
+          alarm.onopen = function() {
+            console.log('알람 웹소켓 연결됨');
+          };
 
-    alarm.onclose = function(event) {
-      console.log('알람 웹소켓 닫힘:', event.code, event.reason);
-    };
+          alarm.onerror = function(error) {
+            console.log('알람 웹소켓 에러:', error);
+          };
 
-    alarm.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      console.log(data);
+          alarm.onclose = function(event) {
+            console.log('알람 웹소켓 닫힘:', event.code, event.reason);
+          };
 
-      let notReadCount = 0;
-      $('#notificationMenu .notification-list').empty();
-      for (let i = 0; i < data.length; i++) {
-        const item = data[i];
+          alarm.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
 
-        const readYn = (item.isRead) ? 'read' : '';
-        if (!item.isRead) {
-          notReadCount++;
-        }
+            let notReadCount = 0;
+            $('#notificationMenu .notification-list').empty();
+            for (let i = 0; i < data.length; i++) {
+              const item = data[i];
 
-        const div = $('<div class="notification-item">');
-        div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
-                .append($('<div class="notification-content">').addClass(readYn)
-                        .append($('<div class="notification-text">').text(item.message))
-                        .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
+              const readYn = (item.isRead) ? 'read' : '';
+              if (!item.isRead) {
+                notReadCount++;
+              }
 
-        if (item.url !== '') {
-          div.on('click', function() {
-            alarm.send(JSON.stringify({
-              'id': Number(item.id),
-              'employeeId': String(${employee.id})
-            }));
+              const div = $('<div class="notification-item">');
+              div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
+                      .append($('<div class="notification-content">').addClass(readYn)
+                              .append($('<div class="notification-text">').text(item.message))
+                              .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
 
-            location.href = item.url;
-          })
-        }
+              if (item.url !== '') {
+                div.on('click', function() {
+                  alarm.send(JSON.stringify({
+                    'id': Number(item.id),
+                    'employeeId': String(${employee.id})
+                  }));
 
-        $('#notificationMenu .notification-list').append(div);
+                  location.href = item.url;
+                })
+                $('#notificationMenu .notification-list').append(div);
+              }
+
+              if (notReadCount > 0) {
+                $('#notificationBtn .notification-badge').show().text(notReadCount);
+
+                $('#notificationBtn .material-icons').removeClass('notification-animate');
+                $('#notificationBtn .material-icons')[0].offsetWidth;
+                $('#notificationBtn .material-icons').addClass('notification-animate')
+                        .one('animationend', function() {
+                          $(this).removeClass('notification-animate');
+                        });
+              }
+            }
+
+            function parseTime(time) {
+              const date = new Date(time);
+              return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            }
+          }
+        });
+            
+      function orgChartModal() {
+        $.ajax({
+          url: '/employee/orgChart',
+          method: 'GET'
+        }).done(function (data) {
+          $('#orgChartContainer').empty();
+          const employeeList = [
+            {name: '대표', id: 6, employee: []},
+            {name: '경영팀', id: 1, employee: []},
+            {name: '인사팀', id: 2, employee: []},
+            {name: '총무팀', id: 3, employee: []},
+            {name: '운영지원팀', id: 4, employee: []},
+            {name: '연구팀', id: 5, employee: []}];
+
+          for (let i = 0; i < data.length; i++) {
+            const employee = data[i];
+
+            for (let j = 0; j < employeeList.length; j++) {
+              const departments = employeeList[j];
+              if (departments.id == employee.departmentId) {
+                departments.employee.push(employee);
+              }
+            }
+          }
+          for (let i = 0; i < employeeList.length; i++) {
+            const departmentList = employeeList[i];
+            const title = $('<div>').html(departmentList.name).css({
+              'background-color': '#2c3e50',
+              'color': 'white',
+              'text-align': 'center'
+            });
+            const departmentDiv = $('<ul>').css({
+              'border': '3px solid black'
+            });
+
+            for (let j = 0; j < departmentList.employee.length; j++) {
+              const employee = departmentList.employee[j];
+
+              const div = $('<li>').html(employee.name + "<br>" + employee.jobName);
+              departmentDiv.append(div);
+            }
+            $('#orgChartContainer').append(title, departmentDiv);
+          }
+          // 모달 객체 생성
+          const modalElement = document.getElementById('orgChartModal');
+          const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+          modal.show();
+        });
       }
-
-      if (notReadCount > 0) {
-        $('#notificationBtn .notification-badge').show().text(notReadCount);
-
-        $('#notificationBtn .material-icons').removeClass('notification-animate');
-        $('#notificationBtn .material-icons')[0].offsetWidth;
-        $('#notificationBtn .material-icons').addClass('notification-animate')
-                .one('animationend', function() {
-                  $(this).removeClass('notification-animate');
-                });
-      }
-    }
-
-    function parseTime(time) {
-      const date = new Date(time);
-      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    }
-  });
 </script>
       <script>
         $(document).ready(function () {
@@ -510,6 +624,14 @@
             $('#notificationMenu').hide();
           });
 
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('.notification-container').length) {
+        $('#notificationMenu').hide();
+      }
+    });
+  });
+</script>
+<script>
           $(document).on('click', function(e) {
             if (!$(e.target).closest('.notification-container').length) {
               $('#notificationMenu').hide();
@@ -530,4 +652,4 @@
             // $(this)[0].submit();
           });
         });
-      </script>
+</script>

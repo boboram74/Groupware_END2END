@@ -156,6 +156,10 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .build();
             approverDAO.insertApprover(approverDTO);
             added.add(approverId);
+
+            if (order == 1) {
+                alarmService.sendApproveCheckAlarm("/approval/detail/" + approvalDTO.getId(), approverId);
+            }
         }
     }
 
@@ -181,6 +185,8 @@ public class ApprovalServiceImpl implements ApprovalService {
             alarmService.sendApprovalResultAlarm("/approval/detail/" + approvalId, approvalId);
         } else {
             approvalDAO.updateState(approvalId, "ONGOING");
+
+            alarmService.sendApproveCheckAlarm("/approval/detail/" + approvalId, nextApprovers.get(0).getEmployeeId());
         }
 
     }

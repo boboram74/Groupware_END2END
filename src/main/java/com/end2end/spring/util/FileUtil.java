@@ -56,7 +56,7 @@ public class FileUtil {
 
         filePath.mkdir();
 
-        String systemFileName = String.valueOf(UUID.randomUUID());
+        String systemFileName = String.valueOf(UUID.randomUUID()) + getExtension(file.getOriginalFilename());
 
         file.transferTo(new File(uploadPath + "/" + systemFileName));
 
@@ -87,5 +87,9 @@ public class FileUtil {
                 FileCopyUtils.copy(fileInputStream, os);
             }
         }
+    }
+
+    private static String getExtension(String filePath) {
+        return "." + filePath.substring(filePath.lastIndexOf(".") + 1);
     }
 }

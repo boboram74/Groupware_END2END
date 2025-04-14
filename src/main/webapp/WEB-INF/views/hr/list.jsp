@@ -60,7 +60,7 @@
                             <th>이름</th>
                             <th>부서</th>
                             <th>직급</th>
-                            <th>권한 상태</th>
+                            <th>퇴직 처리</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -71,7 +71,9 @@
                                     <td onclick="location.href='/mypage/${item.id}'" style="cursor:pointer;">${item.name}</td>
                                     <td>${item.departmentName}</td>
                                     <td>${item.jobName}</td>
-                                    <td>${item.role}</td>
+                                    <td class="btn">
+                                        <button type="button" class="resignationBtn secondary">처리 등록</button>
+                                    </td>
                                 </tr>
                             </c:if>
                         </c:forEach>
@@ -83,7 +85,6 @@
                             <th>이름</th>
                             <th>부서</th>
                             <th>직급</th>
-                            <th>권한</th>
                             <th>확인</th>
                         </tr>
                         </thead>
@@ -94,7 +95,6 @@
                                     <td>${item.name}</td>
                                     <td>${item.departmentName}</td>
                                     <td>${item.jobName}</td>
-                                    <td>${item.role}</td>
                                     <td class="btn">
                                         <button type="button" class="approveBtn primary" data-id="${item.id}">승인</button>
                                         <button type="button" class="rejectBtn secondary" data-id="${item.id}">반려</button>

@@ -7,7 +7,10 @@ import java.util.List;
 public interface BoardCategoryService {
     List<BoardCategoryDTO> selectAll();
     List<BoardCategoryDTO> selectByEmployeeId(String employeeId);
-    void insert(BoardCategoryDTO dto);
+    void insertCategory(BoardCategoryDTO dto);
     void update(BoardCategoryDTO dto);
     void deleteById(int id);
+//    BoardCategoryDTO selectCategoryBuId(int id);
+
+    BoardCategoryDTO selectCategoryById(int categoryId);
 }

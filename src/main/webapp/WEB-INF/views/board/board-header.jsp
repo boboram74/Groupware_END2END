@@ -3,6 +3,54 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <link rel="stylesheet" href="/css/template/exam.css"/>
+<style>
+    .category-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .category-modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 400px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    #categoryName, #description {
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .saveBtn, .canBtn {
+        margin-top: 10px;
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .saveBtn {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .canBtn {
+        background-color: #f44336;
+        color: white;
+    }
+</style>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
@@ -39,7 +87,7 @@
                 <span class="material-icons">folder</span>
                 <span>자료실</span>
             </li>
-            <li class="detail-menu-item">
+            <li class="detail-menu-item" id="create-category">
                 <span class="material-icons">create</span>
                 <span>게시판 만들기</span>
             </li>
@@ -49,7 +97,26 @@
         </button>
     </div>
 </div>
+<div id="category-modal" class="category-modal">
+    <form action="/board/category/insert" method="post">
+        <div class="modal-content">
+            <h3>게시판 만들기</h3>
+            <label for="categoryName">카테고리 이름:</label>
+            <input type="text" id="categoryName" name="name" required>
 
+            <label for="description">설명:</label>
+            <textarea id="description" name="category" required></textarea>
+
+            <div class="button-area">
+                <button type="submit" class="saveBtn">저장</button>
+                <button type="button" class="canBtn" id="cancel-btn">취소</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+</div>
 <div class="mainContainer">
     <div class="mainBody">
         <script src="/js/main/contact.js" type="text/javascript"></script>
@@ -64,6 +131,10 @@
                 const $menuBtn = $('.detail-menu-toggle-btn');
                 const $detailMenuModal = $('.detail-menu-modal');
                 const $closeBtn = $('.detail-modal-close');
+
+                const $createCategoryBtn = $('#create-category');
+                const $categoryModal = $('#category-modal');
+                const $cancelBtn = $('#cancel-btn');
 
                 // 메뉴 버튼 클릭 시 모달 열기
                 $menuBtn.on('click', function () {
@@ -84,6 +155,16 @@
                         $('body').css('overflow', '');
                     }
                 });
+                $createCategoryBtn.on('click', function () {
+                    $categoryModal.addClass('active');
+                    $('body').css('overflow', 'hidden');  // 모달 열 때 화면 고정
+                });
+
+                // 취소 버튼 클릭 시 카테고리 모달 닫기
+                $cancelBtn.on('click', function () {
+                    $categoryModal.removeClass('active');
+                    $('body').css('overflow', '');  // 화면 고정 해제
+                });
             });
+
         </script>
-        <script src="/js/main/contact.js" type="text/javascript"></script>

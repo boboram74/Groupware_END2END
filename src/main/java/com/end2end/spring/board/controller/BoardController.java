@@ -3,6 +3,7 @@ package com.end2end.spring.board.controller;
 import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
+import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.List;
 
 @RequestMapping("/board")
@@ -19,6 +21,9 @@ import java.util.List;
 public class BoardController {
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private BoardCategoryService boardCategoryService;
 
     @RequestMapping("/list")
     public String list(Model model) {
@@ -47,10 +52,16 @@ public class BoardController {
         if (employee == null) {
             return "redirect:/login";
         }
+        BoardCategoryDTO category = boardCategoryService.selectCategoryById(categoryId);
+        if(category == null) {
+            return "redirect:/board/list";
+        }
+
         List<BoardDTO> boardList = boardService.selectByCategoryId(categoryId, employee.getId());
         System.out.println("카테고리 게시판 출력: " + boardList);
-        model.addAttribute("employeeDTO", employee);
+        model.addAttribute("category", category);
         model.addAttribute("boardList", boardList);
+        model.addAttribute("employeeDTO", employee);
 
         return "/board/list";
     }
@@ -70,7 +81,14 @@ public class BoardController {
     @RequestMapping("/write")
     public String toWrite(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login"; // 세션이 없으면 로그인 페이지로 리다이렉트
+        }
+
+        // 게시판 카테고리 목록을 모델에 추가
+        List<BoardCategoryDTO> categoryList = boardCategoryService.selectAll();
         model.addAttribute("employeeDTO", employee);
+        model.addAttribute("categoryList", categoryList);
 
         // TODO: 게시글 입력 폼으로 이동
         return "/board/write";
@@ -99,9 +117,25 @@ public class BoardController {
 
     @RequestMapping("/insert")
     public String insert(HttpSession session, BoardDTO dto,  @RequestParam("file") MultipartFile file)throws Exception {
+        System.out.println("insert 메서드 호출");
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login"; // 세션이 없으면 로그인 페이지로 리다이렉트
+        }
+
+        System.out.println("DTO 값: " + dto);
+        System.out.println("첨부 파일: " + file.getOriginalFilename());
+
+        // 파일 처리 로직 (파일 저장 경로 등 추가 필요)
+        if (!file.isEmpty()) {
+            String filePath = "/path/to/save"; // 저장할 경로 설정
+            String fileName = file.getOriginalFilename();
+            file.transferTo(new File(filePath + "/" + fileName)); // 파일 저장
+            dto.setFilePath(filePath + "/" + fileName); // 파일 경로 추가
+        }
+
+        dto.setEmployeeId(employee.getId()); // 작성자 ID 설정
         boardService.insert(dto);
-        // TODO: 게시글 입력을 받음
         return "redirect:/board/list";
     }
 
@@ -117,8 +151,14 @@ public class BoardController {
 //        // TODO: 게시글 번호로 삭제
 //    }
 
-    @RequestMapping("/category/insert")
-    public void insertCategory(BoardCategoryDTO dto) {
+
+    @PostMapping("/board/category/insert")
+    public String insertCategory(@ModelAttribute BoardCategoryDTO dto) {
+
+        System.out.println("Category Name: " + dto.getName());
+        System.out.println("Category Description: " + dto.getCategory());
+        boardCategoryService.insertCategory(dto);
+        return "redirect:/board/list";
         // TODO: 카테고리 입력을 받음
     }
 

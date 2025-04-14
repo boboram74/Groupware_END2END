@@ -141,7 +141,7 @@
 .info-summary {
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--md-sys-color-outline);
     width: 100%; /* information 전체 너비만큼 확장 */
     box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
 }
@@ -288,7 +288,6 @@
     display: flex;
     gap: 0;
     margin-bottom: 20px;
-    border-bottom: 2px solid var(--md-sys-color-outline);
 }
 
 .board-type-btn {
@@ -309,7 +308,7 @@
 /* hover 효과 - active와 동일한 스타일 적용 */
 .board-type-btn:hover {
     font-weight: 600;
-    border-top: 2px solid var(--md-sys-color-primary);
+    border-top: 4px solid var(--md-sys-color-primary);
     border-bottom: 2px solid var(--md-sys-color-surface-bright);
     color: var(--md-sys-color-primary);
     margin-bottom: -2px;
@@ -319,7 +318,7 @@
 .board-type-btn.active {
     font-weight: 600;
     border-bottom: 2px solid var(--md-sys-color-surface-bright);
-    border-top: 2px solid var(--md-sys-color-primary);
+    border-top: 4px solid var(--md-sys-color-primary);
     color: var(--md-sys-color-primary);
     margin-bottom: -2px;
 }

@@ -58,7 +58,7 @@
      <jsp:include page="${dto.form}" />
     </form>
 
-    <script src="/js/template/summernote.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/template/summernote.js"></script>
     <script>
         window.onload = function() {
             const date = new Date();
@@ -122,10 +122,7 @@
             $('.overlay').fadeOut();
         });
 
-        $('#contents').summernote({
-            height: 300,
-            lang: 'ko-KR'
-        });
+        $('#contents').summernote(summernoteSetting($('#contents')));
 
         function employees(departmentId) {
             $.ajax({

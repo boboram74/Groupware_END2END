@@ -67,7 +67,7 @@
 </style>
 <div class="button-container">
     <button class="extended-button primary">연장근무 신청</button>
-    <button class="vacation-button primary">휴가 신청</button>
+    <button class="vacation-button primary" onclick="window.open('/approval/write/${vacationApprovalFormId}', 'new', 'width=1000,height=1000')">휴가 신청</button>
     <button class="vacation-list-button secondary">휴가 조회</button>
 
 </div>
@@ -270,110 +270,6 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/views/commute/vacation-modal.jsp" />
-<style>
-    /* 모달 기본 스타일 */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-    }
-
-    .modal-content {
-        position: relative;
-        margin: 5% auto;
-        width: 80%;
-        max-width: 800px;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .modal-header {
-        padding: 20px;
-        border-bottom: 1px solid var(--md-sys-color-outline);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .modal-header h2 {
-        margin: 0;
-        font-size: 1.5rem;
-        color: var(--md-sys-color-on-surface);
-    }
-
-    .close {
-        font-size: 28px;
-        font-weight: bold;
-        color: var(--md-sys-color-on-surface-variant);
-        cursor: pointer;
-    }
-
-    .close:hover {
-        color: var(--md-sys-color-on-surface);
-    }
-
-    .vacation-stat-box h3 {
-        margin: 0 0 10px 0;
-        font-size: 1rem;
-        color: var(--md-sys-color-on-surface-variant);
-    }
-
-    /* 휴가 내역 테이블 스타일 */
-    .vacation-history {
-        padding: 20px;
-        border-radius: 8px;
-    }
-
-    .vacation-history h3 {
-        margin: 0 0 20px 0;
-        font-size: 1.2rem;
-    }
-
-    .vacation-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .vacation-table th,
-    .vacation-table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid var(--md-sys-color-outline-variant);
-    }
-
-    .vacation-table th {
-        background-color: var(--md-sys-color-surface-container-high);
-        color: var(--md-sys-color-on-surface);
-        font-weight: 600;
-    }
-
-    .vacation-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    /* 반응형 스타일 */
-    @media (max-width: 768px) {
-        .vacation-stats {
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-
-        .modal-content {
-            width: 95%;
-            margin: 10% auto;
-        }
-
-        .vacation-table {
-            display: block;
-            overflow-x: auto;
-        }
-    }
-</style>
 
 <script>
     $(document).ready(function() {
@@ -464,7 +360,6 @@
         updateDateTime();
         setInterval(updateDateTime, 1000);
 
-        // 출퇴근 버튼 클릭 이벤트 (필요한 경우)
         $('.startWork').click(function () {
             $.ajax({
                 url: '/commute/workOn'

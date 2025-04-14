@@ -57,10 +57,9 @@ public class MainController {
 
 	@RequestMapping("/contact")
 	public String selectContactList(Model model) {
-		// TODO: 연락처 페이지 출력
 		List<EmployeeDTO> contactList = employeeService.selectContactList();
 		model.addAttribute("contactList", contactList);
-		return "main/contact";
+		return "main/contact-test";
 	}
 
 	@RequestMapping("/worktree")

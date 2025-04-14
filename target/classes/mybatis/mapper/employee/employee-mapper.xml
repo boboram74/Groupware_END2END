@@ -137,6 +137,7 @@
         d.name AS departmentName,
         e.jobId,
         j.name AS jobName,
+        e.profileImg as profileImg,
         e.contact
         FROM EMPLOYEE e
         JOIN DEPARTMENT d ON e.departmentId = d.id

@@ -1,0 +1,108 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+<link rel="stylesheet" href="/css/template/exam.css"/>
+<style>
+    .board-table th, td {
+        color: var(--md-sys-color-surface);
+    }
+</style>
+<div class="mainHeader surface-bright">
+    <div class="detail-menu-header">
+        <div class="detail-menu-title">
+            <span class="material-icons">phone_in_talk</span>
+            <span>연락처</span>
+        </div>
+        <button class="detail-menu-toggle-btn">
+            <span class="material-icons">menu</span>
+        </button>
+    </div>
+    <div class="detail-menu-modal">
+        <ul class="detail-menu-list">
+        </ul>
+        <button class="detail-modal-close">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
+</div>
+
+<div class="mainContainer">
+    <div class="mainBody">
+        <div class="search">
+            <div>
+                <select id="searchOption">
+                    <option>이름</option>
+                    <option>연락처</option>
+                </select>
+            </div>
+            <div class="searchInput">
+                <input id="input" type="text" name="keyword" placeholder="검색어 입력">
+            </div>
+            <div>
+                <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
+            </div>
+        </div>
+        <div class="bord-table-container">
+            <table class="board-table">
+                <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>부서명</th>
+                    <th>직급명</th>
+                    <th>연락처</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${contactList}" var="contact">
+                    <tr>
+                        <td class="writer-info">
+                            <div class="profile-img" style="background-image: url('${contact.profileImg}')"></div>
+                            <span>${contact.name}</span>
+                        </td>
+                        <td>${contact.departmentName}</td>
+                        <td>${contact.jobName}</td>
+                        <td>${contact.contact}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+        <div class="pageNavi">
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('.detail-menu-item').on('click', function() {
+                $('.detail-menu-item').removeClass('active');
+                $(this).addClass('active');
+                // 클릭 이벤트 처리 로직
+            });
+
+            const $menuBtn = $('.detail-menu-toggle-btn');
+            const $detailMenuModal = $('.detail-menu-modal');
+            const $closeBtn = $('.detail-modal-close');
+
+            // 메뉴 버튼 클릭 시 모달 열기
+            $menuBtn.on('click', function() {
+                $detailMenuModal.addClass('active');
+                $('body').css('overflow', 'hidden');
+            });
+
+            // 닫기 버튼 클릭 시 모달 닫기
+            $closeBtn.on('click', function() {
+                $detailMenuModal.removeClass('active');
+                $('body').css('overflow', '');
+            });
+
+            // 모달 외부 클릭 시 닫기
+            $(window).on('click', function(e) {
+                if ($(e.target).is($detailMenuModal)) {
+                    $detailMenuModal.removeClass('active');
+                    $('body').css('overflow', '');
+                }
+            });
+        });
+    </script>
+    <script src="/js/main/contact.js" type="text/javascript"></script>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

@@ -18,4 +18,5 @@ public interface ApprovalFormService {
     void deleteById(int id);
     void insertFrequency(int formId, String employeeId);
     void deleteFrequencyById(int id);
+    ApprovalFormDTO selectLikeName(String name);
 }

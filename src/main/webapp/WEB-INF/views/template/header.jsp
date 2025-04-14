@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="ko" class="light">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,6 +13,115 @@
   <link rel="stylesheet" href="/css/template/header.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
+    $('html').addClass(mode);
+  </script>
+  <style>
+    /* 모바일 반응형 */
+    @media (max-width: 768px) {
+      /* 기존 채팅 버튼 숨기기 */
+      #chatButton {
+        display: none;
+      }
+    }
+
+    .notification-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .notification-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 300px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      margin-top: 8px;
+    }
+
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+    }
+
+    .notification-header h5 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .close-notification {
+      cursor: pointer;
+    }
+
+    .notification-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notification-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      cursor: pointer;
+    }
+
+    .notification-item:hover {
+      background-color: var(--md-sys-color-surface-container);
+      color: var(--md-sys-color-primary);
+    }
+
+    .notification-item .material-icons {
+      margin-right: 12px;
+      font-size: 20px;
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-text {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .notification-date {
+      font-size: 12px;
+      color: var(--md-sys-color-secondary);
+    }
+
+    .color-primary { color: #1976d2; }
+    .color-success { color: #4caf50; }
+    .color-warning { color: #ff9800; }
+    .color-info { color: #2196f3; }
+    .color-danger { color: #f44336; }
+
+    .notification-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .notification-list::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      margin: 0;
+    }
+
+    .notification-list::-webkit-scrollbar-thumb {
+      background: var(--md-sys-color-surface-variant);
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .notification-list::-webkit-scrollbar-thumb:hover {
+      background: var(--md-sys-color-outline);
+    }
+  </style>
 </head>
 <body>
 <div id="loading" style="display: none">
@@ -66,10 +175,93 @@
       <div class="logo" onClick="location.href='/'"></div>
       <div class="header-icons">
         <!-- 알람 아이콘 -->
-        <button class="icon-button" id="notificationBtn">
-          <span class="material-icons">notifications</span>
-          <span class="notification-badge">0</span>
-        </button>
+        <!-- 기존 알람 버튼을 아래 코드로 대체 -->
+        <div class="notification-container">
+          <button class="icon-button" id="notificationBtn">
+            <span class="material-icons">notifications</span>
+            <span class="notification-badge">0</span>
+          </button>
+          <div class="notification-menu surface-bright" id="notificationMenu">
+            <div class="notification-header">
+              <h5>알림</h5>
+              <span class="material-icons close-notification">close</span>
+            </div>
+            <div class="notification-list">
+              <div class="notification-list">
+                <div class="notification-item">
+                  <span class="material-icons color-primary">mail</span>
+                  <div class="notification-content">
+                    <div class="notification-text">새로운 메일이 도착했습니다.</div>
+                    <div class="notification-date">2024.02.15 14:30</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-success">description</span>
+                  <div class="notification-content">
+                    <div class="notification-text">휴가신청이 승인되었습니다.</div>
+                    <div class="notification-date">2024.02.15 11:20</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-warning">event</span>
+                  <div class="notification-content">
+                    <div class="notification-text">팀 회의가 30분 후에 시작됩니다.</div>
+                    <div class="notification-date">2024.02.15 09:45</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-info">people</span>
+                  <div class="notification-content">
+                    <div class="notification-text">프로젝트 팀원이 추가되었습니다.</div>
+                    <div class="notification-date">2024.02.14 17:15</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-danger">priority_high</span>
+                  <div class="notification-content">
+                    <div class="notification-text">긴급 화상회의가 소집되었습니다.</div>
+                    <div class="notification-date">2024.02.14 16:50</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-success">check_circle</span>
+                  <div class="notification-content">
+                    <div class="notification-text">업무 보고서가 승인되었습니다.</div>
+                    <div class="notification-date">2024.02.14 15:20</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-warning">schedule</span>
+                  <div class="notification-content">
+                    <div class="notification-text">프로젝트 마감기한이 임박했습니다.</div>
+                    <div class="notification-date">2024.02.14 14:10</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-info">announcement</span>
+                  <div class="notification-content">
+                    <div class="notification-text">전체 공지사항이 등록되었습니다.</div>
+                    <div class="notification-date">2024.02.14 11:30</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-primary">share</span>
+                  <div class="notification-content">
+                    <div class="notification-text">새로운 문서가 공유되었습니다.</div>
+                    <div class="notification-date">2024.02.14 10:15</div>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <span class="material-icons color-success">cake</span>
+                  <div class="notification-content">
+                    <div class="notification-text">오늘은 김철수 님의 생일입니다.</div>
+                    <div class="notification-date">2024.02.14 09:00</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- 조직도 아이콘 -->
         <button class="icon-button" id="orgChartBtn">
@@ -107,7 +299,7 @@
         <ul class="full-menu-list">
           <li>
             <a href="/">
-              <i class="material-icons">home</i>
+              <i class="material-icons">list</i>
               <span>홈</span>
             </a>
           </li>
@@ -136,9 +328,27 @@
             </a>
           </li>
           <li>
-            <a href="/schedule/list/1">
+            <a href="/schedule/list">
               <i class="material-icons">event_available</i>
               <span>예약</span>
+            </a>
+          </li>
+          <li>
+            <a href="/hr/list">
+              <i class="material-icons">people</i>
+              <span>인사관리</span>
+            </a>
+          </li>
+          <li>
+            <a href="/project/main">
+              <i class="material-icons">description</i>
+              <span>works</span>
+            </a>
+          </li>
+          <li>
+            <a href="/contact">
+              <i class="material-icons">contacts</i>
+              <span>주소록</span>
             </a>
           </li>
         </ul>
@@ -149,9 +359,9 @@
     <div class="mobile-nav sidebar-color">
       <div class="mobile-nav-scroll-container">
         <div class="mobile-menu">
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">home</i>
-            <span>홈</span>
+          <a href="#" class="mobile-menu-item open-mobile-menu">
+            <i class="material-icons">list</i>
+            <span>메뉴</span>
           </a>
           <a href="#" class="mobile-menu-item">
             <i class="material-icons">dashboard</i>
@@ -173,6 +383,10 @@
             <i class="material-icons">event_available</i>
             <span>예약</span>
           </a>
+          <a href="#" class="mobile-menu-item mobile-chat-btn">
+            <i class="material-icons">chat</i>
+            <span>채팅</span>
+          </a>
         </div>
       </div>
     </div>
@@ -180,12 +394,68 @@
     <!-- 콘텐츠 영역 -->
     <div class="boxContents">
       <!-- 메인 콘텐츠가 들어갈 자리 -->
-
 <script>
   $(document).ready(function() {
+    const alarm = new WebSocket('ws://localhost/alarm');
+
+    alarm.onopen = function() {
+      console.log('알람 웹소켓 연결됨');
+    };
+
+    alarm.onerror = function(error) {
+      console.log('알람 웹소켓 에러:', error);
+    };
+
+    alarm.onclose = function(event) {
+      console.log('알람 웹소켓 닫힘:', event.code, event.reason);
+    };
+
+    alarm.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      if (data.type === 'alarm') {
+        $('#notificationBtn').addClass('notification-badge-active');
+      }
+    }
+
+    // 기존 ready 함수 내부에 추가
+    $('#notificationBtn').on('click', function(e) {
+      e.stopPropagation();
+      $('#notificationMenu').toggle(0, function() {
+        if($(this).is(':visible')) {
+          const notificationList = $('.notification-list');
+          notificationList.scrollTop(notificationList[0].scrollHeight);
+        }
+      });
+    });
+
+    $('.close-notification').on('click', function(e) {
+      e.stopPropagation();
+      $('#notificationMenu').hide();
+    });
+
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('.notification-container').length) {
+        $('#notificationMenu').hide();
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    $('#darkModeBtn').on('click', function() {
+      if (mode === 'light') {
+        mode = 'dark';
+        sessionStorage.setItem('mode', 'dark');
+        $('html').removeClass('light').addClass('dark');
+      } else {
+        mode = 'light';
+        sessionStorage.setItem('mode', 'light');
+        $('html').removeClass('dark').addClass('light');
+      }
+    })
 
     // 모바일 메뉴 열기
-    $('.mobile-menu-item').click(function(e) {
+    $('.open-mobile-menu').click(function(e) {
       e.preventDefault();
       $('.full-menu-modal').addClass('show');
       $('body').css('overflow', 'hidden');
@@ -236,25 +506,4 @@
       }
     });
   });
-
-  $(document).ready(function() {
-    // 페이지 로드 시작할 때 로딩 표시
-    showLoading();
-
-    function showLoading() {
-      $('#loading').show();
-    }
-
-    function hideLoading() {
-      $('#loading').hide();
-    }
-
-    // 모든 초기 데이터 로딩이 완료되면
-    Promise.all([
-      // 필요한 다른 초기 데이터 로딩
-      // 예: 사용자 정보, 설정 등
-    ]).finally(() => {
-      hideLoading();
-    });
-  })
 </script>

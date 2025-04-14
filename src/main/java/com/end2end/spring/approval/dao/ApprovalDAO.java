@@ -65,4 +65,8 @@ public class ApprovalDAO {
     public ApprovalDTO selectDTOById(String id) {
         return mybatis.selectOne("approval.selectDTOById", id);
     }
+
+    public ApprovalFormDTO selectFormLikeName(String name) {
+        return mybatis.selectOne("approval.selectFormLikeName", name);
+    }
 }

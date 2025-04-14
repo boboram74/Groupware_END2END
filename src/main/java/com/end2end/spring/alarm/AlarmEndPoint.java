@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,8 +52,11 @@ public class AlarmEndPoint {
 
         try {
             clients.get(employeeId).getBasicRemote().sendText(g.toJson(queue));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (NullPointerException ignore) {
+            // 현재 로그인한 사원에게는 딱히 안줘도 됨
+            ignore.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -62,7 +66,9 @@ public class AlarmEndPoint {
 
         System.out.println("onMessage : " + message);
 
-        long id = (Long) json.get("id");
+        Double parseId = (Double) json.get("id");
+
+        long id = parseId.longValue();
         String employeeId = (String) json.get("employeeId");
 
         EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employeeId);

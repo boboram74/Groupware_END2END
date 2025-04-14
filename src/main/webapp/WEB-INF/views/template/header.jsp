@@ -377,34 +377,27 @@
       const data = JSON.parse(e.data);
       console.log(data);
 
-      if (data.length > 0) {
-        $('#notificationBtn .notification-badge').show().text(data.length);
-
-        $('#notificationBtn .material-icons').removeClass('notification-animate');
-        $('#notificationBtn .material-icons')[0].offsetWidth;
-        $('#notificationBtn .material-icons').addClass('notification-animate')
-                .one('animationend', function() {
-                  $(this).removeClass('notification-animate');
-                });
-      } else {
-        return;
-      }
-
+      let notReadCount = 0;
       $('#notificationMenu .notification-list').empty();
       for (let i = 0; i < data.length; i++) {
         const item = data[i];
 
+        const readYn = (item.isRead) ? 'read' : '';
+        if (!item.isRead) {
+          notReadCount++;
+        }
+
         const div = $('<div class="notification-item">');
         div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
-                .append($('<div class="notification-content">')
+                .append($('<div class="notification-content">').addClass(readYn)
                         .append($('<div class="notification-text">').text(item.message))
                         .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
 
         if (item.url !== '') {
           div.on('click', function() {
             alarm.send(JSON.stringify({
-              'id': item.id,
-              'employeeId': ${employee.id}
+              'id': Number(item.id),
+              'employeeId': String(${employee.id})
             }));
 
             location.href = item.url;
@@ -412,6 +405,17 @@
         }
 
         $('#notificationMenu .notification-list').append(div);
+      }
+
+      if (notReadCount > 0) {
+        $('#notificationBtn .notification-badge').show().text(notReadCount);
+
+        $('#notificationBtn .material-icons').removeClass('notification-animate');
+        $('#notificationBtn .material-icons')[0].offsetWidth;
+        $('#notificationBtn .material-icons').addClass('notification-animate')
+                .one('animationend', function() {
+                  $(this).removeClass('notification-animate');
+                });
       }
     }
 

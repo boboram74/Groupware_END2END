@@ -104,9 +104,20 @@
             <label for="categoryName">카테고리 이름:</label>
             <input type="text" id="categoryName" name="name" required>
 
-            <label for="description">설명:</label>
-            <textarea id="description" name="category" required></textarea>
+            <label for="categorySelect">분류선택:</label>
+            <select name="category" id="categorySelect" required>
+                <option VALUE="">분류</option>
+                <option value="PUBLIC">공공게시판</option>
+                <option value="GOURP">그룹게시판</option>
+            </select>
 
+            <c:forEach var="b" items="${boardCategoryList}">
+                <li class="detail-menu-item">
+                    <span class="material-icons">bookmark</span>
+                    <span class="detail-menu-disc">${b.name}</span>
+                    <span class="detail-badge">12</span>
+                </li>
+            </c:forEach>
             <div class="button-area">
                 <button type="submit" class="saveBtn">저장</button>
                 <button type="button" class="canBtn" id="cancel-btn">취소</button>
@@ -148,7 +159,7 @@
                     $('body').css('overflow', '');
                 });
 
-                // 모달 외부 클릭 시 닫기
+                //모달 외부 클릭 시 닫기
                 $(window).on('click', function (e) {
                     if ($(e.target).is($detailMenuModal)) {
                         $detailMenuModal.removeClass('active');

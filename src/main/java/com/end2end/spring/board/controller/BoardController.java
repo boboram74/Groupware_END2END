@@ -28,8 +28,11 @@ public class BoardController {
     @RequestMapping("/list")
     public String list(Model model) {
         List<BoardDTO> boardList = boardService.selectAll();
+        List<BoardCategoryDTO> boardCategoryList = boardCategoryService.selectAll();
         System.out.println(boardList);
+        System.out.println(boardCategoryList);
         model.addAttribute("boardList", boardList);
+        model.addAttribute("boardCategoryList",boardCategoryList);
         // TODO: 모든 리스트
 
         return "/board/list";
@@ -152,11 +155,12 @@ public class BoardController {
 //    }
 
 
-    @PostMapping("/board/category/insert")
+    @PostMapping("/category/insert")
     public String insertCategory(@ModelAttribute BoardCategoryDTO dto) {
 
         System.out.println("Category Name: " + dto.getName());
         System.out.println("Category Description: " + dto.getCategory());
+        System.out.println(dto.getId()+dto.getName()+dto.getCategory()+dto.getRegDate());
         boardCategoryService.insertCategory(dto);
         return "redirect:/board/list";
         // TODO: 카테고리 입력을 받음

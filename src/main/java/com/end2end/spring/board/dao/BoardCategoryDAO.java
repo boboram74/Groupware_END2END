@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class BoardCategoryDAO {
     @Autowired
@@ -16,6 +18,9 @@ public class BoardCategoryDAO {
     }
     public BoardCategoryDTO selectCategoryById(int categoryId) {
         return mybatis.selectOne("boardCategory.selectCategoryById", categoryId);
+    }
+    public List<BoardCategoryDTO> selectAll(){
+        return mybatis.selectList("boardCategory.selectAll");
     }
 
 }

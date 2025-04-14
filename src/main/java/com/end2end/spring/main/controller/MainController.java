@@ -5,6 +5,7 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.dto.JobDTO;
 import com.end2end.spring.employee.service.EmployeeService;
+import com.end2end.spring.main.service.LoginHistoryService;
 import com.end2end.spring.util.HolidayUtil;
 import com.end2end.spring.works.dto.ProjectSelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class MainController {
 
 	@Autowired
 	private EmployeeService employeeService;
+
+	@Autowired
+	private LoginHistoryService loginHistoryService;
 
 	@GetMapping("/")
 	public String home(HttpSession session, Model model) {
@@ -53,6 +57,14 @@ public class MainController {
 		model.addAttribute("departmentList", departmentList);
 		model.addAttribute("jobList", jobList);
 		return "main/mypage";
+	}
+
+	@RequestMapping("/login/history")
+	public String toLoginHistory(HttpSession session, Model model) {
+		EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+		model.addAttribute("loginHistoryList", loginHistoryService.selectByEmployeeId(employee.getId()));
+
+		return "/main/loginHistory";
 	}
 
 	@RequestMapping("/contact")

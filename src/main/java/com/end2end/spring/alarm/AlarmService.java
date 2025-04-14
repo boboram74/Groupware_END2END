@@ -21,6 +21,10 @@ public class AlarmService {
     @Autowired private ProjectWorkDAO projectWorkDAO;
     @Autowired private ProjectUserDAO projectUserDAO;
 
+    public void sendNewLoginIpAlarm(String employeeId) {
+        send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history"), employeeId);
+    }
+
     public void sendMailAlarm(String url, String email) {
         List<EmailAddressUserDTO> emailAddressUserList =
                 mailDAO.selectEmailAddressUserByEmailAddress(email);

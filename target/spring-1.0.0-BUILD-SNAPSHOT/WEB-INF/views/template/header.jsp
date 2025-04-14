@@ -443,7 +443,11 @@
             console.log(data);
 
             let notReadCount = 0;
-            $('#notificationMenu .notification-list').empty();
+
+            if (data.length > 0) {
+              $('#notificationMenu .notification-list').empty();
+            }
+
             for (let i = 0; i < data.length; i++) {
               const item = data[i];
 
@@ -606,6 +610,8 @@
               window.location.href = '/mypage/${employee.id}';
             } else if (id === 'logout') {
               window.location.href = '/employee/logout';
+            } else if (id === 'login-history') {
+              window.location.href = '/login/history';
             }
           });
 

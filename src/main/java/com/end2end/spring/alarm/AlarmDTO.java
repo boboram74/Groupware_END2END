@@ -19,6 +19,7 @@ public class AlarmDTO {
     private String icons;
     private String message;
     private String url;
+    private String type;
     private Timestamp sendTime;
     private boolean isRead;
 
@@ -40,6 +41,7 @@ public class AlarmDTO {
                 .url(url)
                 .isRead(false)
                 .message(type.getDescription())
+                .type(type.getType())
                 .build();
     }
 

@@ -191,76 +191,74 @@
               <span class="material-icons close-notification">close</span>
             </div>
             <div class="notification-list">
-              <div class="notification-list">
-                <div class="notification-item">
-                  <span class="material-icons color-primary">mail</span>
-                  <div class="notification-content">
-                    <div class="notification-text">새로운 메일이 도착했습니다.</div>
-                    <div class="notification-date">2024.02.15 14:30</div>
-                  </div>
+              <div class="notification-item">
+                <span class="material-icons color-primary">mail</span>
+                <div class="notification-content">
+                  <div class="notification-text">새로운 메일이 도착했습니다.</div>
+                  <div class="notification-date">2024.02.15 14:30</div>
                 </div>
-                <div class="notification-item">
-                  <span class="material-icons color-success">description</span>
-                  <div class="notification-content">
-                    <div class="notification-text">휴가신청이 승인되었습니다.</div>
-                    <div class="notification-date">2024.02.15 11:20</div>
-                  </div>
+              </div>
+              <div class="notification-item">
+                <span class="material-icons color-success">description</span>
+                <div class="notification-content">
+                  <div class="notification-text">휴가신청이 승인되었습니다.</div>
+                  <div class="notification-date">2024.02.15 11:20</div>
                 </div>
-                <div class="notification-item">
-                  <span class="material-icons color-warning">event</span>
-                  <div class="notification-content">
-                    <div class="notification-text">팀 회의가 30분 후에 시작됩니다.</div>
-                    <div class="notification-date">2024.02.15 09:45</div>
-                  </div>
+              </div>
+              <div class="notification-item">
+                <span class="material-icons color-warning">event</span>
+                <div class="notification-content">
+                  <div class="notification-text">팀 회의가 30분 후에 시작됩니다.</div>
+                  <div class="notification-date">2024.02.15 09:45</div>
                 </div>
-                <div class="notification-item">
-                  <span class="material-icons color-info">people</span>
-                  <div class="notification-content">
-                    <div class="notification-text">프로젝트 팀원이 추가되었습니다.</div>
-                    <div class="notification-date">2024.02.14 17:15</div>
-                  </div>
+              </div>
+              <div class="notification-item">
+                <span class="material-icons color-info">people</span>
+                <div class="notification-content">
+                  <div class="notification-text">프로젝트 팀원이 추가되었습니다.</div>
+                  <div class="notification-date">2024.02.14 17:15</div>
                 </div>
-                <div class="notification-item">
-                  <span class="material-icons color-danger">priority_high</span>
-                  <div class="notification-content">
-                    <div class="notification-text">긴급 화상회의가 소집되었습니다.</div>
-                    <div class="notification-date">2024.02.14 16:50</div>
-                  </div>
+              </div>
+              <div class="notification-item">
+                <span class="material-icons color-danger">priority_high</span>
+                <div class="notification-content">
+                  <div class="notification-text">긴급 화상회의가 소집되었습니다.</div>
+                  <div class="notification-date">2024.02.14 16:50</div>
                 </div>
-                <div class="notification-item">
-                  <span class="material-icons color-success">check_circle</span>
-                  <div class="notification-content">
-                    <div class="notification-text">업무 보고서가 승인되었습니다.</div>
-                    <div class="notification-date">2024.02.14 15:20</div>
-                  </div>
+              </div>
+              <div class="notification-item">
+                <span class="material-icons color-success">check_circle</span>
+                <div class="notification-content">
+                  <div class="notification-text">업무 보고서가 승인되었습니다.</div>
+                  <div class="notification-date">2024.02.14 15:20</div>
                 </div>
-                <div class="notification-item">
-                  <span class="material-icons color-warning">schedule</span>
-                  <div class="notification-content">
-                    <div class="notification-text">프로젝트 마감기한이 임박했습니다.</div>
-                    <div class="notification-date">2024.02.14 14:10</div>
-                  </div>
+              </div>
+              <div class="notification-item">
+                <span class="material-icons color-warning">schedule</span>
+                <div class="notification-content">
+                  <div class="notification-text">프로젝트 마감기한이 임박했습니다.</div>
+                  <div class="notification-date">2024.02.14 14:10</div>
                 </div>
-                <div class="notification-item">
-                  <span class="material-icons color-info">announcement</span>
-                  <div class="notification-content">
-                    <div class="notification-text">전체 공지사항이 등록되었습니다.</div>
-                    <div class="notification-date">2024.02.14 11:30</div>
-                  </div>
+              </div>
+              <div class="notification-item">
+                <span class="material-icons color-info">announcement</span>
+                <div class="notification-content">
+                  <div class="notification-text">전체 공지사항이 등록되었습니다.</div>
+                  <div class="notification-date">2024.02.14 11:30</div>
                 </div>
-                <div class="notification-item">
-                  <span class="material-icons color-primary">share</span>
-                  <div class="notification-content">
-                    <div class="notification-text">새로운 문서가 공유되었습니다.</div>
-                    <div class="notification-date">2024.02.14 10:15</div>
-                  </div>
+              </div>
+              <div class="notification-item">
+                <span class="material-icons color-primary">share</span>
+                <div class="notification-content">
+                  <div class="notification-text">새로운 문서가 공유되었습니다.</div>
+                  <div class="notification-date">2024.02.14 10:15</div>
                 </div>
-                <div class="notification-item">
-                  <span class="material-icons color-success">cake</span>
-                  <div class="notification-content">
-                    <div class="notification-text">오늘은 김철수 님의 생일입니다.</div>
-                    <div class="notification-date">2024.02.14 09:00</div>
-                  </div>
+              </div>
+              <div class="notification-item">
+                <span class="material-icons color-success">cake</span>
+                <div class="notification-content">
+                  <div class="notification-text">오늘은 김철수 님의 생일입니다.</div>
+                  <div class="notification-date">2024.02.14 09:00</div>
                 </div>
               </div>
             </div>
@@ -416,22 +414,38 @@
 
     alarm.onmessage = function(e) {
       const data = JSON.parse(e.data);
-      if (data.type === 'alarm') {
-        $('#notificationBtn').addClass('notification-badge-active');
+      console.log(data);
+
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i];
+
+        const div = $('<div class="notification-item">');
+        div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
+                .append($('<div class="notification-content">')
+                        .append($('<div class="notification-text">').text(item.message))
+                        .append($('<div class="notification-date">').text(new Date().toLocaleDateString())))
+
+        if (item.url !== '') {
+          div.on('click', function() {
+            location.href = item.url;
+          })
+        }
+
+        $('#notificationMenu .notification-list').append(div);
       }
     }
   });
 </script>
-<script>
-  $(document).ready(function() {
-    $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
+      <script>
+        $(document).ready(function () {
+          $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
 
-    $('#darkModeBtn').on('click', function() {
-      if (mode === 'light') {
-        mode = 'dark';
-        sessionStorage.setItem('mode', 'dark');
-        $('html').removeClass('light').addClass('dark');
-      } else {
+          $('#darkModeBtn').on('click', function () {
+            if (mode === 'light') {
+              mode = 'dark';
+              sessionStorage.setItem('mode', 'dark');
+              $('html').removeClass('light').addClass('dark');
+            } else {
         mode = 'light';
         sessionStorage.setItem('mode', 'light');
         $('html').removeClass('dark').addClass('light');

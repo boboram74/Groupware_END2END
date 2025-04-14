@@ -2,6 +2,7 @@ package com.end2end.spring.approval.serviceImpl;
 
 import com.end2end.spring.alarm.AlarmDTO;
 import com.end2end.spring.alarm.AlarmEndPoint;
+import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.alarm.AlarmType;
 import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dao.ApprovalRejectDAO;
@@ -35,6 +36,8 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Autowired private FileService fileService;
     @Autowired private VacationService vacationService;
     @Autowired private CommuteService commuteService;
+
+    @Autowired private AlarmService alarmService;
 
     @Override
     public List<ApprovalDTO> myList(String state) {
@@ -174,6 +177,8 @@ public class ApprovalServiceImpl implements ApprovalService {
                     commuteService.update(extendedCommuteDTO);
                 }
             }
+
+            alarmService.sendApprovalResultAlarm("/approval/detail/" + approvalId, approvalId);
         } else {
             approvalDAO.updateState(approvalId, "ONGOING");
         }

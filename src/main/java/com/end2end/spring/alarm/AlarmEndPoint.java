@@ -3,6 +3,7 @@ package com.end2end.spring.alarm;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.messenger.config.WebSocketConfig;
 import com.google.common.collect.EvictingQueue;
+import com.google.gson.Gson;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
@@ -13,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint(value="/alarm", configurator = WebSocketConfig.class)
 public class AlarmEndPoint {
+    private static final Gson g = new Gson();
+
     private static Map<String, Session> clients = new ConcurrentHashMap<>();
     private static Map<String, EvictingQueue<AlarmDTO>> alarmQueues = new ConcurrentHashMap<>();
 
@@ -28,6 +31,9 @@ public class AlarmEndPoint {
 
         try {
             clients.put(employee.getId(), session);
+            EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employee.getId());
+
+            clients.get(employee.getId()).getBasicRemote().sendText(g.toJson(queue));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,8 +45,11 @@ public class AlarmEndPoint {
     }
 
     public static void sendMessage(AlarmDTO dto, String employeeId) {
+        EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employeeId);
+        queue.add(dto);
+
         try {
-            clients.get(employeeId).getBasicRemote().sendText(dto.toJson());
+            clients.get(employeeId).getBasicRemote().sendText(g.toJson(queue));
         } catch (Exception e) {
             e.printStackTrace();
         }

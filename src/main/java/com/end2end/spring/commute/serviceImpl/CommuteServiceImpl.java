@@ -92,9 +92,9 @@ public class CommuteServiceImpl implements CommuteService {
         LocalDateTime workTime = workOnDTO.getRegDate().toLocalDateTime().plusHours(Statics.WORK_HOUR);
 
         dto.setState("WORK_OFF");
-        commuteDAO.insert(dto);
 
         if(workTime.isAfter(LocalDateTime.now())) {
+            commuteDAO.insert(dto);
             if ( vacationDAO.isOnVacation(employeeId) == 0 && !HolidayUtil.isHoliday(LocalDate.now())) {
                 SolderingDTO solderingDTO = SolderingDTO.builder()
                         .employeeId(employeeId)

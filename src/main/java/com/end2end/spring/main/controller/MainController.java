@@ -61,8 +61,8 @@ public class MainController {
 		return "main/mypage";
 	}
 
-	@RequestMapping("/login/history")
-	public String toLoginHistory(HttpSession session, Model model, int page) {
+	@RequestMapping("/login/history/{page}")
+	public String toLoginHistory(HttpSession session, Model model, @PathVariable int page) {
 		EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
 
 		int totalLength = loginHistoryService.selectByEmployeeId(employee.getId()).size();

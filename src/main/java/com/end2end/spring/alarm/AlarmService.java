@@ -22,7 +22,7 @@ public class AlarmService {
     @Autowired private ProjectUserDAO projectUserDAO;
 
     public void sendNewLoginIpAlarm(String employeeId) {
-        send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history"), employeeId);
+        send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
     }
 
     public void sendMailAlarm(String url, String email) {

@@ -611,7 +611,7 @@
             } else if (id === 'logout') {
               window.location.href = '/employee/logout';
             } else if (id === 'login-history') {
-              window.location.href = '/login/history';
+              window.location.href = '/login/history/1';
             }
           });
 

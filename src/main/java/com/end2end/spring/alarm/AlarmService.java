@@ -5,10 +5,9 @@ import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.EmailAddressUserDTO;
-import com.end2end.spring.works.dao.ProjectDAO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
-import com.end2end.spring.works.dto.ProjectUserDTO;
+import com.end2end.spring.works.dto.ProjectWorkDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +42,11 @@ public class AlarmService {
                     approvalDTO.getEmployeeId());
         }
     }
+
+    public void sendApproveCheckAlarm(String url, String employeeId) {
+        send(AlarmDTO.of(AlarmType.CHECK_APPROVAL, employeeId, url), employeeId);
+    }
+
     public void sendProjectAlarm(AlarmType alarmType, String url, int projectId) {
         List<EmployeeDTO> projectUserList = projectUserDAO.selectByprojectId(projectId);
 
@@ -51,12 +55,24 @@ public class AlarmService {
         }
     }
 
-    public void sendApproveCheckAlarm(String url, String employeeId) {
-        send(AlarmDTO.of(AlarmType.CHECK_APPROVAL, employeeId, url), employeeId);
-    }
+    public void sendProjectWorkStateChangeAlarm(int projectWorkId) {
+        ProjectWorkDTO projectWorkDTO = projectWorkDAO.selectByworksId(projectWorkId);
 
-    public void sendProjectEmergencyCheck(String url, String projectId) {
-        //List<ProjectUserDTO> projectUserList = projectDAO.
+        AlarmType alarmType = null;
+        if (projectWorkDTO.getState().equals("ONGOING")) {
+            alarmType = AlarmType.PROJECT_WORK_ONGOING;
+        } else if (projectWorkDTO.getState().equals("FINISH")) {
+            alarmType = AlarmType.PROJECT_WORK_FINISH;
+        } else {
+            return;
+        }
+
+        List<EmployeeDTO> projectUserList = projectUserDAO.selectByprojectId(projectWorkDTO.getProjectId());
+
+        for (EmployeeDTO employeeDTO : projectUserList) {
+            send(AlarmDTO.of(alarmType, employeeDTO.getId(), "/project/detail/" + projectWorkDTO.getProjectId()),
+                    employeeDTO.getId());
+        }
     }
 
     private void send(AlarmDTO dto, String employeeId) {

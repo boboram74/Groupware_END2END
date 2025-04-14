@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/employee")
 @Controller
@@ -27,7 +29,7 @@ public class EmployeeController {
 
     @RequestMapping("/login")
     public String login(@ModelAttribute LoginDTO dto, HttpSession session, Model model) {
-         EmployeeDTO employee = employeeService.login(dto);
+        EmployeeDTO employee = employeeService.login(dto);
         if (employee != null) {
             session.setAttribute("employee", employee);
             boolean isWorkOn = commuteService.isExistByState(employee.getId(), "WORK_ON");
@@ -63,5 +65,11 @@ public class EmployeeController {
     @RequestMapping("/department/{departmentId}")
     public List<EmployeeDTO> selectDepartmentEmployee(@PathVariable int departmentId) {
         return employeeService.selectByDepartmentId(departmentId);
+    }
+
+    @ResponseBody
+    @RequestMapping("/orgChart")
+    public List<EmployeeDTO>  getOrgChart(Model model) {
+        return employeeService.selectAll();
     }
 }

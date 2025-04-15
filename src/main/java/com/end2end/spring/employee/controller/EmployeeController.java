@@ -72,9 +72,17 @@ public class EmployeeController {
         return "redirect:/";
     }
 
-    @RequestMapping("/change/password")
-    public void changePassword() {
+    @RequestMapping("/toChangePwForm")
+    public String toChangePwForm() {
+        // TODO: 패스워드 변경 팝업창
+        return "/main/changePw";
+    }
+
+
+    @RequestMapping("/changePw")
+    public String changePw() {
         // TODO: 패스워드 변경
+        return "/employee/changePw";
     }
 
     @RequestMapping("/{id}")

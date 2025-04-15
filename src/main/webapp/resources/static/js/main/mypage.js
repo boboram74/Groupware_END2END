@@ -69,5 +69,7 @@ $("#searchAddressBtn").on("click", function (e) {
     $("#cancelBtn").on("click", function() {
         location.reload();
     });
-
+    $("#changePwBtn").on("click", function(e) {
+        window.open("/employee/toChangePwForm", "changePwPopup", "width=500,height=400");
+    });
 });

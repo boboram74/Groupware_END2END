@@ -14,7 +14,7 @@
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
-            <h2><span class="material-icons">supervisor_account</span>${employeeDetail.name}${employeeDetail.departmentName} MyPage</h2>
+            <h2><span class="material-icons">supervisor_account</span>${employeeDetail.name} ${employeeDetail.departmentName}님의 마이페이지</h2>
         </div>
     </div>
     <div class="mainBody">
@@ -110,7 +110,7 @@
                     <input type="text" id="detailAddressInput" name="detailAddress" value="${employeeDetail.detailAddress}" style="display:none;" />
                 </div>
                 <div class="btn">
-                    <button type="button" id="passwordChangeBtn">패스워드 변경</button>
+                    <button type="button" id="changePwBtn">패스워드 변경</button>
                     <button type="button" id="editBtn">수정하기</button>
                     <button type="submit" id="saveBtn" style="display:none;">수정완료</button>
                     <button type="button" id="backBtn">메인으로</button>

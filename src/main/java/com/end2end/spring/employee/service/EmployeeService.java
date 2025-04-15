@@ -11,11 +11,11 @@ public interface EmployeeService {
     List<EmployeeDTO> selectAll();
     EmployeeDetailDTO selectDetailById(String id);
     EmployeeDTO login(LoginDTO dto);
-    void logout();
     void insert(EmployeeDetailDTO dto, MultipartFile file);
     void roleUpdate(String id);
     void update(EmployeeDetailDTO dto, MultipartFile file);
     void deleteById(String id);
+    boolean pwVali(String currentPw);
     boolean idVali(String loginId);
     List<EmployeeDTO> selectByDepartmentId(int departmentId);
     List<DepartmentDTO> selectAllDepartment();
@@ -23,4 +23,5 @@ public interface EmployeeService {
     List<EmployeeDTO> selectContactList();
     boolean isNoAuthExist();
     List<EmployeeDTO> selectByThisMonthBirthday();
+    void changePw(String newPw,String id);
 }

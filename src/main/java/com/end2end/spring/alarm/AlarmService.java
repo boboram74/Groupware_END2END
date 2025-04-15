@@ -4,7 +4,9 @@ import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.mail.dao.MailDAO;
-import com.end2end.spring.mail.dto.EmailAddressUserDTO;
+import com.end2end.spring.mail.dto.MailURLDTO;
+import com.end2end.spring.schedule.dao.CalendarUserDAO;
+import com.end2end.spring.schedule.dto.CalendarUserDTO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
@@ -20,18 +22,18 @@ public class AlarmService {
     @Autowired private ApprovalDAO approvalDAO;
     @Autowired private ProjectWorkDAO projectWorkDAO;
     @Autowired private ProjectUserDAO projectUserDAO;
+    @Autowired private CalendarUserDAO calendarUserDAO;
 
     public void sendNewLoginIpAlarm(String employeeId) {
         send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
     }
 
-    public void sendMailAlarm(String url, String email) {
-        List<EmailAddressUserDTO> emailAddressUserList =
-                mailDAO.selectEmailAddressUserByEmailAddress(email);
+    public void sendMailAlarm(int emailId) {
+        List<MailURLDTO> mailURLDTO = mailDAO.selectMailURLById(emailId);
 
-        for (EmailAddressUserDTO emailAddressUser : emailAddressUserList) {
-            send(AlarmDTO.of(AlarmType.GET_EMAIL, emailAddressUser.getEmployeeId(), url),
-                    emailAddressUser.getEmployeeId());
+        for(MailURLDTO dto : mailURLDTO) {
+            String url = String.format("/mail/%d/%d", dto.getId(), dto.getEmailStateId());
+            send(AlarmDTO.of(AlarmType.GET_EMAIL, dto.getEmployeeId(), url), dto.getEmployeeId());
         }
     }
 
@@ -76,6 +78,15 @@ public class AlarmService {
         for (EmployeeDTO employeeDTO : projectUserList) {
             send(AlarmDTO.of(alarmType, employeeDTO.getId(), "/project/detail/" + projectWorkDTO.getProjectId()),
                     employeeDTO.getId());
+        }
+    }
+
+    public void sendCalendarCreateAlarm(int calendarId) {
+        List<CalendarUserDTO> calendarUserList = calendarUserDAO.selectByCalendarId(calendarId);
+
+        for (CalendarUserDTO calendarUserDTO : calendarUserList) {
+            String employeeId = calendarUserDTO.getEmployeeId();
+            send(AlarmDTO.of(AlarmType.CALENDAR_CREATE, employeeId, "/schedule/calendar/list"), employeeId);
         }
     }
 

@@ -1,25 +1,41 @@
 package com.end2end.spring.schedule.controller;
 
+import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.schedule.dto.BookDTO;
-import com.end2end.spring.schedule.dto.CalenderDTO;
+import com.end2end.spring.schedule.dto.CalendarDTO;
+import com.end2end.spring.schedule.dto.CalendarInsertDTO;
+import com.end2end.spring.schedule.service.CalendarService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpSession;
+
+import java.util.List;
 
 @RequestMapping("/schedule")
 @Controller
 public class ScheduleController {
-    @RequestMapping("/calender/list/{employeeId}")
-    public String toCalendar(Model model, @PathVariable String employeeId) {
+    @Autowired private CalendarService calendarService;
+    @Autowired private EmployeeService employeeService;
+
+    @RequestMapping("/calendar/list")
+    public String toCalendar(HttpSession session, Model model) {
         // TODO: 해당 사원의 달력 페이지로 이동
-        return "schedule/calender";
+        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+        session.setAttribute("employeeList", employeeService.selectAll());
+
+        return "schedule/calendar";
     }
 
-    @RequestMapping("/calender/list/search")
+    @RequestMapping("/calendar/list/search")
     public String toCalenderSearch(Model model) {
         // TODO: 해당 검색 기록 결과를 calender.jsp에 출력
-        return "schedule/calender";
+        return "schedule/calendar";
     }
 
     @RequestMapping("/book")
@@ -34,22 +50,33 @@ public class ScheduleController {
         return "schedule/book";
     }
 
-    @RequestMapping("/calender/{id}")
-    public void selectCalender(@PathVariable int id) {
-        // TODO: 해당 id의 일정을 출력
+    @ResponseBody
+    @RequestMapping("/calendar/detail/{id}")
+    public CalendarDTO selectCalender(@PathVariable int id) {
+        return calendarService.selectById(id);
     }
 
-    @RequestMapping("/calender/insert")
-    public void insert(CalenderDTO dto) {
-        // TODO: 일정을 추가
+    @RequestMapping("/calendar/insert")
+    public String insert(HttpSession session, CalendarInsertDTO dto) {
+        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+
+        List<String> employeeList = dto.getEmployeeId();
+        employeeList.add(employeeDTO.getId());
+        dto.setEmployeeId(employeeList);
+
+        calendarService.insert(dto);
+
+        return "redirect:/schedule/calendar/list";
     }
 
-    @RequestMapping("/calender/update")
-    public void update(CalenderDTO dto) {
-        // TODO: 일정을 수정
+    @RequestMapping("/calendar/update")
+    public String update(CalendarDTO dto) {
+        calendarService.update(dto);
+
+        return "redirect:/schedule/calendar/list";
     }
 
-    @RequestMapping("/calender/delete/{id}")
+    @RequestMapping("/calendar/delete/{id}")
     public void deleteCalenderById(@PathVariable int id) {
         // TODO: 해당 id에 해당하는 일정을 삭제
     }

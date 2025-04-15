@@ -1,11 +1,10 @@
 $(document).ready(function(){
     $('form').off('submit').on('submit', function(e) {
-        console.log('폼 제출 시도');
+
         // 이벤트 전파 강제
         e.stopPropagation();
         e.preventDefault();
 
-        // 직접 submit 호출
         this.submit();
     });
     $("#editBtn").on("click", function(e) {
@@ -69,5 +68,7 @@ $("#searchAddressBtn").on("click", function (e) {
     $("#cancelBtn").on("click", function() {
         location.reload();
     });
-
+    $("#changePwBtn").on("click", function(e) {
+        window.open("/employee/toChangePwForm", "changePwPopup", "width=500,height=450");
+    });
 });

@@ -33,7 +33,7 @@
     <div class="userText">나의 전자결재</div>
 </div>
 <div class="searchBox">
-    <form action="/approval/search" method="get" class="searchForm">
+    <form action="/approval/search/" method="get" class="searchForm">
         <input type="text" name="keyword" placeholder="문서종류,기안자,제목" class="searchInput" />
         <button type="submit" class="searchBtn">검색</button>
     </form>

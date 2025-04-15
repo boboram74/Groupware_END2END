@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" href="/css/approval/draft.css">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
@@ -132,11 +133,11 @@
                 </tr>
                 <tr>
                     <th>시작일</th>
-                    <td>${vacationDTO.startDate}</td>
+                    <td><fmt:formatDate value="${vacationDTO.startDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
                 </tr>
                 <tr>
                     <th>종료일</th>
-                    <td>${vacationDTO.endDate}</td>
+                    <td><fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
                 </tr>
                 <tr>
                     <th>총 휴가 일수</th>
@@ -145,10 +146,6 @@
                 <tr>
                     <th>사유</th>
                     <td>${vacationDTO.reason}</td>
-                </tr>
-                <tr>
-                    <th>상태</th>
-                    <td>${vacationDTO.state}</td>
                 </tr>
             </table>
         </div>

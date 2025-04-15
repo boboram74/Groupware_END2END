@@ -173,7 +173,8 @@
     </select>
 
     <select id="selectByApprovalId" resultType="com.end2end.spring.commute.dto.VacationDTO">
-        SELECT *
+        SELECT v.*, startDate + NUMTODSINTERVAL(vacationDate, 'DAY') as endDate,
+        a.*
         FROM
         VACATION v
         JOIN

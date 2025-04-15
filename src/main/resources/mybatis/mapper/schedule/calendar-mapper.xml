@@ -19,6 +19,9 @@
 
     <insert id="insert">
         INSERT INTO CALENDAR(id, title, color) VALUES (CALENDAR_ID_SEQ.nextval, #{title}, #{color})
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT CALENDAR_ID_SEQ.currval FROM DUAL
+        </selectKey>
     </insert>
 
     <update id="update">

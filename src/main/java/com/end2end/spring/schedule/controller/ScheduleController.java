@@ -1,6 +1,7 @@
 package com.end2end.spring.schedule.controller;
 
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.schedule.dto.BookDTO;
 import com.end2end.spring.schedule.dto.CalendarDTO;
 import com.end2end.spring.schedule.dto.CalendarInsertDTO;
@@ -14,15 +15,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.List;
+
 @RequestMapping("/schedule")
 @Controller
 public class ScheduleController {
     @Autowired private CalendarService calendarService;
+    @Autowired private EmployeeService employeeService;
 
     @RequestMapping("/calendar/list")
     public String toCalendar(HttpSession session, Model model) {
         // TODO: 해당 사원의 달력 페이지로 이동
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+        session.setAttribute("employeeList", employeeService.selectAll());
 
         return "schedule/calendar";
     }
@@ -52,7 +57,13 @@ public class ScheduleController {
     }
 
     @RequestMapping("/calendar/insert")
-    public String insert(CalendarInsertDTO dto) {
+    public String insert(HttpSession session, CalendarInsertDTO dto) {
+        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+
+        List<String> employeeList = dto.getEmployeeId();
+        employeeList.add(employeeDTO.getId());
+        dto.setEmployeeId(employeeList);
+
         calendarService.insert(dto);
 
         return "redirect:/schedule/calendar/list";

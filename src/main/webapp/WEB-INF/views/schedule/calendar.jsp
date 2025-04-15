@@ -343,46 +343,18 @@
                                 <!-- 선택된 사원들이 여기에 태그처럼 표시됩니다 -->
                             </div>
                             <div class="employee-list">
-                                <div class="employee-item" data-id="1">
-                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
-                                    </div>
-                                    <div class="employee-info">
-                                        <span class="employee-name">김영희</span>
-                                        <span class="employee-dept">인사팀</span>
-                                    </div>
-                                </div>
-                                <div class="employee-item" data-id="2">
-                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
-                                    </div>
-                                    <div class="employee-info">
-                                        <span class="employee-name">이철수</span>
-                                        <span class="employee-dept">개발팀</span>
-                                    </div>
-                                </div>
-                                <div class="employee-item" data-id="3">
-                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
-                                    </div>
-                                    <div class="employee-info">
-                                        <span class="employee-name">박지민</span>
-                                        <span class="employee-dept">디자인팀</span>
-                                    </div>
-                                </div>
-                                <div class="employee-item" data-id="4">
-                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
-                                    </div>
-                                    <div class="employee-info">
-                                        <span class="employee-name">최수진</span>
-                                        <span class="employee-dept">마케팅팀</span>
-                                    </div>
-                                </div>
-                                <div class="employee-item" data-id="5">
-                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
-                                    </div>
-                                    <div class="employee-info">
-                                        <span class="employee-name">정민수</span>
-                                        <span class="employee-dept">영업팀</span>
-                                    </div>
-                                </div>
+                                <c:forEach items="${employeeList}" var="item">
+                                    <c:if test="${item.id != employee.id}">
+                                        <div class="employee-item" data-id="${item.id}">
+                                            <div class="profile-img" style="background-image: url('${item.profileImg}');">
+                                            </div>
+                                            <div class="employee-info">
+                                                <span class="employee-name">${item.name}</span>
+                                                <span class="employee-dept">${item.departmentName}</span>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
                             </div>
                         </div>
                         <input type="hidden" name="selectedEmployees" id="selectedEmployees">

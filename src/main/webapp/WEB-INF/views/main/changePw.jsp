@@ -9,7 +9,6 @@
 
 <body>
     <div class="pwContainer">
-        <form action="/employee/changePw" method="post" id="form">
             <div class="pwForm">
                 <label for="currentPw">기존 패스워드 입력</label>
                 <input type="password" id="currentPw" name="currentPw" required>
@@ -26,7 +25,6 @@
             </div>
             <div id="resultRePw"></div>
            <button id="changeBtn">변경하기</button>
-        </form>
     </div>
 
     <script src="/js/main/changePw.js" type="text/javascript"></script>

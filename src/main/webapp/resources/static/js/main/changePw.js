@@ -20,10 +20,6 @@ $(document).ready(function() {
         }).done(function(resp) {
             resp = JSON.parse(resp);
             if(!resp) {
-                $("#resultPw").css({
-                    "color": "red",
-                    "font-size": "14px"
-                }).html("패스워드를 다시 확인해주세요.");
                 isCurrentPwVali = false;
             } else {
                 $("#resultPw").html("");
@@ -53,6 +49,9 @@ $(document).ready(function() {
         var newPw = $("#newPw").val().trim();
         var confirmPw = $("#confirmPw").val().trim();
 
+        console.log(newPw);
+        console.log(confirmPw);
+
         if(newPw === "" || confirmPw === ""){
             $("#resultRePw").html("");
             return;
@@ -67,7 +66,8 @@ $(document).ready(function() {
         }
     });
 
-    $("#form").on("submit", function(e) {
+    $("#changeBtn").on("click", function(e) {
+        e.preventDefault();
         var currentPw = $("#currentPw").val().trim();
         var newPw = $("#newPw").val().trim();
         var confirmPw = $("#confirmPw").val().trim();
@@ -96,7 +96,26 @@ $(document).ready(function() {
             e.preventDefault();
             return false;
         }
+        if (isCurrentPwVali === false) {
+            $("#resultPw").css({
+                "color": "red",
+                "font-size": "14px"
+            }).html("패스워드를 다시 확인해주세요.");
+            return false;
+        }
+
+        $.ajax({
+            url: "/employee/changePw",
+            type: "POST",
+            data: { newPw : $("#newPw").val() },
+        }).done(function(response) {
+            if(response === "SUCCESS") {
+                opener.location.reload();
+                window.close();
+            } else {
+                alert("오류 발생: " + response);
+            }
+        })
+    });
 
 });
-});
-

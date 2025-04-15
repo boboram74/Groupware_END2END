@@ -9,6 +9,8 @@ import com.end2end.spring.main.service.LoginHistoryService;
 import com.end2end.spring.util.SecurityUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -84,15 +86,14 @@ public class EmployeeController {
     }
 
     @RequestMapping("/changePw")
-    public String changePw(String newPw, HttpSession session) {
+    @ResponseBody
+    public ResponseEntity<String> changePw(String newPw, HttpSession session) {
         // TODO: 패스워드 변경
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String id = employee.getId();
-
         employeeService.changePw(SecurityUtil.hashPassword(newPw),id);
         session.invalidate();
-
-        return "redirect:/";
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     }
 
     @RequestMapping("/{id}")

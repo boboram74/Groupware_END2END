@@ -349,9 +349,9 @@
         <i class="material-icons">work_history</i>
         <span>근태관리</span>
       </div>
-      <div class="menu-item" onClick="location.href='/schedule/list'">
+      <div class="menu-item" onClick="location.href='/schedule/calender/list'">
         <i class="material-icons">event_available</i>
-        <span>예약</span>
+        <span>일정/예약</span>
       </div>
       <div class="menu-item" onClick="location.href='/hr/list'">
         <i class="material-icons">people</i>
@@ -467,9 +467,9 @@
             </a>
           </li>
           <li>
-            <a href="/schedule/list">
+            <a href="/schedule/calender/list">
               <i class="material-icons">event_available</i>
-              <span>예약</span>
+              <span>일정/예약</span>
             </a>
           </li>
           <li>

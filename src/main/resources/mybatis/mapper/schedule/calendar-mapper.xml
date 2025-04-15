@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="calender">
+    <select id="selectByEmployeeId" resultType="com.end2end.spring.schedule.dto.CalendarDTO">
+        SELECT *
+        FROM CALENDAR
+        JOIN CALENDAR_USER
+        ON CALENDAR.ID = CALENDAR_USER.calendarId
+        WHERE employeeId = #{employeeId}
+    </select>
+
+    <select id="selectById" resultType="com.end2end.spring.schedule.dto.CalendarDTO">
+        SELECT *
+        FROM CALENDAR
+        WHERE id = ${id}
+    </select>
+</mapper>

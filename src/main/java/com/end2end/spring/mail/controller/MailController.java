@@ -198,7 +198,7 @@ public class MailController {
 
     @ResponseBody
     @RequestMapping("/alarm")
-    public void sendAlarm(String email) {
-        alarmService.sendMailAlarm("/mail/list", email);
+    public void sendAlarm(int emilId) {
+        alarmService.sendMailAlarm("/mail/list", "");
     }
 }

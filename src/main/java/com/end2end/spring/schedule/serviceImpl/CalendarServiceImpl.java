@@ -1,38 +1,38 @@
 package com.end2end.spring.schedule.serviceImpl;
 
-import com.end2end.spring.schedule.dto.CalenderDTO;
-import com.end2end.spring.schedule.service.CalenderService;
+import com.end2end.spring.schedule.dto.CalendarDTO;
+import com.end2end.spring.schedule.service.CalendarService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CalenderServiceImpl implements CalenderService {
+public class CalendarServiceImpl implements CalendarService {
     @Override
-    public List<CalenderDTO> selectByEmployeeId(String employeeId) {
+    public List<CalendarDTO> selectByEmployeeId(String employeeId) {
         // TODO: 해당 id의 사원의 모든 일정을 출력
         return null;
     }
 
     @Override
-    public List<CalenderDTO> search() {
+    public List<CalendarDTO> search() {
         // TODO: 검색 결과에 따른 모든 일정을 출력
         return null;
     }
 
     @Override
-    public CalenderDTO selectById(int id) {
+    public CalendarDTO selectById(int id) {
         // TODO: 해당 id의 일정을 출력
         return null;
     }
 
     @Override
-    public void insert(CalenderDTO dto) {
+    public void insert(CalendarDTO dto) {
         // TODO: 일정을 추가
     }
 
     @Override
-    public void update(CalenderDTO dto) {
+    public void update(CalendarDTO dto) {
         // TODO: 일정을 수정
     }
 

@@ -122,6 +122,11 @@ public class ApprovalController {
                 model.addAttribute("error", "존재하지 않는 문서입니다.");
                 return "error/404";
             }
+            String formName = (String) approval.get("FORMNAME"); // 소문자 주의
+            System.out.println("approval map: " + approval);
+            System.out.println(formName);
+            ApprovalFormDTO approvalFormDTO = approvalFormService.selectByFormName(formName);
+            System.out.println(approvalFormDTO);
 
             List<ApproverDTO> nextId = approvalService.nextId(id);
 
@@ -133,6 +138,7 @@ public class ApprovalController {
             model.addAttribute("nextId", nextId);
             model.addAttribute("approvers", approvers);
             model.addAttribute("employee", employee);
+            model.addAttribute("approvalFormDTO", approvalFormDTO);
 
             return "approval/detail";
         } catch (Exception e) {

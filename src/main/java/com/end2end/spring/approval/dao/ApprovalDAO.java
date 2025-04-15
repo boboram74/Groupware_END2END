@@ -82,4 +82,8 @@ public class ApprovalDAO {
 
         return mybatis.selectList("approval.searchDetail", params);
     }
+
+    public ApprovalFormDTO selectByFormName(String name) {
+        return mybatis.selectOne("approval.selectByFormName", name);
+    }
 }

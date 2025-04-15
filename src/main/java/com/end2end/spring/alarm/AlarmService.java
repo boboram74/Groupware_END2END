@@ -45,7 +45,7 @@ public class AlarmService {
     }
 
     public void sendProjectEmergencyCheck(String url, String projectId) {
-        List<ProjectUserDTO> projectUserList = projectDAO.
+      //  List<ProjectUserDTO> projectUserList = projectDAO.
     }
 
     private void send(AlarmDTO dto, String employeeId) {

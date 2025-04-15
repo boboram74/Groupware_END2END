@@ -30,6 +30,8 @@ public interface ApprovalService {
 
     List<Map<String, Object>> selectByState(String state, String employeeId);
 
+    ApprovalFormDTO selectByFormId(int id);
+
     void insert(MultipartFile[] files, ApprovalInsertDTO dto);
 
     void update(ApprovalDTO dto);

@@ -19,7 +19,7 @@
                 <span class="material-icons">person</span>
                 <span>사원 정보</span>
             </li>
-            <li class="detail-menu-item active" onclick="location.href='/login/history'">
+            <li class="detail-menu-item active" onclick="location.href='/login/history/1'">
                 <span class="material-icons">login</span>
                 <span>로그인 기록</span>
             </li>
@@ -71,24 +71,25 @@
             </div>
             <div class="pageNavi">
                 <c:if test="${pageNavi.hasPrev}">
-                    <span class="material-icons paging" onclick="location.href='/login/history?page=${pageNavi.start - 1}'">chevron_left</span>
+                    <span class="material-icons paging" onclick="location.href='/login/history/${pageNavi.start - 1}'">chevron_left</span>
                 </c:if>
                 <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
                     <c:choose>
                         <c:when test="${item == page}">
-                            <span class="paging active" onClick="location.href='/login/history?page=${item}">${item}</span>
+                            <span class="paging active" onClick="location.href='/login/history/${item}">${item}</span>
                         </c:when>
                         <c:otherwise>
-                            <span class="paging" onClick="location.href='/login/history?page=${item}">${item}</span>
+                            <span class="paging" onClick="location.href='/login/history/${item}">${item}</span>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
                 <c:if test="${pageNavi.hasNext}">
-                <span class="material-icons paging" onclick="location.href='/login/history?page=${pageNavi.end + 1}'>chevron_right</span>
+                    <span class="material-icons paging" onclick="location.href='/login/history/${pageNavi.end + 1}'">chevron_right</span>
                 </c:if>
             </div>
         </div>
     </div>
+
     <script>
         $(document).ready(function() {
             $('.detail-menu-item').on('click', function() {

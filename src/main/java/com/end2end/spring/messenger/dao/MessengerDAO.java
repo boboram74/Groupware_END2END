@@ -45,8 +45,11 @@ public class MessengerDAO {
         return mybatis.selectList("messenger.selectRoomListAll", employeeId);
     }
 
-    public List<MessageHistoryDTO> selectMessageByRoomId(int roomId) {
-        return mybatis.selectList("messenger.selectMessageByRoomId", roomId);
+    public List<MessageHistoryDTO> selectMessageByRoomId(int roomId, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("roomId", roomId);
+        param.put("employeeId", employeeId);
+        return mybatis.selectList("messenger.selectMessageByRoomId", param);
     }
 
     public int findByRoomId(String roomName) {
@@ -96,5 +99,22 @@ public class MessengerDAO {
 
     public int selectByName(String roomName) {
         return mybatis.selectOne("messenger.selectByName", roomName);
+    }
+
+    public List<MessageRoomDTO> findByRoomId2(int roomId) {
+        return mybatis.selectList("messenger.findByRoomId2", roomId);
+    }
+
+    public int insertUser(int roomId, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("employeeId", employeeId);
+        param.put("roomId", roomId);
+        return mybatis.insert("messenger.insertUser",param);
+    }
+    public void insertUsertoRoom(int roomId, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("roomId", roomId);
+        param.put("employeeId", employeeId);
+        mybatis.update("messenger.insertUsertoRoom",param);
     }
 }

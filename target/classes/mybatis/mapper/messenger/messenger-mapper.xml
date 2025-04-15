@@ -67,17 +67,26 @@
     </select>
 
     <select id="selectMessageByRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageHistoryDTO">
-        select mru.*, m.content, e.name, e.profileImg
-        from message_room_user mru
-        join message m
-        on m.MESSAGEROOMID = mru.MESSAGEROOMID
-        join employee e
-        on e.id = mru.employeeId
-        where mru.MESSAGEROOMID = #{value}
+        select message_Room_User.id, message_Room_User.messageRoomId, message_Room_User.employeeId, message.content, employee.name, employee.profileImg, message.regDate
+        from message_Room_User
+        join employee
+        on message_Room_User.employeeId = employee.id
+        join message
+        on message.messageRoomUserId = message_Room_User.id
+        where message.messageRoomId = #{roomId}
+        order by message.regDate asc
     </select>
 
     <select id="findByRoomId" resultType="int">
         select id from MESSAGE_ROOM where name = #{value}
+    </select>
+
+    <select id="findByRoomId2" resultType="com.end2end.spring.messenger.dto.MessageRoomDTO">
+        select mr.*, mru.EMPLOYEEID
+        from MESSAGE_ROOM mr
+        join message_room_user mru
+        on mr.id = mru.messageRoomId
+        where mr.id = #{value}
     </select>
 
     <select id="findRoomUser" parameterType="map" resultType="int">
@@ -114,5 +123,16 @@
     <select id="selectByName" resultType="int">
         SELECT COUNT(*) FROM message_room WHERE NAME = #{value}
     </select>
+
+    <insert id="insertUser">
+        INSERT INTO message_room_user (ID, MESSAGEROOMID, EMPLOYEEID)
+        VALUES (MESSAGE_ROOM_USER_ID_SEQ.nextval, #{roomId}, #{employeeId})
+    </insert>
+
+    <update id="insertUsertoRoom">
+        UPDATE message_room
+        SET NAME = NAME || '|' || #{employeeId}
+        WHERE ID = #{roomId}
+    </update>
 
 </mapper>

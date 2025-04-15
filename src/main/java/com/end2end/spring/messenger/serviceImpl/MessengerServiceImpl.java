@@ -28,8 +28,8 @@ public class MessengerServiceImpl implements MessengerService {
     }
 
     @Override
-    public List<MessageHistoryDTO> selectMessageByRoomId(int roomId) {
-        return messengerDAO.selectMessageByRoomId(roomId);
+    public List<MessageHistoryDTO> selectMessageByRoomId(int roomId, String employeeId) {
+        return messengerDAO.selectMessageByRoomId(roomId, employeeId);
     }
 
     @Override
@@ -71,4 +71,18 @@ public class MessengerServiceImpl implements MessengerService {
         return messengerDAO.selectByName(roomName);
     }
 
+    @Override
+    public List<MessageRoomDTO> findByRoomId2(int roomId) {
+        return messengerDAO.findByRoomId2(roomId);
+    }
+
+    @Override
+    public int insertUser(int roomId, String employeeId) {
+        return messengerDAO.insertUser(roomId, employeeId);
+    }
+
+    @Override
+    public void insertUsertoRoom(int roomId, String employeeId) {
+        messengerDAO.insertUsertoRoom(roomId, employeeId);
+    }
 }

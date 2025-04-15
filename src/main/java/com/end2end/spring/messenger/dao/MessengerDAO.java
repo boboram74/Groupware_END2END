@@ -117,4 +117,8 @@ public class MessengerDAO {
         param.put("employeeId", employeeId);
         mybatis.update("messenger.insertUsertoRoom",param);
     }
+
+    public List<String> findByRoomEmployeeList(int roomId) {
+        return mybatis.selectList("messenger.findByRoomEmployeeList", roomId);
+    }
 }

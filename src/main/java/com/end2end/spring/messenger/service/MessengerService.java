@@ -20,4 +20,6 @@ public interface MessengerService {
 
     int insertUser(int roomId, String employeeId);
     void insertUsertoRoom(int roomId, String employeeId);
+
+    List<String> findByRoomEmployeeList(int roomId);
 }

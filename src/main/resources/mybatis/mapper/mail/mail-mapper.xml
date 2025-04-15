@@ -365,11 +365,12 @@
     </select>
 
     <select id="selectMailURLById" resultType="com.end2end.spring.mail.dto.MailURLDTO">
-        SELECT EMAIL.id AS id, EMAIL_STATE.id AS emailStateId
+        SELECT EMAIL.ID AS id, EMAIL_STATE.ID AS emailStateId, EMPLOYEEID AS employeeId
         FROM EMAIL
         JOIN EMAIL_STATE
         ON EMAIL.ID = EMAIL_STATE.EMAILID
-        WHERE
-            EMAIL.ID = ${id}
+        JOIN EMAIL_ADDRESS_USER
+        ON EMAILUSERID = EMAIL_ADDRESS_USER.ID
+        WHERE EMAIL.ID = #{id}
     </select>
 </mapper>

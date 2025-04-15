@@ -295,17 +295,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendMailAlarm(int mailId, String email) {
-        MailURLDTO mailURLDTO = mailDAO.selectMailURLById(mailId);
-
-        String url = String.format("/mail/%d/%d", mailURLDTO.getId(), mailURLDTO.getEmailStateId());
-
-        List<EmailAddressUserDTO> emailAddressUserDTOList =
-                mailDAO.selectEmailAddressUserByEmailAddress(email);
-
-        for(EmailAddressUserDTO emailAddressUserDTO : emailAddressUserDTOList) {
-            String employeeId = emailAddressUserDTO.getEmployeeId();
-            alarmService.sendMailAlarm(url, employeeId);
-        }
+    public void sendMailAlarm(int mailId) {
+        alarmService.sendMailAlarm(mailId);
     }
 }

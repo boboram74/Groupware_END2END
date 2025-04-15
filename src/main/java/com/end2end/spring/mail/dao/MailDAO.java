@@ -124,7 +124,7 @@ public class MailDAO {
         return mybatis.selectList("mail.selectEmailAddressUserByEmailAddress", email);
     }
 
-    public MailURLDTO selectMailURLById(int id) {
-        return mybatis.selectOne("mail.selectMailURLById", id);
+    public List<MailURLDTO> selectMailURLById(int id) {
+        return mybatis.selectList("mail.selectMailURLById", id);
     }
 }

@@ -5,6 +5,7 @@ import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.EmailAddressUserDTO;
+import com.end2end.spring.mail.dto.MailURLDTO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
@@ -25,8 +26,13 @@ public class AlarmService {
         send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
     }
 
-    public void sendMailAlarm(String url, String employeeId) {
-        send(AlarmDTO.of(AlarmType.GET_EMAIL, employeeId, url), employeeId);
+    public void sendMailAlarm(int emailId) {
+        List<MailURLDTO> mailURLDTO = mailDAO.selectMailURLById(emailId);
+
+        for(MailURLDTO dto : mailURLDTO) {
+            String url = String.format("/mail/%d/%d", dto.getId(), dto.getEmailStateId());
+            send(AlarmDTO.of(AlarmType.GET_EMAIL, dto.getEmployeeId(), url), dto.getEmployeeId());
+        }
     }
 
     public void sendApprovalResultAlarm(String url, String approvalId) {

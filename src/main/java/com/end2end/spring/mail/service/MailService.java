@@ -35,5 +35,5 @@ public interface MailService {
     int trashAll(List<Integer> esids);
     int deleteAll(List<Integer> esids);
 
-    void sendMailAlarm(int mailId, String email);
+    void sendMailAlarm(int mailId);
 }

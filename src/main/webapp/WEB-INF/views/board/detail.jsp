@@ -72,7 +72,119 @@
         color: #333;
     }
 
-    /*-----------------------------------*/
+    /*----------------버-------------------*/
+    .replyContainer {
+        border: 1px solid black;
+        width: 100%;
+        height: 120px;
+    }
+
+    .addReply {
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
+
+    .addFile {
+        width: 10%;
+        height: 100%;
+    }
+
+    .addFile input {
+        width: 100%;
+        height: 100%
+    }
+
+    .addInput {
+        width: 85%;
+        height: 100%;
+    }
+
+    .addInput textarea {
+        width: 100%;
+        height: 100%;
+    }
+
+    .addBtn {
+        width: 5%;
+        height: 100%;
+    }
+
+    .addBtn button {
+        width: 100%;
+        height: 100%;
+    }
+
+    .replyList {
+        width: 100%;
+        height: 120px;
+        border: 1px solid black;
+        display: flex;
+    }
+
+    .profile {
+        width: 10%;
+        height: 100%;
+        border: 1px solid black;
+    }
+
+    .replyWrite {
+        width: 85%;
+        height: 100%;
+    }
+
+    .writerSysdate {
+        width: 100%;
+        height: 23%;
+    }
+
+    .realContents {
+        width: 30%;
+        height: 100%;
+        display: flex;
+    }
+
+    .realContents input {
+        width: 50%;
+        height: 100%;
+    }
+
+    .inputReply {
+        width: 100%;
+        height: 77%;
+    }
+
+    .inputReply input {
+        width: 100%;
+        height: 100%;
+    }
+
+    .replyReport {
+        width: 5%;
+        height: 100%;
+        display: flow;
+    }
+
+    .reReply {
+        width: 100%;
+        height: 50%;
+    }
+
+    .reReply button {
+        width: 100%;
+        height: 100%;
+    }
+
+    .report {
+        width: 100%;
+        height: 50%;
+    }
+
+    .report button {
+        width: 100%;
+        height: 100%;
+    }
+
 </style>
 <div class="content">
 
@@ -125,40 +237,40 @@
     </form>
 </div>
 <hr>
-<div class="replyContainer" style="border:1px solid black; width: 100%; height:120px;">
-    <div class="addReply" style="width:100%; height:100%; display: flex">
-        <div class="addFile" style="width:10%; height:100%; ">
-            <input type="file" placeholder="파일" style="width:100%; height:100%;">
+<div class="replyContainer">
+    <div class="addReply">
+        <div class="addFile">
+            <input type="file" placeholder="파일">
         </div>
-        <div class="addInput" style="width:85%; height:100%;">
-            <textarea style="width:100%; height:100%;">댓글 입력</textarea>
+        <div class="addInput">
+            <textarea>댓글 입력</textarea>
         </div>
-        <div class="addBtn" style="width:5%; height:100%;">
-            <button style="width:100%; height:100%;">등록</button>
+        <div class="addBtn">
+            <button>등록</button>
         </div>
     </div>
 </div>
 <hr>
 <h3>댓글 (viewCount)</h3>
-<div class="replyList" style="width:100%; height:120px; border:1px solid black; display: flex">
-    <div class="profile" style="width:10%; height:100%; border:1px solid black"></div>
-    <div class="replyWrite" style="width:85%; height:100%; border:1px solid black">
-        <div class="writerSysdate" style="width:100%; height:23%; border:1px solid black">
-            <div class="realContents" style="width:30%; height:100%; border:1px solid red; display: flex">
-                <input type="text" style="width:50%; height:100%; border:1px solid yellow" placeholder="사용자아이디(기능)">
-                <input type="text" style="width:50%; height:100%; border:1px solid yellow" placeholder="등록날짜(기능)">
+<div class="replyList">
+    <div class="profile"></div>
+    <div class="replyWrite">
+        <div class="writerSysdate">
+            <div class="realContents">
+                <input type="text" placeholder="사용자아이디(기능)">
+                <input type="text" placeholder="등록날짜(기능)">
             </div>
         </div>
-        <div class="inputReply" style="width:100%; height:77%; border:1px solid black">
-            <input type="text" value="gg" style="width:100%; height:100%;">
+        <div class="inputReply">
+            <input type="text" value="gg">
         </div>
     </div>
-    <div class="replyReport" style="width:5%; height:100%; border:1px solid black; display: flow">
-        <div class="reReply" style="width:100%; height:50%; border:1px solid red;">
-            <button style="width:100%; height:100%;">댓글</button>
+    <div class="replyReport">
+        <div class="reReply">
+            <button>댓글</button>
         </div>
-        <div class="report" style="width:100%; height:50%; border:1px solid red;">
-            <button style="width:100%; height:100%;">신고</button>
+        <div class="report">
+            <button>신고</button>
         </div>
     </div>
 </div>

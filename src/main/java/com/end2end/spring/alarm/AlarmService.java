@@ -6,6 +6,8 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.MailURLDTO;
 import com.end2end.spring.schedule.dao.CalendarUserDAO;
+import com.end2end.spring.schedule.dao.ScheduleDAO;
+import com.end2end.spring.schedule.dto.CalendarDTO;
 import com.end2end.spring.schedule.dto.CalendarUserDTO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
@@ -23,6 +25,7 @@ public class AlarmService {
     @Autowired private ProjectWorkDAO projectWorkDAO;
     @Autowired private ProjectUserDAO projectUserDAO;
     @Autowired private CalendarUserDAO calendarUserDAO;
+    @Autowired private ScheduleDAO scheduleDAO;
 
     public void sendNewLoginIpAlarm(String employeeId) {
         send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
@@ -87,6 +90,15 @@ public class AlarmService {
         for (CalendarUserDTO calendarUserDTO : calendarUserList) {
             String employeeId = calendarUserDTO.getEmployeeId();
             send(AlarmDTO.of(AlarmType.CALENDAR_CREATE, employeeId, "/calendar/list"), employeeId);
+        }
+    }
+
+    public void sendScheduleAlarm(int calendarId) {
+        List<CalendarUserDTO> calendarUserDTOList = calendarUserDAO.selectByCalendarId(calendarId);
+
+        for (CalendarUserDTO calendarUserDTO : calendarUserDTOList) {
+            String employeeId = calendarUserDTO.getEmployeeId();
+            send(AlarmDTO.of(AlarmType.SCHEDULE_CREATE, employeeId, "/schedule/list"), employeeId);
         }
     }
 

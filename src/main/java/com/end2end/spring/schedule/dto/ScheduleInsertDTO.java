@@ -5,20 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ScheduleDTO {
-    private int id;
+public class ScheduleInsertDTO {
     private int calendarId;
-    private int bookId;
     private String title;
     private String content;
-    private String color;
-    private Timestamp startDate;
-    private Timestamp endDate;
-    private Timestamp regDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 }

@@ -61,6 +61,7 @@
         display: block;
         margin-bottom: 8px;
         font-weight: 500;
+        color: var(--md-sys-color-surface);
     }
 
     .detail-modal .form-group input,
@@ -223,6 +224,28 @@
     .employee-dept {
         font-size: 12px;
         color: var(--md-sys-color-surface-variant);
+    }
+
+</style>
+<style>
+    .form-select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 4px;
+        background-color: var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-on-surface);
+        font-size: 14px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 4px;
+        background-color: var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-on-surface);
+        font-size: 14px;
     }
 
 </style>
@@ -401,32 +424,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label>공유 사원</label>
-                        <div class="employee-selector">
-                            <div class="selected-employees">
-                                <!-- 선택된 사원들이 여기에 태그처럼 표시됩니다 -->
-                            </div>
-                            <div class="employee-search">
-                                <div class="search-box">
-                                    <span class="material-icons">search</span>
-                                    <input type="text" id="employeeSearchInput" placeholder="사원 검색...">
-                                </div>
-                            </div>
-                            <div class="employee-list">
-                                <div class="employee-item" data-id="1">
-                                    <span class="material-icons">account_circle</span>
-                                    <div class="employee-info">
-                                        <span class="employee-name">김영희</span>
-                                        <span class="employee-dept">인사팀</span>
-                                    </div>
-                                </div>
-                                <!-- 다른 사원들... -->
-                            </div>
-                        </div>
-                        <div id="hiddenEmployeeInputs"></div>
-                    </div>
-
-                    <div class="form-group">
                         <label>일정 내용</label>
                         <textarea id="scheduleContent" name="content" rows="4"></textarea>
                     </div>
@@ -437,13 +434,62 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary close-modal">취소</button>
-                        <button type="submit" class="btn btn-primary">저장</button>
+                        <button type="button" class="secondary close-modal">취소</button>
+                        <button type="submit" class="primary">저장</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <!-- 일정 작성 모달 -->
+    <div class="detail-modal" id="scheduleWriteModal" style="display: none;">
+        <div class="box modal-container surface-bright">
+            <div class="box-title">
+                <h2>일정 등록</h2>
+            </div>
+
+            <div class="box-content">
+                <form id="scheduleWriteForm" action="/schedule/insert" method="post">
+                    <div class="form-group">
+                        <label>캘린더 선택</label>
+                        <select name="calendarId" class="form-select" required>
+                            <option value="">캘린더를 선택하세요</option>
+                            <c:forEach items="${calendarList}" var="calendar">
+                                <option value="${calendar.id}">${calendar.title}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>일정 제목</label>
+                        <input type="text" name="title" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>시작 일시</label>
+                        <input type="datetime-local" name="startDate" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>종료 일시</label>
+                        <input type="datetime-local" name="endDate" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>일정 내용</label>
+                        <textarea name="content" rows="4" class="form-input"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn primary">저장</button>
+                        <button type="button" class="btn secondary close-modal">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         function calculateAvailableDimensions() {
@@ -637,6 +683,54 @@
                 selectedEmployees.delete(empId);
                 $('.employee-item[data-id="' +  empId + '"]').removeClass('selected');
                 renderSelectedEmployees();
+            });
+
+            $(document).on('click', '.open-write-schedule', function() {
+                $('#scheduleWriteModal').fadeIn(300);
+            });
+
+            // 모달 닫기
+            $('.modal-close, .close-modal').click(function() {
+                $('#scheduleWriteModal').fadeOut(300);
+            });
+
+            // 모달 외부 클릭 시 닫기
+            $(window).click(function(e) {
+                if ($(e.target).is('.detail-modal')) {
+                    $('#scheduleWriteModal').fadeOut(300);
+                }
+            });
+
+            $(document).on('submit', '#scheduleWriteForm', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                console.log('폼 데이터 확인:');
+                for (let pair of formData.entries()) {
+                    console.log(pair[0] + ': ' + pair[1]);
+                }
+
+
+                $.ajax({
+                    url: '/schedule/insert',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST'
+                }).done(function(data) {
+                    alert("일정이 만들어졌습니다.");
+
+                })
+            })
+        });
+
+
+        $(document).ready(function() {
+            $('#calendarWriteForm').off('submit').on('submit', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+
+                this.submit();
             });
         });
     </script>

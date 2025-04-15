@@ -19,4 +19,8 @@ public class ScheduleDAO {
     public List<ScheduleDTO> selectByEmployeeIdAndCalendarId(CalendarDTO dto) {
         return mybatis.selectList("schedule.selectByEmployeeIdAndCalendarId", dto);
     }
+
+    public void insert(ScheduleDTO dto) {
+        mybatis.insert("schedule.insert", dto);
+    }
 }

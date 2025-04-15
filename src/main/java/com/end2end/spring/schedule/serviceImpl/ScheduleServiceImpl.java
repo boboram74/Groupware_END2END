@@ -1,13 +1,19 @@
 package com.end2end.spring.schedule.serviceImpl;
 
+import com.end2end.spring.alarm.AlarmService;
+import com.end2end.spring.schedule.dao.ScheduleDAO;
 import com.end2end.spring.schedule.dto.ScheduleDTO;
 import com.end2end.spring.schedule.service.ScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
+    @Autowired ScheduleDAO scheduleDAO;
+    @Autowired AlarmService alarmService;
+
     @Override
     public List<ScheduleDTO> selectByEmployeeId(String employeeId) {
         return List.of();
@@ -30,7 +36,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void insert(ScheduleDTO dto) {
-
+        scheduleDAO.insert(dto);
+        alarmService.sendScheduleAlarm(dto.getCalendarId());
     }
 
     @Override

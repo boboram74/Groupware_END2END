@@ -407,6 +407,10 @@
 				});
 				$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
 				return;
+			} else if(msg.type === "NEW_INVITE") {
+				let chat = $("<div>").html(msg.message);
+				$(".chat-messages").append(chat);
+				return;
 			}
 			let chat = $("<div>")
 					.addClass(msg.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
@@ -570,7 +574,12 @@
 					emp.name.toLowerCase().includes(searchTerm) ||
 					emp.position.toLowerCase().includes(searchTerm)
 			);
-			renderEmployeeList(filteredEmployees);
+			//초대창이 보이면 초대쪽 사원 렌더링 아니면 사원목록 기본 렌더링
+			if ($('.invite-sidebar').is(':visible')) {
+				renderInviteList(filteredEmployees);
+			} else {
+				renderEmployeeList(filteredEmployees);
+			}
 		});
 
 		function renderInviteList(data) {
@@ -622,6 +631,7 @@
 			let payload = {
 				type: "invite",
 				inviteeId: inviteeId,
+				inviteeName: inviteeName,
 				roomId: currentRoomId
 			};
 			ws.send(JSON.stringify(payload));

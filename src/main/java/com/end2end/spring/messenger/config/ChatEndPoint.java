@@ -95,7 +95,7 @@ public class ChatEndPoint {
         }
     }
     // invite
-    public void processRoomInvitation(JsonObject parsedMessage, int roomId) {
+    public void processRoomInvitation(JsonObject parsedMessage, int roomId) throws Exception {
         List<MessageRoomDTO> dtos = messengerService.findByRoomId2(roomId); //select * from message_room where id = roomId
         //인원이 몇명인지 체크
         for (MessageRoomDTO dto : dtos) {
@@ -103,14 +103,26 @@ public class ChatEndPoint {
                 return;
             }
         }
-        if(dtos.size() <= 2) {
-            // 개인
-            // insertRoom(select key) -> dtos.getEmploteeId 얘들도 다 방금 만든 기존 User roomUser insert
-            // 개인방이면 room을 만듬 roomId = 위에서 insert한 roomId meesage_room_user
-        }
         // 처음 들어온 경우
         messengerService.insertUser(roomId, parsedMessage.get("inviteeId").getAsString());
         messengerService.insertUsertoRoom(roomId, parsedMessage.get("inviteeId").getAsString());
+
+        String inviterName = this.dto.getName();
+        String inviteeName = parsedMessage.get("inviteeName").getAsString();
+        String notificationMessage = inviterName + "님이 " + inviteeName + "님을 초대하였습니다.";
+        JsonObject response = new JsonObject();
+        response.addProperty("type", "NEW_INVITE");
+        response.addProperty("message", notificationMessage);
+        response.addProperty("roomId", roomId);
+
+        List<MessageUserListDTO> dtos2 = messengerService.selectRoomById(roomId);
+        for (MessageUserListDTO dto : dtos2) {
+            String employeeId = dto.getEmployeeId();
+            try {
+                clientSessions.get(employeeId).getBasicRemote().sendText(gson.toJson(response));
+            } catch (NullPointerException ignored) {
+            }
+        }
     }
 
     // roomEnter

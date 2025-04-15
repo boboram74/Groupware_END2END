@@ -17,307 +17,6 @@
     let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
     $('html').addClass(mode);
   </script>
-  <style>
-    /* 모바일 반응형 */
-    @media (max-width: 768px) {
-      /* 기존 채팅 버튼 숨기기 */
-      #chatButton {
-        display: none;
-      }
-    }
-
-    .notification-container {
-      position: relative;
-      display: inline-block;
-    }
-
-    .notification-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 300px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      z-index: 1000;
-      margin-top: 8px;
-    }
-
-    .notification-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--md-sys-color-outline);
-    }
-
-    .notification-header h5 {
-      margin: 0;
-      font-size: 16px;
-    }
-
-    .close-notification {
-      cursor: pointer;
-    }
-
-    .notification-list {
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    .notification-item {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--md-sys-color-outline);
-      cursor: pointer;
-    }
-
-    .notification-item:hover {
-      background-color: var(--md-sys-color-surface-container);
-      color: var(--md-sys-color-primary);
-    }
-
-    .notification-item .material-icons {
-      margin-right: 12px;
-      font-size: 20px;
-    }
-
-    .notification-content {
-      flex: 1;
-    }
-
-    .notification-text {
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .notification-date {
-      font-size: 12px;
-      color: var(--md-sys-color-secondary);
-    }
-
-    .notification-content.read .notification-text,
-    .notification-content.read .notification-date {
-      opacity: 0.4; /* 투명도를 40% 낮춤 */
-    }
-
-
-    .color-primary { color: #1976d2; }
-    .color-success { color: #4caf50; }
-    .color-warning { color: #ff9800; }
-    .color-info { color: #2196f3; }
-    .color-danger { color: #f44336; }
-
-    .notification-list::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .notification-list::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.1);
-      margin: 0;
-    }
-
-    .notification-list::-webkit-scrollbar-thumb {
-      background: var(--md-sys-color-surface-variant);
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .notification-list::-webkit-scrollbar-thumb:hover {
-      background: var(--md-sys-color-outline);
-    }
-
-    @keyframes notificationAnimation {
-      0% {
-        transform: scale(1) rotate(0deg);
-      }
-      25% {
-        transform: scale(1.2) rotate(20deg);
-      }
-      50% {
-        transform: scale(1.2) rotate(-15deg);
-      }
-      75% {
-        transform: scale(1.1) rotate(10deg);
-      }
-      100% {
-        transform: scale(1) rotate(0deg);
-      }
-    }
-
-    .notification-animate {
-      animation: notificationAnimation 0.8s ease-in-out;
-      transform-origin: center;
-    }
-  </style>
-  <style>
-    /* 조직도 버튼 및 컨테이너 스타일 */
-    .orgchart-container {
-      position: relative;
-    }
-
-    /* 조직도 메뉴 스타일 */
-    .orgchart-menu {
-      display : none;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 500px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      z-index: 1000;
-    }
-
-    .orgchart-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    .orgchart-header h5 {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--md-sys-color-on-surface);
-      margin: 0;
-    }
-
-    .close-orgchart {
-      cursor: pointer;
-      padding: 4px;
-      color: #666;
-    }
-
-    .close-orgchart:hover {
-      background: rgba(0, 0, 0, 0.04);
-      border-radius: 50%;
-    }
-
-    .orgchart-content {
-      padding: 20px;
-      max-height: 600px;
-      overflow-y: auto;
-    }
-
-    /* 조직도 본문 스타일 */
-    .org-chart {
-      padding: 20px;
-    }
-
-    .org-box {
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-
-    .department-title {
-      background: var(--md-sys-color-primary);
-      color: #fff;
-      font-size: 18px;
-      font-weight: 600;
-      padding: 12px 24px;
-      margin: -24px -24px 24px -24px;
-      border-radius: 12px 12px 0 0;
-      text-align: center;
-      letter-spacing: -0.5px;
-    }
-
-    .members-tree {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 60px;
-      position: relative;
-      padding-top: 24px;
-    }
-
-    /* 상단 중앙 세로선 */
-    .members-tree::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 2px;
-      height: 24px;
-      background: #e0e0e0;
-    }
-
-    /* 가로선 */
-    .members-tree::after {
-      content: '';
-      position: absolute;
-      top: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      height: 1px;
-      background: #e0e0e0;
-    }
-
-    .member {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      position: relative;
-      padding-top: 24px;
-      min-width: 80px;
-    }
-
-    /* 가로선과 사원명 사이의 세로선 */
-    .member::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 1px;
-      height: 24px;
-      background: #e0e0e0;
-    }
-
-    .member .name {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--md-sys-color-on-surface);
-    }
-
-    .member .position {
-      font-size: 13px;
-      color: #666;
-    }
-
-    /* 스크롤바 스타일링 */
-    .orgchart-content::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .orgchart-content::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-
-    .orgchart-content::-webkit-scrollbar-thumb {
-      background: #ddd;
-      border-radius: 3px;
-    }
-
-    /* 조직도 열고 닫기 애니메이션 */
-    .orgchart-menu {
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      transform-origin: top right;
-    }
-
-    .orgchart-menu.hidden {
-      transform: scale(0.95);
-      opacity: 0;
-      pointer-events: none;
-    }
-  </style>
 </head>
 <body>
 <div id="loading" style="display: none">
@@ -396,54 +95,14 @@
           <button class="icon-button" id="orgChartBtn">
             <span class="material-icons">account_tree</span>
           </button>
-          <div class="orgchart-menu">
+          <div class="orgchart-menu surface-bright">
             <div class="orgchart-header">
               <h5>조직도</h5>
               <span class="material-icons close-orgchart">close</span>
             </div>
-            <div class="orgchart-content">
-              <div class="org-chart">
-                <div class="org-box">
-                  <div class="department-title">경영지원본부</div>
-                  <div class="members-tree">
-                    <div class="member">
-                      <span class="name">홍길동</span>
-                      <span class="position">팀장</span>
-                    </div>
-                    <div class="member">
-                      <span class="name">김철수</span>
-                      <span class="position">대리</span>
-                    </div>
-                    <div class="member">
-                      <span class="name">이영희</span>
-                      <span class="position">과장</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="org-box">
-                  <div class="department-title">개발팀</div>
-                  <div class="members-tree">
-                    <div class="member">
-                      <span class="name">박지성</span>
-                      <span class="position">팀장</span>
-                    </div>
-                    <div class="member">
-                      <span class="name">손흥민</span>
-                      <span class="position">대리</span>
-                    </div>
-                    <div class="member">
-                      <span class="name">김민재</span>
-                      <span class="position">사원</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="orgchart-content"></div>
           </div>
         </div>
-
-
 
         <!-- 다크모드 토글 아이콘 -->
         <button class="icon-button" id="darkModeBtn">
@@ -644,6 +303,8 @@
         });
 
       function orgChartModal() {
+        $('.orgchart-content').empty();
+
         $.ajax({
           url: '/employee/orgChart',
           method: 'GET'
@@ -667,48 +328,46 @@
               }
             }
           }
+
           for (let i = 0; i < employeeList.length; i++) {
             const departmentList = employeeList[i];
-            const title = $('<div>').html(departmentList.name).css({
-              'background-color': '#2c3e50',
-              'color': 'white',
-              'text-align': 'center'
-            });
-            const departmentDiv = $('<ul>').css({
-              'border': '3px solid black'
-            });
+            const orgBox = $('<div>').addClass('org-box');
+
+            const title = $('<div>').addClass('department-title').text(departmentList.name);
+            const departmentDiv = $('<div>').addClass('members-tree');
 
             for (let j = 0; j < departmentList.employee.length; j++) {
               const employee = departmentList.employee[j];
 
-              const div = $('<li>').html(employee.name + "<br>" + employee.jobName);
+              const div = $('<div>').addClass('member');
+              div.append($('<span>').addClass('name').text(employee.name))
+                  .append($('<span>').addClass('position').text(employee.jobName));
               departmentDiv.append(div);
             }
-            $('#orgChartContainer').append(title, departmentDiv);
+
+            $('.orgchart-content').append(orgBox.append(title, departmentDiv));
           }
         });
       }
-</script>
+      </script>
       <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
           const $orgchartBtn = $('#orgChartBtn');
           const $orgchartMenu = $('.orgchart-menu');
           const $closeOrgchart = $('.close-orgchart');
 
           // 조직도 버튼 클릭 시 메뉴 토글
-          $orgchartBtn.on('click', function(e) {
+          $orgchartBtn.on('click', function (e) {
             e.stopPropagation();
             $orgchartMenu.toggle();
 
-            console.log("1");
-
-            if($orgchartMenu.is(':visible')) {
-              //orgChartModal();
+            if ($orgchartMenu.is(':visible')) {
+              orgChartModal();
             }
           });
 
           // 닫기 버튼 클릭 시 메뉴 닫기
-          $closeOrgchart.on('click', function() {
+          $closeOrgchart.on('click', function () {
             $orgchartMenu.hide();
           });
 

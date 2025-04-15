@@ -25,14 +25,8 @@ public class AlarmService {
         send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
     }
 
-    public void sendMailAlarm(String url, String email) {
-        List<EmailAddressUserDTO> emailAddressUserList =
-                mailDAO.selectEmailAddressUserByEmailAddress(email);
-
-        for (EmailAddressUserDTO emailAddressUser : emailAddressUserList) {
-            send(AlarmDTO.of(AlarmType.GET_EMAIL, emailAddressUser.getEmployeeId(), url),
-                    emailAddressUser.getEmployeeId());
-        }
+    public void sendMailAlarm(String url, String employeeId) {
+        send(AlarmDTO.of(AlarmType.GET_EMAIL, employeeId, url), employeeId);
     }
 
     public void sendApprovalResultAlarm(String url, String approvalId) {

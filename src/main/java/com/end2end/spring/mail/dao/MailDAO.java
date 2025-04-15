@@ -123,4 +123,8 @@ public class MailDAO {
     public List<EmailAddressUserDTO> selectEmailAddressUserByEmailAddress(String email) {
         return mybatis.selectList("mail.selectEmailAddressUserByEmailAddress", email);
     }
+
+    public MailURLDTO selectMailURLById(int id) {
+        return mybatis.selectOne("mail.selectMailURLById", id);
+    }
 }

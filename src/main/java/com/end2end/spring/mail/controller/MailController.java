@@ -4,6 +4,7 @@ import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.mail.dto.EmailAddressUserDTO;
 import com.end2end.spring.mail.dto.ImportYnDTO;
 import com.end2end.spring.mail.dto.InboxDTO;
 import com.end2end.spring.mail.dto.MailDetailDTO;
@@ -198,7 +199,8 @@ public class MailController {
 
     @ResponseBody
     @RequestMapping("/alarm")
-    public void sendAlarm(int emilId) {
-        alarmService.sendMailAlarm("/mail/list", "");
+    public void sendAlarm(int mailId, String email) {
+       System.out.println("emilId: " + mailId + " email: " + email);
+       mailService.sendMailAlarm(mailId, email);
     }
 }

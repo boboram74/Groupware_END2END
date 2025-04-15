@@ -1,5 +1,6 @@
 package com.end2end.spring.mail.serviceImpl;
 
+import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.*;
 import com.end2end.spring.mail.service.MailService;
@@ -17,6 +18,7 @@ public class MailServiceImpl implements MailService {
 
     @Autowired
     private MailDAO mailDAO;
+    @Autowired private AlarmService alarmService;
 
     @Transactional
     @Override
@@ -290,5 +292,20 @@ public class MailServiceImpl implements MailService {
             result.put("recordReadCount",recordReadCount);
         }
         return result;
+    }
+
+    @Override
+    public void sendMailAlarm(int mailId, String email) {
+        MailURLDTO mailURLDTO = mailDAO.selectMailURLById(mailId);
+
+        String url = String.format("/mail/%d/%d", mailURLDTO.getId(), mailURLDTO.getEmailStateId());
+
+        List<EmailAddressUserDTO> emailAddressUserDTOList =
+                mailDAO.selectEmailAddressUserByEmailAddress(email);
+
+        for(EmailAddressUserDTO emailAddressUserDTO : emailAddressUserDTOList) {
+            String employeeId = emailAddressUserDTO.getEmployeeId();
+            alarmService.sendMailAlarm(url, employeeId);
+        }
     }
 }

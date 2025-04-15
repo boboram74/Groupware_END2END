@@ -271,7 +271,7 @@
             </div>
         </div>
         <div class="button-container">
-            <button class="primary insert-schedule">일정 추가</button>
+            <button class="primary insert-schedule open-write-schedule">일정 추가</button>
             <button class="primary open-write-calender">캘린더 추가</button>
             <button class="secondary">캘린더 관리</button>
         </div>
@@ -368,6 +368,82 @@
         </div>
     </div>
 
+    <!-- 일정 작성 모달 -->
+    <div class="detail-modal schedule-write-form" style="display: none;">
+        <div class="modal-container box surface-bright">
+            <div class="modal-header box-title">
+                <h2>일정 등록</h2>
+            </div>
+            <div class="modal-body box-content" action="/schedule/">
+                <form id="scheduleWriteForm">
+                    <div class="form-group">
+                        <label>일정 제목</label>
+                        <input type="text" id="scheduleTitle" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>시작 일시</label>
+                        <input type="datetime-local" id="startDateTime" name="startDateTime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>종료 일시</label>
+                        <input type="datetime-local" id="endDateTime" name="endDateTime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>캘린더 선택</label>
+                        <select id="calendarSelect" name="calendarId" required>
+                            <option value="">캘린더를 선택하세요</option>
+                            <option value="1">내 캘린더</option>
+                            <!-- 다른 캘린더 옵션들은 서버에서 받아와서 추가 -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>공유 사원</label>
+                        <div class="employee-selector">
+                            <div class="selected-employees">
+                                <!-- 선택된 사원들이 여기에 태그처럼 표시됩니다 -->
+                            </div>
+                            <div class="employee-search">
+                                <div class="search-box">
+                                    <span class="material-icons">search</span>
+                                    <input type="text" id="employeeSearchInput" placeholder="사원 검색...">
+                                </div>
+                            </div>
+                            <div class="employee-list">
+                                <div class="employee-item" data-id="1">
+                                    <span class="material-icons">account_circle</span>
+                                    <div class="employee-info">
+                                        <span class="employee-name">김영희</span>
+                                        <span class="employee-dept">인사팀</span>
+                                    </div>
+                                </div>
+                                <!-- 다른 사원들... -->
+                            </div>
+                        </div>
+                        <div id="hiddenEmployeeInputs"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>일정 내용</label>
+                        <textarea id="scheduleContent" name="content" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>장소</label>
+                        <input type="text" id="scheduleLocation" name="location">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary close-modal">취소</button>
+                        <button type="submit" class="btn btn-primary">저장</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script>
         function calculateAvailableDimensions() {

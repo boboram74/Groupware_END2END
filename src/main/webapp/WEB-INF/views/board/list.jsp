@@ -146,6 +146,5 @@
 
 
 
-
 <script src="/js/main/contact.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/board/board-footer.jsp"/>

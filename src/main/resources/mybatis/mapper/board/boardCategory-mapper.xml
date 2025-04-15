@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardCategory">
+
+    <select id="selectCategoryById" resultType="com.end2end.spring.board.dto.BoardCategoryDTO">
+        select * from board_category
+        where id = #{categoryId}
+    </select>
+
+    <insert id="insertCategory" parameterType="com.end2end.spring.board.dto.BoardCategoryDTO">
+        INSERT INTO board_category (id, name, category, regDate)
+        VALUES (board_category_id_seq.nextval, #{name},#{category},SYSDATE)
+    </insert>
+
+    <select id="selectAll" resultType="com.end2end.spring.board.dto.BoardCategoryDTO">
+        select * from board_category
+    </select>
+<!--select *-->
+</mapper>

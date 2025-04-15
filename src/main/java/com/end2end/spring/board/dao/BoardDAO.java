@@ -33,8 +33,8 @@ public class BoardDAO {
         return mybatis.selectOne("board.selectById",id);
     }
 
-    public BoardDTO insert(BoardDTO dto) {
-        return mybatis.selectOne("board.insert",dto);
+    public void insert(BoardDTO dto) {
+         mybatis.selectOne("board.insert",dto);
     }
 
     public BoardCategoryDTO selectCategoryByName(String name) {

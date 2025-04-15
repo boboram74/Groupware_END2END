@@ -2,6 +2,7 @@ package com.end2end.spring.util;
 
 import com.end2end.spring.commute.dto.CommuteStateDTO;
 import com.end2end.spring.commute.dto.VacationDTO;
+import com.end2end.spring.schedule.dto.ScheduleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -102,6 +103,24 @@ public class EventDTO {
 
         return EventDTO.builder()
                 .title(title)
+                .startDate(startDateStr)
+                .endDate(endDateStr)
+                .display("block")
+                .eventName("period")
+                .build();
+    }
+
+    public static EventDTO convertFromSchedule(ScheduleDTO dto, LocalDate startDate, LocalDate endDate) {
+        LocalDate srateDateToLocalDate = dto.getStartDate().toLocalDateTime().toLocalDate();
+        LocalDate endDateToLocalDate = dto.getEndDate().toLocalDateTime().toLocalDate();
+
+        String startDateStr = (!srateDateToLocalDate.isBefore(startDate)) ?
+                dto.getStartDate().toInstant().toString() : startDate.toString();
+        String endDateStr = (!endDateToLocalDate.isAfter(endDate)) ?
+                dto.getEndDate().toInstant().toString() : endDate.toString();
+
+        return EventDTO.builder()
+                .title(dto.getTitle())
                 .startDate(startDateStr)
                 .endDate(endDateStr)
                 .display("block")

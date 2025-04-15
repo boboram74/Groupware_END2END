@@ -3,6 +3,7 @@ package com.end2end.spring.schedule.controller;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.schedule.dto.BookDTO;
 import com.end2end.spring.schedule.dto.CalendarDTO;
+import com.end2end.spring.schedule.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +15,13 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/schedule")
 @Controller
 public class ScheduleController {
-
+    @Autowired private CalendarService calendarService;
 
     @RequestMapping("/calender/list")
     public String toCalendar(HttpSession session, Model model) {
         // TODO: 해당 사원의 달력 페이지로 이동
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+
         return "schedule/calender";
     }
 
@@ -47,13 +49,17 @@ public class ScheduleController {
     }
 
     @RequestMapping("/calender/insert")
-    public void insert(CalendarDTO dto) {
-        // TODO: 일정을 추가
+    public String insert(CalendarDTO dto) {
+        calendarService.insert(dto);
+
+        return "redirect:/schedule/calender/list";
     }
 
     @RequestMapping("/calender/update")
-    public void update(CalendarDTO dto) {
-        // TODO: 일정을 수정
+    public String update(CalendarDTO dto) {
+        calendarService.update(dto);
+
+        return "redirect:/schedule/calender/list";
     }
 
     @RequestMapping("/calender/delete/{id}")

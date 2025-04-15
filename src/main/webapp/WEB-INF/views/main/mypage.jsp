@@ -7,7 +7,6 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-    // 로그인 사용자 기준으로 전체 수정 권한 판단
     let isHR = ("<c:out value='${sessionScope.employee.departmentName}'/>" === "인사팀") ||
         ("<c:out value='${sessionScope.employee.role}'/>" === "ADMIN");
 </script>
@@ -111,9 +110,11 @@
                     <input type="text" id="detailAddressInput" name="detailAddress" value="${employeeDetail.detailAddress}" style="display:none;" />
                 </div>
                 <div class="btn">
+                    <button type="button" id="passwordChangeBtn">패스워드 변경</button>
                     <button type="button" id="editBtn">수정하기</button>
                     <button type="submit" id="saveBtn" style="display:none;">수정완료</button>
-                    <button type="button" id="backBtn">돌아가기</button>
+                    <button type="button" id="backBtn">메인으로</button>
+                    <button type="button" id="cancelBtn" style="display:none;">수정취소</button>
                 </div>
             </div>
         </form>

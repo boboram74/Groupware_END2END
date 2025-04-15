@@ -151,6 +151,174 @@
       transform-origin: center;
     }
 
+    /* 조직도 버튼 및 컨테이너 스타일 */
+    .orgchart-container {
+      position: relative;
+    }
+
+    /* 조직도 메뉴 스타일 */
+    .orgchart-menu {
+      display : none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      z-index: 1000;
+    }
+
+    .orgchart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+    }
+
+    .orgchart-header h5 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .close-orgchart {
+      cursor: pointer;
+      padding: 4px;
+      color: #666;
+    }
+
+    .close-orgchart:hover {
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 50%;
+    }
+
+    .orgchart-content {
+      padding: 20px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    /* 조직도 본문 스타일 */
+    .org-chart {
+      padding: 20px;
+    }
+
+    .org-box {
+      backgound-color: var(--md-sys-color-surface-container);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .department-title {
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      font-size: 18px;
+      font-weight: 600;
+      padding: 12px 24px;
+      margin: -24px -24px 24px -24px;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+
+    .members-tree {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 60px;
+      position: relative;
+      padding-top: 24px;
+    }
+
+    /* 상단 중앙 세로선 */
+    .members-tree::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 24px;
+      background: var(--md-sys-color-surface);
+    }
+
+    /* 가로선 */
+    .members-tree::after {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 1px;
+      background: var(--md-sys-color-surface);
+    }
+
+    .member {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      padding-top: 24px;
+      min-width: 80px;
+    }
+
+    /* 가로선과 사원명 사이의 세로선 */
+    .member::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1px;
+      height: 24px;
+      background: var(--md-sys-color-surface);
+    }
+
+    .member .name {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .member .position {
+      font-size: 13px;
+      color: var(--md-sys-color-secondary);
+    }
+
+    /* 스크롤바 스타일링 */
+    .orgchart-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .orgchart-content::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      margin: 0;
+    }
+
+    .orgchart-content::-webkit-scrollbar-thumb {
+      background: var(--md-sys-color-surface-variant);
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .orgchart-content::-webkit-scrollbar-thumb:hover {
+      background: var(--md-sys-color-outline);
+    }
+
+    /* 조직도 열고 닫기 애니메이션 */
+    .orgchart-menu {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: top right;
+    }
+
+    .orgchart-menu.hidden {
+      transform: scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -216,7 +384,7 @@
             </div>
             <div class="notification-list">
               <div class="notification-item">
-                <span class="material-icons color-info">notifications_paused</span>
+                <span class="material-icons color-primary">notifications_paused</span>
                 <div class="notification-content">
                   <div class="notification-text">현재 알람이 없습니다.</div>
                   <div class="notification-date"></div>
@@ -226,10 +394,18 @@
           </div>
         </div>
 
-        <!-- 조직도 아이콘 -->
-        <button class="icon-button" id="orgChartBtn">
-          <span class="material-icons">account_tree</span>
-        </button>
+        <div class="orgchart-container">
+          <button class="icon-button" id="orgChartBtn">
+            <span class="material-icons">account_tree</span>
+          </button>
+          <div class="orgchart-menu surface-bright">
+            <div class="orgchart-header">
+              <h5>조직도</h5>
+              <span class="material-icons close-orgchart">close</span>
+            </div>
+            <div class="orgchart-content"></div>
+          </div>
+        </div>
 
         <!-- 다크모드 토글 아이콘 -->
         <button class="icon-button" id="darkModeBtn">
@@ -357,70 +533,155 @@
     <!-- 콘텐츠 영역 -->
     <div class="boxContents">
       <!-- 메인 콘텐츠가 들어갈 자리 -->
-<script>
-  $(document).ready(function() {
-    const alarm = new WebSocket('ws://localhost/alarm');
 
-    alarm.onopen = function() {
-      console.log('알람 웹소켓 연결됨');
-    };
+      <script>
+        $(document).ready(function() {
+          const alarm = new WebSocket('ws://localhost/alarm');
 
-    alarm.onerror = function(error) {
-      console.log('알람 웹소켓 에러:', error);
-    };
+          alarm.onopen = function() {
+            console.log('알람 웹소켓 연결됨');
+          };
 
-    alarm.onclose = function(event) {
-      console.log('알람 웹소켓 닫힘:', event.code, event.reason);
-    };
+          alarm.onerror = function(error) {
+            console.log('알람 웹소켓 에러:', error);
+          };
 
-    alarm.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      console.log(data);
+          alarm.onclose = function(event) {
+            console.log('알람 웹소켓 닫힘:', event.code, event.reason);
+          };
 
-      if (data.length > 0) {
-        $('#notificationBtn .notification-badge').show().text(data.length);
+          alarm.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
 
-        $('#notificationBtn .material-icons').removeClass('notification-animate');
-        $('#notificationBtn .material-icons')[0].offsetWidth;
-        $('#notificationBtn .material-icons').addClass('notification-animate')
-                .one('animationend', function() {
-                  $(this).removeClass('notification-animate');
-                });
-      } else {
-        return;
+            let notReadCount = 0;
+
+            if (data.length > 0) {
+              $('#notificationMenu .notification-list').empty();
+            }
+
+            for (let i = 0; i < data.length; i++) {
+              const item = data[i];
+
+              const readYn = (item.isRead) ? 'read' : '';
+              if (!item.isRead) {
+                notReadCount++;
+              }
+
+              const div = $('<div class="notification-item">');
+              div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
+                      .append($('<div class="notification-content">').addClass(readYn)
+                              .append($('<div class="notification-text">').text(item.message))
+                              .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
+
+              if (item.url !== '') {
+                div.on('click', function() {
+                  alarm.send(JSON.stringify({
+                    'id': Number(item.id),
+                    'employeeId': String(${employee.id})
+                  }));
+
+                  location.href = item.url;
+                })
+                $('#notificationMenu .notification-list').append(div);
+              }
+
+              if (notReadCount > 0) {
+                $('#notificationBtn .notification-badge').show().text(notReadCount);
+
+                $('#notificationBtn .material-icons').removeClass('notification-animate');
+                $('#notificationBtn .material-icons')[0].offsetWidth;
+                $('#notificationBtn .material-icons').addClass('notification-animate')
+                        .one('animationend', function() {
+                          $(this).removeClass('notification-animate');
+                        });
+              }
+            }
+
+            function parseTime(time) {
+              const date = new Date(time);
+              return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            }
+          }
+        });
+
+      function orgChartModal() {
+        $('.orgchart-content').empty();
+
+        $.ajax({
+          url: '/employee/orgChart',
+          method: 'GET'
+        }).done(function (data) {
+          $('#orgChartContainer').empty();
+          const employeeList = [
+            {name: '대표', id: 6, employee: []},
+            {name: '경영팀', id: 1, employee: []},
+            {name: '인사팀', id: 2, employee: []},
+            {name: '총무팀', id: 3, employee: []},
+            {name: '운영지원팀', id: 4, employee: []},
+            {name: '연구팀', id: 5, employee: []}];
+
+          for (let i = 0; i < data.length; i++) {
+            const employee = data[i];
+
+            for (let j = 0; j < employeeList.length; j++) {
+              const departments = employeeList[j];
+              if (departments.id == employee.departmentId) {
+                departments.employee.push(employee);
+              }
+            }
+          }
+
+          for (let i = 0; i < employeeList.length; i++) {
+            const departmentList = employeeList[i];
+            const orgBox = $('<div>').addClass('org-box');
+
+            const title = $('<div>').addClass('department-title').text(departmentList.name);
+            const departmentDiv = $('<div>').addClass('members-tree');
+
+            for (let j = 0; j < departmentList.employee.length; j++) {
+              const employee = departmentList.employee[j];
+
+              const div = $('<div>').addClass('member');
+              div.append($('<span>').addClass('name').text(employee.name))
+                  .append($('<span>').addClass('position').text(employee.jobName));
+              departmentDiv.append(div);
+            }
+
+            $('.orgchart-content').append(orgBox.append(title, departmentDiv));
+          }
+        });
       }
+      </script>
+      <script>
+        $(document).ready(function () {
+          const $orgchartBtn = $('#orgChartBtn');
+          const $orgchartMenu = $('.orgchart-menu');
+          const $closeOrgchart = $('.close-orgchart');
 
-      $('#notificationMenu .notification-list').empty();
-      for (let i = 0; i < data.length; i++) {
-        const item = data[i];
+          // 조직도 버튼 클릭 시 메뉴 토글
+          $orgchartBtn.on('click', function (e) {
+            e.stopPropagation();
+            $orgchartMenu.toggle();
 
-        const div = $('<div class="notification-item">');
-        div.append($('<span class="material-icons">').addClass('color-' + item.type).text(item.icons))
-                .append($('<div class="notification-content">')
-                        .append($('<div class="notification-text">').text(item.message))
-                        .append($('<div class="notification-date">').text(parseTime(item.sendTime))))
+            if ($orgchartMenu.is(':visible')) {
+              orgChartModal();
+            }
+          });
 
-        if (item.url !== '') {
-          div.on('click', function() {
-            alarm.send(JSON.stringify({
-              'id': item.id,
-              'employeeId': ${employee.id}
-            }));
+          // 닫기 버튼 클릭 시 메뉴 닫기
+          $closeOrgchart.on('click', function () {
+            $orgchartMenu.hide();
+          });
 
-            location.href = item.url;
-          })
-        }
-
-        $('#notificationMenu .notification-list').append(div);
-      }
-    }
-
-    function parseTime(time) {
-      const date = new Date(time);
-      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    }
-  });
-</script>
+          // 메뉴 영역 외 클릭 시 메뉴 닫기
+          $(document).on('click', function(e) {
+            if (!$(e.target).closest('.orgchart-container').length) {
+              $orgchartMenu.hide();
+            }
+          });
+        });
+      </script>
       <script>
         $(document).ready(function () {
           $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
@@ -488,6 +749,8 @@
               window.location.href = '/mypage/${employee.id}';
             } else if (id === 'logout') {
               window.location.href = '/employee/logout';
+            } else if (id === 'login-history') {
+              window.location.href = '/login/history/1';
             }
           });
 
@@ -506,12 +769,19 @@
             $('#notificationMenu').hide();
           });
 
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('.notification-container').length) {
+        $('#notificationMenu').hide();
+      }
+    });
+  });
+</script>
+<script>
           $(document).on('click', function(e) {
             if (!$(e.target).closest('.notification-container').length) {
               $('#notificationMenu').hide();
             }
           });
-        });
 
         $(document).ready(function() {
           $('form').off('submit').on('submit', function(e) {
@@ -526,4 +796,4 @@
             // $(this)[0].submit();
           });
         });
-      </script>
+</script>

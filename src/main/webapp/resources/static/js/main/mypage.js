@@ -7,8 +7,6 @@ $(document).ready(function(){
 
         // 직접 submit 호출
         this.submit();
-        // 또는
-        // $(this)[0].submit();
     });
     $("#editBtn").on("click", function(e) {
         e.preventDefault();
@@ -20,7 +18,9 @@ $(document).ready(function(){
         $("#zipCodeInput, #addressInput, #detailAddressInput").show();
         $("#searchAddressBtn").show();
         $("#editBtn").hide();
+        $("#backBtn").hide();
         $("#saveBtn").show();
+        $("#cancelBtn").show();
         $(".hrProfile").addClass("editable");
     });
     $("#profileInput").on("change", function (e) {
@@ -66,4 +66,8 @@ $("#searchAddressBtn").on("click", function (e) {
     $("#backBtn").on("click", function() {
         window.history.back();
     });
+    $("#cancelBtn").on("click", function() {
+        location.reload();
+    });
+
 });

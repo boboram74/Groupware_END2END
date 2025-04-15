@@ -1,8 +1,11 @@
 package com.end2end.spring.board.serviceImpl;
 
+import com.end2end.spring.board.dao.BoardCategoryDAO;
 import com.end2end.spring.board.dao.BoardDAO;
+import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
+import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private BoardDAO boardDAO;
+
+    @Autowired
+    private BoardCategoryDAO boardCategoryDAO;
+
+    @Autowired
+    private BoardCategoryService boardCategoryService;
 
     @Override
     public List<BoardDTO> selectAll() {
@@ -46,8 +55,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDTO insert(BoardDTO dto) {
-        return boardDAO.insert(dto);
+    public void insert(BoardDTO dto) {
+         boardDAO.insert(dto);
         // TODO: 게시글 입력
     }
 
@@ -66,5 +75,15 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void complaint(ComplaintDTO dto) {
         // TODO: 게시글 신고 (insert)
+    }
+
+    @Override
+    public void insertCategory(BoardCategoryDTO dto) {
+        boardCategoryDAO.insertCategory(dto);
+    }
+
+    @Override
+    public BoardCategoryDTO selectCategoryById(int categoryId) {
+        return  boardCategoryService.selectCategoryById(categoryId);
     }
 }

@@ -96,7 +96,7 @@ public class EmployeeDAO {
         mybatis.update("employee.updateDetail", dto);
     }
 
-<<<<<<< HEAD
+
     public void changePw(String newPw,String id) {
         Map<String, Object> param = new HashMap<>();
         param.put("newPw", newPw);
@@ -105,9 +105,9 @@ public class EmployeeDAO {
     }
 
 
-=======
+
     public List<EmployeeDTO> selectByIdIn(List<String> ids) {
         return mybatis.selectList("employee.selectByIdIn", ids);
     }
->>>>>>> b117ba8b664f7035bf91e7704fd58395b0b30364
+
 }

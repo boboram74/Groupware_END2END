@@ -31,105 +31,92 @@
     }
 </style>
 <div class="container">
-    <c:choose>
-        <c:when test="${approvalFormDTO.name eq '기안문'}">
-            <jsp:include page="/WEB-INF/views/approval/documents/draft.jsp" />
-        </c:when>
-        <c:when test="${approvalFormDTO.name eq '지출결의서'}">
-            <jsp:include page="/WEB-INF/views/approval/documents/pay.jsp" />
-        </c:when>
-        <c:when test="${approvalFormDTO.name eq '휴가계'}">
-            <jsp:include page="/WEB-INF/views/approval/documents/vacation.jsp" />
-        </c:when>
-        <c:otherwise>
-            <p>존재하지 않는 양식입니다.</p>
-        </c:otherwise>
-    </c:choose>
-<%--    <table>--%>
-<%--        <th>기 안 문</th>--%>
-<%--    </table>--%>
-<%--    <hr>--%>
 
-<%--    <div class="header">--%>
-<%--        <div class="informBox">--%>
-<%--            <div class="employeeNameBox">--%>
-<%--                <div class="employee">작성자</div>--%>
-<%--                <div id="name">${approval.NAME}</div>--%>
-<%--            </div>--%>
-<%--            <div class="sysdateBox">--%>
-<%--                <div class="sysdate">기안 일자</div>--%>
-<%--                <div class="date">${approval.REGDATE}</div>--%>
-<%--            </div>--%>
-<%--            <div class="positionsBox">--%>
-<%--                <div class="employeePosition">직위</div>--%>
-<%--                <div id="positions">${approval.JOBNAME}</div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
+    <table>
+        <th>${approvalFormDTO.name}</th>
+    </table>
+    <hr>
 
-<%--        <div class="approvalBox">--%>
-<%--            <div class="approverCardContainer">--%>
-<%--                <c:forEach var="approver" items="${approvers}">--%>
-<%--                    <div class="approverCard">--%>
-<%--                        <div class="approverInfo">--%>
-<%--                            <div>${approver["ORDERS"]}</div>--%>
-<%--                            <div>${approver["NAME"]}</div>--%>
-<%--                            <div>${approver["JOBNAME"]}</div>--%>
-<%--                            <div>--%>
-<%--                                <span class="approverStatus" id="approverStatus${approver['ID']} ${approver["SUBMITYN"] eq 'Y' ? 'done' : 'N'}">--%>
-<%--                                    <c:choose>--%>
-<%--                                        <c:when test="${approver['SUBMITYN'] eq 'Y'}">승인</c:when>--%>
-<%--                                        <c:otherwise>대기</c:otherwise>--%>
-<%--                                    </c:choose>--%>
-<%--                                </span>--%>
-<%--                            </div>--%>
-<%--                            <c:if test="${approver['SUBMITDATE'] != null}">--%>
-<%--                                <div>${approver["SUBMITDATE"]}</div>--%>
-<%--                            </c:if>--%>
-<%--                        </div>--%>
+    <div class="header">
+        <div class="informBox">
+            <div class="employeeNameBox">
+                <div class="employee">작성자</div>
+                <div id="name">${approval.NAME}</div>
+            </div>
+            <div class="sysdateBox">
+                <div class="sysdate">기안 일자</div>
+                <div class="date">${approval.REGDATE}</div>
+            </div>
+            <div class="positionsBox">
+                <div class="employeePosition">직위</div>
+                <div id="positions">${approval.JOBNAME}</div>
+            </div>
+        </div>
 
-<%--                        <c:if test="${approver['EMPLOYEEID'] eq employee.id and (empty approver['SUBMITYN'] or approver['SUBMITYN'] eq 'N')}">--%>
-<%--                            <form action="/approval/submit/approve/${approval.ID}" method="post" style="display:inline;">--%>
-<%--                                <input type="hidden" name="approvalId" value="${approval.ID}" />--%>
-<%--                                <input type="hidden" name="approverId" value="${approver['ID']}" />--%>
-<%--                                <button type="submit" class="approveBtn">승인</button>--%>
-<%--                            </form>--%>
-<%--                            <form action="/approval/reject" method="post" style="display:inline;">--%>
-<%--                                <input type="hidden" name="approvalId" value="${approval.ID}" />--%>
-<%--                                <input type="hidden" name="approverId" value="${approver['ID']}" />--%>
-<%--                                <button type="submit" class="rejectBtn">반려</button>--%>
-<%--                            </form>--%>
-<%--                        </c:if>--%>
-<%--                    </div>--%>
-<%--                </c:forEach>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <div id="rejectModal" class="modal" style="display: none;">--%>
-<%--        <div class="modalContent">--%>
-<%--            <h3>반려 사유 입력</h3>--%>
-<%--            <textarea id="rejectReason" placeholder="반려 사유를 입력해주세요."></textarea>--%>
-<%--            <input type="hidden" id="modalApprovalId">--%>
-<%--            <input type="hidden" id="modalApproverId">--%>
-<%--            <div class="modalActions">--%>
-<%--                <button id="confirmRejectBtn">반려</button>--%>
-<%--                <button id="cancelRejectBtn">취소</button>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
+        <div class="approvalBox">
+            <div class="approverCardContainer">
+                <c:forEach var="approver" items="${approvers}">
+                    <div class="approverCard">
+                        <div class="approverInfo">
+                            <div>${approver["ORDERS"]}</div>
+                            <div>${approver["NAME"]}</div>
+                            <div>${approver["JOBNAME"]}</div>
+                            <div>
+                                <span class="approverStatus" id="approverStatus${approver['ID']} ${approver["SUBMITYN"] eq 'Y' ? 'done' : 'N'}">
+                                    <c:choose>
+                                        <c:when test="${approver['SUBMITYN'] eq 'Y'}">승인</c:when>
+                                        <c:otherwise>대기</c:otherwise>
+                                    </c:choose>
+                                </span>
+                            </div>
+                            <c:if test="${approver['SUBMITDATE'] != null}">
+                                <div>${approver["SUBMITDATE"]}</div>
+                            </c:if>
+                        </div>
 
-<%--    <div class="body">--%>
-<%--        <div class="titleBox">--%>
-<%--            <input type="text" id="title" name="title" value="${approval.TITLE}" readonly>--%>
-<%--        </div>--%>
-<%--        <div class="contentsBox">--%>
-<%--            ${approval.CONTENT}--%>
-<%--        </div>--%>
-<%--    </div>--%>
+                        <c:if test="${approver['EMPLOYEEID'] eq employee.id and (empty approver['SUBMITYN'] or approver['SUBMITYN'] eq 'N')}">
+                            <form action="/approval/submit/approve/${approval.ID}" method="post" style="display:inline;">
+                                <input type="hidden" name="approvalId" value="${approval.ID}" />
+                                <input type="hidden" name="approverId" value="${approver['ID']}" />
+                                <button type="submit" class="approveBtn">승인</button>
+                            </form>
+                            <form action="/approval/reject" method="post" style="display:inline;">
+                                <input type="hidden" name="approvalId" value="${approval.ID}" />
+                                <input type="hidden" name="approverId" value="${approver['ID']}" />
+                                <button type="submit" class="rejectBtn">반려</button>
+                            </form>
+                        </c:if>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+    <div id="rejectModal" class="modal" style="display: none;">
+        <div class="modalContent">
+            <h3>반려 사유 입력</h3>
+            <textarea id="rejectReason" placeholder="반려 사유를 입력해주세요."></textarea>
+            <input type="hidden" id="modalApprovalId">
+            <input type="hidden" id="modalApproverId">
+            <div class="modalActions">
+                <button id="confirmRejectBtn">반려</button>
+                <button id="cancelRejectBtn">취소</button>
+            </div>
+        </div>
+    </div>
 
-<%--    <div class="signInform">--%>
-<%--        <button><a href="/approval/list">목록으로</a></button>--%>
-<%--    </div>--%>
-<%--</div>--%>
+    <div class="body">
+        <div class="titleBox">
+            <input type="text" id="title" name="title" value="${approval.TITLE}" readonly>
+        </div>
+        <div class="contentsBox">
+            ${approval.CONTENT}
+        </div>
+    </div>
+
+    <div class="signInform">
+        <button><a href="/approval/list">목록으로</a></button>
+    </div>
+</div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
 

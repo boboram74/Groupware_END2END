@@ -71,6 +71,8 @@
         background-color: #f8f8f8;
         color: #333;
     }
+
+    /*-----------------------------------*/
 </style>
 <div class="content">
 
@@ -111,6 +113,9 @@
     </c:forEach>
 </table>
 <div class="btnGroup">
+    <a href="/board/list">
+        <button class="backBtn">목록</button>
+    </a>
     <a href="/board/write/update?id=${board.id}">
         <button type="button" class="editBtn">수정</button>
     </a>
@@ -118,12 +123,45 @@
         <input type="hidden" name="id" value="${board.id}"/>
         <button type="submit" class="deleteBtn">삭제</button>
     </form>
-    <button class="replyBtn">답변</button>
-    <a href="/board/list">
-        <button class="backBtn">뒤로</button>
-    </a>
 </div>
-
+<hr>
+<div class="replyContainer" style="border:1px solid black; width: 100%; height:120px;">
+    <div class="addReply" style="width:100%; height:100%; display: flex">
+        <div class="addFile" style="width:10%; height:100%; ">
+            <input type="file" placeholder="파일" style="width:100%; height:100%;">
+        </div>
+        <div class="addInput" style="width:85%; height:100%;">
+            <textarea style="width:100%; height:100%;">댓글 입력</textarea>
+        </div>
+        <div class="addBtn" style="width:5%; height:100%;">
+            <button style="width:100%; height:100%;">등록</button>
+        </div>
+    </div>
+</div>
+<hr>
+<h3>댓글 (viewCount)</h3>
+<div class="replyList" style="width:100%; height:120px; border:1px solid black; display: flex">
+    <div class="profile" style="width:10%; height:100%; border:1px solid black"></div>
+    <div class="replyWrite" style="width:85%; height:100%; border:1px solid black">
+        <div class="writerSysdate" style="width:100%; height:23%; border:1px solid black">
+            <div class="realContents" style="width:30%; height:100%; border:1px solid red; display: flex">
+                <input type="text" style="width:50%; height:100%; border:1px solid yellow" placeholder="사용자아이디(기능)">
+                <input type="text" style="width:50%; height:100%; border:1px solid yellow" placeholder="등록날짜(기능)">
+            </div>
+        </div>
+        <div class="inputReply" style="width:100%; height:77%; border:1px solid black">
+            <input type="text" value="gg" style="width:100%; height:100%;">
+        </div>
+    </div>
+    <div class="replyReport" style="width:5%; height:100%; border:1px solid black; display: flow">
+        <div class="reReply" style="width:100%; height:50%; border:1px solid red;">
+            <button style="width:100%; height:100%;">댓글</button>
+        </div>
+        <div class="report" style="width:100%; height:50%; border:1px solid red;">
+            <button style="width:100%; height:100%;">신고</button>
+        </div>
+    </div>
+</div>
 <script>
     document.querySelector(".deleteBtn").addEventListener("click", function (e) {
         if (!confirm("정말 삭제하시겠습니까?")) {

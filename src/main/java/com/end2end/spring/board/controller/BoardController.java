@@ -166,6 +166,7 @@ public class BoardController {
         // TODO: 카테고리 입력을 받음
     }
 
+
     @RequestMapping("/category/update")
     public void updateCategory(BoardCategoryDTO dto) {
         // TODO: 카테고리 수정을 받음

@@ -135,4 +135,8 @@
         WHERE ID = #{roomId}
     </update>
 
+    <select id="findByRoomEmployeeList" parameterType="int" resultType="java.lang.String">
+        select employeeId from message_room_user where messageRoomId = #{value}
+    </select>
+
 </mapper>

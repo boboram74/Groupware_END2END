@@ -30,7 +30,7 @@ public class ChatEndPoint {
         this.hSession = (HttpSession) config.getUserProperties().get("hSession");
         dto = (EmployeeDTO) hSession.getAttribute("employee");
         if (dto != null) {
-            System.out.println("유저 추가됨 : " + dto.getName() + " session ID : " + session.getId());
+//            System.out.println("유저 추가됨 : " + dto.getName() + " session ID : " + session.getId());
             clientSessions.put(dto.getId(), session); // 사용자 ID로 세션 매핑
         }
     }
@@ -38,7 +38,7 @@ public class ChatEndPoint {
     @OnMessage
     public void onMessage(String message, Session session) throws Exception {
         JsonObject parsedMessage = gson.fromJson(message, JsonObject.class);
-        System.out.println(parsedMessage);
+//        System.out.println(parsedMessage);
         String type = parsedMessage.has("type") ? parsedMessage.get("type").getAsString() : "";
         int roomId = 0;
         if (parsedMessage.has("roomId") && !parsedMessage.get("roomId").getAsString().trim().isEmpty()) {
@@ -106,13 +106,15 @@ public class ChatEndPoint {
         // 처음 들어온 경우
         messengerService.insertUser(roomId, parsedMessage.get("inviteeId").getAsString());
         messengerService.insertUsertoRoom(roomId, parsedMessage.get("inviteeId").getAsString());
-
+        List<String> roomEmployeeList = messengerService.findByRoomEmployeeList(roomId);
         String inviterName = this.dto.getName();
         String inviteeName = parsedMessage.get("inviteeName").getAsString();
         String notificationMessage = inviterName + "님이 " + inviteeName + "님을 초대하였습니다.";
+
         JsonObject response = new JsonObject();
         response.addProperty("type", "NEW_INVITE");
         response.addProperty("message", notificationMessage);
+        response.add("employees", gson.toJsonTree(roomEmployeeList));
         response.addProperty("roomId", roomId);
 
         List<MessageUserListDTO> dtos2 = messengerService.selectRoomById(roomId);
@@ -124,17 +126,19 @@ public class ChatEndPoint {
             }
         }
     }
-
     // roomEnter
     public void loadAndSendChatHistory(JsonObject parsedMessage, int roomId) throws IOException {
         // select count(*) from message_room where id = roomId;
         String senderId = dto.getId();
         List<MessageHistoryDTO> messages = messengerService.selectMessageByRoomId(roomId, senderId);
+        List<String> roomEmployeeList = messengerService.findByRoomEmployeeList(roomId);
+
         String employeeId = parsedMessage.get("employeeId").getAsString();
         JsonObject response = new JsonObject();
 
         response.addProperty("type", "history");
         response.add("messages", gson.toJsonTree(messages));
+        response.add("employees", gson.toJsonTree(roomEmployeeList));
 
         String jsonResponse = gson.toJson(response);
         try {

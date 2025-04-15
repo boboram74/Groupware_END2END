@@ -86,4 +86,11 @@ public class ApprovalDAO {
     public ApprovalFormDTO selectByFormName(String name) {
         return mybatis.selectOne("approval.selectByFormName", name);
     }
+    public String selectDepartmentNameById(String employeeId) {
+        return mybatis.selectOne("approval.selectDepartmentNameById", employeeId);
+    }
+
+    public List<Map<String, Object>> allApprovals() {
+        return mybatis.selectList("approval.allApprovals");
+    }
 }

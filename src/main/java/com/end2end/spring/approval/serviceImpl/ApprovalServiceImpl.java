@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -217,5 +214,47 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public List<Map<String, Object>> searchDetail(Map<String, Object> paramMap) {
         return approvalDAO.searchDetail(paramMap);
+    }
+    @Override
+    public String getDepartmentNameByEmployeeId(String employeeId) {
+        return approvalDAO.selectDepartmentNameById(employeeId);
+    }
+    @Override
+    public Map<String, List<Map<String, Object>>> allApprovals() {
+        List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
+        System.out.println("allApprovals.size() = " + allApprovals.size());
+        Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
+
+        allApproval.put("SUBMIT", new ArrayList<>());
+        allApproval.put("ONGOING", new ArrayList<>());
+        allApproval.put("REJECT", new ArrayList<>());
+
+        for (Map<String, Object> approval : allApprovals) {
+            String state = (String) approval.get("STATE");
+            if (allApproval.containsKey(state)) {
+                allApproval.get(state).add(approval);
+            }
+        }
+
+        return allApproval;
+    }
+    @Override
+    public Map<String, List<Map<String, Object>>> SearchallApprovals(String keyword) {
+        List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
+        System.out.println("allApprovals.size() = " + allApprovals.size());
+        Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
+
+        allApproval.put("SUBMIT", new ArrayList<>());
+        allApproval.put("ONGOING", new ArrayList<>());
+        allApproval.put("REJECT", new ArrayList<>());
+
+        for (Map<String, Object> approval : allApprovals) {
+            String state = (String) approval.get("STATE");
+            if (allApproval.containsKey(state)) {
+                allApproval.get(state).add(approval);
+            }
+        }
+
+        return allApproval;
     }
 }

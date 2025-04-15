@@ -110,4 +110,26 @@
         FROM APPROVAL_FORM
         WHERE name = #{name,jdbcType=VARCHAR}
     </select>
+
+    <select id="selectDepartmentNameById" resultType="string">
+        SELECT d.name
+        FROM employee e
+                 JOIN department d ON e.departmentid = d.id
+        WHERE e.id = #{employeeId}
+    </select>
+
+    <select id="allApprovals" resultType="map">
+        SELECT
+            a.id AS approvalId,
+            a.title,
+            a.regdate,
+            a.state AS state,
+            e.name AS DRAFTERNAME,
+            af.name AS formName
+        FROM approval a
+                 JOIN employee e ON a.employeeid = e.id
+                 JOIN approval_form af ON a.approvalformid = af.id
+        ORDER BY a.regdate DESC
+    </select>
+
 </mapper>

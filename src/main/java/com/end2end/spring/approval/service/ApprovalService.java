@@ -43,4 +43,12 @@ public interface ApprovalService {
 
     @Transactional
     List<Map<String, Object>> searchDetail(Map<String, Object> paramMap);
+
+    String getDepartmentNameByEmployeeId(String employeeId);
+
+    Map<String, List<Map<String, Object>>> allApprovals();
+
+    Map<String, List<Map<String, Object>>> SearchallApprovals(String keyword);
+
+
 }

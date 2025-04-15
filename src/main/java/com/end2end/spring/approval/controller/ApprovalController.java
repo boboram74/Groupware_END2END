@@ -38,6 +38,9 @@ public class ApprovalController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
 
+        String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+        boolean team = "경영팀".equals(departmentName);
+
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
         List<Map<String, Object>> waitingList = approvalService.selectByState("ONGOING", employeeId);
         List<Map<String, Object>> goingList = approvalService.selectByState("ONGOING", employeeId);
@@ -50,6 +53,29 @@ public class ApprovalController {
         model.addAttribute("completedList", completedList);
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("formList", formList);
+        model.addAttribute("team", team);
+
+        return "approval/approval-test";
+    }
+
+    @RequestMapping("/all")
+    public String allList(HttpSession session,Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        String employeeId = employee.getId();
+
+        Map<String, List<Map<String, Object>>> approvalByState = approvalService.allApprovals();
+        System.out.println("approvalByState: " + approvalByState);
+        List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
+        String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+        boolean team = "경영팀".equals(departmentName);
+
+        model.addAttribute("waitingList", approvalByState.get("WAITING"));
+        model.addAttribute("goingList", approvalByState.get("ONGOING"));
+        model.addAttribute("completedList", approvalByState.get("SUBMIT"));
+        model.addAttribute("rejectList", approvalByState.get("REJECT"));
+        model.addAttribute("formList", formList);
+        model.addAttribute("isAll", true);
+        model.addAttribute("team", team);
 
         return "approval/approval-test";
     }
@@ -207,12 +233,30 @@ public class ApprovalController {
         System.out.println("도착2");
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
+        String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+        boolean team = "경영팀".equals(departmentName);
+
 
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
-        List<Map<String, Object>> waitingList = approvalService.search("ONGOING", employeeId, keyword);
-        List<Map<String, Object>> goingList = approvalService.search("ONGOING", employeeId, keyword);
-        List<Map<String, Object>> rejectList = approvalService.search("REJECT", employeeId, keyword);
-        List<Map<String, Object>> completedList = approvalService.search("SUBMIT", employeeId, keyword);
+
+
+        List<Map<String, Object>> waitingList;
+        List<Map<String, Object>> goingList;
+        List<Map<String, Object>> rejectList;
+        List<Map<String, Object>> completedList;
+
+        if (team) {
+            Map<String, List<Map<String, Object>>> approvalByState = approvalService.SearchallApprovals(keyword);
+            waitingList = approvalByState.get("WAITING");
+            goingList = approvalByState.get("ONGOING");
+            rejectList = approvalByState.get("REJECT");
+            completedList = approvalByState.get("SUBMIT");
+        } else {
+            waitingList = approvalService.search("WAITING", employeeId, keyword);
+            goingList = approvalService.search("ONGOING", employeeId, keyword);
+            rejectList = approvalService.search("REJECT", employeeId, keyword);
+            completedList = approvalService.search("SUBMIT", employeeId, keyword);
+        }
 
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
@@ -220,6 +264,7 @@ public class ApprovalController {
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("keyword", keyword);
         model.addAttribute("formList", formList);
+        model.addAttribute("team", team);
 
         return "approval/approval-test";
     }
@@ -273,6 +318,7 @@ public class ApprovalController {
 
         return "approval/approval-test";
     }
+
 
 
 }

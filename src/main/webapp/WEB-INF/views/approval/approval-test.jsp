@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/template/exam.css" />
 <link rel="stylesheet" href="/css/mail/mail-list.css" />
@@ -168,25 +169,22 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item">
-                <span class="material-icons">star</span>
-                <span>자주 쓰는 문서</span>
-                <span class="detail-badge"><span>1</span></span>
+            <li class="detail-menu-item" onclick="location.href='/approval/list'">
+                <span class="material-icons">person</span>
+                <span>나의 전자결재</span>
             </li>
             <li class="detail-menu-item">
                 <span class="material-icons">star</span>
                 <span>중요 문서함</span>
                 <span class="detail-badge"><span>1</span></span>
             </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">person</span>
-                <span>나의 전자결재</span>
-            </li>
-            <li class="detail-menu-item">
+            <c:if test="${team}">
+            <li class="detail-menu-item" onclick="location.href='/approval/all'">
                 <span class="material-icons">description</span>
-                <span class="detail-menu-disc">전자 결재함</span>
+                <span class="detail-menu-disc">모든 전자 결재함</span>
                 <span class="detail-badge"><span>1</span></span>
             </li>
+            </c:if>
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>

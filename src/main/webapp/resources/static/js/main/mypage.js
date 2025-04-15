@@ -70,6 +70,6 @@ $("#searchAddressBtn").on("click", function (e) {
         location.reload();
     });
     $("#changePwBtn").on("click", function(e) {
-        window.open("/employee/toChangePwForm", "changePwPopup", "width=500,height=400");
+        window.open("/employee/toChangePwForm", "changePwPopup", "width=500,height=450");
     });
 });

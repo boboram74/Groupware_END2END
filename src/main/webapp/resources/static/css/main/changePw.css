@@ -41,5 +41,7 @@ input[type="password"] {
 }
 #changeBtn:hover {
     background-color: #5c6f7d;
-
+}
+#resultPw,#resultRePw{
+    margin-bottom: 10px;
 }

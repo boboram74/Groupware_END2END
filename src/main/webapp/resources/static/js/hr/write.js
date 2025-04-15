@@ -123,7 +123,7 @@ $(document).ready(function(){
         var repw = $(".repw input").val().trim();
 
         if(password === "" || repw === ""){
-            $("#passwordStatus").html("");
+            $("#resultRePw").html("");
             return;
         }
         if(password !== repw){

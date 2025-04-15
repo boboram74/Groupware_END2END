@@ -98,9 +98,8 @@
         content = #{content, jdbcType=VARCHAR}
         WHERE id = #{id}
     </update>
-
-
     <!-- 프로젝트 진행중 보고된 게시물 수정-->
+
 
 
     <update id="updateState" parameterType="java.util.Map">

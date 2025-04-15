@@ -461,7 +461,7 @@
                 <tr id="changeRow-${list.id}">
 
                     <td onclick="location.href='/project/detail/${list.id}'">${list.name}
-                        <c:if test="${list.nearDeadline == 'Y'}"><span class="detail-badge">긴급</span></c:if> </td>
+                        <c:if test="${list.nearDeadline == 'Y'}"><span class="detail-badge">긴급</span></c:if></td>
                     <td onclick="location.href='/project/detail/${list.id}'">${list.regDate}</td>
                     <td onclick="location.href='/project/detail/${list.id}'"> ${list.deadLine}</td>
                     <td>
@@ -488,7 +488,7 @@
                     <c:if test="${employee.role!='TEAM_LEADER'}">
                         <td>
 
-                            <button class="updateProjectBtn" onclick="updateProject(${list.id})">수정</button>
+                            <button class="updateProjectBtn" onclick="openUpdateModal(${list.id})">수정</button>
 
                         </td>
                         <td><c:if test="${list.status!=('FINISH')}">
@@ -583,7 +583,7 @@
 
                     <h5>프로젝트 title</h5>
                     <div class="mb-3">
-                        <input type="text" id="title" value="${project.name}">
+                        <input type="text" id="title" name="title" value="${project.name}">
                     </div>
                     <%--projectinsertDTO 가져와야됨--%>
                     <div class="mb-3">
@@ -596,10 +596,17 @@
                         <button type="button" class="btn btn-outline-primary" onclick="updateOpenMemberSearch()">
                             인원 추가
                         </button>
+
                         <div id="updateMembers" class="mt-2">
-                            <div class="selectedUser" val>
-                                <div>선택된 멤버가 없습니다</div>
+                            <c:forEach var="member" items="${selectedMembers}">
+                            <div class="updateSelectedUser" val>
+                                <span>${member.name}</span>
+                                <button type="button" class="remove-user btn btn-sm btn-danger ms-2"
+                                        onclick="$(this).parent().remove()">삭제
+                                </button>
+                                <input type="hidden" name="employeeId" value="${member.id}">
                             </div>
+                            </c:forEach>
                         </div>
                     </div>
 
@@ -608,12 +615,13 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             onclick="closeupdateModal() ">Close
                     </button>
-                    <button type="submit" class="btn btn-primary" onclick="updateSuccess()">수정완료</button>
+                    <button type="submit" class="btn btn-primary">수정완료</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 <%--수정 인원변경모달라인--%>
 <div class="modal fade" id="memberSearchModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -625,8 +633,8 @@
             <div class="modal-body">
                 <!-- 멤버이름 검색 -->
                 <div class="mb-3">
-                    <input type="text" class="form-control" id="updateMemberSearchInput" placeholder="멤버 이름 검색"
-                           onkeyup="updateSearchMembers()">
+                    <input type="text" class="form-control" id="UpdateMemberSearchInput" placeholder="멤버 이름 검색"
+                           onkeyup="UpdateSearchMembers()">
                 </div>
                 <!-- 검색 결과 리스트 -->
                 <div id="updateMemberSearchResults" class="mb-3">
@@ -635,14 +643,15 @@
                 <!-- 선택된 멤버 리스트 -->
                 <div>
                     <h6 class="mt-3">선택된 멤버</h6>
-                    <div id="updateSelectedMembersList" class="d-flex flex-wrap"><c:forEach items="${selectedMembers}"
-                                                                                            var="member">
-                        <div class="selected-user" data-id="${member.id}">
-                            <span>${member.name}</span>
-                            <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
-                            <input type="hidden" name="employeeId[]" value="${member.id}">
-                        </div>
-                    </c:forEach></div>
+                    <div id="updateSelectedMembersList" class="d-flex flex-wrap">
+                        <c:forEach items="${selectedMembers}" var="member">
+                            <div class="selected-user" data-id="${member.id}">
+                                <span>${member.name}</span>
+                                <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
+                                <input type="hidden" name="employeeId[]" value="${member.id}">
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -722,7 +731,38 @@
         $('#projectModal').modal('show');
     }
 
-    function updateProject(${list.id}) {
+    function openUpdateModal(projectId) {
+
+        $.ajax({
+            url: '/project/update/' + projectId,
+            method: 'GET',
+            success: function (data) {
+                const project = data.project;
+                const selectedMembers = data.selectedMembers;
+
+                $('#title').val(project.name);
+                $('input[name="deadLine"]').val(project.deadLine);
+                $('input[name="projectId"]').val(project.id);
+
+                if (selectedMembers.length > 0) {
+                    selectedMembers.forEach(member => {
+
+                        $('#updateSelectedMembersList').append(`
+                        <div class="selected-user" data-id="${member.id}">
+                            <span>${member.name}</span>
+                            <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
+                            <input type="hidden" name="employeeId[]" value="${member.id}">
+                        </div>
+                    `);
+                    });
+                }
+
+
+            }
+
+        })
+
+
         $('#updateModal').modal('show');
     }
 
@@ -745,53 +785,52 @@
 
 
     function updateSearchMembers() {
+        $('#memberSearchResults .user-item').click(function () {
+            var userId = $(this).data('id');
+            var userName = $(this).data('name');
+            <%--if ($('#selectedMembersList').find(`[data-id="${userId}"]`)){--%>
+            <%--    alert("이미 선택된 사용자입니다")--%>
+            <%--}--%>
+            // 이미 선택된 사용자인지 확인
+            if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
 
-        $.ajax({
-            url: '/project/members/' + '${projectId}',
-            type: 'GET',
-            data: {
-                name: $('#updateMemberSearchInput').val()
-            },
-            success: function (data) {
-                console.log(data);
+                console.log('추가한 새로운 멤버:', userId, userName);
 
-                let memberList = '';
-                for (let i = 0; i < data.length; i++) {
-
-                    memberList += '<div class="user-item" data-id="' + data[i].id + '" data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].jobName + ' ' + data[i].departmentName + '</div>'
-
-                }
-                let beforeMemberList = $('#selectedMembersList').html();
-                console.log(beforeMemberList);
-                $('#updateMemberSearchResults').html(beforeMemberList);
-                $('#updateMemberSearchResults').html(memberList);
-                // 사용자 선택 시 selectedMembersList에 추가하는 이벤트 처리
-                $('#updateMemberSearchResults .user-item').click(function () {
-                    var userId = $(this).data('id');
-                    var userName = $(this).data('name');
-                    <%--if ($('#selectedMembersList').find(`[data-id="${userId}"]`)){--%>
-                    <%--    alert("이미 선택된 사용자입니다")--%>
-                    <%--}--%>
-                    // 이미 선택된 사용자인지 확인
-                    if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
-
-                        console.log('추가한 새로운 멤버:', userId, userName);
-
-                        // selectedMembersList에 사용자 추가
-                        $('#selectedMembersList').append(
-                            $('<div>').addClass('selected-user').attr('data-id', userId)
-                                .append($('<span>').html(userName))
-                                .append($('<button>').addClass("remove-user").html('삭제').click(function () {
-                                        $(this).parent().remove();
-                                    })
-                                )
-                                .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
-                        );
-                    }
-                });
-
+                // selectedMembersList에 사용자 추가
+                $('#selectedMembersList').append(
+                    $('<div>').addClass('selected-user').attr('data-id', userId)
+                        .append($('<span>').html(userName))
+                        .append($('<button>').addClass("remove-user").html('삭제').click(function () {
+                                $(this).parent().remove();
+                            })
+                        )
+                        .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
+                );
             }
-        })
+        });
+
+
+    }
+
+    function getUpdateSelectedMembers() {
+        let selectedMembers = [];
+
+        $('#selectedMembers .selectedUser').each(function () {
+
+            const id = $(this).attr('data-id');
+            console.log(id);
+
+            if (id) {
+                console.log(id);
+                selectedMembers.push(id[1]);
+            }
+        });
+        console.log(selectedMembers);
+
+        if (selectedMembers.length === 0) {
+            console.warn("선택된 멤버가 없습니다. 선택자를 확인하세요.");
+        }
+        return selectedMembers;
     }
 
     function searchMembers() {
@@ -811,7 +850,7 @@
                     memberList += '<div class="user-item" data-id="' + data[i].id + '" data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].jobName + ' ' + data[i].departmentName + '</div>'
 
                 }
-                $('#memberSearchResults').html(memberList);
+
                 $('#memberSearchResults').html(memberList);
                 // 사용자 선택 시 selectedMembersList에 추가하는 이벤트 처리
                 $('#memberSearchResults .user-item').click(function () {
@@ -842,7 +881,6 @@
         })
     }
 
-
     function handleHide(projectId) {
 
         const row = $(`changeRow-${projectId}`);
@@ -859,7 +897,6 @@
         }
     }
 
-
     function confirmSelectedMembers() {
 
         $("#selectedMembers").html("");
@@ -874,7 +911,6 @@
     function createProject(e) {
         console.log('#projectForm');
         $('#projectForm').submit();
-
     }
 
     function closeupdateModal() {
@@ -919,13 +955,11 @@
                 <button class="updateProjectBtn" onClick=" openUpdateProjectModal(${response.id})">수정</button>
 
                 <button class="deleteProjectBtn" onClick="deleteProject(${response.id})">삭제</button>
-        </tr>
+                 </tr>
 
-        $('.table tbody').append(tableHtml);
-
-    }
-`
+                 $('.table tbody').append(tableHtml);`
         }
+
     }
 
 
@@ -933,4 +967,3 @@
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
-

@@ -12,11 +12,12 @@
         ELSE 'N'
         END AS nearDeadline
         FROM project p
-        ORDER BY p.id DESC,
+        ORDER BY
         CASE
         WHEN p.DEADLINE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE + 5) THEN 1
         ELSE 2
-        END
+        END,
+        p.id DESC
 
     </select>
     <!-- 프로젝트 모아보기-->
@@ -32,10 +33,11 @@
     <!-- 프로젝트 멤버 프로필 가져오기-->
 
 
-    <delete id="deleteById" parameterType="Integer">
-        delete from project where id=#{id}
+    <delete id="deleteMemberById">
+        delete from PROJECT_USER where projectId=#{projectId}
+        and employeeId=#{employeeId}
     </delete>
-    <!-- 프로젝트 삭제-->
+    <!-- 프로젝트 멤버 삭제-->
 
     <insert id="insertProject" parameterType="com.end2end.spring.works.dto.ProjectDTO">
         INSERT INTO project (id, name, deadline, hideYn, regDate)
@@ -59,27 +61,41 @@
         INSERT INTO PROJECT_USER(id, employeeId, projectId)
         SELECT PROJECT_USER_ID_SEQ.NEXTVAL, A.* FROM (
         <foreach collection="list" item="item" separator="UNION ALL">
-            SELECT #{item.employeeId}, ${projectId} FROM DUAL
+            SELECT #{item.employeeId}, #{projectId} FROM DUAL
         </foreach>
         ) A
     </insert>
-    <update id="updateById">
-        update project set name=${name}, deadLine=${deadLine} where id =${id}
-    </update>
+
+
     <!--프로젝트수정-->
+    <update id="updateById" parameterType="com.end2end.spring.works.dto.ProjectInsertDTO">
+        update project set name=#{name}, deadLine = #{deadLine,jdbcType=DATE} WHERE id =#{id}
+    </update>
+
+
+    <!-- 기존프로젝트인원 비교 후 없으면 추가 -->
+    <insert id="insertProjectMember" parameterType="com.end2end.spring.works.dto.ProjectUserDTO">
+        INSERT INTO PROJECT_USER(id,projectId,employeeId)
+        SELECT PROJECT_USER_ID_SEQ.NEXTVAL, #{projectId}, #{employeeId}
+        FROM DUAL
+        WHERE NOT EXISTS (
+        SELECT 1 FROM PROJECT_USER
+        WHERE projectId = #{projectId} AND employeeId = #{employeeId}
+        )
+    </insert>
 
     <select id="selectById" resultType="com.end2end.spring.works.dto.ProjectDTO">
         SELECT * FROM project
         WHERE id = #{id}
     </select>
 
-    <!--프로젝트 찾기 -->
+
+    <!--제일 최근 등록된 프로젝트 찾기 -->
     <select id="findLatestProject" resultType="com.end2end.spring.works.dto.ProjectDTO">
         SELECT * FROM (
         SELECT * FROM project
         ORDER BY id DESC
         ) WHERE ROWNUM = 1
-
     </select>
 
 
@@ -99,6 +115,7 @@
     <select id="getMembersByProjectId"   resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT
         e.name,
+        e.id,
         d.name AS departmentName,
         j.name AS jobName
         FROM

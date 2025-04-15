@@ -76,10 +76,10 @@
                 <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
                     <c:choose>
                         <c:when test="${item == page}">
-                            <span class="paging active" onClick="location.href='/login/history/${item}">${item}</span>
+                            <span class="paging active" onClick="location.href='/login/history/${item}'">${item}</span>
                         </c:when>
                         <c:otherwise>
-                            <span class="paging" onClick="location.href='/login/history/${item}">${item}</span>
+                            <span class="paging" onClick="location.href='/login/history/${item}'">${item}</span>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>

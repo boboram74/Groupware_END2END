@@ -31,8 +31,8 @@ $(document).ready(function(){
                     console.log("error: " + error);
                 }
             }).done(function(data) {
-                $('input[name=profileImg]').val(data);
                 console.log(data);
+                $('input[name=profileImg]').val(data);
             });
         } else {
             $("#profilePreview").attr("src", "/image/defaultImg.jpg"); // 기본 이미지 복구

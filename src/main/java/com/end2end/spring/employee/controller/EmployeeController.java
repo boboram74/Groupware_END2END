@@ -7,13 +7,11 @@ import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.main.dto.LoginHistoryDTO;
 import com.end2end.spring.main.service.LoginHistoryService;
 import com.end2end.spring.util.SecurityUtil;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -74,14 +72,22 @@ public class EmployeeController {
 
     @RequestMapping("/toChangePwForm")
     public String toChangePwForm() {
-        // TODO: 패스워드 변경 팝업창
+        // TODO: 패스워드 변경 팝업창으로 이동
         return "/main/changePw";
     }
 
+    @PostMapping("/pwVali")
+    @ResponseBody
+    public boolean pwVali(@RequestBody String currentPw) {
+        Map<String, Object> parsedCurrentPw = new Gson().fromJson(currentPw, Map.class);
+        // TODO: 기존 패스워드 확인
+        return employeeService.pwVali(SecurityUtil.hashPassword((String) parsedCurrentPw.get("currentPw")));
+    }
 
     @RequestMapping("/changePw")
-    public String changePw() {
+    public String changePw(String newPw) {
         // TODO: 패스워드 변경
+        //employeeService.changePw(SecurityUtil.hashPassword(newPw));
         return "/employee/changePw";
     }
 

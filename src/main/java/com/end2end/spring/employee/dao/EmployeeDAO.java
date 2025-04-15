@@ -43,17 +43,26 @@ public class EmployeeDAO {
         return mybatis.selectOne("employee.login", dto);
     }
 
-    public EmployeeDetailDTO selectDetailById(String employeeId){
+    public EmployeeDetailDTO selectDetailById(String employeeId) {
         return mybatis.selectOne("employee.selectDetailById", employeeId);
     }
 
-    public EmployeeDTO selectJobById(String id){
+    public EmployeeDTO selectJobById(String id) {
         return mybatis.selectOne("employee.selectJobById", id);
     }
 
     public boolean idVali(String loginId) {
         Integer count = mybatis.selectOne("employee.idVali", loginId);
         return count != null && count > 0;
+    }
+
+    public boolean pwVali(String currentPw) {
+        System.out.println(currentPw);
+        Integer count = mybatis.selectOne("employee.pwVali", currentPw);
+        if (count != null && count > 0) {
+            return true;
+        }
+        return false;
     }
 
     public void roleUpdate(String id, String role) {
@@ -71,13 +80,17 @@ public class EmployeeDAO {
         return mybatis.selectList("employee.selectContactList");
     }
 
-    public int countNoAuth() {return mybatis.selectOne("employee.countNoAuth");}
+    public int countNoAuth() {
+        return mybatis.selectOne("employee.countNoAuth");
+    }
 
     public List<EmployeeDTO> selectByThisMonthBirthday() {
         return mybatis.selectList("employee.selectByThisMonthBirthday");
     }
 
-    public void update(EmployeeDTO dto) {mybatis.update("employee.update", dto);}
+    public void update(EmployeeDTO dto) {
+        mybatis.update("employee.update", dto);
+    }
 
     public void updateDetail(EmployeeDetailDTO dto) {
         mybatis.update("employee.updateDetail", dto);

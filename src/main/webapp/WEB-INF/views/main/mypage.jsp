@@ -14,7 +14,7 @@
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">
-            <h2><span class="material-icons">supervisor_account</span>${employeeDetail.name} ${employeeDetail.departmentName}님의 마이페이지</h2>
+            <h2><span class="material-icons">supervisor_account</span>${employeeDetail.name} ${employeeDetail.jobName}님의 마이페이지</h2>
         </div>
     </div>
     <div class="mainBody">

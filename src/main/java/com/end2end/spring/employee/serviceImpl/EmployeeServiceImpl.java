@@ -50,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO  login(LoginDTO dto) {
         String password = SecurityUtil.hashPassword(dto.getPassword());
         dto.setPassword(password);
-
+        System.out.println(password);
         return employeeDAO.login(dto);
     }
 
@@ -189,4 +189,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDTO> selectByThisMonthBirthday() {
         return employeeDAO.selectByThisMonthBirthday();
     }
+
+    @Override
+    public boolean pwVali(String currentPw) {return employeeDAO.pwVali(currentPw);}
+
 }

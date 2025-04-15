@@ -16,6 +16,7 @@ public interface EmployeeService {
     void roleUpdate(String id);
     void update(EmployeeDetailDTO dto, MultipartFile file);
     void deleteById(String id);
+    boolean pwVali(String currentPw);
     boolean idVali(String loginId);
     List<EmployeeDTO> selectByDepartmentId(int departmentId);
     List<DepartmentDTO> selectAllDepartment();

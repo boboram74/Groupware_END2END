@@ -1,5 +1,7 @@
 var isIdChecked = false;
 var checkedId = "";
+var isPasswordValid = false;
+var isPwMatch = false;
 
 $(document).ready(function(){
     $("#id").on("input", function(){
@@ -24,12 +26,7 @@ $(document).ready(function(){
                 data : formData,
                 type : 'POST',
                 contentType : false,
-                processData : false,
-                error : function(request, status, error) {
-                    console.log("code: " + request.status)
-                    console.log("message: " + request.responseText)
-                    console.log("error: " + error);
-                }
+                processData : false
             }).done(function(data) {
                 console.log(data);
                 $('input[name=profileImg]').val(data);
@@ -105,6 +102,7 @@ $(document).ready(function(){
 
         if(password === "") {
             $("#resultPw").html("");
+            isPasswordValid = false;
             return;
         }
 
@@ -113,8 +111,10 @@ $(document).ready(function(){
                 "color": "red",
                 "font-size": "14px"
             }).html("패스워드는 8자 이상이며, 영문과 숫자를 포함해야 합니다.");
+            isPasswordValid = false;
         } else {
             $("#resultPw").html("");
+            isPasswordValid = true;
         }
     });
 
@@ -124,6 +124,7 @@ $(document).ready(function(){
 
         if(password === "" || repw === ""){
             $("#resultRePw").html("");
+            isPwMatch = false;
             return;
         }
         if(password !== repw){
@@ -131,8 +132,10 @@ $(document).ready(function(){
                 "color": "red",
                 "font-size": "14px"
             }).html("패스워드가 일치하지 않습니다.");
+            isPwMatch = false;
         } else {
             $("#resultRePw").html("");
+            isPwMatch = true;
         }
     });
 

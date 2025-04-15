@@ -597,17 +597,10 @@
                             인원 추가
                         </button>
 
-                        <div id="updateMembers" class="mt-2">
-                            <c:forEach var="member" items="${selectedMembers}">
-                                <div class="updateSelectedUser" val>
-                                    <span>${member.name}</span>
-                                    <button type="button" class="remove-user btn btn-sm btn-danger ms-2"
-                                            onclick="$(this).parent().remove()">삭제
-                                    </button>
-                                    <input type="hidden" name="employeeId" value="${member.id}">
-                                </div>
-                            </c:forEach>
+                        <div id="updateMembers" name=class="mt-2">
+
                         </div>
+                        <input type="hidden" name="employeeId" id="updateSelectedMembers">
                     </div>
 
                 </div>
@@ -615,7 +608,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             onclick="closeupdateModal() ">Close
                     </button>
-                    <button type="submit" class="btn btn-primary">수정완료</button>
+                    <button type="submit" class="btn btn-primary" onclick="updateSuccess()">수정완료</button>
                 </div>
             </form>
         </div>
@@ -939,30 +932,38 @@
     }
 
     function updateConfirmSelectedMembers() {
-        console.log('updateConfirmSelectedMembers');
+
+
+        $("#updateMembers").html("");
+        console.log($("#selectedMembersList").html());
+        $("#updateMembers").html($("#updateSelectedMembersList").html());
+        document.activeElement.blur();
+        $("#updateMemberSearchModal").modal('hide');
+
 
         // 선택한 멤버 수집 함수
         function getSelectedMembers() {
-            let selectedMembers = [];
+            let updateSelectedMembers = [];
 
-            $('#selectedMembers .selectedUser').each(function () {
+            $('#updateSelectedMembers .updateSelectedUser').each(function () {
 
                 const id = $(this).attr('data-id');
                 console.log(id);
 
                 if (id) {
                     console.log(id);
-                    selectedMembers.push(id[1]);
+                    updateSelectedMembers.push(id[1]);
                 }
             });
-            console.log(selectedMembers);
+            console.log(updateSelectedMembers);
 
-            if (selectedMembers.length === 0) {
+            if (updateSelectedMembers.length === 0) {
                 console.warn("선택된 멤버가 없습니다. 선택자를 확인하세요.");
             }
-            return selectedMembers;
+            return updateSelectedMembers;
         }
 
+    }
         function addProjectToTable(response) {
             const tableHtml = `
         <tr onClick="location.href='/works/work/${response.id}'">
@@ -978,7 +979,7 @@
                  </tr>
 
                  $('.table tbody').append(tableHtml);`
-        }
+        // }
 
     }
 

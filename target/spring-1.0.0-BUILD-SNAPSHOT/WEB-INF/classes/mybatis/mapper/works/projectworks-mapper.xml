@@ -69,7 +69,7 @@
 
     <!--프로젝트수정-->
     <update id="updateById" parameterType="com.end2end.spring.works.dto.ProjectInsertDTO">
-        update project set name=#{name}, deadLine = #{deadLine,jdbcType=DATE} WHERE id =#{id}
+        update project set name=#{title}, deadLine = #{deadLine,jdbcType=DATE} WHERE id =#{projectId}
     </update>
 
 

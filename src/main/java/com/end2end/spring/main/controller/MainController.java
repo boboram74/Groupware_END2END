@@ -5,7 +5,10 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.dto.JobDTO;
 import com.end2end.spring.employee.service.EmployeeService;
+import com.end2end.spring.main.dto.LoginHistoryDTO;
+import com.end2end.spring.main.service.LoginHistoryService;
 import com.end2end.spring.util.HolidayUtil;
+import com.end2end.spring.util.PageNaviUtil;
 import com.end2end.spring.works.dto.ProjectSelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,9 @@ public class MainController {
 
 	@Autowired
 	private EmployeeService employeeService;
+
+	@Autowired
+	private LoginHistoryService loginHistoryService;
 
 	@GetMapping("/")
 	public String home(HttpSession session, Model model) {
@@ -53,6 +59,22 @@ public class MainController {
 		model.addAttribute("departmentList", departmentList);
 		model.addAttribute("jobList", jobList);
 		return "main/mypage";
+	}
+
+	@RequestMapping("/login/history/{page}")
+	public String toLoginHistory(HttpSession session, Model model, @PathVariable int page) {
+		EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+
+		int totalLength = loginHistoryService.selectByEmployeeId(employee.getId()).size();
+
+		PageNaviUtil.PageNavi pageNavi = new PageNaviUtil(page, totalLength).generate();
+		List<LoginHistoryDTO> loginHistoryDTOList =
+				loginHistoryService.selectByEmployeeId(employee.getId(), page);
+
+		model.addAttribute("loginHistoryList", loginHistoryDTOList);
+		model.addAttribute("pageNavi", pageNavi);
+
+		return "/main/loginHistory";
 	}
 
 	@RequestMapping("/contact")

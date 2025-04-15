@@ -24,4 +24,7 @@ public class BoardDTO {
     private String profileImg;
     private int replyCount;
     private String importantYn;
+
+    public void setFilePath(String s) {
+    }
 }

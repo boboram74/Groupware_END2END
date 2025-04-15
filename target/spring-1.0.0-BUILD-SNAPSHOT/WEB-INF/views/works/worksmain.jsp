@@ -47,6 +47,7 @@
         height: 35px;
         margin-right: -20px;
     }
+
     .detail-badge {
         background-color: var(--md-sys-color-error);
         color: var(--md-sys-color-on-error);
@@ -459,23 +460,24 @@
 
                 <tr id="changeRow-${list.id}">
 
-                    <td onclick="location.href='/project/detail/${list.id}'">${list.name}<c:if test="${list.nearDeadline == 'Y'}"><span class="detail-badge">긴급</span></c:if> </td>
+                    <td onclick="location.href='/project/detail/${list.id}'">${list.name}
+                        <c:if test="${list.nearDeadline == 'Y'}"><span class="detail-badge">긴급</span></c:if> </td>
                     <td onclick="location.href='/project/detail/${list.id}'">${list.regDate}</td>
                     <td onclick="location.href='/project/detail/${list.id}'"> ${list.deadLine}</td>
                     <td>
                         <div class="member-profiles" onclick="location.href='/project/detail/${list.id}'">
                             <!-- 프로필 이미지 리스트 -->
                             <c:if test="${not empty list.profileImg}">
-                            <c:forEach items="${list.profileImg}" var="img">
-                                <c:choose>
-                                    <c:when test="${img == null}">
-                                        <img class="profile" src="/image/defaultImg.jpg">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img class="profile" src="${img}">
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
+                                <c:forEach items="${list.profileImg}" var="img">
+                                    <c:choose>
+                                        <c:when test="${img == null}">
+                                            <img class="profile" src="/image/defaultImg.jpg">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img class="profile" src="${img}">
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
                             </c:if>
                         </div>
                     </td>
@@ -633,7 +635,8 @@
                 <!-- 선택된 멤버 리스트 -->
                 <div>
                     <h6 class="mt-3">선택된 멤버</h6>
-                    <div id="updateSelectedMembersList" class="d-flex flex-wrap"><c:forEach items="${selectedMembers}" var="member">
+                    <div id="updateSelectedMembersList" class="d-flex flex-wrap"><c:forEach items="${selectedMembers}"
+                                                                                            var="member">
                         <div class="selected-user" data-id="${member.id}">
                             <span>${member.name}</span>
                             <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
@@ -726,13 +729,16 @@
     function openMemberSearch() {
         $('#memberSearchModal').modal('show');
     }
-function updateOpenMemberSearch() {
-    $('#updateMemberSearchModal').modal('show');
 
-}
-function updateSuccess(){
-    $('#updateform').submit();
-}
+    function updateOpenMemberSearch() {
+        $('#updateMemberSearchModal').modal('show');
+
+    }
+
+    function updateSuccess() {
+        $('#updateform').submit();
+    }
+
     function closeMemberSearch() {
         $('#memberSearchModal').modal('hide');
     }
@@ -827,7 +833,7 @@ function updateSuccess(){
                                         $(this).parent().remove();
                                     })
                                 )
-                                .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
+                                .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId[]').val(userId))
                         );
                     }
                 });
@@ -874,34 +880,35 @@ function updateSuccess(){
     function closeupdateModal() {
         $('#updateModal').modal('hide');
     }
+
     function updateConfirmSelectedMembers() {
         console.log('updateConfirmSelectedMembers');
         $('#updateform').submit();
 
-    // 선택한 멤버 수집 함수
-    function getSelectedMembers() {
-        let selectedMembers = [];
+        // 선택한 멤버 수집 함수
+        function getSelectedMembers() {
+            let selectedMembers = [];
 
-        $('#selectedMembers .selectedUser').each(function () {
+            $('#selectedMembers .selectedUser').each(function () {
 
-            const id = $(this).attr('data-id');
-            console.log(id);
-
-            if (id) {
+                const id = $(this).attr('data-id');
                 console.log(id);
-                selectedMembers.push(id[1]);
+
+                if (id) {
+                    console.log(id);
+                    selectedMembers.push(id[1]);
+                }
+            });
+            console.log(selectedMembers);
+
+            if (selectedMembers.length === 0) {
+                console.warn("선택된 멤버가 없습니다. 선택자를 확인하세요.");
             }
-        });
-        console.log(selectedMembers);
-
-        if (selectedMembers.length === 0) {
-            console.warn("선택된 멤버가 없습니다. 선택자를 확인하세요.");
+            return selectedMembers;
         }
-        return selectedMembers;
-    }
 
-    function addProjectToTable(response) {
-        const tableHtml = `
+        function addProjectToTable(response) {
+            const tableHtml = `
         <tr onClick="location.href='/works/work/${response.id}'">
             <td>${response.name}</td>
             <td>${response.regDate}</td>
@@ -917,11 +924,13 @@ function updateSuccess(){
         $('.table tbody').append(tableHtml);
 
     }
-
-
+`
+        }
+    }
 
 
 </script>
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+

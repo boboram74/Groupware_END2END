@@ -10,9 +10,12 @@
 
 
     <select id="selectById" resultType="map">
-        SELECT a.* , e.*, j.name AS jobName FROM approval a
+        SELECT a.* , e.*, j.name AS jobName, f.name AS formName
+        FROM approval a
             join employee e on a.employeeid = e.id
-            JOIN job j ON e.jobid = j.id WHERE a.id = #{id}
+            JOIN job j ON e.jobid = j.id
+            JOIN approval_form f ON a.approvalformid = f.id
+        WHERE a.id = #{id}
     </select>
 
     <select id="selectByState" resultType="map">
@@ -85,4 +88,48 @@
         FROM APPROVAL_FORM
         WHERE NAME LIKE '%' || #{name} || '%'
     </select>
+
+    <select id="searchDetail" resultType="map">
+        SELECT
+            a.*,
+            f.name AS formName,
+            e.*
+        FROM approval a
+                 JOIN approval_form f ON a.approvalformid = f.id
+                 JOIN employee e ON a.employeeid = e.id
+        WHERE
+            (#{form, jdbcType=VARCHAR} IS NULL OR f.name = #{form})
+          AND (#{state, jdbcType=VARCHAR} IS NULL OR a.state = #{state})
+          AND (#{drafter, jdbcType=VARCHAR} IS NULL OR e.name LIKE '%' || #{drafter} || '%')
+          AND (#{startDate, jdbcType=TIMESTAMP} IS NULL OR a.regdate >= #{startDate})
+          AND (#{endDate, jdbcType=TIMESTAMP} IS NULL OR #{endDate}>=a.regdate)
+    </select>
+
+    <select id="selectByFormName" parameterType="String" resultType="com.end2end.spring.approval.dto.ApprovalFormDTO">
+        SELECT *
+        FROM APPROVAL_FORM
+        WHERE name = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectDepartmentNameById" resultType="string">
+        SELECT d.name
+        FROM employee e
+                 JOIN department d ON e.departmentid = d.id
+        WHERE e.id = #{employeeId}
+    </select>
+
+    <select id="allApprovals" resultType="map">
+        SELECT
+            a.id AS approvalId,
+            a.title,
+            a.regdate,
+            a.state AS state,
+            e.name AS DRAFTERNAME,
+            af.name AS formName
+        FROM approval a
+                 JOIN employee e ON a.employeeid = e.id
+                 JOIN approval_form af ON a.approvalformid = af.id
+        ORDER BY a.regdate DESC
+    </select>
+
 </mapper>

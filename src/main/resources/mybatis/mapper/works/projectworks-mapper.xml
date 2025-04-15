@@ -23,12 +23,12 @@
 
     <select id="selectByprojectId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
 
-       SELECT EMPLOYEE.* FROM
+        SELECT EMPLOYEE.* FROM
         PROJECT_USER
         JOIN EMPLOYEE
         ON PROJECT_USER.EMPLOYEEID = EMPLOYEE.ID WHERE PROJECTID = #{id}
 
-</select>
+    </select>
     <!-- 프로젝트 멤버 프로필 가져오기-->
 
 
@@ -83,7 +83,7 @@
     </select>
 
 
-<!--  모달창에서 추가할 프로젝트 인원 검색-->
+    <!--  모달창에서 추가할 프로젝트 인원 검색-->
     <select id="selectByUser"  resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT EMPLOYEE.*, DEPARTMENT.NAME AS departmentName, job.name as jobName
         FROM EMPLOYEE
@@ -95,7 +95,7 @@
 
     </select>
 
-<!--프로젝트에 추가되어 있던 멤버-->
+    <!--프로젝트에 추가되어 있던 멤버-->
     <select id="getMembersByProjectId"   resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT
         e.name,

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,18 +18,18 @@ import javax.servlet.http.HttpSession;
 public class ScheduleController {
     @Autowired private CalendarService calendarService;
 
-    @RequestMapping("/calender/list")
+    @RequestMapping("/calendar/list")
     public String toCalendar(HttpSession session, Model model) {
         // TODO: 해당 사원의 달력 페이지로 이동
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
 
-        return "schedule/calender";
+        return "schedule/calendar";
     }
 
-    @RequestMapping("/calender/list/search")
+    @RequestMapping("/calendar/list/search")
     public String toCalenderSearch(Model model) {
         // TODO: 해당 검색 기록 결과를 calender.jsp에 출력
-        return "schedule/calender";
+        return "schedule/calendar";
     }
 
     @RequestMapping("/book")
@@ -43,26 +44,27 @@ public class ScheduleController {
         return "schedule/book";
     }
 
-    @RequestMapping("/calender/{id}")
-    public void selectCalender(@PathVariable int id) {
-        // TODO: 해당 id의 일정을 출력
+    @ResponseBody
+    @RequestMapping("/calendar/detail/{id}")
+    public CalendarDTO selectCalender(@PathVariable int id) {
+        return calendarService.selectById(id);
     }
 
-    @RequestMapping("/calender/insert")
+    @RequestMapping("/calendar/insert")
     public String insert(CalendarDTO dto) {
         calendarService.insert(dto);
 
-        return "redirect:/schedule/calender/list";
+        return "redirect:/schedule/calendar/list";
     }
 
-    @RequestMapping("/calender/update")
+    @RequestMapping("/calendar/update")
     public String update(CalendarDTO dto) {
         calendarService.update(dto);
 
-        return "redirect:/schedule/calender/list";
+        return "redirect:/schedule/calendar/list";
     }
 
-    @RequestMapping("/calender/delete/{id}")
+    @RequestMapping("/calendar/delete/{id}")
     public void deleteCalenderById(@PathVariable int id) {
         // TODO: 해당 id에 해당하는 일정을 삭제
     }

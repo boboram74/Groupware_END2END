@@ -215,7 +215,7 @@
                 </button>
             </div>
             <div class="modal-body box-content">
-                <form id="calendarWriteForm">
+                <form id="calendarWriteForm" action="/schedule/calendar/insert" method="post">
                     <div class="form-group">
                         <label for="calendarName">캘린더 이름</label>
                         <input type="text" id="calendarName" name="title" required>
@@ -264,10 +264,6 @@
                                 <span class="color-circle" style="background-color: #ff5722"></span>
                             </label>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="calendarDesc">설명</label>
-                        <textarea id="calendarDesc" name="calendarDesc" rows="3"></textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="primary">저장</button>

@@ -208,6 +208,7 @@ public class ApprovalController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
 
+        List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
         List<Map<String, Object>> waitingList = approvalService.search("ONGOING", employeeId, keyword);
         List<Map<String, Object>> goingList = approvalService.search("ONGOING", employeeId, keyword);
         List<Map<String, Object>> rejectList = approvalService.search("REJECT", employeeId, keyword);
@@ -218,6 +219,7 @@ public class ApprovalController {
         model.addAttribute("completedList", completedList);
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("formList", formList);
 
         return "approval/approval-test";
     }

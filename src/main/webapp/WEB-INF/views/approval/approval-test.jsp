@@ -204,10 +204,10 @@
                 </select>
             </div>
             <div class="searchInput">
-                <input id="input" type="text" name="keyword" placeholder="중요메일함">
-            </div>
-            <div>
-                <button id="searchBtn"><span class="material-icons" onClick="location.href='/approval/search?keyword=' + $('input[name=keyword]').val()" class="searchBtn"/>검색</button>
+                <form action="/approval/search/" method="get" class="searchForm">
+                    <input type="text" name="keyword" placeholder="문서종류,기안자,제목" class="searchInput" />
+                    <button type="submit" class="searchBtn">검색</button>
+                </form>
             </div>
         </div>
         <div class="button-container">

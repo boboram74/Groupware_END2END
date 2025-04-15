@@ -1,9 +1,9 @@
-// 전역 변수 선언
 var isIdChecked = false;
 var checkedId = "";
+var isPasswordValid = false;
+var isPwMatch = false;
 
 $(document).ready(function(){
-    // 아이디 입력란에서 입력이 변경되면 중복체크 플래그 초기화
     $("#id").on("input", function(){
         isIdChecked = false;
         checkedId = "";
@@ -26,15 +26,10 @@ $(document).ready(function(){
                 data : formData,
                 type : 'POST',
                 contentType : false,
-                processData : false,
-                error : function(request, status, error) {
-                    console.log("code: " + request.status)
-                    console.log("message: " + request.responseText)
-                    console.log("error: " + error);
-                }
+                processData : false
             }).done(function(data) {
-                $('input[name=profileImg]').val(data);
                 console.log(data);
+                $('input[name=profileImg]').val(data);
             });
         } else {
             $("#profilePreview").attr("src", "/image/defaultImg.jpg"); // 기본 이미지 복구
@@ -107,6 +102,7 @@ $(document).ready(function(){
 
         if(password === "") {
             $("#resultPw").html("");
+            isPasswordValid = false;
             return;
         }
 
@@ -115,8 +111,10 @@ $(document).ready(function(){
                 "color": "red",
                 "font-size": "14px"
             }).html("패스워드는 8자 이상이며, 영문과 숫자를 포함해야 합니다.");
+            isPasswordValid = false;
         } else {
             $("#resultPw").html("");
+            isPasswordValid = true;
         }
     });
 
@@ -125,7 +123,8 @@ $(document).ready(function(){
         var repw = $(".repw input").val().trim();
 
         if(password === "" || repw === ""){
-            $("#passwordStatus").html("");
+            $("#resultRePw").html("");
+            isPwMatch = false;
             return;
         }
         if(password !== repw){
@@ -133,12 +132,13 @@ $(document).ready(function(){
                 "color": "red",
                 "font-size": "14px"
             }).html("패스워드가 일치하지 않습니다.");
+            isPwMatch = false;
         } else {
             $("#resultRePw").html("");
+            isPwMatch = true;
         }
     });
 
-    // 연락처 값을 숫자만 입력 받도록 처리
     $("input[name='contact']").on("input", function(){
         // 입력값에서 숫자 이외의 문자를 모두 제거
         let sanitized = $(this).val().replace(/\D/g, "");
@@ -161,7 +161,6 @@ $(document).ready(function(){
         e.preventDefault();
 
         var loginId = $("input[name='loginId']").val().trim();
-
         if(!isIdChecked || loginId !== checkedId) {
             alert("아이디 중복체크는 필수 입니다.");
             $("input[name='loginId']").focus();
@@ -190,19 +189,16 @@ $(document).ready(function(){
             $("input[name='birthday']").focus();
             return false;
         }
-
         if(password === "") {
             alert("패스워드를 입력하세요.");
             $("input[name='password']").focus();
             return false;
         }
-
         if(repw === "") {
             alert("패스워드 확인을 입력하세요.");
             $(".repw input").focus();
             return false;
         }
-
         if(contact === "") {
             alert("연락처를 입력하세요.");
             $("input[name='contact']").focus();

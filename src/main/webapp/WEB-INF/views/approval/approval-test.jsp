@@ -365,13 +365,13 @@
                         </thead>
                         <tbody>
                         <c:choose>
-                            <c:when test="${empty reject}">
+                            <c:when test="${empty rejectList}">
                                 <tr>
                                     <td colspan="6" class="emptyMessage">반려된 문서가 없습니다.</td>
                                 </tr>
                             </c:when>
                             <c:otherwise>
-                                <c:forEach var="i" items="${reject}">
+                                <c:forEach var="i" items="${rejectList}">
                                     <tr>
                                         <td class="apColStar">★</td>
                                         <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>

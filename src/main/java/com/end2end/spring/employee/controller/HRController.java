@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequestMapping("/hr")
@@ -29,7 +30,7 @@ public class HRController {
         List<EmployeeDTO> list = employeeService.selectAll();
         model.addAttribute("employeeList", list);
         model.addAttribute("isNoAuthExist", employeeService.isNoAuthExist());
-        return "hr/hr-test";
+        return "hr/list";
     }
 
     @RequestMapping("/list/search")
@@ -78,11 +79,13 @@ public class HRController {
     }
 
     @RequestMapping("/update")
-    public String update(EmployeeDetailDTO dto) {
+    public String update(HttpSession session, EmployeeDetailDTO dto, MultipartFile file) {
         // TODO: 직원 데이터 수정
-       employeeService.update(dto);
+        employeeService.update(dto,file);
         String employeeId = dto.getId();
-        return "redirect:/mypage/"+employeeId;
+
+        session.setAttribute("employee", employeeService.selectById(employeeId));
+        return "redirect:/mypage/" + employeeId;
     }
 
     @RequestMapping("/deleteById/{id}")

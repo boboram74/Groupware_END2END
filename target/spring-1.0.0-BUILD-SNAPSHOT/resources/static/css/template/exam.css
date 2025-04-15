@@ -385,7 +385,6 @@ input::-moz-placeholder {
 .box {
     display: flex;
     flex-direction: column;
-    height: 100%; /* 전체 높이 사용 */
     border-radius: 8px;
 }
 
@@ -419,4 +418,37 @@ input::-moz-placeholder {
     background-position: center;
     background-repeat: no-repeat;
     border: 1px solid #eee;
+}
+
+.pageNavi{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    padding-top: 0;
+}
+.paging {
+    display: inline-block;
+    margin: 5px 3px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    background: var(--md-sys-color-secondary);
+    color: var(--md-sys-color-on-secondary);
+    border: 1px solid var(--md-sys-color-outline);
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.paging:hover {
+    background: var(--md-sys-color-secondary-hover);
+    transform: translateY(-2px);
+}
+.paging.active {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    transform: none;
 }

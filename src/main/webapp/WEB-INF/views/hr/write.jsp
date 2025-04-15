@@ -27,14 +27,16 @@
                 <div class="birthday">생년월일 :
                     <input type="date" name="birthday">
                 </div>
-                <div class="loginId">아이디 : <input type="text" id="id" name="loginId" placeholder="8~20자 이내 영어소문자,숫자를 포함한 ID 입력">
+                <div class="loginId">아이디 : <input type="text" id="id" name="loginId" placeholder=" 6~20자 이내 영어소문자, 숫자를 포함한 ID 입력">
                     <button type="button" id="idCheckBtn">중복 체크</button>
                 </div>
-                <div id="result"></div>
+                <div id="resultId"></div>
                 <div class="pw">패스워드 입력 : <input type="password" name="password"
-                                                 placeholder="8자 이상의 영어소문자,숫자를 포함한 PW 입력">
+                                                 placeholder=" 8자 이상의 영어소문자, 숫자를 포함한 PW 입력">
                 </div>
-                <div class="repw">패스워드 확인 : <input type="password" placeholder="위와 동일하게 패스워드 입력"></div>
+                <div id="resultPw"></div>
+                <div class="repw">패스워드 확인 : <input type="password" placeholder=" 위와 동일하게 패스워드 입력"></div>
+                <div id="resultRePw"></div>
                 <div class="position">직급 :
                     <select name="jobId">
                         <c:forEach var="job" items="${jobList}">

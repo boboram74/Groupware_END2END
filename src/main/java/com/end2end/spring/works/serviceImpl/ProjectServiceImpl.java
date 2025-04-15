@@ -1,5 +1,7 @@
 package com.end2end.spring.works.serviceImpl;
 
+import com.end2end.spring.alarm.AlarmService;
+import com.end2end.spring.alarm.AlarmType;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.works.dao.ProjectDAO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
@@ -20,7 +22,8 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectDAO projectDao;
     @Autowired
     private ProjectUserDAO projectUserDao;
-
+    @Autowired
+    private AlarmService alarmService;
 
 
     //    @Override
@@ -65,8 +68,15 @@ public class ProjectServiceImpl implements ProjectService {
                     .build();
             projectUserDao.insert(projectUserDTO);
         }
+
+        alarmService.sendProjectAlarm(
+                AlarmType.PROJECT_CREATE, "/project/detail/" + projectDTO.getId(), projectDTO.getId());
     }
 
+    @Override
+    public ProjectDTO findLatestProject(){
+        return projectDao.findLatestProject();
+    }
 
     @Override
     public List<ProjectSelectDTO> selectAllProject() {
@@ -145,4 +155,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectDao.selectByUser(target);
     }
+
+
+
 }

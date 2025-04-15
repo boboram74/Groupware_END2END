@@ -158,35 +158,4 @@
     </a>
 </div>
 </form>
-<script>
-    // form 이벤트 추적
-    $('form').on('submit', function(e) {
-        console.log('Form 제출 시도');
-        console.log('Action URL:', $(this).attr('action'));
-        console.log('Method:', $(this).attr('method'));
-        console.log('Form Data:', $(this).serialize());
-
-        // 폼이 유효한지 확인
-        if (!this.checkValidity()) {
-            console.log('폼 유효성 검사 실패');
-            return false;
-        }
-
-        return true;
-    });
-
-    // 버튼 클릭 이벤트 추적
-    $('form button[type="submit"]').on('click', function(e) {
-        console.log('Submit 버튼 클릭됨');
-    });
-
-    $('form').on('click', function(e) {
-        console.log('Form 클릭 - Target:', e.target);
-        console.log('현재 요소:', this);
-    });
-
-    $(document).on('click', function(e) {
-        console.log('Document 클릭 - Target:', e.target);
-    });
-</script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

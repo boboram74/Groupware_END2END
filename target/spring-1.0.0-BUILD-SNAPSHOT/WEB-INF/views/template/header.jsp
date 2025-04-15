@@ -464,14 +464,10 @@
             $('#notificationMenu').hide();
           });
 
-          $('.header').on('click', function(e) {
+          $(document).on('click', function(e) {
             if (!$(e.target).closest('.notification-container').length) {
               $('#notificationMenu').hide();
             }
           });
-        });
-
-        $('form').on('submit', function(e) {
-          e.stopPropagation();
         });
       </script>

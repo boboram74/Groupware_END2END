@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/calendar")
 @Controller
@@ -53,7 +55,7 @@ public class CalendarController {
 
     @ResponseBody
     @RequestMapping("/detail/{id}")
-    public CalendarDTO selectCalender(@PathVariable int id) {
+    public Map<String, Object> selectCalender(@PathVariable int id) {
         return calendarService.selectById(id);
     }
 

@@ -24,14 +24,17 @@ public class ScheduleController {
     }
 
     @RequestMapping("/insert")
-    public void insert(ScheduleInsertDTO dto) {
+    public String insert(ScheduleInsertDTO dto) {
         ScheduleDTO scheduleDTO = ScheduleDTO.builder()
                 .calendarId(dto.getCalendarId())
+                .title(dto.getTitle())
                 .content(dto.getContent())
                 .startDate(Timestamp.valueOf(dto.getStartDate()))
                 .endDate(Timestamp.valueOf(dto.getEndDate()))
                 .build();
         scheduleService.insert(scheduleDTO);
+
+        return "redirect:/calendar/list";
     }
 
     @RequestMapping("/update")

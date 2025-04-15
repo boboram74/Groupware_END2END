@@ -13,9 +13,6 @@
   <link rel="stylesheet" href="/css/template/header.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
     let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
     $('html').addClass(mode);
@@ -131,52 +128,6 @@
       background: var(--md-sys-color-outline);
     }
 
-
-    /*조직도 CSS*/
-    .org-chart ul {
-      padding-top: 20px;
-      position: relative;
-      display: flex;
-      justify-content: center;
-    }
-
-    .org-chart li {
-      list-style-type: none;
-      text-align: center;
-      position: relative;
-      padding: 20px 5px;
-    }
-
-    .org-chart li::before, .org-chart li::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 50%;
-      border-top: 1px solid #ccc;
-      width: 50%;
-      height: 20px;
-    }
-
-    .org-chart li::after {
-      right: auto;
-      left: 50%;
-      border-left: 1px solid #ccc;
-    }
-
-    .org-chart li:only-child::after, .org-chart li:only-child::before {
-      display: none;
-    }
-
-    .modal-title{
-      font-weight: bold;
-      margin-left: 20px;
-      font-size: 22px;
-    }
-    
-    .modal-backdrop {
-      z-index: -1;
-    }
-
     @keyframes notificationAnimation {
       0% {
         transform: scale(1) rotate(0deg);
@@ -200,6 +151,174 @@
       transform-origin: center;
     }
 
+    /* 조직도 버튼 및 컨테이너 스타일 */
+    .orgchart-container {
+      position: relative;
+    }
+
+    /* 조직도 메뉴 스타일 */
+    .orgchart-menu {
+      display : none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      z-index: 1000;
+    }
+
+    .orgchart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+    }
+
+    .orgchart-header h5 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .close-orgchart {
+      cursor: pointer;
+      padding: 4px;
+      color: #666;
+    }
+
+    .close-orgchart:hover {
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 50%;
+    }
+
+    .orgchart-content {
+      padding: 20px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    /* 조직도 본문 스타일 */
+    .org-chart {
+      padding: 20px;
+    }
+
+    .org-box {
+      backgound-color: var(--md-sys-color-surface-container);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .department-title {
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      font-size: 18px;
+      font-weight: 600;
+      padding: 12px 24px;
+      margin: -24px -24px 24px -24px;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+
+    .members-tree {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 60px;
+      position: relative;
+      padding-top: 24px;
+    }
+
+    /* 상단 중앙 세로선 */
+    .members-tree::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 24px;
+      background: var(--md-sys-color-surface);
+    }
+
+    /* 가로선 */
+    .members-tree::after {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 1px;
+      background: var(--md-sys-color-surface);
+    }
+
+    .member {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      padding-top: 24px;
+      min-width: 80px;
+    }
+
+    /* 가로선과 사원명 사이의 세로선 */
+    .member::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1px;
+      height: 24px;
+      background: var(--md-sys-color-surface);
+    }
+
+    .member .name {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .member .position {
+      font-size: 13px;
+      color: var(--md-sys-color-secondary);
+    }
+
+    /* 스크롤바 스타일링 */
+    .orgchart-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .orgchart-content::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      margin: 0;
+    }
+
+    .orgchart-content::-webkit-scrollbar-thumb {
+      background: var(--md-sys-color-surface-variant);
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .orgchart-content::-webkit-scrollbar-thumb:hover {
+      background: var(--md-sys-color-outline);
+    }
+
+    /* 조직도 열고 닫기 애니메이션 */
+    .orgchart-menu {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: top right;
+    }
+
+    .orgchart-menu.hidden {
+      transform: scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -265,7 +384,7 @@
             </div>
             <div class="notification-list">
               <div class="notification-item">
-                <span class="material-icons color-info">notifications_paused</span>
+                <span class="material-icons color-primary">notifications_paused</span>
                 <div class="notification-content">
                   <div class="notification-text">현재 알람이 없습니다.</div>
                   <div class="notification-date"></div>
@@ -275,23 +394,16 @@
           </div>
         </div>
 
-        <!-- 조직도 아이콘 -->
-        <button class="icon-button" id="orgChartBtn" onclick="orgChartModal()">
-          <span class="material-icons">account_tree</span>
-        </button>
-
-        <!-- Bootstrap 모달 -->
-        <div class="modal fade" id="orgChartModal" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">사내 조직도</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body org-chart">
-                <div id="orgChartContainer"></div>
-              </div>
+        <div class="orgchart-container">
+          <button class="icon-button" id="orgChartBtn">
+            <span class="material-icons">account_tree</span>
+          </button>
+          <div class="orgchart-menu surface-bright">
+            <div class="orgchart-header">
+              <h5>조직도</h5>
+              <span class="material-icons close-orgchart">close</span>
             </div>
+            <div class="orgchart-content"></div>
           </div>
         </div>
 
@@ -492,8 +604,10 @@
             }
           }
         });
-            
+
       function orgChartModal() {
+        $('.orgchart-content').empty();
+
         $.ajax({
           url: '/employee/orgChart',
           method: 'GET'
@@ -517,32 +631,57 @@
               }
             }
           }
+
           for (let i = 0; i < employeeList.length; i++) {
             const departmentList = employeeList[i];
-            const title = $('<div>').html(departmentList.name).css({
-              'background-color': '#2c3e50',
-              'color': 'white',
-              'text-align': 'center'
-            });
-            const departmentDiv = $('<ul>').css({
-              'border': '3px solid black'
-            });
+            const orgBox = $('<div>').addClass('org-box');
+
+            const title = $('<div>').addClass('department-title').text(departmentList.name);
+            const departmentDiv = $('<div>').addClass('members-tree');
 
             for (let j = 0; j < departmentList.employee.length; j++) {
               const employee = departmentList.employee[j];
 
-              const div = $('<li>').html(employee.name + "<br>" + employee.jobName);
+              const div = $('<div>').addClass('member');
+              div.append($('<span>').addClass('name').text(employee.name))
+                  .append($('<span>').addClass('position').text(employee.jobName));
               departmentDiv.append(div);
             }
-            $('#orgChartContainer').append(title, departmentDiv);
+
+            $('.orgchart-content').append(orgBox.append(title, departmentDiv));
           }
-          // 모달 객체 생성
-          const modalElement = document.getElementById('orgChartModal');
-          const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-          modal.show();
         });
       }
-</script>
+      </script>
+      <script>
+        $(document).ready(function () {
+          const $orgchartBtn = $('#orgChartBtn');
+          const $orgchartMenu = $('.orgchart-menu');
+          const $closeOrgchart = $('.close-orgchart');
+
+          // 조직도 버튼 클릭 시 메뉴 토글
+          $orgchartBtn.on('click', function (e) {
+            e.stopPropagation();
+            $orgchartMenu.toggle();
+
+            if ($orgchartMenu.is(':visible')) {
+              orgChartModal();
+            }
+          });
+
+          // 닫기 버튼 클릭 시 메뉴 닫기
+          $closeOrgchart.on('click', function () {
+            $orgchartMenu.hide();
+          });
+
+          // 메뉴 영역 외 클릭 시 메뉴 닫기
+          $(document).on('click', function(e) {
+            if (!$(e.target).closest('.orgchart-container').length) {
+              $orgchartMenu.hide();
+            }
+          });
+        });
+      </script>
       <script>
         $(document).ready(function () {
           $('#darkModeBtn .material-icons').html(mode == 'light' ? 'dark_mode' : 'light_mode');
@@ -611,7 +750,7 @@
             } else if (id === 'logout') {
               window.location.href = '/employee/logout';
             } else if (id === 'login-history') {
-              window.location.href = '/login/history';
+              window.location.href = '/login/history/1';
             }
           });
 
@@ -643,7 +782,6 @@
               $('#notificationMenu').hide();
             }
           });
-        });
 
         $(document).ready(function() {
           $('form').off('submit').on('submit', function(e) {

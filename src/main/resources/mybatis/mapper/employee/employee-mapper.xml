@@ -166,4 +166,20 @@
             EXTRACT(MONTH FROM BIRTHDAY) = TO_CHAR(SYSDATE, 'MM')
         ORDER BY TO_CHAR(birthday, 'DD')
     </select>
+
+    <select id="selectByIdIn" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT EMPLOYEE.*, EMPLOYEE_DETAIL.BIRTHDAY, JOB.NAME AS jobName, DEPARTMENT.NAME AS departmentName
+        FROM EMPLOYEE
+        JOIN EMPLOYEE_DETAIL
+        ON EMPLOYEE.ID = EMPLOYEE_DETAIL.ID
+        JOIN DEPARTMENT
+        ON DEPARTMENT.ID = EMPLOYEE.DEPARTMENTID
+        JOIN JOB
+        ON JOB.ID = EMPLOYEE.JOBID
+        WHERE EMPLOYEE.id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
 </mapper>

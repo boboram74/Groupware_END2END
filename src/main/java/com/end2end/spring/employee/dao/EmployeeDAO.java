@@ -83,5 +83,7 @@ public class EmployeeDAO {
         mybatis.update("employee.updateDetail", dto);
     }
 
-
+    public List<EmployeeDTO> selectByIdIn(List<String> ids) {
+        return mybatis.selectList("employee.selectByIdIn", ids);
+    }
 }

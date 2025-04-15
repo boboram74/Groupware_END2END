@@ -40,18 +40,12 @@
     }
 
     .detail-modal .modal-close {
-        background: none;
         border: none;
         cursor: pointer;
         padding: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    .detail-modal .modal-close:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-        border-radius: 50%;
     }
 
     .detail-modal .modal-body {
@@ -103,6 +97,11 @@
         cursor: pointer;
     }
 
+    .detail-modal .modal-footer button:hover {
+        opacity: 0.9;
+    }
+
+
     .color-options {
         display: flex;
         flex-wrap: wrap;
@@ -151,6 +150,81 @@
     .color-radio input:focus + .color-circle {
         box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
     }
+
+    .employee-selector {
+        border: 1px solid var(--md-sys-color-outline);
+        border-radius: 4px;
+        background-color: var(--md-sys-color-surface-bright);
+        margin-top: 8px;
+    }
+
+    .selected-employees {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 32px;
+        padding: 8px;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+    }
+
+    .selected-employee-tag {
+        display: inline-flex;
+        align-items: center;
+        background-color: var(--md-sys-color-surface-container);
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+        gap: 4px;
+    }
+
+    .selected-employee-tag .material-icons {
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .employee-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .employee-item {
+        padding: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: background-color 0.2s;
+    }
+
+    .employee-item:hover {
+        background-color: var(--md-sys-color-surface-container);
+    }
+
+    .employee-item.selected {
+        background-color: var(--md-sys-color-surface-container);
+    }
+
+    .employee-item .material-icons {
+        color: var(--md-sys-color-outline);
+        font-size: 24px;
+    }
+
+    .employee-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .employee-name {
+        font-weight: 500;
+        color: var(--md-sys-color-surface);
+    }
+
+    .employee-dept {
+        font-size: 12px;
+        color: var(--md-sys-color-surface-variant);
+    }
+
 </style>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
@@ -210,9 +284,6 @@
         <div class="modal-container box surface-bright">
             <div class="modal-header box-title">
                 <h2>캘린더 추가</h2>
-                <button class="modal-close">
-                    <span class="material-icons">close</span>
-                </button>
             </div>
             <div class="modal-body box-content">
                 <form id="calendarWriteForm" action="/schedule/calendar/insert" method="post">
@@ -264,6 +335,57 @@
                                 <span class="color-circle" style="background-color: #ff5722"></span>
                             </label>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label>공유 사원</label>
+                        <div class="employee-selector">
+                            <div class="selected-employees">
+                                <!-- 선택된 사원들이 여기에 태그처럼 표시됩니다 -->
+                            </div>
+                            <div class="employee-list">
+                                <div class="employee-item" data-id="1">
+                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
+                                    </div>
+                                    <div class="employee-info">
+                                        <span class="employee-name">김영희</span>
+                                        <span class="employee-dept">인사팀</span>
+                                    </div>
+                                </div>
+                                <div class="employee-item" data-id="2">
+                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
+                                    </div>
+                                    <div class="employee-info">
+                                        <span class="employee-name">이철수</span>
+                                        <span class="employee-dept">개발팀</span>
+                                    </div>
+                                </div>
+                                <div class="employee-item" data-id="3">
+                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
+                                    </div>
+                                    <div class="employee-info">
+                                        <span class="employee-name">박지민</span>
+                                        <span class="employee-dept">디자인팀</span>
+                                    </div>
+                                </div>
+                                <div class="employee-item" data-id="4">
+                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
+                                    </div>
+                                    <div class="employee-info">
+                                        <span class="employee-name">최수진</span>
+                                        <span class="employee-dept">마케팅팀</span>
+                                    </div>
+                                </div>
+                                <div class="employee-item" data-id="5">
+                                    <div class="profile-img" style="background-image: url('/image/defaultImg.jpg');">
+                                    </div>
+                                    <div class="employee-info">
+                                        <span class="employee-name">정민수</span>
+                                        <span class="employee-dept">영업팀</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="selectedEmployees" id="selectedEmployees">
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="primary">저장</button>
@@ -415,5 +537,59 @@
                 $('.calendar-write-form').hide();
             });
         })
+    </script>
+    <script>
+        $(document).ready(function() {
+            let selectedEmployees = new Map();
+
+            // 사원 선택/해제
+            $('.employee-item').click(function() {
+                const $this = $(this);
+                const empId = $this.data('id');
+                const empName = $this.find('.employee-name').text();
+                const empDept = $this.find('.employee-dept').text();
+
+                if(selectedEmployees.has(empId)) {
+                    selectedEmployees.delete(empId);
+                    $this.removeClass('selected');
+                } else {
+                    selectedEmployees.set(empId, {
+                        id: empId,
+                        name: empName,
+                        department: empDept
+                    });
+                    $this.addClass('selected');
+                }
+
+                renderSelectedEmployees();
+            });
+
+            // 선택된 사원 태그 렌더링
+            function renderSelectedEmployees() {
+                const $selected = $('.selected-employees');
+                $selected.empty();
+
+                selectedEmployees.forEach((emp, id) => {
+                    $selected.append(
+                    $('<div class="selected-employee-tag">').attr('data-id', id)
+                        .append($('<span>').text(emp.name))
+                        .append($('<span class="material-icons remove-employee">').text('close'))
+                        .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(emp.id))
+                    );
+                });
+
+                // hidden input 업데이트
+                $('#selectedEmployees').val(Array.from(selectedEmployees.keys()));
+            }
+
+            // 선택된 사원 제거
+            $(document).on('click', '.remove-employee', function(e) {
+                e.stopPropagation();
+                const empId = $(this).closest('.selected-employee-tag').data('id');
+                selectedEmployees.delete(empId);
+                $('.employee-item[data-id="' +  empId + '"]').removeClass('selected');
+                renderSelectedEmployees();
+            });
+        });
     </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

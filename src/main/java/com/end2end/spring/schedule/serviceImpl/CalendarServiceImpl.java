@@ -2,9 +2,11 @@ package com.end2end.spring.schedule.serviceImpl;
 
 import com.end2end.spring.schedule.dao.CalendarDAO;
 import com.end2end.spring.schedule.dto.CalendarDTO;
+import com.end2end.spring.schedule.dto.CalendarInsertDTO;
 import com.end2end.spring.schedule.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,9 +30,14 @@ public class CalendarServiceImpl implements CalendarService {
         return calendarDAO.selectById(id);
     }
 
+    @Transactional
     @Override
-    public void insert(CalendarDTO dto) {
-        calendarDAO.insert(dto);
+    public void insert(CalendarInsertDTO dto) {
+        CalendarDTO calendarDTO = CalendarDTO.builder()
+                .title(dto.getTitle())
+                .color(dto.getColor())
+                .build();
+        calendarDAO.insert(calendarDTO);
     }
 
     @Override

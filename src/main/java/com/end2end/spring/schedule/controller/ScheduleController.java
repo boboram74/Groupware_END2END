@@ -3,6 +3,7 @@ package com.end2end.spring.schedule.controller;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.schedule.dto.BookDTO;
 import com.end2end.spring.schedule.dto.CalendarDTO;
+import com.end2end.spring.schedule.dto.CalendarInsertDTO;
 import com.end2end.spring.schedule.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,7 @@ public class ScheduleController {
     }
 
     @RequestMapping("/calendar/insert")
-    public String insert(CalendarDTO dto) {
+    public String insert(CalendarInsertDTO dto) {
         calendarService.insert(dto);
 
         return "redirect:/schedule/calendar/list";

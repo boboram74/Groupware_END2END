@@ -1,8 +1,6 @@
 package com.end2end.spring.messenger.dao;
 
-import com.end2end.spring.messenger.dto.ChatRoomListDTO;
-import com.end2end.spring.messenger.dto.MessageHistoryDTO;
-import com.end2end.spring.messenger.dto.MessengerEmployeeListDTO;
+import com.end2end.spring.messenger.dto.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -47,8 +45,11 @@ public class MessengerDAO {
         return mybatis.selectList("messenger.selectRoomListAll", employeeId);
     }
 
-    public List<MessageHistoryDTO> selectByRoomId(int roomId) {
-        return mybatis.selectList("messenger.selectByRoomId", roomId);
+    public List<MessageHistoryDTO> selectMessageByRoomId(int roomId, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("roomId", roomId);
+        param.put("employeeId", employeeId);
+        return mybatis.selectList("messenger.selectMessageByRoomId", param);
     }
 
     public int findByRoomId(String roomName) {
@@ -76,4 +77,44 @@ public class MessengerDAO {
         param.put("employeeId", employeeId);
         mybatis.update("messenger.messageRoomInvite", param);
     }
- }
+
+    public int findByRoomSeq() {
+        return mybatis.selectOne("messenger.findByRoomSeq");
+    }
+
+    public MessageUserDTO selectUserByEmployeeIdAndRoomId(String employeeId, int roomId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("employeeId", employeeId);
+        param.put("roomId", roomId);
+        return mybatis.selectOne("messenger.selectUserByEmployeeIdAndRoomId",param);
+    }
+
+    public int insertMessage(MessageDTO messageDTO) {
+        return mybatis.insert("messenger.insertMessage", messageDTO);
+    }
+
+    public List<MessageUserListDTO> selectRoomById(int roomId) {
+        return mybatis.selectList("messenger.selectRoomById", roomId);
+    }
+
+    public int selectByName(String roomName) {
+        return mybatis.selectOne("messenger.selectByName", roomName);
+    }
+
+    public List<MessageRoomDTO> findByRoomId2(int roomId) {
+        return mybatis.selectList("messenger.findByRoomId2", roomId);
+    }
+
+    public int insertUser(int roomId, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("employeeId", employeeId);
+        param.put("roomId", roomId);
+        return mybatis.insert("messenger.insertUser",param);
+    }
+    public void insertUsertoRoom(int roomId, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("roomId", roomId);
+        param.put("employeeId", employeeId);
+        mybatis.update("messenger.insertUsertoRoom",param);
+    }
+}

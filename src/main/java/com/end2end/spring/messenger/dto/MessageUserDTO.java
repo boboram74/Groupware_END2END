@@ -1,7 +1,6 @@
 package com.end2end.spring.messenger.dto;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 
@@ -9,13 +8,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MessageDTO {
-    private Integer id;
-    private Integer messagerRoomId;
-    private Integer messagerRoomuserId;
+public class MessageUserDTO {
+    private int id;
+    private int messagerRoomId;
     private String employeeId;
     private String name;
-    private String content;
-    private Timestamp regDate;
     private String profileImg;
+    private Timestamp regDate;
 }

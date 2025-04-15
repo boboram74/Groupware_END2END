@@ -31,6 +31,8 @@ public class MailController {
     private MailService mailService;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private AlarmService alarmService;
 
     @RequestMapping("/list")
     public String list(HttpSession session) {
@@ -192,5 +194,11 @@ public class MailController {
     @RequestMapping("/delete")
     public void deleteByEmail(String email) {
         // TODO: 해당 이메일을 삭제함
+    }
+
+    @ResponseBody
+    @RequestMapping("/alarm")
+    public void sendAlarm(String email) {
+        alarmService.sendMailAlarm("/mail/list", email);
     }
 }

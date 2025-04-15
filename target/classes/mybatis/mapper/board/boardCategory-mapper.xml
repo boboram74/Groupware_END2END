@@ -13,6 +13,7 @@
         INSERT INTO board_category (id, name, category, regDate)
         VALUES (board_category_id_seq.nextval, #{name},#{category},SYSDATE)
     </insert>
+
     <select id="selectAll" resultType="com.end2end.spring.board.dto.BoardCategoryDTO">
         select * from board_category
     </select>

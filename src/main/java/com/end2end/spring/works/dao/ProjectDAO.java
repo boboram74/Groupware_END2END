@@ -37,7 +37,7 @@ public class ProjectDAO {
     }
 
     public List<EmployeeDTO>  getMembersByProjectId(int projectId){
-        return mybatis.selectOne("project.getMembersByProjectId", projectId);
+        return mybatis.selectList("project.getMembersByProjectId", projectId);
     }
 public void update(ProjectInsertDTO dto) {
     mybatis.update("project.updateById", dto);

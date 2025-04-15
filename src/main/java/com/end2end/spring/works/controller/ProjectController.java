@@ -120,8 +120,9 @@ public class ProjectController {
     @ResponseBody
     @RequestMapping("/update/{id}")
     public Map<String, Object> updateForm(@PathVariable int id) {
+        System.out.println("업뎃컨트롤러도착");
         List<EmployeeDTO> selectedMembers = projectService.getMembersByProjectId(id);//선택되었던 멤버들
-
+System.out.println("선택된 멤버"+selectedMembers);
         Map<String, Object> result = new HashMap<>();
 
         ProjectDTO dto = projectService.selectById(id);//저장된 프젝 정보
@@ -165,5 +166,6 @@ public class ProjectController {
     public List<EmployeeDTO> selectByUser(@RequestParam String name) {
 
         return projectService.selectByUser(name);
+
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 public class ProjectUserDTO {
 
     private int id;
-    private List<String> employeeId;
+    private String employeeId;
     private int projectId;
 
 }

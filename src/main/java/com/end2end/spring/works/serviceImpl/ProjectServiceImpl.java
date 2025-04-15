@@ -62,10 +62,8 @@ public class ProjectServiceImpl implements ProjectService {
 //        projectUserDao.insert(projectUserDTO);
 //    }
         for (String employeeId : dto.getEmployeeId()) {
-            List<String> employeeIdList = new ArrayList<>();
-            employeeIdList.add(employeeId);  // 단일 employeeId를 List에 추가
             ProjectUserDTO projectUserDTO = ProjectUserDTO.builder()
-                    .employeeId(employeeIdList)
+                    .employeeId(employeeId)
                     .projectId(projectDTO.getId())
                     .build();
             projectUserDao.insert(projectUserDTO);
@@ -168,9 +166,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
 
         }
-
         //있는 멤버인지 확인후 없으면 추가
-
     }
 
     @Override

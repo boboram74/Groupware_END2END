@@ -599,13 +599,13 @@
 
                         <div id="updateMembers" class="mt-2">
                             <c:forEach var="member" items="${selectedMembers}">
-                            <div class="updateSelectedUser" val>
-                                <span>${member.name}</span>
-                                <button type="button" class="remove-user btn btn-sm btn-danger ms-2"
-                                        onclick="$(this).parent().remove()">삭제
-                                </button>
-                                <input type="hidden" name="employeeId" value="${member.id}">
-                            </div>
+                                <div class="updateSelectedUser" val>
+                                    <span>${member.name}</span>
+                                    <button type="button" class="remove-user btn btn-sm btn-danger ms-2"
+                                            onclick="$(this).parent().remove()">삭제
+                                    </button>
+                                    <input type="hidden" name="employeeId" value="${member.id}">
+                                </div>
                             </c:forEach>
                         </div>
                     </div>
@@ -622,8 +622,9 @@
     </div>
 </div>
 
+
 <%--수정 인원변경모달라인--%>
-<div class="modal fade" id="memberSearchModal" tabindex="-1">
+<div class="modal fade" id="updateMemberSearchModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -633,7 +634,7 @@
             <div class="modal-body">
                 <!-- 멤버이름 검색 -->
                 <div class="mb-3">
-                    <input type="text" class="form-control" id="UpdateMemberSearchInput" placeholder="멤버 이름 검색"
+                    <input type="text" class="form-control" id="updateMemberSearchInput" placeholder="멤버 이름 검색"
                            onkeyup="UpdateSearchMembers()">
                 </div>
                 <!-- 검색 결과 리스트 -->
@@ -644,13 +645,7 @@
                 <div>
                     <h6 class="mt-3">선택된 멤버</h6>
                     <div id="updateSelectedMembersList" class="d-flex flex-wrap">
-                        <c:forEach items="${selectedMembers}" var="member">
-                            <div class="selected-user" data-id="${member.id}">
-                                <span>${member.name}</span>
-                                <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
-                                <input type="hidden" name="employeeId[]" value="${member.id}">
-                            </div>
-                        </c:forEach>
+
                     </div>
                 </div>
             </div>
@@ -677,7 +672,7 @@
     </div>
 </div>
 
-<%--프로젝트 추가 라인--%>
+<%--프로젝트 멤버추가 라인--%>
 <div class="modal fade" id="memberSearchModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -732,27 +727,32 @@
     }
 
     function openUpdateModal(projectId) {
-
+        console.log("여기는 수정하기 전 값 가져오는곳")
         $.ajax({
             url: '/project/update/' + projectId,
             method: 'GET',
             success: function (data) {
                 const project = data.project;
                 const selectedMembers = data.selectedMembers;
-
+                console.log("타이틀" + project.name);
+                console.log("데이터" + data)
+                console.log("타이틀" + selectedMembers);
+                console.log("타이틀" + selectedMembers.departmentName);
                 $('#title').val(project.name);
                 $('input[name="deadLine"]').val(project.deadLine);
                 $('input[name="projectId"]').val(project.id);
 
                 if (selectedMembers.length > 0) {
                     selectedMembers.forEach(member => {
-
+                        console.log("이름:", member.name);
+                        console.log("부서:", member.departmentName);
                         $('#updateSelectedMembersList').append(`
-                        <div class="selected-user" data-id="${member.id}">
-                            <span>${member.name}</span>
+                        <div class="updateSelected-user" data-id="`+member.id+`">
+                         <span>`+member.name+`</span>
                             <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
                             <input type="hidden" name="employeeId[]" value="${member.id}">
                         </div>
+
                     `);
                     });
                 }
@@ -773,6 +773,7 @@
     function updateOpenMemberSearch() {
         $('#updateMemberSearchModal').modal('show');
 
+
     }
 
     function updateSuccess() {
@@ -783,34 +784,54 @@
         $('#memberSearchModal').modal('hide');
     }
 
+    function UpdateSearchMembers() {
+        console.log($('#updateMemberSearchInput').val());
+        $.ajax({
+            url: '/project/searchUser',
+            type: 'GET',
+            data: {
+                name: $('#updateMemberSearchInput').val()
+            },
+            success: function (data) {
+                console.log(data);
 
-    function updateSearchMembers() {
-        $('#memberSearchResults .user-item').click(function () {
-            var userId = $(this).data('id');
-            var userName = $(this).data('name');
-            <%--if ($('#selectedMembersList').find(`[data-id="${userId}"]`)){--%>
-            <%--    alert("이미 선택된 사용자입니다")--%>
-            <%--}--%>
-            // 이미 선택된 사용자인지 확인
-            if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
+                let memberList = '';
+                for (let i = 0; i < data.length; i++) {
 
-                console.log('추가한 새로운 멤버:', userId, userName);
+                    memberList += '<div class="user-item" data-id="' + data[i].id + '" data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].jobName + ' ' + data[i].departmentName + '</div>'
 
-                // selectedMembersList에 사용자 추가
-                $('#selectedMembersList').append(
-                    $('<div>').addClass('selected-user').attr('data-id', userId)
-                        .append($('<span>').html(userName))
-                        .append($('<button>').addClass("remove-user").html('삭제').click(function () {
-                                $(this).parent().remove();
-                            })
-                        )
-                        .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
-                );
+                }
+
+                $('#updateMemberSearchResults').html(memberList);
+                // 사용자 선택 시 selectedMembersList에 추가하는 이벤트 처리
+                $('#updateMemberSearchResults .user-item').click(function () {
+                    var userId = $(this).data('id');
+                    var userName = $(this).data('name');
+                    <%--if ($('#selectedMembersList').find(`[data-id="${userId}"]`)){--%>
+                    <%--    alert("이미 선택된 사용자입니다")--%>
+                    <%--}--%>
+                    // 이미 선택된 사용자인지 확인
+                    if ($('#updateSelectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
+
+                        console.log('추가한 새로운 멤버:', userId, userName);
+
+                        // selectedMembersList에 사용자 추가
+                        $('#updateSelectedMembersList').append(
+                            $('<div>').addClass('selected-user').attr('data-id', userId)
+                                .append($('<span>').html(userName))
+                                .append($('<button>').addClass("remove-user").html('삭제').click(function () {
+                                        $(this).parent().remove();
+                                    })
+                                )
+                                .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
+                        );
+                    }
+                });
+
             }
-        });
-
-
+        })
     }
+
 
     function getUpdateSelectedMembers() {
         let selectedMembers = [];
@@ -842,7 +863,7 @@
                 name: $('#memberSearchInput').val()
             },
             success: function (data) {
-                console.log(data);
+                console.log("찍히나?" + data);
 
                 let memberList = '';
                 for (let i = 0; i < data.length; i++) {
@@ -872,7 +893,7 @@
                                         $(this).parent().remove();
                                     })
                                 )
-                                .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId[]').val(userId))
+                                .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
                         );
                     }
                 });
@@ -919,7 +940,6 @@
 
     function updateConfirmSelectedMembers() {
         console.log('updateConfirmSelectedMembers');
-        $('#updateform').submit();
 
         // 선택한 멤버 수집 함수
         function getSelectedMembers() {

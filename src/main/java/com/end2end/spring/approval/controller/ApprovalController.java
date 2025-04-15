@@ -2,6 +2,7 @@ package com.end2end.spring.approval.controller;
 
 import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.approval.service.ApprovalFormService;
+import com.end2end.spring.commute.dto.VacationDTO;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
@@ -122,17 +123,16 @@ public class ApprovalController {
                 model.addAttribute("error", "존재하지 않는 문서입니다.");
                 return "error/404";
             }
-            String formName = (String) approval.get("FORMNAME"); // 소문자 주의
-            System.out.println("approval map: " + approval);
-            System.out.println(formName);
+            String formName = (String) approval.get("FORMNAME");
             ApprovalFormDTO approvalFormDTO = approvalFormService.selectByFormName(formName);
-            System.out.println(approvalFormDTO);
-
             List<ApproverDTO> nextId = approvalService.nextId(id);
-
-
             List<Map<String, Object>> approvers = approvalService.selectApproversList(id);
 
+            if ("휴가계".equals(approval.get("FORMNAME"))) {
+                VacationDTO vacationDTO = vacationService.getVacationByApprovalId(id);
+                System.out.println(vacationDTO);
+                model.addAttribute("vacationDTO", vacationDTO);
+            }
 
             model.addAttribute("approval", approval);
             model.addAttribute("nextId", nextId);

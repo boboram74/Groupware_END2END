@@ -29,6 +29,25 @@
     .modalActions button {
         margin-left: 10px;
     }
+    .vacationBox {
+        background-color: #f9f9f9;
+        padding: 15px;
+        margin: 20px 0;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+    .vacationTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .vacationTable th, .vacationTable td {
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+    }
+    .vacationTable th {
+        background-color: #f0f0f0;
+        text-align: left;
+    }
 </style>
 <div class="container">
 
@@ -103,7 +122,37 @@
             </div>
         </div>
     </div>
-
+    <c:if test="${approvalFormDTO.name eq '휴가계'}">
+        <div class="vacationBox">
+            <h3>휴가 정보</h3>
+            <table class="vacationTable">
+                <tr>
+                    <th>휴가 유형</th>
+                    <td>${vacationDTO.type}</td>
+                </tr>
+                <tr>
+                    <th>시작일</th>
+                    <td>${vacationDTO.startDate}</td>
+                </tr>
+                <tr>
+                    <th>종료일</th>
+                    <td>${vacationDTO.endDate}</td>
+                </tr>
+                <tr>
+                    <th>총 휴가 일수</th>
+                    <td>${vacationDTO.vacationDate}일</td>
+                </tr>
+                <tr>
+                    <th>사유</th>
+                    <td>${vacationDTO.reason}</td>
+                </tr>
+                <tr>
+                    <th>상태</th>
+                    <td>${vacationDTO.state}</td>
+                </tr>
+            </table>
+        </div>
+    </c:if>
     <div class="body">
         <div class="titleBox">
             <input type="text" id="title" name="title" value="${approval.TITLE}" readonly>

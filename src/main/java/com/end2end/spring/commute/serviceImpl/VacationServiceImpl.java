@@ -162,4 +162,9 @@ public class VacationServiceImpl implements VacationService {
 
         return thisMonthUsedVacationDates;
     }
+
+    @Override
+    public VacationDTO getVacationByApprovalId(String approvalId) {
+        return vacationDAO.selectByApprovalId(approvalId);
+    }
 }

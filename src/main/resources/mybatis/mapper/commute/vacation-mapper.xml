@@ -171,4 +171,14 @@
         AND
             TRUNC(SYSDATE) != TRUNC(HIREDDATE)
     </select>
+
+    <select id="selectByApprovalId" resultType="com.end2end.spring.commute.dto.VacationDTO">
+        SELECT *
+        FROM
+        VACATION v
+        JOIN
+        APPROVAL a ON v.approvalId = a.id
+        WHERE
+        v.approvalId = #{approvalId}
+    </select>
 </mapper>

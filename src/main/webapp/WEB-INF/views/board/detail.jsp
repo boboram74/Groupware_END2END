@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <style>
     table {
         width: 100%;
@@ -100,7 +101,7 @@
         height: 100%;
     }
 
-    .addInput textarea {
+    .addInput input {
         width: 100%;
         height: 100%;
     }
@@ -207,7 +208,7 @@
         <td class="date">${board.viewCount}</td>
     </tr>
     <tr>
-        <td class="label">이름</td>
+        <td class="label">작성자</td>
         <td colspan="3">${board.employeeId}</td>
     </tr>
     <tr>
@@ -237,49 +238,112 @@
     </form>
 </div>
 <hr>
+
 <div class="replyContainer">
     <div class="addReply">
         <div class="addFile">
             <input type="file" placeholder="파일">
         </div>
         <div class="addInput">
-            <textarea>댓글 입력</textarea>
+            <input type="text" id="content" placeholder="댓글 입력"></input>
         </div>
         <div class="addBtn">
-            <button>등록</button>
+            <button id="addButton" onclick="addContent()">등록</button>
         </div>
     </div>
 </div>
+
 <hr>
-<h3>댓글 (viewCount)</h3>
-<div class="replyList">
-    <div class="profile"></div>
-    <div class="replyWrite">
-        <div class="writerSysdate">
-            <div class="realContents">
-                <input type="text" placeholder="사용자아이디(기능)">
-                <input type="text" placeholder="등록날짜(기능)">
-            </div>
-        </div>
-        <div class="inputReply">
-            <input type="text" value="gg">
-        </div>
-    </div>
-    <div class="replyReport">
-        <div class="reReply">
-            <button>댓글</button>
-        </div>
-        <div class="report">
-            <button>신고</button>
-        </div>
-    </div>
+
+<h3>댓글</h3>
+
+<div class="replyListContainer">
+
 </div>
+
+
 <script>
     document.querySelector(".deleteBtn").addEventListener("click", function (e) {
         if (!confirm("정말 삭제하시겠습니까?")) {
             e.preventDefault();
         }
     })
+
+    const addContent = () => {
+        const content = document.getElementById("content").value;
+        const board = '${board.id}';
+        const employee = '${employee.id}'
+        $.ajax({
+            type: "post",
+            url: "/reply/insert",
+            data: {
+                content: content,
+                boardId: board,
+                employeeId:employee
+            },
+            dataType: "JSON",
+            success: function (response) {
+                console.log("작성성공");
+                document.getElementById("content").value = ""; // 입력창 초기화
+                loadReplies(); //
+            },
+            error: function () {
+                console.log("실패");
+            }
+        });
+    }
+
+    const loadReplies = () => {
+        const boardId = '${board.id}';
+        $.ajax({
+            type: "get",
+            url: "/reply/list",
+            data: {boardId: boardId},
+            dataType: "json",
+            success: function (replyList) {
+                $(".replyListContainer").empty();
+
+                replyList.forEach(reply => {
+                   const $replyDiv = $('<div class="replyList">')
+                        .append($('<div class="profile">'))
+                        .append(
+                            $('<div class="replyWrite">')
+                                .append(
+                                    $('<div class="writerSysdate">')
+                                        .append(
+                                            $('<div class="realContents">')
+                                                .append($('<input type="text" readonly>').val(reply.employeeId))
+                                                .append($('<input type="text" readonly>').val(reply.regDate))
+                                        )
+                                )
+                                .append(
+                                    $('<div class="inputReply">')
+                                        .append($('<input type="text" readonly>').val(reply.content))
+                                )
+                        )
+                        .append(
+                            $('<div class="replyReport">')
+                                .append(
+                                    $('<div class="reReply">')
+                                        .append($('<button>').text('댓글').attr('data-id', reply.id))
+                                )
+                                .append(
+                                    $('<div class="report">')
+                                        .append($('<button>').text('신고').attr('data-id', reply.id))
+                                )
+                        );
+                    $('.replyListContainer').append($replyDiv);
+                });
+            },
+            error: function () {
+                console.log("실패");
+            }
+        });
+    };
+    // 페이지 로드 시 댓글 목록 불러오기
+    $(document).ready(function () {
+        loadReplies();
+    });
 </script>
 
 

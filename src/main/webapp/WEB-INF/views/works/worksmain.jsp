@@ -600,7 +600,7 @@
                         <div id="updateMembers" name=class="mt-2">
 
                         </div>
-                        <input type="hidden" name="employeeId" id="updateSelectedMembers">
+
                     </div>
 
                 </div>
@@ -720,7 +720,7 @@
     }
 
     function openUpdateModal(projectId) {
-        console.log("여기는 수정하기 전 값 가져오는곳")
+
         $.ajax({
             url: '/project/update/' + projectId,
             method: 'GET',
@@ -738,12 +738,13 @@
                 if (selectedMembers.length > 0) {
                     selectedMembers.forEach(member => {
                         console.log("이름:", member.name);
+                        console.log("이름:", member.id);
                         console.log("부서:", member.departmentName);
                         $('#updateSelectedMembersList').append(`
                         <div class="updateSelected-user" data-id="`+member.id+`">
                          <span>`+member.name+`</span>
                             <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
-                            <input type="hidden" name="employeeId[]" value="${member.id}">
+                            <input type="hidden" name="employeeId" value="`+member.id+`">
                         </div>
 
                     `);
@@ -856,7 +857,7 @@
                 name: $('#memberSearchInput').val()
             },
             success: function (data) {
-                console.log("찍히나?" + data);
+
 
                 let memberList = '';
                 for (let i = 0; i < data.length; i++) {

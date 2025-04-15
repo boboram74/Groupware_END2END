@@ -33,9 +33,6 @@ public class ProjectController {
 
         List<ProjectSelectDTO> projects = projectService.selectAllProject();
 
-        System.out.println("도착체크" + projects);
-        System.out.println(projects.get(0));
-
         model.addAttribute("projects", projects);
         model.addAttribute("employee", EmployeeDTO);
 
@@ -65,10 +62,7 @@ public class ProjectController {
 //        }
     @RequestMapping("/insert")
     public String insert(@ModelAttribute ProjectInsertDTO dto) {
-        System.out.println(dto);
-        System.out.println("프로젝트컨트롤러도착");
-
-        projectService.insert(dto);
+            projectService.insert(dto);
 
         // TODO: 프로젝트 생성
         return "redirect:/project/main";
@@ -112,7 +106,6 @@ public class ProjectController {
     @RequestMapping("/latestProjectId")
     public int findLatestProject(Model model) {
         ProjectDTO latestProject = projectService.findLatestProject();
-        System.out.println("최근프로젝트번호:" + latestProject);
         model.addAttribute("latestProjectId", latestProject != null ? latestProject.getId() : -1);
         return latestProject.getId();
     }
@@ -120,16 +113,13 @@ public class ProjectController {
     @ResponseBody
     @RequestMapping("/update/{id}")
     public Map<String, Object> updateForm(@PathVariable int id) {
-        System.out.println("업뎃컨트롤러도착");
         List<EmployeeDTO> selectedMembers = projectService.getMembersByProjectId(id);//선택되었던 멤버들
-System.out.println("선택된 멤버"+selectedMembers);
         Map<String, Object> result = new HashMap<>();
 
         ProjectDTO dto = projectService.selectById(id);//저장된 프젝 정보
         result.put("project", dto);
         result.put("selectedMembers", selectedMembers);
 
-        System.out.println("업데이트컨트롤러도착:" + selectedMembers.size());
 
         return result;
     }
@@ -142,7 +132,7 @@ System.out.println("선택된 멤버"+selectedMembers);
         projectService.updateProjectUser(projectId, employeeId);
 
 
-        return "redirect:/project/detail/" + dto.getProjectId();
+        return "redirect:/project/main";
     }
 
     // Delete
@@ -157,7 +147,7 @@ System.out.println("선택된 멤버"+selectedMembers);
 
         List<ProjectDTO> result = projectService.selectByName(name);
         model.addAttribute("projects", result);
-        //jsp에서 검색해서 나오는 부분에 projects로 c:foreach로 풀어줘야됨
+
         return "works/worksmain";
     }
 

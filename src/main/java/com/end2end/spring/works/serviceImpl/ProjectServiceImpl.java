@@ -151,9 +151,7 @@ public class ProjectServiceImpl implements ProjectService {
             if(!isDuplicate){
                 projectUserDao.deleteMemberById(projectId,member.getId());
             }
-
         }
-
         for (String employee : employeeId) {
             boolean isDuplicat = false;
             for (EmployeeDTO member : members) {
@@ -161,6 +159,7 @@ public class ProjectServiceImpl implements ProjectService {
                     isDuplicat = true;
                 break;
             }
+
             if(!isDuplicat){
                 projectUserDao.insertProjectMember(projectId,employee);
             }

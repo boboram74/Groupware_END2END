@@ -300,6 +300,53 @@
 		left: 0;
 		z-index: 3;
 	}
+	#chat-user-title {
+		cursor: pointer;
+	}
+	.roomEmployeeList {
+		display: none;
+		/*position: absolute;*/
+		/*z-index: 1001;*/
+		/*right: 2%;*/
+		/*bottom: 32%;*/
+		/*width: 300px;*/
+		/*height: 300px;*/
+		/*overflow: auto;*/
+		/*border: 1px solid #2c3e50;*/
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		width: 100%;
+		max-width: 360px;
+		height: 55vh;
+		background-color: white;
+		border-radius: 12px;
+		box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+		z-index: 999;
+		overflow: hidden;
+	}
+	.roomEmployeeList-content {
+		/*background-color: #fefefe;*/
+		/*margin: 15% auto;*/
+		/*padding: 20px;*/
+		/*width: 80%;*/
+		flex: 1;         /* 상위에서 display: flex;인 경우 컨테이너 크기 활용 */
+		padding: 20px;   /* 내부 여백 */
+		overflow-y: auto; /* 참여자 목록이 길어질 때 스크롤 */
+		background-color: #fefefe;
+	}
+	.roomEmployeeList.active {
+		display: flex;
+		flex-direction: column;
+	}
+	#participantList {
+		background-color: #2c3e50;
+		padding: 10px;
+		border-radius: 8px;
+		color: #fff;
+		max-height: calc(70vh - 80px);
+		overflow-y: auto;
+	}
 </style>
 <button id="chatButton" class="chat-button surface-bright">
 	<span class="material-icons">chat</span>
@@ -327,6 +374,13 @@
 			</div>
 		</div>
 
+		<div class="roomEmployeeList">
+			<div class="roomEmployeeList-content">
+				<p style="text-align: center">현재 채팅방 참여자 목록</p>
+				<div id="participantList"></div>
+			</div>
+		</div>
+
 		<!-- 오른쪽 네비게이션 영역 -->
 		<div class="chat-nav">
 			<div class="nav-icon active" data-view="employees">
@@ -350,7 +404,7 @@
 			<!-- 채팅방 목록이 여기에 생성됨 -->
 		</div>
 
-		<!-- 채팅방 영역 (처음에는 숨겨져 있음) -->
+		<!-- 채팅방 영역  -->
 		<div class="chat-room" style="display: none;">
 			<div class="chat-header">
 				<button class="back-button">
@@ -380,6 +434,8 @@
 		let employees = [];
 		let chatRooms = [];
 		let currentRoomId = 0;
+		let roomEmployeeList = [];
+		let invitedIds = [];
 
 		refreshChatRoomList();
 
@@ -395,6 +451,7 @@
 				addNewChatRoomItem(msg);
 				return;
 			} else if(msg.type === "history") {
+				roomEmployeeList = msg.employees;
 				if (msg.roomId) {
 					currentRoomId = msg.roomId;
 				}
@@ -410,6 +467,7 @@
 			} else if(msg.type === "NEW_INVITE") {
 				let chat = $("<div>").html(msg.message);
 				$(".chat-messages").append(chat);
+				roomEmployeeList = msg.employees;
 				return;
 			}
 			let chat = $("<div>")
@@ -446,6 +504,27 @@
 				setTimeout(renderRoomList, 30000);
 			});
 		}
+
+		//대화방 목록
+		$('#chat-user-title').on('click', function() {
+			const myId = $('#sender-employee-id').val();
+			$('#participantList').empty();
+			roomEmployeeList.forEach(employeeId => {
+				if(String(employeeId) !== String(myId)) {
+					const employee = employees.find(emp => String(emp.id) === String(employeeId));
+					if (employee) {
+						$('#participantList').append(
+								$('<div>').addClass('participant-item').text(employee.name)
+						);
+					} else {
+						$('#participantList').append(
+								$('<div>').addClass('participant-item').text(employeeId)
+						);
+					}
+				}
+			});
+			$('.roomEmployeeList').toggleClass('active');
+		});
 
 		const chatButton = $('#chatButton');
 		const chatModal = $('#chatModal');
@@ -547,7 +626,6 @@
 			const info = $('<div>').addClass('employee-info');
 			const name = $('<div>').addClass('employee-name').html(employee.name);
 			const position = $('<div>').addClass('employee-position').text(employee.position);
-
 			info.append(name, position);
 			div.append(avatar, info);
 			return div;
@@ -556,9 +634,6 @@
 		// 사원 목록 렌더링
 		function renderEmployeeList(data) {
 			const listData = data || employees;
-			// $('.invite-sidebar .employee-list').empty();
-			// $('.chat-content .employee-list').empty();
-
 			listData.forEach((employee, index) => {
 				const employeeItem = makeChatEmployeeList(employee, index);
 				$('.invite-sidebar .employee-list').append(employeeItem.clone(true).addClass('invite-user'));
@@ -574,7 +649,6 @@
 					emp.name.toLowerCase().includes(searchTerm) ||
 					emp.position.toLowerCase().includes(searchTerm)
 			);
-			//초대창이 보이면 초대쪽 사원 렌더링 아니면 사원목록 기본 렌더링
 			if ($('.invite-sidebar').is(':visible')) {
 				renderInviteList(filteredEmployees);
 			} else {
@@ -584,8 +658,12 @@
 
 		function renderInviteList(data) {
 			const listData = data || employees;
+			const filteredData = listData.filter(employee => {
+				return invitedIds.indexOf(employee.id) === -1
+						&& roomEmployeeList.indexOf(employee.id) === -1;
+			});
 			$('.invite-sidebar .employee-list, .chat-content .employee-list').empty();
-			listData.forEach((employee, index) => {
+			filteredData.forEach((employee, index) => {
 				const employeeItem = makeChatEmployeeList(employee, index)
 						.removeClass("employee-item")
 						.addClass("invite-target");
@@ -613,21 +691,42 @@
 				alert("유효한 대화방 정보가 없습니다. 초대 전, 채팅방을 먼저 확인해주세요.");
 				return;
 			}
-            let currentTitle = $('#chat-user-title').text();
-            if (!currentTitle.includes(inviteeName)) {
-                if (currentTitle.trim() === '') {
-                    currentTitle = inviteeName;
-                } else {
-                    currentTitle += ', ' + inviteeName;
-                }
-                const names = currentTitle.split(', ');
-                if (names.length > 3) {
-                    const firstTwo = names.slice(0, 2);
-                    const remainingCount = names.length - 2;
-                    currentTitle = firstTwo.join(', ') + ' 외 ' + remainingCount + '명';
-                }
-                $('#chat-user-title').text(currentTitle);
-            }
+			let currentTitle = $('#chat-user-title').text();
+			let totalCount = 0;
+			let names = [];
+			if (currentTitle.includes(' 외 ') && currentTitle.includes(',')) {
+				const parts = currentTitle.split(' 외 ');
+				names = parts[0].split(', ').map(name => name.trim());
+				const countText = parts[1].replace('명', '').trim();
+				const additionalCount = parseInt(countText) || 0;
+				totalCount = names.length + additionalCount;
+			}
+			else if (currentTitle.includes(',')) {
+				names = currentTitle.split(', ').map(name => name.trim());
+				totalCount = names.length;
+			}
+			else if (currentTitle.trim() !== '') {
+				names = [currentTitle.trim()];
+				totalCount = 1;
+			}
+			if (!names.includes(inviteeName)) {
+				totalCount += 1;
+				if (names.length < 2) {
+					names.push(inviteeName);
+				}
+				if (totalCount <= 3) {
+					if (names.length < totalCount) {
+						names = [...names, /* 조회한 추가 이름 */];
+					}
+					currentTitle = names.slice(0, totalCount).join(', ');
+				} else {
+					const displayNames = names.length >= 2 ? names.slice(0, 2) : [...names, /* 조회한 추가 이름 */].slice(0, 2);
+					const remainingCount = totalCount - 2;
+					currentTitle = displayNames.join(', ') + ' 외 ' + remainingCount + '명';
+				}
+
+				$('#chat-user-title').text(currentTitle);
+			}
 			let payload = {
 				type: "invite",
 				inviteeId: inviteeId,
@@ -658,15 +757,6 @@
 			});
 		}
 
-		// $(document).on('click', '.employee-item[data-id]', function() {
-		// 		// 새 채팅방 생성 요청
-		// 		const payload = {
-		// 			type: "newRoom",
-		// 			employeeId: employeeId
-		// 		};
-		// 		ws.send(JSON.stringify(payload));
-		// });
-
 		//채팅방 생성
 		function showChatRoom(employeeId, employeeName, roomId) {
 			$(".chat-messages").empty();
@@ -680,7 +770,6 @@
 					$(this).addClass('active');
 				}
 			});
-			console.log(employeeName);
 			$('#chat-user-title').text(employeeName);
 			$('#selected-employee-id').val(employeeId);
 			$('.chat-content, .chat-nav, .room-list').hide();
@@ -697,7 +786,6 @@
 				};
 				ws.send(JSON.stringify(payload));
 			} else {
-				// 기존 채팅방 입장 요청
 				const payload = {
 					type: "roomEnter",
 					roomId: roomId,
@@ -707,19 +795,6 @@
 				currentRoomId = roomId;
 			}
 		}
-
-		// function makeChatRoomListItem(room) {
-		// 	const roomId = room.roomId || room.messageRoomId;
-		// 	const div = $('<div>').addClass('employee-item').attr('data-room-id', roomId);
-		// 	const avatar = $('<div>').addClass('employee-avatar').css('background-color', '#bbb');
-		// 	const info = $('<div>').addClass('employee-info');
-		// 	const name = $('<div>').addClass('employee-name').text(room.roomName);
-		// 	const lastMsg = $('<div>').addClass('employee-position').text(room.lastMessage || "No messages yet");
-		//
-		// 	info.append(name, lastMsg);
-		// 	div.append(avatar, info);
-		// 	return div;
-		// }
 		function makeChatRoomListItem(room) {
 			const roomId = room.roomId || room.messageRoomId;
 			let displayName = room.roomName;
@@ -777,6 +852,7 @@
 		$('.back-button').on('click', function() {
 			const view = $('.nav-icon.active').data('view');
 			$('.invite-chat').hide();
+			$('.roomEmployeeList').removeClass('active');
 			if(view === 'employees') {
 				$('.chat-room').hide();
 				$('.chat-content, .chat-nav').show();

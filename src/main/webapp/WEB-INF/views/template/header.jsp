@@ -46,7 +46,7 @@
         <i class="material-icons">work_history</i>
         <span>근태관리</span>
       </div>
-      <div class="menu-item" onClick="location.href='/schedule/calendar/list'">
+      <div class="menu-item" onClick="location.href='/calendar/list'">
         <i class="material-icons">event_available</i>
         <span>일정/예약</span>
       </div>
@@ -164,7 +164,7 @@
             </a>
           </li>
           <li>
-            <a href="/schedule/calendar/list">
+            <a href="/calendar/list">
               <i class="material-icons">event_available</i>
               <span>일정/예약</span>
             </a>

@@ -86,7 +86,7 @@ public class AlarmService {
 
         for (CalendarUserDTO calendarUserDTO : calendarUserList) {
             String employeeId = calendarUserDTO.getEmployeeId();
-            send(AlarmDTO.of(AlarmType.CALENDAR_CREATE, employeeId, "/schedule/calendar/list"), employeeId);
+            send(AlarmDTO.of(AlarmType.CALENDAR_CREATE, employeeId, "/calendar/list"), employeeId);
         }
     }
 

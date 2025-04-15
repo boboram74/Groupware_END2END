@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,7 +72,7 @@ public class HRController {
 
     @RequestMapping("/idCheck")
     @ResponseBody
-    public boolean idCheck(@RequestParam("loginId") String loginId) {
+    public boolean idCheck(String loginId) {
         // TODO: 아이디 중복 검사
         return employeeService.idVali(loginId);
     }

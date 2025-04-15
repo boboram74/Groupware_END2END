@@ -172,4 +172,10 @@
             EXTRACT(MONTH FROM BIRTHDAY) = TO_CHAR(SYSDATE, 'MM')
         ORDER BY TO_CHAR(birthday, 'DD')
     </select>
+
+    <update id="changePw">
+        UPDATE EMPLOYEE_DETAIL
+        SET password = #{newPw}
+        WHERE id = #{id}
+    </update>
 </mapper>

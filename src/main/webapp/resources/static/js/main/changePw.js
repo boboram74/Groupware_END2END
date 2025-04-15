@@ -1,12 +1,9 @@
 var isCurrentPwVali = false;
-var passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 
 $(document).ready(function() {
 
     $("#currentPw").on("focusout", function(){
-        console.log($(this).val().trim())
         var currentPw = $(this).val().trim();
-        console.log("현재 입력값:", currentPw);
 
         if(currentPw === ""){
             $("#resultPw").html("");
@@ -22,7 +19,6 @@ $(document).ready(function() {
             data: JSON.stringify({ currentPw: currentPw })
         }).done(function(resp) {
             resp = JSON.parse(resp);
-            console.log("AJAX 응답:", resp);
             if(!resp) {
                 $("#resultPw").css({
                     "color": "red",
@@ -37,6 +33,7 @@ $(document).ready(function() {
     });
     $("#newPw").on("keyup", function(){
         var newPw = $(this).val().trim();
+        var passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 
         if(newPw === "") {
             $("#resultNewPw").html("");
@@ -99,19 +96,7 @@ $(document).ready(function() {
             e.preventDefault();
             return false;
         }
-        // 2. 새 패스워드 형식 체크
-        if(!passwordPattern.test(newPw)){
-            alert("새 패스워드는 8자 이상이며, 영문과 숫자를 포함해야 합니다.");
-            $("#newPw").focus();
-            e.preventDefault();
-            return false;
-        }
-        if(newPw !== confirmPw){
-            alert("새 패스워드와 확인 패스워드가 일치하지 않습니다.");
-            $("#newPw, #confirmPw").focus();
-            e.preventDefault();
-            return false;
-        }
+
 });
 });
 

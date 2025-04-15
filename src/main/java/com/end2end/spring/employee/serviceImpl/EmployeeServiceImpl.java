@@ -47,16 +47,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDTO  login(LoginDTO dto) {
+    public EmployeeDTO login(LoginDTO dto) {
         String password = SecurityUtil.hashPassword(dto.getPassword());
         dto.setPassword(password);
         System.out.println(password);
         return employeeDAO.login(dto);
-    }
-
-    @Override
-    public void logout() {
-        // TODO: 로그아웃
     }
 
     @Transactional
@@ -148,9 +143,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .contact(dto.getContact())
                 .profileImg(dto.getProfileImg())
                 .build();
-        // 사원 기본 정보 업데이트
         employeeDAO.update(employeeDTO);
-        // 사원 상세 정보 업데이트
         employeeDAO.updateDetail(dto);
     }
 
@@ -192,5 +185,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean pwVali(String currentPw) {return employeeDAO.pwVali(currentPw);}
+
+    @Override
+    public void changePw(String newPw,String id) {employeeDAO.changePw(newPw,id);}
 
 }

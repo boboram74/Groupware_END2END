@@ -96,5 +96,12 @@ public class EmployeeDAO {
         mybatis.update("employee.updateDetail", dto);
     }
 
+    public void changePw(String newPw,String id) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("newPw", newPw);
+        param.put("id", id);
+        mybatis.update("employee.changePw", param);
+    }
+
 
 }

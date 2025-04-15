@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RequestMapping("/employee")
 @Controller
@@ -79,16 +78,21 @@ public class EmployeeController {
     @PostMapping("/pwVali")
     @ResponseBody
     public boolean pwVali(@RequestBody String currentPw) {
-        Map<String, Object> parsedCurrentPw = new Gson().fromJson(currentPw, Map.class);
         // TODO: 기존 패스워드 확인
+        Map<String, Object> parsedCurrentPw = new Gson().fromJson(currentPw, Map.class);
         return employeeService.pwVali(SecurityUtil.hashPassword((String) parsedCurrentPw.get("currentPw")));
     }
 
     @RequestMapping("/changePw")
-    public String changePw(String newPw) {
+    public String changePw(String newPw, HttpSession session) {
         // TODO: 패스워드 변경
-        //employeeService.changePw(SecurityUtil.hashPassword(newPw));
-        return "/employee/changePw";
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        String id = employee.getId();
+
+        employeeService.changePw(SecurityUtil.hashPassword(newPw),id);
+        session.invalidate();
+
+        return "redirect:/";
     }
 
     @RequestMapping("/{id}")

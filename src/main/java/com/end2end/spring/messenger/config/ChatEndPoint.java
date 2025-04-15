@@ -1,7 +1,7 @@
 package com.end2end.spring.messenger.config;
 
 import com.end2end.spring.employee.dto.EmployeeDTO;
-import com.end2end.spring.messenger.dto.MessageHistoryDTO;
+import com.end2end.spring.messenger.dto.*;
 import com.end2end.spring.messenger.service.MessengerService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,179 +18,166 @@ public class ChatEndPoint {
 
     private MessengerService messengerService = SpringProvider.Spring.getBean(MessengerService.class);
 
-    //동시성 처리를 위한 클라이언트 세션 저장소
-    private static final Set<Session> clients = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    // 사용자 ID로 세션 매핑 (동시성 처리)
     private static final Map<String, Session> clientSessions = new ConcurrentHashMap<>();
 
     private HttpSession hSession = null;
-    EmployeeDTO dto = null;
+    private EmployeeDTO dto = null;
     private final Gson gson = new Gson();
 
     @OnOpen
     public void onConnect(Session session, EndpointConfig config) {
         this.hSession = (HttpSession) config.getUserProperties().get("hSession");
         dto = (EmployeeDTO) hSession.getAttribute("employee");
-        if(dto != null) {
+        if (dto != null) {
+//            System.out.println("유저 추가됨 : " + dto.getName() + " session ID : " + session.getId());
             clientSessions.put(dto.getId(), session); // 사용자 ID로 세션 매핑
         }
-        clients.add(session);
-        // 1. end2end 톡방(6), 2. 3명 톡방(3), 3. 보랑(2)
-        // 2. 어디 톡방에 보내는 메세지 표시
-        // 3. 현재 채팅목록에 있는 채팅창인지 아닌지 아닐경우 채팅방 새로 생성(message_room)
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) {
+    public void onMessage(String message, Session session) throws Exception {
         JsonObject parsedMessage = gson.fromJson(message, JsonObject.class);
-        System.out.println(parsedMessage);
+//        System.out.println(parsedMessage);
         String type = parsedMessage.has("type") ? parsedMessage.get("type").getAsString() : "";
         int roomId = 0;
         if (parsedMessage.has("roomId") && !parsedMessage.get("roomId").getAsString().trim().isEmpty()) {
             roomId = Integer.parseInt(parsedMessage.get("roomId").getAsString());
         }
-        if ("roomEnter".equals(type)) {
-            System.out.println(dto.getName() + "님이 " + roomId + " 채팅방에 입장했습니다.");
-            List<MessageHistoryDTO> result = messengerService.selectByRoomId(roomId);
-            for (MessageHistoryDTO msg : result) {
-                System.out.println(msg.getName() + ":" + msg.getContent());
-                Map<String, String> data = new HashMap<>();
-                data.put("type", "history");
-                data.put("id", String.valueOf(msg.getId()));
-                data.put("employeeId", msg.getEmployeeId());
-                data.put("sender", msg.getName());
-                data.put("message", msg.getContent());
-                data.put("profileImg", msg.getProfileImg());
-                data.put("timestamp", String.valueOf(msg.getRegDate()));
-                sendMessage(session, data);
-            }
-            return;
-        } else if("newRoom".equals(type)) {
-            String youEmployeeId = parsedMessage.get("employeeId").getAsString();
-//            String meEmployeeId = dto.getId();
-//            List<String> idList = new ArrayList<>();
-//            idList.add(youEmployeeId);
-//            idList.add(meEmployeeId);
-//            Collections.sort(idList);
-//            String findRoom = String.join("|", idList);
-            String userId1 = dto.getId();
-            String userId2 = youEmployeeId;
-            String roomName;
-            if(userId1.compareTo(userId2) < 0) {
-                roomName = userId1 + "|" + userId2;
-            } else {
-                roomName = userId2 + "|" + userId1;
-            }
-            roomId = messengerService.selectRoomByName(roomName);
-            if (roomId > 0) {
-                List<MessageHistoryDTO> result = messengerService.selectByRoomId(roomId);
-                for (MessageHistoryDTO msg : result) {
-                    System.out.println(msg.getName() + ":" + msg.getContent());
-                    Map<String, String> data = new HashMap<>();
-                    data.put("type", "history");
-                    data.put("id", String.valueOf(msg.getId()));
-                    data.put("employeeId", msg.getEmployeeId());
-                    data.put("sender", msg.getName());
-                    data.put("message", msg.getContent());
-                    data.put("profileImg", msg.getProfileImg());
-                    data.put("timestamp", String.valueOf(msg.getRegDate()));
-                    sendMessage(session, data);
-                }
-            } else {
-                int result = messengerService.findByRoomId(roomName);
-                Map<String, String> data = new HashMap<>();
-                data.put("type", "NEW_CHAT_ROOM");
-                data.put("roomId", String.valueOf(result));
-                sendMessage(session, data);
-            }
-            return;
-        } else if("invite".equals(type)) {
-            String recipientId = parsedMessage.get("recipientId").getAsString();
-            System.out.println("초대한 roomId : " + roomId + "/ 초대한 사번 : " + recipientId);
-            messengerService.messageRoomInvite(roomId, recipientId);
-            messengerService.insertInviteUser(roomId,recipientId);
-            Map<String, String> data = new HashMap<>();
-            data.put("type", "invite");
-            sendMessage(session, data);
-            return;
-        }
-
-        //그외
-        String id = parsedMessage.get("id").getAsString();
-        String messageContent = parsedMessage.get("message").getAsString();
-        String recipientId = parsedMessage.get("recipient").getAsString();
-        Map<String, String> data = new ConcurrentHashMap<>();
-        data.put("senderId", dto.getId());
-        data.put("sender", dto.getName());
-        data.put("message", messageContent);
-
-//        List<String> idList = new ArrayList<>();
-//        idList.add(dto.getId());
-//        if (!recipientId.isEmpty()) {
-//            idList.add(recipientId);
-//        }
-//        Collections.sort(idList);
-//        String roomName = String.join("|", idList);
-
-        String userId1 = dto.getId();
-        String userId2 = recipientId;
-        String roomName;
-        if(userId1.compareTo(userId2) < 0) {
-            roomName = userId1 + "|" + userId2;
-        } else {
-            roomName = userId2 + "|" + userId1;
-        }
-
-        int roomResult = messengerService.selectRoomByName(roomName);
-        if (roomResult > 0) {
-            // 기존 채팅방이 있음
-            roomId = roomResult;
-            messengerService.insertMessageToRoom(roomId, dto.getId(), parsedMessage.get("message").getAsString());
-        } else {
-            // 신규 채팅방 생성
-            messengerService.createChatRoom(roomName, dto.getId(), parsedMessage.get("message").getAsString());
-        }
-
-        if (parsedMessage.has("recipient")) {
-            recipientId = parsedMessage.get("recipient").getAsString();
-            Session recipientSession = clientSessions.get(recipientId);
-            if (recipientSession != null && recipientSession.isOpen()) {
-                sendMessage(recipientSession, data);
-            }
-            if (session.isOpen()) {
-                sendMessage(session, data);
-            }
-        } else {
-            broadcastMessage(data);
+        switch (type) {
+            case "roomEnter": //방 입장
+                loadAndSendChatHistory(parsedMessage, roomId);
+                break;
+            case "newRoom": //새로운 방
+                addEmployeeToRoom(parsedMessage, roomId);
+                break;
+            case "invite": //방 초대 - 미완성
+                processRoomInvitation(parsedMessage, roomId);
+                break;
+            case "message": //메세지전송
+                processAndBroadcastMessage(parsedMessage, roomId);
+                break;
+            default:
+                System.out.println("기본출력");
         }
     }
 
+    // newRoom
+    public void addEmployeeToRoom(JsonObject parsedMessage, int roomId) throws IOException {
+        String employeeId = parsedMessage.get("employeeId").getAsString();
+        String id1 = dto.getId();
+        String id2 = employeeId;
+        long num1 = Long.parseLong(id1);
+        long num2 = Long.parseLong(id2);
+        String roomName = (num1 < num2) ? id1 + "|" + id2 : id2 + "|" + id1;
+        int selectByName = messengerService.selectByName(roomName); // <- SELECT COUNT(*) FROM MEESAGE_ROOM WHERE NAME = #{}
+        if (selectByName == 0) {
+            Map<String, Object> result = messengerService.createChatRoom(employeeId, dto.getId(), roomName);
+            String newRoomId = result.get("messageRoomId").toString();
+            String messageRoomUserId = result.get("messageRoomUserId").toString();
+            JsonObject response = new JsonObject();
+            response.addProperty("type", "NEW_CHAT_ROOM");
+            response.addProperty("roomId", newRoomId);
+            response.addProperty("messageRoomUserId", messageRoomUserId);
+            try {
+                clientSessions.get(dto.getId()).getBasicRemote().sendText(gson.toJson(response));
+            } catch (NullPointerException ignored) {
+            }
+        } else {
+            int newRoomId = messengerService.findByRoomId(roomName);
+            JsonObject response = new JsonObject();
+            response.addProperty("type", "NEW_CHAT_ROOM");
+            response.addProperty("roomId", newRoomId);
+            try {
+                clientSessions.get(employeeId).getBasicRemote().sendText(gson.toJson(response));
+                clientSessions.get(dto.getId()).getBasicRemote().sendText(gson.toJson(response));
+            } catch (NullPointerException ignored) {}
+        }
+    }
+    // invite
+    public void processRoomInvitation(JsonObject parsedMessage, int roomId) throws Exception {
+        List<MessageRoomDTO> dtos = messengerService.findByRoomId2(roomId); //select * from message_room where id = roomId
+        //인원이 몇명인지 체크
+        for (MessageRoomDTO dto : dtos) {
+            if (dto.getEmployeeId().equals(parsedMessage.get("inviteeId").getAsString())) {
+                return;
+            }
+        }
+        // 처음 들어온 경우
+        messengerService.insertUser(roomId, parsedMessage.get("inviteeId").getAsString());
+        messengerService.insertUsertoRoom(roomId, parsedMessage.get("inviteeId").getAsString());
+        List<String> roomEmployeeList = messengerService.findByRoomEmployeeList(roomId);
+        String inviterName = this.dto.getName();
+        String inviteeName = parsedMessage.get("inviteeName").getAsString();
+        String notificationMessage = inviterName + "님이 " + inviteeName + "님을 초대하였습니다.";
+
+        JsonObject response = new JsonObject();
+        response.addProperty("type", "NEW_INVITE");
+        response.addProperty("message", notificationMessage);
+        response.add("employees", gson.toJsonTree(roomEmployeeList));
+        response.addProperty("roomId", roomId);
+
+        List<MessageUserListDTO> dtos2 = messengerService.selectRoomById(roomId);
+        for (MessageUserListDTO dto : dtos2) {
+            String employeeId = dto.getEmployeeId();
+            try {
+                clientSessions.get(employeeId).getBasicRemote().sendText(gson.toJson(response));
+            } catch (NullPointerException ignored) {
+            }
+        }
+    }
+    // roomEnter
+    public void loadAndSendChatHistory(JsonObject parsedMessage, int roomId) throws IOException {
+        // select count(*) from message_room where id = roomId;
+        String senderId = dto.getId();
+        List<MessageHistoryDTO> messages = messengerService.selectMessageByRoomId(roomId, senderId);
+        List<String> roomEmployeeList = messengerService.findByRoomEmployeeList(roomId);
+
+        String employeeId = parsedMessage.get("employeeId").getAsString();
+        JsonObject response = new JsonObject();
+
+        response.addProperty("type", "history");
+        response.add("messages", gson.toJsonTree(messages));
+        response.add("employees", gson.toJsonTree(roomEmployeeList));
+
+        String jsonResponse = gson.toJson(response);
+        try {
+            clientSessions.get(employeeId).getBasicRemote().sendText(jsonResponse);
+        } catch (NullPointerException ignored) {}
+    }
+
+    // message
+    public void processAndBroadcastMessage(JsonObject parsedMessage, int roomId) throws IOException {
+        MessageUserDTO dto = messengerService.selectUserByEmployeeIdAndRoomId(parsedMessage.get("employeeId").getAsString(), roomId);
+        MessageDTO messageDTO = MessageDTO.builder()
+                .employeeId(dto.getEmployeeId())
+                .messagerRoomId(roomId)
+                .messagerRoomuserId(dto.getId())
+                .content(parsedMessage.get("message").getAsString())
+                .name(dto.getName())
+                .build();
+        messengerService.insertMessage(messageDTO);
+
+        List<MessageUserListDTO> dtos = messengerService.selectRoomById(roomId);
+        for (MessageUserListDTO dto2 : dtos) {
+            String employeeId = dto2.getEmployeeId();
+            try {
+                clientSessions.get(employeeId).getBasicRemote().sendText(gson.toJson(messageDTO));
+            } catch (NullPointerException ignored) {
+            }
+        }
+    }
 
     @OnClose
     public void onClose(Session session) {
+        System.out.println("유저 나감 " + session.getId());
         clientSessions.values().removeIf(s -> s.equals(session));
     }
+
     @OnError
     public void onError(Session session, Throwable throwable) {
         clientSessions.values().removeIf(s -> s.equals(session));
         throwable.printStackTrace();
     }
 
-    //모두에게 전송
-    private void broadcastMessage(Map<String, String> data) {
-        clients.forEach(session -> {
-            if (session.isOpen()) {
-                System.out.println(clientSessions.get(session.getId()) + " : " + data);
-                sendMessage(session, data);
-            } else {
-                clients.remove(session);
-            }
-        });
-    }
-    private void sendMessage(Session session, Map<String, String> data) {
-        try {
-            session.getBasicRemote().sendText(gson.toJson(data));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

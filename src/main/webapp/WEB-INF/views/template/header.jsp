@@ -17,309 +17,6 @@
     let mode = (sessionStorage.getItem('mode') == null) ? 'light' : sessionStorage.getItem('mode');
     $('html').addClass(mode);
   </script>
-  <style>
-    /* 모바일 반응형 */
-    @media (max-width: 768px) {
-      /* 기존 채팅 버튼 숨기기 */
-      #chatButton {
-        display: none;
-      }
-    }
-
-    .notification-container {
-      position: relative;
-      display: inline-block;
-    }
-
-    .notification-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 300px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      z-index: 1000;
-      margin-top: 8px;
-    }
-
-    .notification-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--md-sys-color-outline);
-    }
-
-    .notification-header h5 {
-      margin: 0;
-      font-size: 16px;
-    }
-
-    .close-notification {
-      cursor: pointer;
-    }
-
-    .notification-list {
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    .notification-item {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--md-sys-color-outline);
-      cursor: pointer;
-    }
-
-    .notification-item:hover {
-      background-color: var(--md-sys-color-surface-container);
-      color: var(--md-sys-color-primary);
-    }
-
-    .notification-item .material-icons {
-      margin-right: 12px;
-      font-size: 20px;
-    }
-
-    .notification-content {
-      flex: 1;
-    }
-
-    .notification-text {
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .notification-date {
-      font-size: 12px;
-      color: var(--md-sys-color-secondary);
-    }
-
-    .notification-content.read .notification-text,
-    .notification-content.read .notification-date {
-      opacity: 0.4; /* 투명도를 40% 낮춤 */
-    }
-
-
-    .color-primary { color: #1976d2; }
-    .color-success { color: #4caf50; }
-    .color-warning { color: #ff9800; }
-    .color-info { color: #2196f3; }
-    .color-danger { color: #f44336; }
-
-    .notification-list::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .notification-list::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.1);
-      margin: 0;
-    }
-
-    .notification-list::-webkit-scrollbar-thumb {
-      background: var(--md-sys-color-surface-variant);
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .notification-list::-webkit-scrollbar-thumb:hover {
-      background: var(--md-sys-color-outline);
-    }
-
-    @keyframes notificationAnimation {
-      0% {
-        transform: scale(1) rotate(0deg);
-      }
-      25% {
-        transform: scale(1.2) rotate(20deg);
-      }
-      50% {
-        transform: scale(1.2) rotate(-15deg);
-      }
-      75% {
-        transform: scale(1.1) rotate(10deg);
-      }
-      100% {
-        transform: scale(1) rotate(0deg);
-      }
-    }
-
-    .notification-animate {
-      animation: notificationAnimation 0.8s ease-in-out;
-      transform-origin: center;
-    }
-
-    /* 조직도 버튼 및 컨테이너 스타일 */
-    .orgchart-container {
-      position: relative;
-    }
-
-    /* 조직도 메뉴 스타일 */
-    .orgchart-menu {
-      display : none;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 500px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      z-index: 1000;
-    }
-
-    .orgchart-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--md-sys-color-outline);
-    }
-
-    .orgchart-header h5 {
-      font-size: 16px;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    .close-orgchart {
-      cursor: pointer;
-      padding: 4px;
-      color: #666;
-    }
-
-    .close-orgchart:hover {
-      background: rgba(0, 0, 0, 0.04);
-      border-radius: 50%;
-    }
-
-    .orgchart-content {
-      padding: 20px;
-      max-height: 600px;
-      overflow-y: auto;
-    }
-
-    /* 조직도 본문 스타일 */
-    .org-chart {
-      padding: 20px;
-    }
-
-    .org-box {
-      backgound-color: var(--md-sys-color-surface-container);
-      border: 1px solid var(--md-sys-color-outline);
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-
-    .department-title {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-      font-size: 18px;
-      font-weight: 600;
-      padding: 12px 24px;
-      margin: -24px -24px 24px -24px;
-      border-radius: 12px 12px 0 0;
-      text-align: center;
-      letter-spacing: -0.5px;
-    }
-
-    .members-tree {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 60px;
-      position: relative;
-      padding-top: 24px;
-    }
-
-    /* 상단 중앙 세로선 */
-    .members-tree::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 2px;
-      height: 24px;
-      background: var(--md-sys-color-surface);
-    }
-
-    /* 가로선 */
-    .members-tree::after {
-      content: '';
-      position: absolute;
-      top: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      height: 1px;
-      background: var(--md-sys-color-surface);
-    }
-
-    .member {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      position: relative;
-      padding-top: 24px;
-      min-width: 80px;
-    }
-
-    /* 가로선과 사원명 사이의 세로선 */
-    .member::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 1px;
-      height: 24px;
-      background: var(--md-sys-color-surface);
-    }
-
-    .member .name {
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    .member .position {
-      font-size: 13px;
-      color: var(--md-sys-color-secondary);
-    }
-
-    /* 스크롤바 스타일링 */
-    .orgchart-content::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .orgchart-content::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.1);
-      margin: 0;
-    }
-
-    .orgchart-content::-webkit-scrollbar-thumb {
-      background: var(--md-sys-color-surface-variant);
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .orgchart-content::-webkit-scrollbar-thumb:hover {
-      background: var(--md-sys-color-outline);
-    }
-
-    /* 조직도 열고 닫기 애니메이션 */
-    .orgchart-menu {
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      transform-origin: top right;
-    }
-
-    .orgchart-menu.hidden {
-      transform: scale(0.95);
-      opacity: 0;
-      pointer-events: none;
-    }
-  </style>
 </head>
 <body>
 <div id="loading" style="display: none">
@@ -349,14 +46,14 @@
         <i class="material-icons">work_history</i>
         <span>근태관리</span>
       </div>
-      <div class="menu-item" onClick="location.href='/schedule/list'">
+      <div class="menu-item" onClick="location.href='/schedule/calendar/list'">
         <i class="material-icons">event_available</i>
-        <span>예약</span>
+        <span>일정/예약</span>
       </div>
       <div class="menu-item" onClick="location.href='/hr/list'">
         <i class="material-icons">people</i>
         <span>인사관리</span>
-    </div>
+      </div>
       <div class="menu-item" onClick="location.href='/project/main'">
         <i class="material-icons">description</i>
         <span>Works</span>
@@ -467,9 +164,9 @@
             </a>
           </li>
           <li>
-            <a href="/schedule/list">
+            <a href="/schedule/calendar/list">
               <i class="material-icons">event_available</i>
-              <span>예약</span>
+              <span>일정/예약</span>
             </a>
           </li>
           <li>
@@ -536,7 +233,7 @@
 
       <script>
         $(document).ready(function() {
-          const alarm = new WebSocket('ws://localhost/alarm');
+          const alarm = new WebSocket('ws://10.5.5.1/alarm');
 
           alarm.onopen = function() {
             console.log('알람 웹소켓 연결됨');
@@ -605,53 +302,53 @@
           }
         });
 
-      function orgChartModal() {
-        $('.orgchart-content').empty();
+        function orgChartModal() {
+          $('.orgchart-content').empty();
 
-        $.ajax({
-          url: '/employee/orgChart',
-          method: 'GET'
-        }).done(function (data) {
-          $('#orgChartContainer').empty();
-          const employeeList = [
-            {name: '대표', id: 6, employee: []},
-            {name: '경영팀', id: 1, employee: []},
-            {name: '인사팀', id: 2, employee: []},
-            {name: '총무팀', id: 3, employee: []},
-            {name: '운영지원팀', id: 4, employee: []},
-            {name: '연구팀', id: 5, employee: []}];
+          $.ajax({
+            url: '/employee/orgChart',
+            method: 'GET'
+          }).done(function (data) {
+            $('#orgChartContainer').empty();
+            const employeeList = [
+              {name: '대표', id: 6, employee: []},
+              {name: '경영팀', id: 1, employee: []},
+              {name: '인사팀', id: 2, employee: []},
+              {name: '총무팀', id: 3, employee: []},
+              {name: '운영지원팀', id: 4, employee: []},
+              {name: '연구팀', id: 5, employee: []}];
 
-          for (let i = 0; i < data.length; i++) {
-            const employee = data[i];
+            for (let i = 0; i < data.length; i++) {
+              const employee = data[i];
 
-            for (let j = 0; j < employeeList.length; j++) {
-              const departments = employeeList[j];
-              if (departments.id == employee.departmentId) {
-                departments.employee.push(employee);
+              for (let j = 0; j < employeeList.length; j++) {
+                const departments = employeeList[j];
+                if (departments.id == employee.departmentId) {
+                  departments.employee.push(employee);
+                }
               }
             }
-          }
 
-          for (let i = 0; i < employeeList.length; i++) {
-            const departmentList = employeeList[i];
-            const orgBox = $('<div>').addClass('org-box');
+            for (let i = 0; i < employeeList.length; i++) {
+              const departmentList = employeeList[i];
+              const orgBox = $('<div>').addClass('org-box');
 
-            const title = $('<div>').addClass('department-title').text(departmentList.name);
-            const departmentDiv = $('<div>').addClass('members-tree');
+              const title = $('<div>').addClass('department-title').text(departmentList.name);
+              const departmentDiv = $('<div>').addClass('members-tree');
 
-            for (let j = 0; j < departmentList.employee.length; j++) {
-              const employee = departmentList.employee[j];
+              for (let j = 0; j < departmentList.employee.length; j++) {
+                const employee = departmentList.employee[j];
 
-              const div = $('<div>').addClass('member');
-              div.append($('<span>').addClass('name').text(employee.name))
-                  .append($('<span>').addClass('position').text(employee.jobName));
-              departmentDiv.append(div);
+                const div = $('<div>').addClass('member');
+                div.append($('<span>').addClass('name').text(employee.name))
+                        .append($('<span>').addClass('position').text(employee.jobName));
+                departmentDiv.append(div);
+              }
+
+              $('.orgchart-content').append(orgBox.append(title, departmentDiv));
             }
-
-            $('.orgchart-content').append(orgBox.append(title, departmentDiv));
-          }
-        });
-      }
+          });
+        }
       </script>
       <script>
         $(document).ready(function () {
@@ -769,19 +466,19 @@
             $('#notificationMenu').hide();
           });
 
-    $(document).on('click', function(e) {
-      if (!$(e.target).closest('.notification-container').length) {
-        $('#notificationMenu').hide();
-      }
-    });
-  });
-</script>
-<script>
           $(document).on('click', function(e) {
             if (!$(e.target).closest('.notification-container').length) {
               $('#notificationMenu').hide();
             }
           });
+        });
+      </script>
+      <script>
+        $(document).on('click', function(e) {
+          if (!$(e.target).closest('.notification-container').length) {
+            $('#notificationMenu').hide();
+          }
+        });
 
         $(document).ready(function() {
           $('form').off('submit').on('submit', function(e) {
@@ -796,4 +493,4 @@
             // $(this)[0].submit();
           });
         });
-</script>
+      </script>

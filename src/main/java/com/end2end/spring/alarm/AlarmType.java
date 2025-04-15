@@ -19,7 +19,8 @@ public enum AlarmType {
     PROJECT_WORK_UPDATE("edit_document", "프로젝트 작업에 변경점이 생겼습니다.", "warning"),
     PROJECT_WORK_ONGOING("flag_2", "진행중으로 변경된 프로젝트 작업이 있습니다.", "primary"),
     PROJECT_WORK_FINISH("flag_2", "종료된 프로젝트 작업이 있습니다.", "success"),
-    PROJECT_WORK_DEADLINE("schedule", "마감일이 얼마 남지 않은 프로젝트 작업이 있습니다.", "danger")
+    PROJECT_WORK_DEADLINE("schedule", "마감일이 얼마 남지 않은 프로젝트 작업이 있습니다.", "danger"),
+    CALENDAR_CREATE("calendar_month", "새로운 달력이 생성되었습니다.", "primary")
     ;
 
     private final String icons;

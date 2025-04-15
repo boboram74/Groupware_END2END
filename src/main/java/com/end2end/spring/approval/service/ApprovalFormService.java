@@ -6,6 +6,9 @@ import java.util.List;
 
 public interface ApprovalFormService {
     List<ApprovalFormDTO> selectAll();
+
+    ApprovalFormDTO selectByFormName(String name);
+
     List<ApprovalFormDTO> selectByEmployeeId(String employeeId);
     List<ApprovalFormDTO> selectByCategoryId(int categoryId);
 

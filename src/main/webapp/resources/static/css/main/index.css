@@ -288,6 +288,7 @@
     display: flex;
     gap: 0;
     margin-bottom: 20px;
+    border-bottom: 1px solid var(--md-sys-color-outline);
 }
 
 .board-type-btn {

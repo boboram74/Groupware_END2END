@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="schedule">
+    <select id="selectByEmployeeId" resultType="com.end2end.spring.schedule.dto.ScheduleDTO">
+        SELECT SCHEDULE.*, CALENDAR.COLOR
+        FROM SCHEDULE
+        JOIN CALENDAR
+        ON SCHEDULE.CALENDARID = CALENDAR.ID
+        JOIN CALENDAR_USER
+        ON CALENDAR.ID = CALENDAR_USER.CALENDARID
+        WHERE employeeId = #{employeeId}
+    </select>
+
+    <select id="selectByEmployeeIdAndCalenderId" resultType="com.end2end.spring.schedule.dto.ScheduleDTO">
+        SELECT SCHEDULE.*, CALENDAR.COLOR
+        FROM SCHEDULE
+        JOIN CALENDAR
+        ON SCHEDULE.CALENDARID = CALENDAR.ID
+        JOIN CALENDAR_USER
+        ON CALENDAR.ID = CALENDAR_USER.CALENDARID
+        WHERE
+            employeeId = #{employeeId}
+        AND
+            CALENDAR.id = ${calendarId}
+    </select>
+
+    <select id="selectByEmployeeIdAndPrieod" resultType="com.end2end.spring.schedule.dto.ScheduleDTO">
+        SELECT SCHEDULE.*
+        FROM
+            SCHEDULE
+        JOIN
+            SCHEDULE_USER
+        ON
+            SCHEDULE.ID = SCHEDULE_USER.scheduleId
+        WHERE
+            employeeId = #{employeeId}
+        AND (
+            TRUNC(startDate) BETWEEN #{startDate} AND #{endDate}
+            OR
+            TRUNC(endDate) BETWEEN #{startDate} AND #{endDate})
+    </select>
+
+    <insert id="insert">
+        INSERT INTO SCHEDULE(id, title, content, startDate, endDate)
+        VALUES (SCHEDULE_ID_SEQ.nextval, #{title}, #{content}, #{startDate}, #{endDate})
+    </insert>
+
+    <update id="update">
+        UPDATE SCHEDULE SET #{title}, #{content}, #{startDate}, #{endDate} WHERE id = ${id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM SCHEDULE WHERE id = ${id}
+    </delete>
+</mapper>

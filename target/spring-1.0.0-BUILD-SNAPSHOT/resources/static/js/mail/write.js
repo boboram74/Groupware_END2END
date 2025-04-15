@@ -27,7 +27,6 @@ $("#sendMail").on("click", function () {
         alert("외부 발신은 현재 제한되어있습니다.");
         return;
     }
-
     $.ajax({
         url: "http://34.70.179.192/mail/send",
         type: "POST",
@@ -36,6 +35,9 @@ $("#sendMail").on("click", function () {
         contentType: false,
     }).done(function (resp) {
         alert("메일 전송 완료!");
+        $.ajax({
+            url: '/mail/alarm?email=' + receiveMail,
+        }).done(function (resp) {})
         location.reload();
     })
 });

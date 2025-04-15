@@ -14,5 +14,6 @@ import java.sql.Timestamp;
 public class MessageRoomDTO {
     private Integer id;
     private String name;
+    private String employeeId;
     private Timestamp regdate;
 }

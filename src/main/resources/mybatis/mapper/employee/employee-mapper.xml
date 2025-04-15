@@ -173,9 +173,27 @@
         ORDER BY TO_CHAR(birthday, 'DD')
     </select>
 
+<<<<<<< HEAD
     <update id="changePw">
         UPDATE EMPLOYEE_DETAIL
         SET password = #{newPw}
         WHERE id = #{id}
     </update>
+=======
+    <select id="selectByIdIn" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT EMPLOYEE.*, EMPLOYEE_DETAIL.BIRTHDAY, JOB.NAME AS jobName, DEPARTMENT.NAME AS departmentName
+        FROM EMPLOYEE
+        JOIN EMPLOYEE_DETAIL
+        ON EMPLOYEE.ID = EMPLOYEE_DETAIL.ID
+        JOIN DEPARTMENT
+        ON DEPARTMENT.ID = EMPLOYEE.DEPARTMENTID
+        JOIN JOB
+        ON JOB.ID = EMPLOYEE.JOBID
+        WHERE EMPLOYEE.id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+>>>>>>> b117ba8b664f7035bf91e7704fd58395b0b30364
 </mapper>

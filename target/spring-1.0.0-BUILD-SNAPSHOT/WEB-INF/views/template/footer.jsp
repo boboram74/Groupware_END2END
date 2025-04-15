@@ -237,6 +237,18 @@
 		background-color: var(--md-sys-color-surface-container);
 	}
 
+	.invite-target {
+		padding: 15px;
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		transition: background-color 0.2s;
+	}
+
+	.invite-target:hover {
+		background-color: var(--md-sys-color-surface-container);
+	}
+
 	.employee-avatar {
 		width: 40px;
 		height: 40px;
@@ -364,17 +376,11 @@
 <input type="hidden" id="sender-name" value="${employee.name}">
 <script>
 	$(document).ready(function() {
-		let ws = new WebSocket("ws://192.168.219.100/chat");
+		let ws = new WebSocket("ws://10.5.5.1/chat");
 		let employees = [];
 		let chatRooms = [];
 		let currentRoomId = 0;
 
-		//채팅방 더미데이터
-		<%--const dummyRooms = Array.from({ length: 10 }, (_, i) => ({--%>
-		<%--	id: i + 1,--%>
-		<%--	title: `채팅방 ${i + 1}`,--%>
-		<%--	lastMessage: `마지막 메시지 ${i + 1}`--%>
-		<%--}));--%>
 		refreshChatRoomList();
 
 		//메시지 수신
@@ -389,19 +395,29 @@
 				addNewChatRoomItem(msg);
 				return;
 			} else if(msg.type === "history") {
-				console.log(msg);
-				let historyChat = $("<div>")
-						.addClass(msg.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
-						.html(msg.sender + " : " + msg.message);
-				$(".chat-messages").append(historyChat);
+				if (msg.roomId) {
+					currentRoomId = msg.roomId;
+				}
+				$(".chat-messages").empty();
+				msg.messages.forEach(function(m) {
+					let chat = $("<div>")
+							.addClass(m.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
+							.html(m.name + " : " + m.content);
+					$(".chat-messages").append(chat);
+				});
 				$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
+				return;
+			} else if(msg.type === "NEW_INVITE") {
+				let chat = $("<div>").html(msg.message);
+				$(".chat-messages").append(chat);
 				return;
 			}
 			let chat = $("<div>")
-					.addClass(msg.senderId === $("#sender-employee-id").val() ? "chat me" : "chat")
-					.html(msg.sender + " : " + msg.message);
+					.addClass(msg.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
+					.html(msg.name + " : " + msg.content);
 			$(".chat-messages").append(chat);
 			$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
+			refreshChatRoomList();
 			updateLastMessageInRoom(msg);
 		}
 
@@ -427,6 +443,7 @@
 			}).done(function (resp) {
 				chatRooms = resp.chatListAll;
 				renderRoomList(chatRooms);
+				setTimeout(renderRoomList, 30000);
 			});
 		}
 
@@ -475,9 +492,10 @@
 		function updateLastMessageInRoom(msg) {
 			let updatedRoom = null;
 			for (let i = 0; i < chatRooms.length; i++) {
-				let roomIdValue = chatRooms[i].roomId || chatRooms[i].messageRoomId;
+				let roomIdValue = chatRooms[i].roomId || chatRooms[i].messagerRoomId;
 				if (String(roomIdValue) === String(msg.roomId)) {
-					chatRooms[i].lastMessage = msg.message || "No messages yet";
+					chatRooms[i].lastMessage = msg.content || "No messages yet";
+					updatedRoom = chatRooms[i];
 					chatRooms.splice(i, 1);
 					chatRooms.unshift(updatedRoom);
 					break;
@@ -500,12 +518,14 @@
 				chatInput.val('');
 			} else if(message == '') {
 				return;
+			} else if(currentRoomId === 0 ) {
+				alert("유효한 채팅방이 아닙니다. 상대방을 먼저 선택해주세요.");
+				return;
 			}
 			const payload = {
-				id: $('#sender-employee-id').val(),
+				type: "message",
+				employeeId: $('#sender-employee-id').val(),
 				message: message,
-				recipient: $('#selected-employee-id').val(),
-				recipientName: $('#selected-recipient-name').val(),
 				roomId: currentRoomId
 			};
 			ws.send(JSON.stringify(payload));
@@ -520,7 +540,7 @@
 		});
 
 		const makeChatEmployeeList = (employee, index) => {
-			const div = $('<div>').addClass('employee-item invite-user').attr('data-id', employee.id).attr('data-name', employee.name);
+			const div = $('<div>').addClass('employee-item').attr('data-id', employee.id).attr('data-name', employee.name);
 			const avatar = $('<div>')
 					.addClass('employee-avatar')
 					.css('background-image', "url('https://picsum.photos/200/" + (index + 1) + "')");
@@ -554,9 +574,25 @@
 					emp.name.toLowerCase().includes(searchTerm) ||
 					emp.position.toLowerCase().includes(searchTerm)
 			);
-			// 필터링된 결과로 목록 다시 렌더링
-			renderEmployeeList(filteredEmployees);
+			//초대창이 보이면 초대쪽 사원 렌더링 아니면 사원목록 기본 렌더링
+			if ($('.invite-sidebar').is(':visible')) {
+				renderInviteList(filteredEmployees);
+			} else {
+				renderEmployeeList(filteredEmployees);
+			}
 		});
+
+		function renderInviteList(data) {
+			const listData = data || employees;
+			$('.invite-sidebar .employee-list, .chat-content .employee-list').empty();
+			listData.forEach((employee, index) => {
+				const employeeItem = makeChatEmployeeList(employee, index)
+						.removeClass("employee-item")
+						.addClass("invite-target");
+				$('.invite-sidebar .employee-list').append(employeeItem.clone(true));
+				$('.chat-content .employee-list').append(employeeItem.clone(true));
+			});
+		}
 
 		//초대버튼 UI
 		$('.invite-chat').on("click", function() {
@@ -566,20 +602,36 @@
 			} else {
 				$('.invite-sidebar, .employee-list, .search-box').show();
 				$('.chat-nav, .chat-content').css('margin-left', '280px');
-				renderEmployeeList();
+				renderInviteList();
 			}
 		});
 		// 실제 초대 로직
-		$(document).on('click', '.invite-sidebar .invite-user', function() {
+		$(document).on('click', '.invite-sidebar .invite-target', function() {
 			const inviteeId = $(this).data('id');
+			const inviteeName = $(this).data('name');
 			if (!currentRoomId || currentRoomId === 0) {
 				alert("유효한 대화방 정보가 없습니다. 초대 전, 채팅방을 먼저 확인해주세요.");
 				return;
 			}
-			alert("초대한ID : " + inviteeId + " 현재 채팅방 이름 : " + currentRoomId);
+            let currentTitle = $('#chat-user-title').text();
+            if (!currentTitle.includes(inviteeName)) {
+                if (currentTitle.trim() === '') {
+                    currentTitle = inviteeName;
+                } else {
+                    currentTitle += ', ' + inviteeName;
+                }
+                const names = currentTitle.split(', ');
+                if (names.length > 3) {
+                    const firstTwo = names.slice(0, 2);
+                    const remainingCount = names.length - 2;
+                    currentTitle = firstTwo.join(', ') + ' 외 ' + remainingCount + '명';
+                }
+                $('#chat-user-title').text(currentTitle);
+            }
 			let payload = {
 				type: "invite",
-				recipientId: inviteeId,
+				inviteeId: inviteeId,
+				inviteeName: inviteeName,
 				roomId: currentRoomId
 			};
 			ws.send(JSON.stringify(payload));
@@ -589,12 +641,11 @@
 
 		$(document).on('click', '.employee-item', function() {
 			const employeeId = $(this).data('id');
-			const employeeName = $(this).data('name');
-			const roomId = $(this).data('room-id');
+			const employeeName = $(this).find('.employee-name').text();
+			const roomId = $(this).data('room-id') || 0;
 			$('#selected-employee-id').val(employeeId);
 			showChatRoom(employeeId, employeeName, roomId);
 		});
-
 
 		// 사원 목록 렌더링 함수 수정
 		function renderEmployeeList(data) {
@@ -607,31 +658,14 @@
 			});
 		}
 
-		// 네비게이션 전환 기능
-		$('.nav-icon').on('click', function() {
-			const view = $(this).data('view');
-
-			// 네비게이션 아이콘 활성화
-			$('.nav-icon').removeClass('active');
-			$(this).addClass('active');
-
-			// 컨텐츠 전환
-			$('.view-content').removeClass('active');
-			if(view === 'employees') {
-				$('.employee-list').addClass('active');
-			} else {
-				$('.room-list').addClass('active');
-			}
-		});
-
-		$(document).on('click', '.employee-item[data-id]', function() {
-			const employeeId = $(this).data('id');
-			const payload = {
-				type: "newRoom",
-				employeeId: employeeId
-			};
-			ws.send(JSON.stringify(payload));
-		});
+		// $(document).on('click', '.employee-item[data-id]', function() {
+		// 		// 새 채팅방 생성 요청
+		// 		const payload = {
+		// 			type: "newRoom",
+		// 			employeeId: employeeId
+		// 		};
+		// 		ws.send(JSON.stringify(payload));
+		// });
 
 		//채팅방 생성
 		function showChatRoom(employeeId, employeeName, roomId) {
@@ -646,6 +680,7 @@
 					$(this).addClass('active');
 				}
 			});
+			console.log(employeeName);
 			$('#chat-user-title').text(employeeName);
 			$('#selected-employee-id').val(employeeId);
 			$('.chat-content, .chat-nav, .room-list').hide();
@@ -655,26 +690,76 @@
 			$('.invite-sidebar').hide();
 			$('.chat-nav, .chat-content').css('margin-left', '0');
 			currentRoomId = roomId;
-			const payload = {
-				type: "roomEnter",
-				roomId: roomId,
-				recipient: employeeId
-			};
-			ws.send(JSON.stringify(payload));
+			if (roomId === 0) {
+				const payload = {
+					type: "newRoom",
+					employeeId: employeeId
+				};
+				ws.send(JSON.stringify(payload));
+			} else {
+				// 기존 채팅방 입장 요청
+				const payload = {
+					type: "roomEnter",
+					roomId: roomId,
+					employeeId: $('#sender-employee-id').val()
+				};
+				ws.send(JSON.stringify(payload));
+				currentRoomId = roomId;
+			}
 		}
 
+		// function makeChatRoomListItem(room) {
+		// 	const roomId = room.roomId || room.messageRoomId;
+		// 	const div = $('<div>').addClass('employee-item').attr('data-room-id', roomId);
+		// 	const avatar = $('<div>').addClass('employee-avatar').css('background-color', '#bbb');
+		// 	const info = $('<div>').addClass('employee-info');
+		// 	const name = $('<div>').addClass('employee-name').text(room.roomName);
+		// 	const lastMsg = $('<div>').addClass('employee-position').text(room.lastMessage || "No messages yet");
+		//
+		// 	info.append(name, lastMsg);
+		// 	div.append(avatar, info);
+		// 	return div;
+		// }
 		function makeChatRoomListItem(room) {
 			const roomId = room.roomId || room.messageRoomId;
+			let displayName = room.roomName;
+			if (displayName && displayName.indexOf('|') !== -1) {
+				let parts = displayName.split('|');
+				let myId = $('#sender-employee-id').val();
+				let otherIds = parts.filter(id => String(id) !== String(myId));
+				if (otherIds.length === 1) {
+					let matchedEmployee = employees.find(emp => String(emp.id) === String(otherIds[0]));
+					if (matchedEmployee) {
+						displayName = matchedEmployee.name;
+					}
+				} else if (otherIds.length > 1) {
+					let names = [];
+					otherIds.forEach(otherId => {
+						let emp = employees.find(emp => String(emp.id) === String(otherId));
+						if (emp) {
+							names.push(emp.name);
+						}
+					});
+					if (names.length > 3) {
+						let firstTwo = names.slice(0, 2);
+						let remainingCount = names.length - 2;
+						displayName = firstTwo.join(', ') + ' 외 ' + remainingCount + '명';
+					} else {
+						displayName = names.join(', ');
+					}
+				}
+			}
 			const div = $('<div>').addClass('employee-item').attr('data-room-id', roomId);
 			const avatar = $('<div>').addClass('employee-avatar').css('background-color', '#bbb');
 			const info = $('<div>').addClass('employee-info');
-			const name = $('<div>').addClass('employee-name').text(room.roomName);
+			const name = $('<div>').addClass('employee-name').text(displayName);
 			const lastMsg = $('<div>').addClass('employee-position').text(room.lastMessage || "No messages yet");
 
 			info.append(name, lastMsg);
 			div.append(avatar, info);
 			return div;
 		}
+
 
 		function renderRoomList() {
 			const roomListContainer = $('.room-list');

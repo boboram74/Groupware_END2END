@@ -85,4 +85,9 @@ public class MessengerServiceImpl implements MessengerService {
     public void insertUsertoRoom(int roomId, String employeeId) {
         messengerDAO.insertUsertoRoom(roomId, employeeId);
     }
+
+    @Override
+    public List<String> findByRoomEmployeeList(int roomId) {
+        return messengerDAO.findByRoomEmployeeList(roomId);
+    }
 }

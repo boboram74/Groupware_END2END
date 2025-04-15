@@ -34,4 +34,6 @@ public interface MailService {
     int insertReadYnAll(List<Integer> esids);
     int trashAll(List<Integer> esids);
     int deleteAll(List<Integer> esids);
+
+    void sendMailAlarm(int mailId);
 }

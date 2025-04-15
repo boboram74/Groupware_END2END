@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="calenderUser">
+    <select id="selectByCalendarId" resultType="com.end2end.spring.schedule.dto.CalendarUserDTO">
+        SELECT *
+        FROM CALENDAR_USER
+        WHERE calendarId = ${calendarId}
+    </select>
+
+    <insert id="insertAll">
+        INSERT INTO CALENDAR_USER(id, calendarId, employeeId)
+        SELECT CALENDAR_USER_ID_SEQ.nextval, A.* FROM (
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT ${item.calendarId}, #{item.employeeId} FROM DUAL
+        </foreach>
+        ) A
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM CALENDAR_USER WHERE id = #{id}
+    </delete>
+</mapper>

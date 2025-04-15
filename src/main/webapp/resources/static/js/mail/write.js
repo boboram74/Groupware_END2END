@@ -35,6 +35,9 @@ $("#sendMail").on("click", function () {
         contentType: false,
     }).done(function (resp) {
         alert("메일 전송 완료!");
+        $.ajax({
+            url: '/mail/alarm?email=' + receiveMail,
+        }).done(function (resp) {})
         location.reload();
     })
 });

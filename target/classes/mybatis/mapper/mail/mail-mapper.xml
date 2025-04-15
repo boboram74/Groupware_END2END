@@ -363,4 +363,14 @@
     <select id="selectEmailAddressUserByEmailAddress" resultType="com.end2end.spring.mail.dto.EmailAddressUserDTO">
         SELECT * FROM EMAIL_ADDRESS_USER WHERE emailAddress = #{email}
     </select>
+
+    <select id="selectMailURLById" resultType="com.end2end.spring.mail.dto.MailURLDTO">
+        SELECT EMAIL.ID AS id, EMAIL_STATE.ID AS emailStateId, EMPLOYEEID AS employeeId
+        FROM EMAIL
+        JOIN EMAIL_STATE
+        ON EMAIL.ID = EMAIL_STATE.EMAILID
+        JOIN EMAIL_ADDRESS_USER
+        ON EMAILUSERID = EMAIL_ADDRESS_USER.ID
+        WHERE EMAIL.ID = #{id}
+    </select>
 </mapper>

@@ -63,4 +63,8 @@ public class VacationDAO {
     public List<GetVacationDTO> selectGetVacationList() {
         return mybatis.selectList("vacation.selectGetVacationList");
     }
+
+    public VacationDTO selectByApprovalId(String approvalId) {
+        return mybatis.selectOne("vacation.selectByApprovalId", approvalId);
+    }
 }

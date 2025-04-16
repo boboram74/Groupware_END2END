@@ -12,6 +12,7 @@ import java.util.Map;
 
 @Repository
 public class EmployeeDAO {
+
     @Autowired
     private SqlSession mybatis;
 
@@ -105,5 +106,27 @@ public class EmployeeDAO {
 
     public List<EmployeeDTO> selectByIdIn(List<String> ids) {
         return mybatis.selectList("employee.selectByIdIn", ids);
+    }
+
+    public void isResigned(String id) {mybatis.update("employee.isResigned",id);}
+
+    public List<Map<String,Object>> employeeAll(){
+        return mybatis.selectList("employee.employeeAll");
+    }
+
+    public List<Map<String, Object>> getMonthlyStats() {
+        return mybatis.selectList("employee.monthlyStats");
+    }
+
+    public String findByLoginId(String id) {
+        return mybatis.selectOne("employee.findByLoginId", id);
+    }
+
+    public List<Map<String, Object>> getVacationStats() {
+        return mybatis.selectList("employee.vacationStats");
+    }
+
+    public List<Map<String, Object>> getAttendanceStats() {
+        return mybatis.selectList("employee.attendanceStats");
     }
 }

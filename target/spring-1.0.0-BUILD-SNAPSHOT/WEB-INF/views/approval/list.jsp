@@ -4,7 +4,6 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/approval/list.css">
 <link ref="stylesheet" href="/css/temapalte/exam.css"/>
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <style>
     .searchBox {
         margin: 20px 0;

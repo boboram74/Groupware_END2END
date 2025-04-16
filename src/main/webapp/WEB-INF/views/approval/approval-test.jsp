@@ -3,8 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/template/exam.css" />
-<link rel="stylesheet" href="/css/mail/mail-list.css" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <style>
     .approval-list-wrapper {
         display: flex;

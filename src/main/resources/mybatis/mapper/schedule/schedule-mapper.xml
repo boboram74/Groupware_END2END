@@ -43,8 +43,8 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO SCHEDULE(id, title, content, startDate, endDate)
-        VALUES (SCHEDULE_ID_SEQ.nextval, #{title}, #{content}, #{startDate}, #{endDate})
+        INSERT INTO SCHEDULE(id, calendarId, title, content, startDate, endDate)
+        VALUES (SCHEDULE_ID_SEQ.nextval, ${calendarId}, #{title}, #{content}, #{startDate}, #{endDate})
     </insert>
 
     <update id="update">

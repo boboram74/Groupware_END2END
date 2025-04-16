@@ -886,10 +886,6 @@
 				renderRoomList();
 			}
 		});
-		$('form').on('submit', function(e) {
-			e.preventDefault();
-		});
-
 	});
 </script>
 </div>

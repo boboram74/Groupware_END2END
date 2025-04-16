@@ -108,7 +108,6 @@
         <button class="icon-button" id="darkModeBtn">
           <span class="material-icons">dark_mode</span>
         </button>
-
         <div class="profile-container">
           <div class="profile"
                style="background-image: url('${(employee.profileImg == null) ? '/image/defaultImg.jpg' : employee.profileImg}')">
@@ -226,7 +225,6 @@
         </div>
       </div>
     </div>
-
     <!-- 콘텐츠 영역 -->
     <div class="boxContents">
       <!-- 메인 콘텐츠가 들어갈 자리 -->
@@ -471,12 +469,5 @@
               $('#notificationMenu').hide();
             }
           });
-        });
-      </script>
-      <script>
-        $(document).on('click', function(e) {
-          if (!$(e.target).closest('.notification-container').length) {
-            $('#notificationMenu').hide();
-          }
         });
       </script>

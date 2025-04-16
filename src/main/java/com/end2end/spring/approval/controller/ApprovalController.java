@@ -247,12 +247,12 @@ public class ApprovalController {
 
         if (team) {
             Map<String, List<Map<String, Object>>> approvalByState = approvalService.SearchallApprovals(keyword);
-            waitingList = approvalByState.get("WAITING");
+            waitingList = approvalByState.get("ONGOING");
             goingList = approvalByState.get("ONGOING");
             rejectList = approvalByState.get("REJECT");
             completedList = approvalByState.get("SUBMIT");
         } else {
-            waitingList = approvalService.search("WAITING", employeeId, keyword);
+            waitingList = approvalService.search("ONGOING", employeeId, keyword);
             goingList = approvalService.search("ONGOING", employeeId, keyword);
             rejectList = approvalService.search("REJECT", employeeId, keyword);
             completedList = approvalService.search("SUBMIT", employeeId, keyword);

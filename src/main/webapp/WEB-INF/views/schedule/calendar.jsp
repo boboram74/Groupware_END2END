@@ -61,6 +61,7 @@
         display: block;
         margin-bottom: 8px;
         font-weight: 500;
+        color: var(--md-sys-color-surface);
     }
 
     .detail-modal .form-group input,
@@ -226,6 +227,56 @@
     }
 
 </style>
+<style>
+    .form-select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 4px;
+        background-color: var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-on-surface);
+        font-size: 14px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 4px;
+        background-color: var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-surface);
+        font-size: 14px;
+    }
+
+    /* date input과 select를 감싸는 컨테이너 */
+    .datetime-wrapper {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    /* date input 스타일 */
+    .datetime-wrapper input[type="date"] {
+        flex: 2;  /* 날짜 입력이 더 넓게 */
+        min-width: 150px;
+        padding: 8px 12px;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 4px;
+        background-color: var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-surface);
+    }
+
+    /* select 스타일 */
+    .datetime-wrapper select {
+        flex: 1;  /* 시간 선택은 더 좁게 */
+        min-width: 100px;
+        padding: 8px 12px;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 4px;
+        background-color: var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-surface);
+    }
+</style>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
@@ -271,9 +322,9 @@
             </div>
         </div>
         <div class="button-container">
-            <button class="primary insert-schedule">일정 추가</button>
+            <button class="primary insert-schedule open-write-schedule">일정 추가</button>
             <button class="primary open-write-calender">캘린더 추가</button>
-            <button class="secondary">캘린더 관리</button>
+            <button class="secondary open-list-calendar">캘린더 관리</button>
         </div>
         <div class="calender-container">
             <div id="calendar"></div>
@@ -368,6 +419,117 @@
         </div>
     </div>
 
+    <!-- 일정 작성 모달 -->
+    <div class="detail-modal" id="scheduleWriteModal" style="display: none;">
+        <div class="box modal-container surface-bright">
+            <div class="box-title">
+                <h2>일정 등록</h2>
+            </div>
+
+            <div class="box-content">
+                <form id="scheduleWriteForm" action="/schedule/insert" method="post">
+                    <div class="form-group">
+                        <label>캘린더 선택</label>
+                        <select name="calendarId" class="form-select" required>
+                            <option value="">캘린더를 선택하세요</option>
+                            <c:forEach items="${calendarList}" var="calendar">
+                                <option value="${calendar.id}">${calendar.title}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>일정 제목</label>
+                        <input type="text" name="title" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>시작 일시</label>
+                        <div class="datetime-wrapper">
+                            <input type="date" id="insert-startDate" class="form-input" required>
+                            <select required id="insert-startTime">
+                                <c:forEach begin="9" end="18" var="i">
+                                    <option value=" ${i < 10 ? '0'.concat(i) : i}:00:00">${i < 10 ? '0'.concat(i) : i}:00</option>
+                                    <option value=" ${i < 10 ? '0'.concat(i) : i}:30:00">${i < 10 ? '0'.concat(i) : i}:30</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <input type="hidden" name="startDate" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label>종료 일시</label>
+                        <div class="datetime-wrapper">
+                            <input type="date" id="insert-endDate" class="form-input" required>
+                            <select required id="insert-endTime">
+                                <c:forEach begin="9" end="18" var="i">
+                                    <option value=" ${i < 10 ? "0" + i : i}:00:00">${i < 10 ? "0" + i : i}:00</option>
+                                    <option value=" ${i < 10 ? "0" + i : i}:30:00">${i < 10 ? "0" + i : i}:30</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <input type="hidden" name="endDate" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label>일정 내용</label>
+                        <textarea name="content" rows="4" class="form-input"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn primary">저장</button>
+                        <button type="button" class="btn secondary close-modal">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 캘린더 목록 모달 -->
+    <div class="detail-modal" id="listCalendarModal" style="display: none;">
+        <div class="box modal-container surface-bright">
+            <div class="box-title modal-header">
+                <h2>캘린더 관리</h2>
+            </div>
+            <div class="box-content">
+                <div class="form-group">
+                    <label>캘린더 선택</label>
+                    <select id="calendar-select" class="form-select">
+                        <option value="" selected disabled>캘린더를 선택하세요</option>
+                        <c:forEach items="${calendarList}" var="calendar">
+                            <option value="${calendar.id}">${calendar.title}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <!-- 선택된 캘린더 정보 표시 영역 -->
+                <div id="calendar-info" style="display: none;">
+                    <div class="form-group">
+                        <label>캘린더 정보</label>
+                        <div class="info-container">
+                            <div class="form-group">
+                                <label>이름</label>
+                                <input type="text" id="cal-name" class="form-input" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>색상</label>
+                                <div id="cal-color" class="color-circle" style="width: 24px; height: 24px; border-radius: 50%;"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>공유 멤버</label>
+                                <div class="selected-employees" id="cal-members"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="primary" id="editCalendarBtn">수정</button>
+                    <button type="button" class="secondary close-modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function calculateAvailableDimensions() {
@@ -562,6 +724,108 @@
                 $('.employee-item[data-id="' +  empId + '"]').removeClass('selected');
                 renderSelectedEmployees();
             });
+
+            $(document).on('click', '.open-write-schedule', function() {
+                $('#scheduleWriteModal').fadeIn(300);
+            });
+
+            // 모달 닫기
+            $('.modal-close, .close-modal').click(function() {
+                $('#scheduleWriteModal').fadeOut(300);
+            });
+
+            // 모달 외부 클릭 시 닫기
+            $(window).click(function(e) {
+                if ($(e.target).is('.detail-modal')) {
+                    $('#scheduleWriteModal').fadeOut(300);
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            // 모달 열기
+            $('.open-list-calendar').click(function() {
+                loadCalendarList();
+                $('#listCalendarModal').show();
+            });
+
+            // 모달 닫기
+            $('#listCalendarModal .close-modal').click(function() {
+                $('#listCalendarModal').hide();
+            });
+
+            // 캘린더 목록 불러오기
+            function loadCalendarList() {
+                $.ajax({
+                    url: '/schedule/calendar/list',
+                    method: 'GET',
+                    success: function(calendars) {
+                        const select = $('#calendar-select');
+                        select.find('option:not(:first)').remove();
+
+                        calendars.forEach(calendar => {
+                            select.append(`<option value="${calendar.id}">${calendar.title}</option>`);
+                        });
+                    }
+                });
+            }
+
+            // 캘린더 선택 시 정보 표시
+            $('#calendar-select').change(function() {
+                const selectedId = $(this).val();
+
+                if (!selectedId) {
+                    $('#calendar-info').hide();
+                    return;
+                }
+
+                $.ajax({
+                    url: '/calendar/detail/' + selectedId,
+                    method: 'GET',
+                    success: function(calendar) {
+                        console.log(calendar);
+
+                        $('#cal-name').val(calendar.title);
+                        $('#cal-color').css('background-color', calendar.color);
+
+                        // 공유 멤버 표시
+                        const $members = $('#cal-members');
+                        $members.empty();
+                        calendar.members.forEach(member => {
+                            $members.append(`
+                        <div class="selected-employee-tag">
+                            <span>${member.name}</span>
+                        </div>
+                    `);
+                        });
+
+                        $('#calendar-info').show();
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        // 종료 일시
+        $('#insert-endDate, #insert-endTime').on('change', function() {
+            const date = $('#insert-endDate').val();
+            const time = $('#insert-endTime').val();
+
+            if (date && time) {
+                $('input[name="endDate"]').val(date + time);
+
+                console.log( $('input[name="endDate"]').val())
+            }
+        });
+
+        // 시작 일시
+        $('#insert-startDate, #insert-startTime').on('change', function() {
+            const date = $('#insert-startDate').val();
+            const time = $('#insert-startTime').val();
+
+            if (date && time) {
+                $('input[name="startDate"]').val(date + time);
+            }
         });
     </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

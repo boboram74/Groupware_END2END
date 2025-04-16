@@ -132,6 +132,12 @@
         WHERE loginId = #{loginId}
     </select>
 
+    <select id="pwVali" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM EMPLOYEE_DETAIL
+        WHERE password = #{value}
+    </select>
+
     <select id="selectContactList" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT
         e.name,
@@ -166,6 +172,12 @@
             EXTRACT(MONTH FROM BIRTHDAY) = TO_CHAR(SYSDATE, 'MM')
         ORDER BY TO_CHAR(birthday, 'DD')
     </select>
+
+    <update id="changePw">
+        UPDATE EMPLOYEE_DETAIL
+        SET password = #{newPw}
+        WHERE id = #{id}
+    </update>
 
     <select id="selectByIdIn" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT EMPLOYEE.*, EMPLOYEE_DETAIL.BIRTHDAY, JOB.NAME AS jobName, DEPARTMENT.NAME AS departmentName

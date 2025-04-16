@@ -325,7 +325,7 @@
                 <span class="material-icons">mail</span>
                 <span class="btn-text">메일 작성</span>
             </button>
-            <button type="button" class="surface-bright" onClick="location.href='/approval/approval-test'">
+            <button type="button" class="surface-bright" onClick="location.href='/approval/list'">
                 <span class="material-icons">edit_note</span>
                 <span class="btn-text">결재 작성</span>
             </button>

@@ -33,7 +33,7 @@ public class ApprovalController {
     @Autowired
     private VacationService vacationService;
 
-    @RequestMapping("/approval-test")
+    @RequestMapping("/list")
     public String toList(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();

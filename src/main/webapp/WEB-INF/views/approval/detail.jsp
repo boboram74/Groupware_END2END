@@ -148,6 +148,33 @@
             </table>
         </div>
     </c:if>
+    <c:if test="${approvalFormDTO.name eq '연장근무신청서'}">
+        <div class="vacationBox">
+            <h3>근무 시간</h3>
+            <table class="vacationTable">
+                <tr>
+                    <th>추가 근무</th>
+                    <td>${vacationDTO.type}</td>
+                </tr>
+                <tr>
+                    <th>시작일</th>
+                    <td><fmt:formatDate value="${vacationDTO.startDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                </tr>
+                <tr>
+                    <th>종료일</th>
+                    <td><fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                </tr>
+                <tr>
+                    <th>총 휴가 일수</th>
+                    <td>${vacationDTO.vacationDate}일</td>
+                </tr>
+                <tr>
+                    <th>사유</th>
+                    <td>${vacationDTO.reason}</td>
+                </tr>
+            </table>
+        </div>
+    </c:if>
     <div class="body">
         <div class="titleBox">
             <input type="text" id="title" name="title" value="${approval.TITLE}" readonly>
@@ -158,7 +185,7 @@
     </div>
 
     <div class="signInform">
-        <button><a href="/approval/approval-test">목록으로</a></button>
+        <button><a href="/approval/list">목록으로</a></button>
     </div>
 </div>
 

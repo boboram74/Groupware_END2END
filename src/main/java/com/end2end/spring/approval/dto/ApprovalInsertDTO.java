@@ -21,6 +21,9 @@ public class ApprovalInsertDTO {
     // 연장근무 신청용
     private int commuteId;
     private String workOffTime;
+    private String workDate;
+    private String startTime;
+    private String endTime;
 
     // 휴가 신청용
     private String startDate;

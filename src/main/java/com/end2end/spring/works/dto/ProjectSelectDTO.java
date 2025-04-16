@@ -21,4 +21,5 @@ public class ProjectSelectDTO {
     private List<String> profileImg;
     private Date deadLine;
     private Timestamp regDate;
+    private String nearDeadline;
 }

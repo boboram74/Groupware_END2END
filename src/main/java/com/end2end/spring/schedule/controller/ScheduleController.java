@@ -37,6 +37,12 @@ public class ScheduleController {
         return scheduleService.selectByEmployeeId(employee.getId(), parsedStartDate, parsedEndDate);
     }
 
+    @ResponseBody
+    @RequestMapping("/detail/${id}")
+    public ScheduleDTO selectById(@PathVariable int id) {
+        return scheduleService.selectById(id);
+    }
+
     @RequestMapping("/insert")
     public String insert(ScheduleInsertDTO dto) {
         ScheduleDTO scheduleDTO = ScheduleDTO.builder()

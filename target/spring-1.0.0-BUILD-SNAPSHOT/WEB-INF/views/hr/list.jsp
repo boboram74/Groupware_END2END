@@ -17,14 +17,18 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
+            <a href="/hr/list">
             <li class="detail-menu-item active">
-                <span class="material-icons">badge</span>
-                <span>직원 관리</span>
+                    <span class="material-icons">badge</span>
+                    <span>직원 관리</span>
             </li>
+            </a>
+            <a href="/hr/chart">
             <li class="detail-menu-item">
-                <span class="material-icons">insert_chart</span>
-                <span>직원 통계</span>
+                    <span class="material-icons">insert_chart</span>
+                    <span>직원 통계</span>
             </li>
+            </a>
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>
@@ -72,7 +76,7 @@
                                     <td>${item.departmentName}</td>
                                     <td>${item.jobName}</td>
                                     <td class="btn">
-                                        <button type="button" class="resignationBtn secondary">처리 등록</button>
+                                        <button type="button" class="resignationBtn secondary" data-id="${item.id}">처리 등록</button>
                                     </td>
                                 </tr>
                             </c:if>

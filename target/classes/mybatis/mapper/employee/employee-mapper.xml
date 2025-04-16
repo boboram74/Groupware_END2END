@@ -246,8 +246,4 @@
         ORDER BY type, month
     </select>
 
-    <select id="findByLoginId"  resultType="java.lang.String">
-        SELECT loginId FROM EMPLOYEE_DETAIL WHERE ID = #{value}
-    </select>
-
 </mapper>

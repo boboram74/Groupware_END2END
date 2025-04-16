@@ -211,4 +211,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public String findByLoginId(String id) {
         return employeeDAO.findByLoginId(id);
     }
+
+    @Override
+    public List<Map<String, Object>> getVacationStats() {
+        return employeeDAO.getVacationStats();
+    }
+
+    @Override
+    public List<Map<String, Object>> getAttendanceStats() {
+        return employeeDAO.getAttendanceStats();
+    }
 }

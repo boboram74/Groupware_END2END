@@ -121,4 +121,12 @@ public class EmployeeDAO {
     public String findByLoginId(String id) {
         return mybatis.selectOne("employee.findByLoginId", id);
     }
+
+    public List<Map<String, Object>> getVacationStats() {
+        return mybatis.selectList("employee.vacationStats");
+    }
+
+    public List<Map<String, Object>> getAttendanceStats() {
+        return mybatis.selectList("employee.attendanceStats");
+    }
 }

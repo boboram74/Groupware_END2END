@@ -204,4 +204,14 @@
         SET resigndate = SYSDATE
         WHERE id = #{id}
     </update>
+
+    <select id="employeeAll" resultType="java.util.Map">
+        SELECT
+        d.name AS label,
+        COUNT(*) AS count
+        FROM EMPLOYEE e
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        WHERE e.RESIGNDATE IS NULL
+        GROUP BY d.name
+    </select>
 </mapper>

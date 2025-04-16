@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/hr")
 @Controller
@@ -58,14 +59,12 @@ public class HRController {
 
     @RequestMapping("/insert")
     public String insert(EmployeeDetailDTO dto, MultipartFile file) {
-        // TODO: 직원 데이터 추가
         employeeService.insert(dto, file);
         return "redirect:/";
     }
 
     @RequestMapping("/roleUpdate/{id}")
     public String roleUpdate(@PathVariable("id") String id) {
-        // TODO: 인사팀에서 승인하면 권한 추가
         employeeService.roleUpdate(id);
         return "redirect:/hr/list";
     }
@@ -73,31 +72,36 @@ public class HRController {
     @RequestMapping("/idCheck")
     @ResponseBody
     public boolean idCheck(String loginId) {
-        // TODO: 아이디 중복 검사
         return employeeService.idVali(loginId);
     }
 
     @RequestMapping("/update")
     public String update(HttpSession session, EmployeeDetailDTO dto, MultipartFile file) {
-        // TODO: 직원 데이터 수정
         employeeService.update(dto,file);
-        String employeeId = dto.getId();
 
+        String employeeId = dto.getId();
         session.setAttribute("employee", employeeService.selectById(employeeId));
         return "redirect:/mypage/" + employeeId;
     }
 
     @RequestMapping("/deleteById/{id}")
     public String deleteById(@PathVariable String id) {
-        // TODO: 해당 id의 직원 데이터 삭제
         employeeService.deleteById(id);
         return "redirect:/hr/list";
     }
 
     @RequestMapping("/isResigned/{id}")
     public String isResigned(@PathVariable String id) {
-        // TODO: 퇴사 처리
         employeeService.isResigned(id);
         return "redirect:/hr/list";
     }
+
+    @RequestMapping("/chart/employeeAll")
+    @ResponseBody
+    public List<Map<String, Object>> getEmploymentTypeChart() {
+        List<Map<String, Object>> result = employeeService.employeeAll();
+
+        return result;
+    }
+
 }

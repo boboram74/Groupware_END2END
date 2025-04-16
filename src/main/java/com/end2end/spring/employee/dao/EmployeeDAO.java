@@ -109,4 +109,8 @@ public class EmployeeDAO {
     }
 
     public void isResigned(String id) {mybatis.update("employee.isResigned",id);}
+
+    public List<Map<String,Object>> employeeAll(){
+        return mybatis.selectList("employee.employeeAll");
+    }
 }

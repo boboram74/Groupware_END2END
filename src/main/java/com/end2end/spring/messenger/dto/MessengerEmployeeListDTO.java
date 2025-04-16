@@ -10,4 +10,5 @@ public class MessengerEmployeeListDTO {
     private String name;
     private String teamName;
     private String jobName;
+    private String profileImg;
 }

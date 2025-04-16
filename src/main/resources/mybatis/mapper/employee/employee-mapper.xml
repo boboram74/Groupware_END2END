@@ -17,6 +17,7 @@
         FROM EMPLOYEE e
         JOIN DEPARTMENT d ON e.departmentId = d.id
         JOIN JOB j ON e.jobId = j.id
+        WHERE resignDate IS null
         ORDER BY e.name ASC
     </select>
 
@@ -78,7 +79,9 @@
             ON EMPLOYEE.jobId = JOB.id
         JOIN DEPARTMENT
             ON EMPLOYEE.departmentId = DEPARTMENT.id
-        WHERE LOGINID = #{loginId} AND PASSWORD = #{password}
+        WHERE LOGINID = #{loginId}
+        AND PASSWORD = #{password}
+        AND RESIGNDATE IS NULL
     </select>
 
     <select id="selectDetailById" resultType="com.end2end.spring.employee.dto.EmployeeDetailDTO">
@@ -150,6 +153,7 @@
         FROM EMPLOYEE e
         JOIN DEPARTMENT d ON e.departmentId = d.id
         JOIN JOB j ON e.jobId = j.id
+        WHERE resignDate IS null
         ORDER BY e.name ASC
     </select>
 
@@ -194,4 +198,56 @@
         </foreach>
         )
     </select>
+
+    <update id="isResigned">
+        UPDATE EMPLOYEE
+        SET resigndate = SYSDATE
+        WHERE id = #{id}
+    </update>
+
+    <select id="employeeAll" resultType="java.util.Map">
+        SELECT
+        d.name AS label,
+        COUNT(*) AS count
+        FROM EMPLOYEE e
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        WHERE e.RESIGNDATE IS NULL
+        GROUP BY d.name
+    </select>
+
+    <select id="monthlyStats" resultType="java.util.Map">
+        WITH months AS (
+        SELECT LPAD(LEVEL, 2, '0') AS month
+        FROM dual
+        CONNECT BY LEVEL &lt;= 12
+        ),
+        join_counts AS (
+        SELECT SUBSTR(id, 3, 2) AS month, COUNT(*) AS count
+        FROM EMPLOYEE
+        WHERE SUBSTR(id, 1, 2) = TO_CHAR(SYSDATE, 'YY')
+        GROUP BY SUBSTR(id, 3, 2)
+        ),
+        resign_counts AS (
+        SELECT TO_CHAR(resignDate, 'MM') AS month, COUNT(*) AS count
+        FROM EMPLOYEE
+        WHERE resignDate IS NOT NULL
+        AND EXTRACT(YEAR FROM resignDate) = TO_CHAR(SYSDATE, 'YYYY')
+        GROUP BY TO_CHAR(resignDate, 'MM')
+        )
+        SELECT m.month, NVL(j.count, 0) AS count, 'join' AS type
+        FROM months m
+        LEFT JOIN join_counts j ON m.month = j.month
+
+        UNION ALL
+
+        SELECT m.month, NVL(r.count, 0) AS count, 'resign' AS type
+        FROM months m
+        LEFT JOIN resign_counts r ON m.month = r.month
+        ORDER BY type, month
+    </select>
+
+    <select id="findByLoginId"  resultType="java.lang.String">
+        SELECT loginId FROM EMPLOYEE_DETAIL WHERE ID = #{value}
+    </select>
+
 </mapper>

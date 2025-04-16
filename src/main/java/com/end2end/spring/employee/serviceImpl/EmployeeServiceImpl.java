@@ -3,7 +3,6 @@ package com.end2end.spring.employee.serviceImpl;
 import com.end2end.spring.board.dao.BoardDAO;
 import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardCtUserDTO;
-import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.*;
 import com.end2end.spring.employee.service.EmployeeService;
@@ -14,10 +13,9 @@ import com.end2end.spring.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -41,10 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDetailDTO selectDetailById(String employeeId) {
-        // TODO: 해당 id의 사원 상세정보 조회
-        return employeeDAO.selectDetailById(employeeId);
-    }
+    public EmployeeDetailDTO selectDetailById(String employeeId) {return employeeDAO.selectDetailById(employeeId);}
 
     @Override
     public EmployeeDTO login(LoginDTO dto) {
@@ -148,10 +143,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteById(String id) {
-        // TODO: 해당 id의 사원 삭제
-        employeeDAO.deleteById(id);
-    }
+    public void deleteById(String id) {employeeDAO.deleteById(id);}
 
     @Override
     public List<EmployeeDTO> selectByDepartmentId(int departmentId) {
@@ -179,9 +171,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDTO> selectByThisMonthBirthday() {
-        return employeeDAO.selectByThisMonthBirthday();
-    }
+    public List<EmployeeDTO> selectByThisMonthBirthday() {return employeeDAO.selectByThisMonthBirthday();}
 
     @Override
     public boolean pwVali(String currentPw) {return employeeDAO.pwVali(currentPw);}
@@ -189,4 +179,36 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void changePw(String newPw,String id) {employeeDAO.changePw(newPw,id);}
 
+    @Override
+    public void isResigned(String id) {employeeDAO.isResigned(id);}
+
+    @Override
+    public List<Map<String, Object>> employeeAll() {
+        return employeeDAO.employeeAll();
+    }
+
+    @Override
+    public Map<String, List<Integer>> getMonthlyLineData() {
+        List<Map<String, Object>> rawList = employeeDAO.getMonthlyStats();
+
+        // 초기화: 12개월 모두 0으로 채움
+        Map<String, List<Integer>> result = new HashMap<>();
+        result.put("join", new ArrayList<>(Collections.nCopies(12, 0)));
+        result.put("resign", new ArrayList<>(Collections.nCopies(12, 0)));
+
+        for (Map<String, Object> row : rawList) {
+            String type = (String) row.get("TYPE"); // join 또는 resign
+            int month = Integer.parseInt((String) row.get("MONTH")); // '01' → 1
+            int count = ((Number) row.get("COUNT")).intValue();
+
+            result.get(type).set(month - 1, count); // 0-based index
+        }
+
+        return result;
+    }
+
+    @Override
+    public String findByLoginId(String id) {
+        return employeeDAO.findByLoginId(id);
+    }
 }

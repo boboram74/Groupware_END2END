@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum AlarmType {
     LOGIN("login", "새로운 환경에서 로그인했습니다.", "primary"),
+    VACATION_APPROVE("event_available", "휴가 신청이 승인되었습니다.", "success"),
     SUBMIT_APPROVAL("description", "내 전자 결재가 승인되었습니다.", "success"),
     REJECT_APPROVAL("description", "내 전자 결재가 반려되었습니다.", "danger"),
     CHECK_APPROVAL("check_circle", "승인이 필요한 전자 결재가 있습니다.", "warning"),

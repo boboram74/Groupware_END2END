@@ -46,7 +46,13 @@ public class AlarmService {
         ApprovalDTO approvalDTO = approvalDAO.selectDTOById(approvalId);
 
         if (approvalDTO.getState().equals("SUBMIT")) {
-            send(AlarmDTO.of(AlarmType.SUBMIT_APPROVAL, approvalDTO.getEmployeeId(), url),
+            AlarmType alarmType = null;
+            if (approvalDAO.selectByFormId(approvalDTO.getApprovalFormId()).getName().contains("휴가")) {
+                alarmType = AlarmType.VACATION_APPROVE;
+            } else {
+                alarmType = AlarmType.SUBMIT_APPROVAL;
+            }
+            send(AlarmDTO.of(alarmType, approvalDTO.getEmployeeId(), url),
                     approvalDTO.getEmployeeId());
         } else if (approvalDTO.getState().equals("REJECT")) {
             send(AlarmDTO.of(AlarmType.REJECT_APPROVAL, approvalDTO.getEmployeeId(), url),

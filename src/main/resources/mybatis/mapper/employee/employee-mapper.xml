@@ -17,6 +17,7 @@
         FROM EMPLOYEE e
         JOIN DEPARTMENT d ON e.departmentId = d.id
         JOIN JOB j ON e.jobId = j.id
+        WHERE resignDate IS null
         ORDER BY e.name ASC
     </select>
 
@@ -150,6 +151,7 @@
         FROM EMPLOYEE e
         JOIN DEPARTMENT d ON e.departmentId = d.id
         JOIN JOB j ON e.jobId = j.id
+        WHERE resignDate IS null
         ORDER BY e.name ASC
     </select>
 

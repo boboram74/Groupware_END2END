@@ -263,16 +263,19 @@
     const addContent = () => {
         const content = document.getElementById("content").value;
         const board = '${board.id}';
-        const employee = '${employee.id}'
+        const employee = '${employee.id}';
+
+        const formData = new FormData();
+        formData.append("content", content);
+        formData.append("boardId", board);
+        formData.append("employeeId", employee);
+
         $.ajax({
             type: "post",
             url: "/reply/insert",
-            data: {
-                content: content,
-                boardId: board,
-                employeeId: employee
-            },
-            dataType: "JSON",
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function (response) {
                 console.log("작성성공");
                 loadReplies();

@@ -6,7 +6,7 @@
 
     <insert id="insert" parameterType="com.end2end.spring.board.dto.ReplyDTO">
         insert into reply(id,boardId,employeeId,content,regDate)
-        values(reply_id_seq.nextval,#{boardId},#{employeeId},#{content},sysdate)
+        values(reply_id_seq.nextval, #{boardId}, #{employeeId}, #{content,jdbcType=VARCHAR}, sysdate)
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             SELECT REPLY_ID_SEQ.currval FROM DUAL
         </selectKey>

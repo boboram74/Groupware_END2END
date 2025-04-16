@@ -4,7 +4,9 @@ import com.end2end.spring.board.dto.ReplyDTO;
 import com.end2end.spring.board.service.ReplyService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,14 +30,16 @@ public class ReplyController {
 
     @RequestMapping("/insert")
     @ResponseBody
-    public void insert(HttpSession session,ReplyDTO dto) {
+    public ResponseEntity<String> insert(HttpSession session, ReplyDTO dto) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
         dto.setEmployeeId(employeeId);
+
         System.out.println("댓글 등록" + dto);
         replyService.insert(dto);
         //return "/board/list";
         // TODO: 댓글을 등록함
+        return ResponseEntity.ok().build();
     }
 
 

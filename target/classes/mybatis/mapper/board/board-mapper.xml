@@ -12,7 +12,7 @@
         SELECT * FROM BOARD
     </select>
 
-    <delete id="boardId">
+    <delete id="deleteById">
         delete from board where id = #{id}
     </delete>
 

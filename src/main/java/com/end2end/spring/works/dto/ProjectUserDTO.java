@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,5 +17,5 @@ public class ProjectUserDTO {
     private int id;
     private String employeeId;
     private int projectId;
-    private Timestamp regDate;
+
 }

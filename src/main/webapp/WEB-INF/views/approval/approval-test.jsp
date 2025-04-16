@@ -2,9 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<link rel="stylesheet" href="/css/template/exam.css"/>
-<link rel="stylesheet" href="/css/mail/mail-list.css"/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+<link rel="stylesheet" href="/css/template/exam.css" />
 <style>
     .approval-list-wrapper {
         display: flex;
@@ -30,7 +28,7 @@
     }
 
     select {
-        padding: 0 8px; /* 좌우 여백 추가 */
+        padding: 0 8px;  /* 좌우 여백 추가 */
         background-color: var(--md-sys-color-surface-bright);
         color: var(--md-sys-color-surface);
     }
@@ -169,7 +167,7 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item" onclick="location.href='/approval/approval-test'">
+            <li class="detail-menu-item" onclick="location.href='/approval/list'">
                 <span class="material-icons">person</span>
                 <span>나의 전자결재</span>
             </li>
@@ -179,11 +177,11 @@
                 <span class="detail-badge"><span>1</span></span>
             </li>
             <c:if test="${team}">
-                <li class="detail-menu-item" onclick="location.href='/approval/all'">
-                    <span class="material-icons">description</span>
-                    <span class="detail-menu-disc">모든 전자 결재함</span>
-                    <span class="detail-badge"><span>1</span></span>
-                </li>
+            <li class="detail-menu-item" onclick="location.href='/approval/all'">
+                <span class="material-icons">description</span>
+                <span class="detail-menu-disc">모든 전자 결재함</span>
+                <span class="detail-badge"><span>1</span></span>
+            </li>
             </c:if>
         </ul>
         <button class="detail-modal-close">
@@ -196,14 +194,14 @@
         <div class="search">
             <div>
                 <select id="searchOption">
-                    <option>보낸 사람</option>
-                    <option>내용</option>
-                    <option>제목</option>
+                    <option>보낸 사람 </option>
+                    <option>내용 </option>
+                    <option>제목 </option>
                 </select>
             </div>
             <div class="searchInput">
                 <form action="/approval/search/" method="get" class="searchForm">
-                    <input type="text" name="keyword" placeholder="문서종류,기안자,제목" class="searchInput"/>
+                    <input type="text" name="keyword" placeholder="문서종류,기안자,제목" class="searchInput" />
                     <button type="submit" class="searchBtn">검색</button>
                 </form>
             </div>
@@ -235,30 +233,28 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:choose>
-                            <c:when test="${empty waitingList}">
-                                <tr>
-                                    <td colspan="6" class="emptyMessage">대기 중인 문서가 없습니다.</td>
-                                </tr>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach var="i" items="${waitingList}">
+                            <c:choose>
+                                <c:when test="${empty waitingList}">
                                     <tr>
-                                        <td class="apColStar">★</td>
-                                        <td class="apColTitle title"
-                                            onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
-                                        <td class="apColStatus">결재 대기중</td>
-                                        <td class="apColWriter writer-info">
-                                            <div class="profile-img"
-                                                 style="background-image: url('${i.PROFILEIMG}')"></div>
-                                            <span>${i.DRAFTERNAME}</span>
-                                        </td>
-                                        <td class="apColDate">${i.REGDATE}</td>
-                                        <td class="apColType">${i.FORMNAME}</td>
+                                        <td colspan="6" class="emptyMessage">대기 중인 문서가 없습니다.</td>
                                     </tr>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:forEach var="i" items="${waitingList}">
+                                        <tr>
+                                            <td class="apColStar">★</td>
+                                            <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
+                                            <td class="apColStatus">결재 대기중</td>
+                                            <td class="apColWriter writer-info">
+                                                <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
+                                                <span>${i.DRAFTERNAME}</span>
+                                            </td>
+                                            <td class="apColDate">${i.REGDATE}</td>
+                                            <td class="apColType">${i.FORMNAME}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
                         </tbody>
                     </table>
                 </div>
@@ -290,12 +286,10 @@
                                 <c:forEach var="i" items="${goingList}">
                                     <tr>
                                         <td class="apColStar">★</td>
-                                        <td class="apColTitle title"
-                                            onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
+                                        <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">결재 진행중</td>
                                         <td class="apColWriter writer-info">
-                                            <div class="profile-img"
-                                                 style="background-image: url('${i.PROFILEIMG}')"></div>
+                                            <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
                                             <span>${i.DRAFTERNAME}</span>
                                         </td>
                                         <td class="apColDate">${i.REGDATE}</td>
@@ -335,12 +329,10 @@
                                 <c:forEach var="i" items="${completedList}">
                                     <tr>
                                         <td class="apColStar">★</td>
-                                        <td class="apColTitle"
-                                            onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
+                                        <td class="apColTitle" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">결재 완료</td>
                                         <td class="apColWriter writer-info">
-                                            <div class="profile-img"
-                                                 style="background-image: url('${i.PROFILEIMG}')"></div>
+                                            <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
                                             <span>${i.DRAFTERNAME}</span>
                                         </td>
                                         <td class="apColDate">${i.REGDATE}</td>
@@ -380,12 +372,10 @@
                                 <c:forEach var="i" items="${rejectList}">
                                     <tr>
                                         <td class="apColStar">★</td>
-                                        <td class="apColTitle title"
-                                            onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
+                                        <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">반려</td>
                                         <td class="apColWriter writer-info">
-                                            <div class="profile-img"
-                                                 style="background-image: url('${i.PROFILEIMG}')"></div>
+                                            <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
                                             <span>${i.DRAFTERNAME}</span>
                                         </td>
                                         <td class="apColDate">${i.REGDATE}</td>
@@ -419,8 +409,8 @@
         }
     });
 
-    $(document).ready(function () {
-        $('.detail-menu-item').on('click', function () {
+    $(document).ready(function() {
+        $('.detail-menu-item').on('click', function() {
             $('.detail-menu-item').removeClass('active');
             $(this).addClass('active');
         });
@@ -429,18 +419,18 @@
         const $detailMenuModal = $('.detail-menu-modal');
         const $closeBtn = $('.detail-modal-close');
 
-        $menuBtn.on('click', function () {
+        $menuBtn.on('click', function() {
             $detailMenuModal.addClass('active');
             $('body').css('overflow', 'hidden');
         });
 
-        $closeBtn.on('click', function () {
+        $closeBtn.on('click', function() {
             $detailMenuModal.removeClass('active');
             $('body').css('overflow', '');
         });
 
         // 모달 외부 클릭 시 닫기
-        $(window).on('click', function (e) {
+        $(window).on('click', function(e) {
             if ($(e.target).is($detailMenuModal)) {
                 $detailMenuModal.removeClass('active');
                 $('body').css('overflow', '');
@@ -448,7 +438,7 @@
         });
     });
 
-    $('#search-form').on('submit', function (e) {
+    $('#search-form').on('submit', function(e) {
 
         const form = $(this);
 

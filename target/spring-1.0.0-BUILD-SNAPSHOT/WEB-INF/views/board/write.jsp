@@ -158,6 +158,4 @@
     </a>
 </div>
 </form>
-
-<script src="/js/main/contact.js" type="text/javascript"></script>
-<jsp:include page="/WEB-INF/views/board/board-footer.jsp"/>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

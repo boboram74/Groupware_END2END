@@ -173,7 +173,6 @@
         ORDER BY TO_CHAR(birthday, 'DD')
     </select>
 
-
     <update id="changePw">
         UPDATE EMPLOYEE_DETAIL
         SET password = #{newPw}

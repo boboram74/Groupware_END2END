@@ -2,6 +2,7 @@ package com.end2end.spring.alarm;
 
 import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
+import com.end2end.spring.board.dao.BoardDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.MailURLDTO;
@@ -26,6 +27,7 @@ public class AlarmService {
     @Autowired private ProjectUserDAO projectUserDAO;
     @Autowired private CalendarUserDAO calendarUserDAO;
     @Autowired private ScheduleDAO scheduleDAO;
+    @Autowired private BoardDAO boardDAO;
 
     public void sendNewLoginIpAlarm(String employeeId) {
         send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
@@ -104,6 +106,11 @@ public class AlarmService {
             String employeeId = calendarUserDTO.getEmployeeId();
             send(AlarmDTO.of(AlarmType.SCHEDULE_CREATE, employeeId, "/schedule/list"), employeeId);
         }
+    }
+
+    public void sendAddReplyAlarm(int boardId) {
+        String employeeId = boardDAO.selectById(boardId).getEmployeeId();
+        send(AlarmDTO.of(AlarmType.GET_REPLY, employeeId, "/board/detail/" + boardId), employeeId);
     }
 
     private void send(AlarmDTO dto, String employeeId) {

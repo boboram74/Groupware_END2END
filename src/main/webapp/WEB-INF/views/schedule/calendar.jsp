@@ -391,9 +391,7 @@
                     <div class="form-group">
                         <label>공유 사원</label>
                         <div class="employee-selector">
-                            <div class="selected-employees">
-                                <!-- 선택된 사원들이 여기에 태그처럼 표시됩니다 -->
-                            </div>
+                            <div class="selected-employees"></div>
                             <div class="employee-list">
                                 <c:forEach items="${employeeList}" var="item">
                                     <c:if test="${item.id != employee.id}">
@@ -790,7 +788,7 @@
                     const member = members[i];
                     insertSelectEmployees(
                         $('#calendarWriteForm .calendar-employee-item[data-item' + member.id +']'),
-                        Number(member.id), member.name, member.departmentName);
+                        Number(member.id), member.name + " " + member.jobName, member.departmentName);
                 }
 
                 $('#calendarWriteForm input[name=id]').val(calendar.id);

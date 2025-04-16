@@ -37,11 +37,6 @@ public class ProjectWorkController {
         return "/works/write";
     }
 
-    @RequestMapping("/write/update")
-    public String toUpdate(Model model) {
-        // TODO: 게시글 수정 폼으로 이동
-        return "/works/updatewrite";
-    }
 
     @ResponseBody
     @RequestMapping("/detail/{id}")
@@ -61,12 +56,22 @@ public class ProjectWorkController {
         return response;
     }
 
+//    @ResponseBody
+//    @RequestMapping("/searchName")
+//    public List<ProjectWorkDTO> selectByName(@RequestParam String name) {}
+//
+//    @RequestMapping("/searchWriter")
+//    public List<ProjectWorkDTO> selectByWorksId(int worksId) {}
+
+
+
     @RequestMapping("/insert")
     public String insert(int projectId, HttpSession session, ProjectWorkDTO wdto, @RequestParam("files") MultipartFile[] files) throws Exception {
 
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
         String projectUserId = wserv.selectByProjectIdAndEmployeeId(wdto.getProjectId(), employeeDTO.getId());
         wdto.setProjectUserId(projectUserId);
+        System.out.println(projectUserId);
 
         wserv.insert(files, wdto);
         // TODO: 게시글 등록

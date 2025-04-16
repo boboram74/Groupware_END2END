@@ -33,6 +33,22 @@ public class ProjectController {
 
         List<ProjectSelectDTO> projects = projectService.selectAllProject();
 
+
+//        if (isProjectFinish) {
+            for (ProjectSelectDTO dto : projects) {
+                int id = dto.getId();
+                List<ProjectWorkDTO> list = wserv.selectAll(id);
+                boolean isProjectFinish = list.stream()
+                        .allMatch(dtos -> "FINISH".equals(dtos.getState()));
+                if (dto.getId() == id) {
+                    dto.setStatus("FINISH");
+                    break;
+                }
+                System.out.println("nearDeadline: " + dto.getNearDeadline());
+            }
+//        }
+
+        model.addAttribute("isTeamLeader", "TEAM_LEADER".equals(EmployeeDTO.getRole()));
         model.addAttribute("projects", projects);
         model.addAttribute("employee", EmployeeDTO);
 
@@ -40,26 +56,7 @@ public class ProjectController {
     }
 
 
-//    @RequestMapping("/profileSelect")
-//    public String selectProjectMemberProfiles(Model model, @RequestParam int id) {
-//
-//        System.out.println("프로필찾는컨트롤러도착");
-//
-//        List<EmployeeDTO> profiles = projectService.selectProjectMemberProfiles(id);
-//        model.addAttribute("profiles", profiles);
-//        return "works/worksmain"; // 리다이렉트 대신 직접 뷰 반환
-//    }
 
-//        @RequestMapping("list")
-//            public String list(HttpSession session,Model model ){
-//            EmployeeDTO EmployeeDTO = (EmployeeDTO)session.getAttribute("employee");
-//
-//            model.addAttribute("projects",  projectService.selectAll());
-//
-
-    /// /            employeedto에 role 에서 권한부분에 팀리더만 버튼 보이도록 설정
-//            return     "works/worksmain";
-//        }
     @RequestMapping("/insert")
     public String insert(@ModelAttribute ProjectInsertDTO dto) {
             projectService.insert(dto);
@@ -75,30 +72,14 @@ public class ProjectController {
     }
 
     @RequestMapping("/detail/{id}")
-    public String detail(@PathVariable int id, Model model) {
-
+    public String detail(@PathVariable int id, Model model, HttpSession session) {
+        EmployeeDTO EmployeeDTO = (EmployeeDTO) session.getAttribute("employee");
         ProjectDTO project = projectService.selectById(id);
         List<ProjectWorkDTO> list = wserv.selectAll(id);
-        List<ProjectSelectDTO> projects = projectService.selectAllProject();
-        boolean isProjectFinish = list.stream()
-                .allMatch(dto -> "FINISH".equals(dto.getState()));
-        if (isProjectFinish) {
-            for (ProjectSelectDTO dto : projects) {
-                if (dto.getId() == id) {
-                    dto.setStatus("FINISH");
-
-
-                    break;
-                }
-            }
-        }
-        //isProjectFinish는 완료된 프로젝트만 숨길수있도록 조건을 걸어서 필요한거임 !!!!
-        System.out.println(isProjectFinish);
-
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
         model.addAttribute("works", list);
-        model.addAttribute("isProjectFinish", isProjectFinish);
+System.out.println("프젝컨트롤러"+list);
         return "works/detailpage";
     }
 

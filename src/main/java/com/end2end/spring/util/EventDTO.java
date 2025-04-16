@@ -119,12 +119,15 @@ public class EventDTO {
         String endDateStr = (!endDateToLocalDate.isAfter(endDate)) ?
                 dto.getEndDate().toInstant().toString() : endDate.toString();
 
+        String title = String.format("%s 기간 (%s ~ %s)", dto.getTitle(), startDateStr, endDateStr);
+
         return EventDTO.builder()
-                .title(dto.getTitle())
+                .title(title)
                 .startDate(startDateStr)
                 .endDate(endDateStr)
                 .display("block")
                 .eventName("period")
+                .backgroundColor(dto.getColor())
                 .build();
     }
 }

@@ -132,7 +132,7 @@ public class ProjectController {
         projectService.updateProjectUser(projectId, employeeId);
 
 
-        return "redirect:/project/main";
+        return "redirect:/project/detail/" + projectId;
     }
 
     // Delete

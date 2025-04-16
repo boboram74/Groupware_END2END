@@ -175,6 +175,11 @@ public class BoardController {
         // TODO: 카테고리 입력을 받음
     }
 
+    @ResponseBody
+    @RequestMapping("/recent")
+    public List<BoardDTO> recent() {
+        return boardService.selectRecent();
+    }
 
     @RequestMapping("/category/update")
     public void updateCategory(BoardCategoryDTO dto) {

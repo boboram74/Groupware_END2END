@@ -86,4 +86,9 @@ public class BoardServiceImpl implements BoardService {
     public BoardCategoryDTO selectCategoryById(int categoryId) {
         return  boardCategoryService.selectCategoryById(categoryId);
     }
+
+    @Override
+    public List<BoardDTO> selectRecent() {
+        return boardDAO.selectRecent();
+    }
 }

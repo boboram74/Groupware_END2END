@@ -136,7 +136,7 @@
         <ul class="full-menu-list">
           <li>
             <a href="/">
-              <i class="material-icons">list</i>
+              <i class="material-icons">home</i>
               <span>홈</span>
             </a>
           </li>
@@ -202,6 +202,7 @@
           </a>
           <a href="/" class="mobile-menu-item">
             <i class="material-icons">home</i>
+            <span>홈</span>
           </a>
           <a href="#" class="mobile-menu-item mobile-chat-btn">
             <i class="material-icons">chat</i>

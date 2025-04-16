@@ -21,4 +21,5 @@ public interface BoardService {
     void complaint(ComplaintDTO dto);
     void insertCategory(BoardCategoryDTO dto);
     BoardCategoryDTO selectCategoryById(int categoryId);
+    List<BoardDTO> selectRecent();
 }

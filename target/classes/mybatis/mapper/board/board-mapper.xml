@@ -40,5 +40,23 @@
         WHERE id = #{id}
     </update>
 
-
+    <select id="selectRecent" resultType="com.end2end.spring.board.dto.BoardDTO">
+        SELECT A.*
+        FROM (
+            SELECT
+                BOARD.*,
+                NVL(replyCount, 0) AS replyCount,
+                EMPLOYEE.NAME as employeeName,
+                EMPLOYEE.profileImg AS profileImg,
+                ROW_NUMBER() over (ORDER BY BOARD.id DESC) AS rnum
+            FROM BOARD
+            JOIN EMPLOYEE
+                ON BOARD.EMPLOYEEID = EMPLOYEE.ID
+            LEFT JOIN (
+                SELECT COUNT(*) AS replyCount, boardId
+                FROM REPLY
+                GROUP BY BOARDID) R
+        ON R.boardId = BOARD.id) A
+        WHERE rnum BETWEEN 1 AND 8
+    </select>
 </mapper>

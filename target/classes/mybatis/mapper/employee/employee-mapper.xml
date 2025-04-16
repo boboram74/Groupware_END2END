@@ -79,7 +79,9 @@
             ON EMPLOYEE.jobId = JOB.id
         JOIN DEPARTMENT
             ON EMPLOYEE.departmentId = DEPARTMENT.id
-        WHERE LOGINID = #{loginId} AND PASSWORD = #{password}
+        WHERE LOGINID = #{loginId}
+        AND PASSWORD = #{password}
+        AND RESIGNDATE IS NULL
     </select>
 
     <select id="selectDetailById" resultType="com.end2end.spring.employee.dto.EmployeeDetailDTO">

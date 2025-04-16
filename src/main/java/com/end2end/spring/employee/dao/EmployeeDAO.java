@@ -113,4 +113,8 @@ public class EmployeeDAO {
     public List<Map<String,Object>> employeeAll(){
         return mybatis.selectList("employee.employeeAll");
     }
+
+    public List<Map<String, Object>> getMonthlyStats() {
+        return mybatis.selectList("employee.monthlyStats");
+    }
 }

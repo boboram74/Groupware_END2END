@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -186,5 +185,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Map<String, Object>> employeeAll() {
         return employeeDAO.employeeAll();
+    }
+
+    @Override
+    public Map<String, List<Integer>> getMonthlyLineData() {
+        List<Map<String, Object>> rawList = employeeDAO.getMonthlyStats();
+
+        // 초기화: 12개월 모두 0으로 채움
+        Map<String, List<Integer>> result = new HashMap<>();
+        result.put("join", new ArrayList<>(Collections.nCopies(12, 0)));
+        result.put("resign", new ArrayList<>(Collections.nCopies(12, 0)));
+
+        for (Map<String, Object> row : rawList) {
+            String type = (String) row.get("TYPE"); // join 또는 resign
+            int month = Integer.parseInt((String) row.get("MONTH")); // '01' → 1
+            int count = ((Number) row.get("COUNT")).intValue();
+
+            result.get(type).set(month - 1, count); // 0-based index
+        }
+
+        return result;
     }
 }

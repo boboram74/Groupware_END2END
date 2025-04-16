@@ -45,30 +45,44 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 2번 그래프 : 직원 변동 현황 (선 그래프: 입사 및 퇴사)
-    const ctx2 = document.getElementById("chart2").getContext("2d");
-    new Chart(ctx2, {
-        type: "line",
-        data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [{
-                label: "입사자",
-                data: [10, 15, 20, 25, 30, 35, 40, 38, 42, 45, 50, 55],
-                borderColor: "rgba(54, 162, 235, 1)",
-                borderWidth: 2,
-                fill: false
-            }, {
-                label: "퇴사자",
-                data: [5, 8, 10, 12, 15, 18, 20, 17, 15, 13, 10, 8],
-                borderColor: "rgba(255, 99, 132, 1)",
-                borderWidth: 2,
-                fill: false
-            }]
+    $.ajax({
+        url: "/hr/chart/monthly",
+        method: "GET",
+        error : function(request, status, error) {
+            console.log("code: " + request.status)
+            console.log("message: " + request.responseText)
+            console.log("error: " + error);
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
+        success: function (data) {
+            const ctx2 = document.getElementById("chart2").getContext("2d");
+
+            new Chart(ctx2, {
+                type: "line",
+                data: {
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                    datasets: [{
+                        label: "입사자",
+                        data: data.join,    // ⚠️ key가 소문자 "join"이어야 함
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 2,
+                        fill: false
+                    }, {
+                        label: "퇴사자",
+                        data: data.resign,  // ⚠️ key가 소문자 "resign"이어야 함
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
         }
     });
+
 
     // 3번 그래프 : 부서별 직원 수 (가로 막대 그래프)
     const ctx3 = document.getElementById("chart3").getContext("2d");

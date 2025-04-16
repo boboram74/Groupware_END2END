@@ -104,4 +104,10 @@ public class HRController {
         return result;
     }
 
+    @RequestMapping("/chart/monthly")
+    @ResponseBody
+    public Map<String, List<Integer>> getMonthlyLineChart() {
+        return employeeService.getMonthlyLineData();
+    }
+
 }

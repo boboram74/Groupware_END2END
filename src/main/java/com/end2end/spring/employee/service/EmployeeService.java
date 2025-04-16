@@ -27,4 +27,5 @@ public interface EmployeeService {
     void changePw(String newPw,String id);
     void isResigned(String id);
     List<Map<String, Object>> employeeAll();
+    Map<String, List<Integer>> getMonthlyLineData();
 }

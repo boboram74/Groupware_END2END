@@ -42,7 +42,6 @@ public class ReplyController {
         return ResponseEntity.ok().build();
     }
 
-
     @RequestMapping("/update")
     public void update(ReplyDTO dto) {
         // TODO: 댓글을 수정함

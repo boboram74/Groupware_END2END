@@ -219,14 +219,17 @@
     <a href="/board/list">
         <button class="backBtn">목록</button>
     </a>
-    <a href="/board/write/update?id=${board.id}">
-        <button type="button" class="editBtn">수정</button>
-    </a>
-    <form action="/board/delete" method="post">
-        <input type="hidden" name="id" value="${board.id}"/>
-        <button type="submit" class="deleteBtn">삭제</button>
-    </form>
+    <c:if test="${not empty employee and employee.id eq board.employeeId}">
+        <a href="/board/write/update?id=${board.id}">
+            <button type="button" class="editBtn">수정</button>
+        </a>
+        <form action="/board/delete" method="post">
+            <input type="hidden" name="id" value="${board.id}"/>
+            <button type="submit" class="deleteBtn">삭제</button>
+        </form>
+    </c:if>
 </div>
+
 <hr>
 <form id="replyForm" enctype="multipart/form-data">
     <div class="replyContainer">

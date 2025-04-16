@@ -62,7 +62,12 @@ public class ProjectWorkController {
 //
 //    @RequestMapping("/searchWriter")
 //    public List<ProjectWorkDTO> selectByWorksId(int worksId) {}
-
+@ResponseBody
+@RequestMapping("/search/{projectId}")
+public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable int projectId, String searchOption) {
+       System.out.println(keyword+projectId);
+        return wserv.searchBynameAndTitle(keyword,projectId,searchOption);
+}
 
 
     @RequestMapping("/insert")

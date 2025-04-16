@@ -69,6 +69,22 @@
             </table>
         </div>
         <div class="pageNavi">
+            <c:if test="${pageNavi.hasPrev}">
+                <span class="material-icons paging" onclick="location.href='/login/history/${pageNavi.start - 1}'">chevron_left</span>
+            </c:if>
+            <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
+                <c:choose>
+                    <c:when test="${item == page}">
+                        <span class="paging active" onClick="location.href='/login/history/${item}'">${item}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="paging" onClick="location.href='/login/history/${item}'">${item}</span>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:if test="${pageNavi.hasNext}">
+                <span class="material-icons paging" onclick="location.href='/login/history/${pageNavi.end + 1}'">chevron_right</span>
+            </c:if>
         </div>
     </div>
     <script>

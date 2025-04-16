@@ -83,6 +83,19 @@ System.out.println("프젝컨트롤러"+list);
         return "works/detailpage";
     }
 
+    @RequestMapping("/searchDetail/{id}")
+    public String toSearchDetail(@PathVariable int id, Model model, HttpSession session) {
+        EmployeeDTO EmployeeDTO = (EmployeeDTO) session.getAttribute("employee");
+        ProjectDTO project = projectService.selectById(id);
+
+        List<ProjectWorkDTO> list = wserv.selectAll(id);
+        model.addAttribute("project", project);
+        model.addAttribute("projectId", id);
+        model.addAttribute("works", list);
+        System.out.println("프젝컨트롤러"+list);
+        return "works/detailpage";
+    }
+
     @ResponseBody
     @RequestMapping("/latestProjectId")
     public int findLatestProject(Model model) {

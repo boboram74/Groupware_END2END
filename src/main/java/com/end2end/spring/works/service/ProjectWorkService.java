@@ -17,4 +17,5 @@ public interface ProjectWorkService {
     int getChartDataCount(int selectedId);
     int countByState(int selectedId, String state);
     int countByType(int selectedId, String type);
+    List<ProjectWorkDTO> searchBynameAndTitle(String keyword,int projectId, String searchOption);
 }

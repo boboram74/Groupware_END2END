@@ -75,7 +75,7 @@
                 </c:if>
                 <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
                     <c:choose>
-                        <c:when test="${item == page}">
+                        <c:when test="${item == pageNavi.page}">
                             <span class="paging active" onClick="location.href='/login/history?page=${item}'">${item}</span>
                         </c:when>
                         <c:otherwise>

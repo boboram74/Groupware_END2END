@@ -61,7 +61,7 @@
         <span>Works</span>
       </div>
 
-      <div class="menu-item" onClick="location.href='/contact'">
+      <div class="menu-item" onClick="location.href='/contact?page=1'">
         <i class="material-icons">contacts</i>
         <span>주소록</span>
       </div>

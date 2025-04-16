@@ -15,4 +15,5 @@ public class ChatRoomListDTO {
     private Integer messageRoomId;
     private String roomName;
     private String lastMessage;
+    private String profileImg;
 }

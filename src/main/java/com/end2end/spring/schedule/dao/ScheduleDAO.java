@@ -35,4 +35,8 @@ public class ScheduleDAO {
     public void deleteById(int id) {
         mybatis.delete("schedule.deleteById", id);
     }
+
+    public int countTodayScheduleByEmployeeId(String employeeId) {
+        return mybatis.selectOne("schedule.countTodayScheduleByEmployeeId", employeeId);
+    }
 }

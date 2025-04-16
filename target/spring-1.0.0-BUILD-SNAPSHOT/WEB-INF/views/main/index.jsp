@@ -377,14 +377,14 @@
                         <span class="material-icons">mail</span>
                         <span class="summary-text">새 메일</span>
                     </div>
-                    <span class="summary-count">5</span>
+                    <span class="summary-count">${mailReadCount}</span>
                 </div>
                 <div class="summary-item">
                     <div class="summary-left">
                         <span class="material-icons">event</span>
                         <span class="summary-text">오늘 일정</span>
                     </div>
-                    <span class="summary-count">3</span>
+                    <span class="summary-count">${todayScheduleCount}</span>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ public interface ScheduleService {
     List<EventDTO> selectByEmployeeId(String employeeId, LocalDate startDate, LocalDate endDate) throws IOException;
     List<EventDTO> selectByCalenderId(int calenderId);
     List<ScheduleDTO> search();
+    int countTodayScheduleByEmployeeId(String employeeId);
     ScheduleDTO selectById(int id);
     void insert(ScheduleDTO dto);
     void update(ScheduleDTO dto);

@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<link rel="stylesheet" href="/css/template/exam.css" />
 <link rel="stylesheet" href="/css/main/index.css" />
 <style>
     .birth-item {
@@ -84,6 +85,111 @@
             justify-content: center;
         }
     }
+
+    /* 이벤트 높이 조절 */
+    .fc-event {
+        height: 5px !important;  /* 원하는 높이로 조절 */
+        line-height: 5px !important;
+        padding: 0 !important;
+        margin: 1px 0 !important;
+    }
+
+    /* 이벤트 컨테이너 높이 조절 */
+    .fc-daygrid-event-harness {
+        height: 5px !important;
+    }
+
+    /* 여러 이벤트가 있을 때의 간격 조절 */
+    .fc .fc-daygrid-day-events {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* 이벤트 내부 여백 제거 */
+    .fc-daygrid-event {
+        padding: 0 !important;
+    }
+</style>
+<style>
+    .detail-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    /* box, box-content 스타일을 활용하면서 모달 특성에 맞게 일부 수정 */
+    .detail-modal .modal-container {
+        width: 500px;  /* 모달 너비 조정 */
+        margin: 0;     /* box 클래스의 기본 마진 제거 */
+    }
+
+    .detail-modal .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .detail-modal .modal-header h2 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .detail-modal .modal-close {
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail-modal .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .detail-modal .form-group {
+        margin-bottom: 15px;
+    }
+
+    .detail-modal .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--md-sys-color-surface);
+    }
+
+    .detail-modal .form-group input,
+    .detail-modal .form-group textarea {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .detail-modal .form-group input,
+    .detail-modal .form-group textarea {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 4px;
+        background-color: var(--md-sys-color-surface-bright);
+        color: var(--md-sys-color-surface);
+    }
+
+    .modal-header .material-icons {
+        cursor: pointer;
+    }
 </style>
 <script>
     function calculateAvailableDimensions() {
@@ -109,6 +215,10 @@
                 left: 'title',
                 right: 'prev,next',
             },
+            // 이벤트 텍스트 숨기기
+            eventContent: function(info) {
+                return '';
+            },
             initialView: 'dayGridMonth',
             initialDate: new Date(),
             width: '100%',
@@ -122,7 +232,8 @@
             eventClick: function(info) {
                 console.log(info);
                 if (info.event.extendedProps.type === 'schedule') {
-                    location.href = '/calendar/list';
+                    console.log(info.event.extendedProps.id);
+                    openDetailModal(info.event.extendedProps.id);
                 }
             },
             eventDisplay: 'block',
@@ -169,10 +280,8 @@
                         if (event.eventName === 'period') {
                             return {
                                 id: event.id,
-                                title: event.title,
                                 start: new Date(event.startDate),
                                 end: new Date(event.endDate),
-                                allDay: false,
                                 display: 'block',
                                 color: event.backgroundColor,
                                 extendedProps: {
@@ -199,7 +308,45 @@
             })
         }
 
+        function openDetailModal(id) {
+            $.ajax({
+                url: '/schedule/detail/' + id,
+                type: 'GET',
+                success: function (data) {
+                    const startDateTime = new Date(data.startDate);
+                    const endDateTime = new Date(data.endDate);
+
+                    const startDate = formatDate(startDateTime);
+                    const startTime = ' ' + formatTimeToHHMMSS(startDateTime);
+
+                    const endDate = formatDate(endDateTime);
+                    const endTime = ' ' + formatTimeToHHMMSS(endDateTime);
+
+                    $('#detail-title').text(data.title);
+                    $('#detail-start').text(startDate + startTime);
+                    $('#detail-end').text(endDate + endTime);
+                    $('#detail-content').text(data.content);
+
+                    $('#eventDetailModal').show();
+                }
+            })
+        }
+
         calendar.render();
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return year + '-' + month + '-' + day;
+        }
+
+        function formatTimeToHHMMSS(date) {
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return hours + ':' + minutes + ':' + seconds;
+        }
     });
 
     // 창 크기 변경 시 자동 조절
@@ -388,6 +535,32 @@
             </div>
         </div>
     </div>
+<div class="detail-modal" id="eventDetailModal" style="display: none;">
+    <div class="modal-container box surface-bright">
+        <div class="modal-header box-title">
+            <h2>일정 상세 정보</h2>
+            <span class="material-icons" onclick="$('#eventDetailModal').hide();">close</span>
+        </div>
+        <div class="box-content">
+            <div class="form-group">
+                <label>제목</label>
+                <div id="detail-title"></div>
+            </div>
+            <div class="form-group">
+                <label>시작일</label>
+                <div id="detail-start"></div>
+            </div>
+            <div class="form-group">
+                <label>종료일</label>
+                <div id="detail-end"></div>
+            </div>
+            <div class="form-group">
+                <label>설명</label>
+                <div id="detail-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function() {
         // 날짜와 시간 표시 함수

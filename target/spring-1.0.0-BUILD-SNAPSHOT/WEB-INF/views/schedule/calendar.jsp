@@ -685,9 +685,18 @@
                     type: 'GET',
                     success: function (data) {
                         console.log(data);
+                        const startDateTime = new Date(data.startDate);
+                        const endDateTime = new Date(data.endDate);
+
+                        const startDate = formatDate(startDateTime);
+                        const startTime = ' ' + formatTimeToHHMMSS(startDateTime);
+
+                        const endDate = formatDate(endDateTime);
+                        const endTime = ' ' + formatTimeToHHMMSS(endDateTime);
+
                         $('#detail-title').text(data.title);
-                        $('#detail-start').text(data.startDate);
-                        $('#detail-end').text(data.endDate);
+                        $('#detail-start').text(startDate + startTime);
+                        $('#detail-end').text(endDate + endTime);
                         $('#detail-content').text(data.content);
 
                         $('#eventDetailModal').show();
@@ -697,14 +706,6 @@
                         })
 
                         $('#schedule-detail-update').on('click', function() {
-                            const startDateTime = new Date(data.startDate);
-                            const endDateTime = new Date(data.endDate);
-
-                            const startDate = formatDate(startDateTime);
-                            const startTime = ' ' + formatTimeToHHMMSS(startDateTime);
-
-                            const endDate = formatDate(endDateTime);
-                            const endTime = ' ' + formatTimeToHHMMSS(endDateTime);
 
                             $('#scheduleWriteForm input[name=id]').val(data.id);
                             $('#scheduleWriteForm select[name=calendarId]').val(data.calendarId);

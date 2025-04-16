@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EmployeeService {
     EmployeeDTO selectById(String id);
@@ -24,4 +25,10 @@ public interface EmployeeService {
     boolean isNoAuthExist();
     List<EmployeeDTO> selectByThisMonthBirthday();
     void changePw(String newPw,String id);
+    void isResigned(String id);
+    List<Map<String, Object>> employeeAll();
+    Map<String, List<Integer>> getMonthlyLineData();
+    String findByLoginId(String id);
+    List<Map<String, Object>> getVacationStats();
+    List<Map<String, Object>> getAttendanceStats();
 }

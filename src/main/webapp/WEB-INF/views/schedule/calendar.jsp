@@ -337,8 +337,8 @@
                 <h2>캘린더 추가</h2>
             </div>
             <div class="modal-body box-content">
-                <form id="calendarWriteForm" action="/schedule/calendar/insert" method="post">
-                    <input type="hidden" name="id">
+                <form id="calendarWriteForm" action="/calendar/insert" method="post">
+                    <input type="hidden" name="id" value="0">
                     <div class="form-group">
                         <label for="calendarName">캘린더 이름</label>
                         <input type="text" id="calendarName" name="title" required>
@@ -827,6 +827,12 @@
                     alert("수정되었습니다.")
                     location.reload();
                 })
+            })
+
+            $('#calendar-delete-btn').on('click', function() {
+                if(confirm("정말 삭제하시겠습니까?")) {
+                    location.href = '/calendar/delete/' + $('#calendarWriteForm input[name=id]').val();
+                }
             })
 
             function insertSelectEmployees(target, empId, empName, empDept) {

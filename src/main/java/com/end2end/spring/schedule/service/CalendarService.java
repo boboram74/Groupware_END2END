@@ -13,4 +13,5 @@ public interface CalendarService {
     void insert(CalendarInsertDTO dto);
     void update(CalendarInsertDTO dto);
     void deleteById(int id);
+    boolean isMember(String employeeId, int calenderId);
 }

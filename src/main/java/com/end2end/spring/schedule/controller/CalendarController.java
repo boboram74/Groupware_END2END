@@ -3,8 +3,8 @@ package com.end2end.spring.schedule.controller;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.schedule.dto.BookDTO;
-import com.end2end.spring.schedule.dto.CalendarDTO;
 import com.end2end.spring.schedule.dto.CalendarInsertDTO;
+import com.end2end.spring.schedule.dto.CalendarUserDTO;
 import com.end2end.spring.schedule.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,8 +78,14 @@ public class CalendarController {
     }
 
     @RequestMapping("/delete/{id}")
-    public void deleteCalenderById(@PathVariable int id) {
-        // TODO: 해당 id에 해당하는 일정을 삭제
+    public String deleteCalenderById(@PathVariable int id, HttpSession session) {
+        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+
+        if(calendarService.isMember(employeeDTO.getId(), id)) {
+            calendarService.deleteById(id);
+        }
+
+        return "redirect:/calendar/list";
     }
 
     @RequestMapping("/book/{id}")

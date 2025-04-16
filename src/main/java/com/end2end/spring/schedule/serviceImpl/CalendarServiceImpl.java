@@ -126,6 +126,26 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public void deleteById(int id) {
+        List<CalendarUserDTO> calendarUserDTOList = calendarUserDAO.selectByCalendarId(id);
+
+        for(CalendarUserDTO calendarUserDTO : calendarUserDTOList) {
+            alarmService.sendCalendarUpdateStateAlarm(
+                    AlarmType.CALENDAR_DELETE, calendarUserDTO.getEmployeeId());
+        }
+
         calendarDAO.deleteById(id);
+    }
+
+    @Override
+    public boolean isMember(String employeeId, int calenderId) {
+        List<CalendarUserDTO> calendarUserDTOList = calendarUserDAO.selectByCalendarId(calenderId);
+
+        for (CalendarUserDTO calendarUserDTO : calendarUserDTOList) {
+            if(calendarUserDTO.getEmployeeId().equals(employeeId)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

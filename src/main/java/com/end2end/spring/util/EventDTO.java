@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Builder
 public class EventDTO {
+    private int id;
     private String title;
     private String startDate;
     private String endDate;
@@ -123,6 +124,7 @@ public class EventDTO {
                 parseDateTime(dto.getStartDate()), parseDateTime(dto.getEndDate()));
 
         return EventDTO.builder()
+                .id(dto.getId())
                 .title(title)
                 .startDate(startDateStr)
                 .endDate(endDateStr)

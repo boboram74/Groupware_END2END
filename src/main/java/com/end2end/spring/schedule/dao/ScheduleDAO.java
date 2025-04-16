@@ -20,6 +20,10 @@ public class ScheduleDAO {
         return mybatis.selectList("schedule.selectByCalendarId", calendarId);
     }
 
+    public ScheduleDTO selectById(int id) {
+        return mybatis.selectOne("schedule.selectById", id);
+    }
+
     public void insert(ScheduleDTO dto) {
         mybatis.insert("schedule.insert", dto);
     }

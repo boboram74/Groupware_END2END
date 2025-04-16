@@ -564,6 +564,12 @@
 
                     loadEvents(startDate, endDate, successCallback);
                 },
+                eventClick: function(info) {
+                    console.log(info);
+                    if (info.event.extendedProps.period) {
+                        window.location.href = '/schedule/detail?id=' + info.event.id;
+                    }
+                },
                 eventDisplay: 'block',
                 // 헤더 스타일 설정
                 viewDidMount: function () {
@@ -607,10 +613,11 @@
                             console.log(event);
                             if (event.eventName === 'period') {
                                 return {
+                                    id: event.id,
                                     title: event.title,
                                     start: new Date(event.startDate),
                                     end: new Date(event.endDate),
-                                    allDay: true,
+                                    allDay: false,
                                     display: 'block',
                                     backgroundColor: event.backgroundColor,
                                 }

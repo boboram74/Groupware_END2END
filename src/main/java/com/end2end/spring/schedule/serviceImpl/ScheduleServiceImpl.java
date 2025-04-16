@@ -48,7 +48,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public ScheduleDTO selectById(int id) {
-        return null;
+        return scheduleDAO.selectById(id);
     }
 
     @Override

@@ -70,18 +70,77 @@
 		padding: 5px;
 	}
 
+	/* 채팅 목록 시작 */
+
+	.chat-messages {
+		flex: 1;
+		padding: 10px 15px;     /* 상하좌우 여백 */
+		overflow-y: auto;       /* 스크롤 처리 */
+		background-color: #fefefe;
+		display: flex;
+		flex-direction: column; /* 자식들을 세로로 쌓음 */
+		gap: 6px;               /* 메시지들 사이 약간 간격 */
+	}
+
+	.chat {
+		align-self: flex-start;
+		max-width: 70%;
+		padding: 8px 12px;
+		border-radius: 18px;
+		background-color: #eceff1;
+		color: #333;
+		font-size: 14px;
+		line-height: 1;
+		word-wrap: break-word;
+		position: relative;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+		margin-bottom: 20px;
+	}
+
+	.chat.me {
+		align-self: flex-end;
+		background-color: #2c3e50;
+		color: #fff;
+		margin-left: auto;
+	}
+
+	.chat .chat-name {
+		display: block;
+		font-weight: 600;
+		margin-bottom: 10px;
+	}
+
+	.chat .chat-content {
+		display: block;
+		margin-bottom: 4px;
+	}
+
 	.chat-content {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		height: 97%;
+		height: 80%;
+		margin-top: 10px;
+	}
+	.chat .chat-date {
+		font-size: 12px;
+		color: #999;
+		text-align: right;
+		display: block;
+	}
+	.chat.me::after {
+		content: "";
+		position: absolute;
+		right: -6px;
+		top: 10px;
+		border-width: 6px;
+		border-style: solid;
+		border-color: transparent transparent transparent #2c3e50;
 	}
 
-	.chat-messages {
-		flex: 1;
-		overflow-y: auto;
-		padding: 20px;
-	}
+
+
+	/* 채팅 내용 끝 */
 
 	.chat-input-area {
 		padding: 15px;
@@ -255,6 +314,7 @@
 		border-radius: 50%;
 		margin-right: 12px;
 		background-color: #ddd;
+		background-size: cover;
 	}
 
 	.employee-info {
@@ -284,10 +344,6 @@
 		height: 100%;
 		overflow-y: auto;
 	}
-	.chat.me {
-		text-align: right;
-		color: #2c3e50;
-	}
 
 	.invite-sidebar {
 		width: 190px;
@@ -305,35 +361,35 @@
 	}
 	.roomEmployeeList {
 		display: none;
-		/*position: absolute;*/
-		/*z-index: 1001;*/
-		/*right: 2%;*/
-		/*bottom: 32%;*/
-		/*width: 300px;*/
-		/*height: 300px;*/
-		/*overflow: auto;*/
-		/*border: 1px solid #2c3e50;*/
 		position: absolute;
-		bottom: 10px;
-		right: 10px;
+		top: 9.9%;
 		width: 100%;
 		max-width: 360px;
-		height: 55vh;
-		background-color: white;
+		min-height: 15vh;
+		height: auto;
+		background-color: #fff;
 		border-radius: 12px;
 		box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 		z-index: 999;
 		overflow: hidden;
 	}
 	.roomEmployeeList-content {
-		/*background-color: #fefefe;*/
-		/*margin: 15% auto;*/
-		/*padding: 20px;*/
-		/*width: 80%;*/
-		flex: 1;         /* 상위에서 display: flex;인 경우 컨테이너 크기 활용 */
-		padding: 20px;   /* 내부 여백 */
-		overflow-y: auto; /* 참여자 목록이 길어질 때 스크롤 */
+		flex: 1;
+		padding: 20px;
+		overflow-y: auto;
 		background-color: #fefefe;
+	}
+	.roomEmployeeList-header {
+		background-color: #2c3e50;
+		color: #fff;
+		padding: 12px 15px;
+		font-size: 16px;
+		font-weight: bold;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 8px;
+		margin-bottom: 15px;
 	}
 	.roomEmployeeList.active {
 		display: flex;
@@ -344,8 +400,12 @@
 		padding: 10px;
 		border-radius: 8px;
 		color: #fff;
-		max-height: calc(70vh - 80px);
+		max-height: calc(55vh - 100px);
 		overflow-y: auto;
+	}
+	.participant-item {
+		margin-bottom: 15px;
+		font-size: 15px;
 	}
 </style>
 <button id="chatButton" class="chat-button surface-bright">
@@ -376,7 +436,7 @@
 
 		<div class="roomEmployeeList">
 			<div class="roomEmployeeList-content">
-				<p style="text-align: center">현재 채팅방 참여자 목록</p>
+				<div class="roomEmployeeList-header">현재 채팅방 참여자 목록</div>
 				<div id="participantList"></div>
 			</div>
 		</div>
@@ -430,12 +490,14 @@
 <input type="hidden" id="sender-name" value="${employee.name}">
 <script>
 	$(document).ready(function() {
-		let ws = new WebSocket("ws://10.5.5.1/chat");
+		let ws = new WebSocket("ws://10.10.55.9/chat");
 		let employees = [];
 		let chatRooms = [];
 		let currentRoomId = 0;
 		let roomEmployeeList = [];
 		let invitedIds = [];
+
+
 
 		refreshChatRoomList();
 
@@ -457,12 +519,25 @@
 				}
 				$(".chat-messages").empty();
 				msg.messages.forEach(function(m) {
-					let chat = $("<div>")
-							.addClass(m.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
-							.html(m.name + " : " + m.content);
+					// let chat = $("<div>")
+					// 		.addClass(m.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
+					// 		.html(m.name + " : " + m.content + " : " + m.regDate);
+					// $(".chat-messages").append(chat);
+					let dateObj = new Date(m.regDate);
+					let formattedDate = dateObj.toLocaleTimeString('ko-KR', {
+						hour: 'numeric',
+						minute: 'numeric',
+						second: 'numeric',
+						hour12: true
+					});
+					let chat = $("<div>").addClass(m.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat");
+					let chatName = $("<span>").addClass("chat-name").text(m.name);
+					let chatContent = $("<span>").addClass("chat-content").text(m.content);
+					let chatDate = $("<span>").addClass("chat-date").text(formattedDate);
+					chat.append(chatName, chatContent, chatDate);
 					$(".chat-messages").append(chat);
+					$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
 				});
-				$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
 				return;
 			} else if(msg.type === "NEW_INVITE") {
 				let chat = $("<div>").html(msg.message);
@@ -470,9 +545,13 @@
 				roomEmployeeList = msg.employees;
 				return;
 			}
+
 			let chat = $("<div>")
-					.addClass(msg.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat")
-					.html(msg.name + " : " + msg.content);
+					.addClass(msg.employeeId === $("#sender-employee-id").val() ? "chat me" : "chat");
+			let chatName = $("<span>").addClass("chat-name").text(msg.name);
+			let chatContent = $("<span>").addClass("chat-content").text(msg.content);
+			let chatDate = $("<span>").addClass("chat-date").text(new Date().toLocaleTimeString());
+			chat.append(chatName, chatContent, chatDate);
 			$(".chat-messages").append(chat);
 			$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
 			refreshChatRoomList();
@@ -489,11 +568,13 @@
 				employees.push ({
 					id: list[i].id,
 					name: list[i].name,
-					position: position
+					position: position,
+					profileImg: list[i].profileImg
 				});
 			}
 			renderEmployeeList();
 		});
+
 		refreshChatRoomList();
 		function refreshChatRoomList() {
 			$.ajax({
@@ -620,9 +701,8 @@
 
 		const makeChatEmployeeList = (employee, index) => {
 			const div = $('<div>').addClass('employee-item').attr('data-id', employee.id).attr('data-name', employee.name);
-			const avatar = $('<div>')
-					.addClass('employee-avatar')
-					.css('background-image', "url('https://picsum.photos/200/" + (index + 1) + "')");
+			const profileImgUrl = employee.profileImg ? employee.profileImg : "https://picsum.photos/id/23/200/200";
+			const avatar = $('<div>').addClass('employee-avatar').css('background-image', "url('" + profileImgUrl + "')");
 			const info = $('<div>').addClass('employee-info');
 			const name = $('<div>').addClass('employee-name').html(employee.name);
 			const position = $('<div>').addClass('employee-position').text(employee.position);
@@ -825,7 +905,7 @@
 				}
 			}
 			const div = $('<div>').addClass('employee-item').attr('data-room-id', roomId);
-			const avatar = $('<div>').addClass('employee-avatar').css('background-color', '#bbb');
+			const avatar = $('<div>').addClass('employee-avatar').css('background-image', "url('" + room.profileImg + "')");
 			const info = $('<div>').addClass('employee-info');
 			const name = $('<div>').addClass('employee-name').text(displayName);
 			const lastMsg = $('<div>').addClass('employee-position').text(room.lastMessage || "No messages yet");

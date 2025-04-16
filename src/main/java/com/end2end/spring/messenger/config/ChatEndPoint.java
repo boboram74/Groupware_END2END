@@ -38,7 +38,7 @@ public class ChatEndPoint {
     @OnMessage
     public void onMessage(String message, Session session) throws Exception {
         JsonObject parsedMessage = gson.fromJson(message, JsonObject.class);
-//        System.out.println(parsedMessage);
+        System.out.println(parsedMessage);
         String type = parsedMessage.has("type") ? parsedMessage.get("type").getAsString() : "";
         int roomId = 0;
         if (parsedMessage.has("roomId") && !parsedMessage.get("roomId").getAsString().trim().isEmpty()) {
@@ -70,7 +70,7 @@ public class ChatEndPoint {
         long num1 = Long.parseLong(id1);
         long num2 = Long.parseLong(id2);
         String roomName = (num1 < num2) ? id1 + "|" + id2 : id2 + "|" + id1;
-        int selectByName = messengerService.selectByName(roomName); // <- SELECT COUNT(*) FROM MEESAGE_ROOM WHERE NAME = #{}
+        int selectByName = messengerService.selectByName(roomName);
         if (selectByName == 0) {
             Map<String, Object> result = messengerService.createChatRoom(employeeId, dto.getId(), roomName);
             String newRoomId = result.get("messageRoomId").toString();
@@ -149,12 +149,15 @@ public class ChatEndPoint {
     // message
     public void processAndBroadcastMessage(JsonObject parsedMessage, int roomId) throws IOException {
         MessageUserDTO dto = messengerService.selectUserByEmployeeIdAndRoomId(parsedMessage.get("employeeId").getAsString(), roomId);
+        String senderEmployeeId = (dto != null) ? dto.getEmployeeId() : "unknown";
+        String senderName = (dto != null) ? dto.getName() : "unknown";
+
         MessageDTO messageDTO = MessageDTO.builder()
-                .employeeId(dto.getEmployeeId())
+                .employeeId(senderEmployeeId)
                 .messagerRoomId(roomId)
-                .messagerRoomuserId(dto.getId())
+                .messagerRoomuserId((dto != null) ? dto.getId() : 0)
                 .content(parsedMessage.get("message").getAsString())
-                .name(dto.getName())
+                .name(senderName)
                 .build();
         messengerService.insertMessage(messageDTO);
 

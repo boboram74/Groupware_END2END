@@ -6,7 +6,7 @@
 
     <select id="selectEmployeeAll" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessengerEmployeeListDTO">
         select
-        e.id, e.name, d.name teamName, j.name as jobName
+        e.id, e.name, e.PROFILEIMG, d.name teamName, j.name as jobName
         from employee e
         join department d
         on e.departmentid = d.id
@@ -50,20 +50,71 @@
     </insert>
 
     <select id="selectRoomListAll" parameterType="map" resultType="com.end2end.spring.messenger.dto.ChatRoomListDTO">
-        select t.MESSAGEROOMID, t.roomName, t.lastMessage
-        from (
-        select
-        mru.MESSAGEROOMID,
-        mr.name as roomName,
-        m.content as lastMessage,
-        row_number() over (partition by mru.MESSAGEROOMID order by m.regdate desc) as rn
-        from message_room_user mru
-        join message_room mr on mru.MESSAGEROOMID = mr.ID
-        join message m on m.MESSAGEROOMID = mru.MESSAGEROOMID
-        where mru.EMPLOYEEID = #{value}
+<!--        select t.MESSAGEROOMID, t.roomName, t.lastMessage-->
+<!--        from (-->
+<!--        select-->
+<!--        mru.MESSAGEROOMID,-->
+<!--        mr.name as roomName,-->
+<!--        m.content as lastMessage,-->
+<!--        row_number() over (partition by mru.MESSAGEROOMID order by m.regdate desc) as rn-->
+<!--        from message_room_user mru-->
+<!--        join message_room mr on mru.MESSAGEROOMID = mr.ID-->
+<!--        join message m on m.MESSAGEROOMID = mru.MESSAGEROOMID-->
+<!--        where mru.EMPLOYEEID = #{value}-->
+<!--        ) t-->
+<!--        where t.rn = 1-->
+<!--        order by t.MESSAGEROOMID desc-->
+                <![CDATA[
+        SELECT
+            t.MESSAGEROOMID,
+            t.roomName,
+            t.lastMessage,
+            CASE
+                WHEN t.participantCount >= 3 THEN
+                    'https://dummyimage.com/200x200/' ||
+                    (CASE
+                        WHEN ROUND(t.random_num) = 1 THEN '3a2741'
+                        WHEN ROUND(t.random_num) = 2 THEN '264653'
+                        WHEN ROUND(t.random_num) = 3 THEN '1a472a'
+                        WHEN ROUND(t.random_num) = 4 THEN '622e2a'
+                        WHEN ROUND(t.random_num) IN (5,6,7) THEN '2c3e50'
+                    END) ||
+                    '/' ||
+                    (CASE
+                        WHEN ROUND(t.random_num) = 1 THEN '3a2741'
+                        WHEN ROUND(t.random_num) = 2 THEN '264653'
+                        WHEN ROUND(t.random_num) = 3 THEN '1a472a'
+                        WHEN ROUND(t.random_num) = 4 THEN '622e2a'
+                        WHEN ROUND(t.random_num) IN (5,6,7) THEN '2c3e50'
+                    END) ||
+                    '.png&text=%20'
+                ELSE e.PROFILEIMG
+            END as profileImg
+        FROM (
+            SELECT
+                mru.MESSAGEROOMID,
+                mr.name as roomName,
+                m.content as lastMessage,
+                CASE
+                    WHEN mru1.EMPLOYEEID = #{value} THEN mru2.EMPLOYEEID
+                    ELSE mru1.EMPLOYEEID
+                END as otherEmployeeId,
+                (SELECT COUNT(*) FROM message_room_user WHERE MESSAGEROOMID = mru.MESSAGEROOMID) as participantCount,
+                ROW_NUMBER() OVER (PARTITION BY mru.MESSAGEROOMID ORDER BY m.regdate DESC) as rn,
+                DBMS_RANDOM.VALUE(1,8) as random_num
+            FROM message_room_user mru
+            JOIN message_room mr ON mru.MESSAGEROOMID = mr.ID
+            JOIN message m ON m.MESSAGEROOMID = mru.MESSAGEROOMID
+            JOIN message_room_user mru1 ON mru.MESSAGEROOMID = mru1.MESSAGEROOMID
+            JOIN message_room_user mru2 ON mru.MESSAGEROOMID = mru2.MESSAGEROOMID
+            WHERE mru.EMPLOYEEID = #{value}
+              AND mru1.EMPLOYEEID != mru2.EMPLOYEEID
         ) t
-        where t.rn = 1
-        order by t.MESSAGEROOMID desc
+        LEFT JOIN employee e ON t.otherEmployeeId = e.ID AND t.participantCount < 3
+        WHERE t.rn = 1
+        ORDER BY t.MESSAGEROOMID DESC
+        ]]>
+
     </select>
 
     <select id="selectMessageByRoomId" parameterType="map" resultType="com.end2end.spring.messenger.dto.MessageHistoryDTO">

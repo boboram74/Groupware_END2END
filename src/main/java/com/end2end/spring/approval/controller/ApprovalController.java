@@ -33,7 +33,7 @@ public class ApprovalController {
     @Autowired
     private VacationService vacationService;
 
-    @RequestMapping("/list")
+    @RequestMapping("/approval-test")
     public String toList(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
@@ -143,7 +143,6 @@ public class ApprovalController {
             if (employee == null) {
                 return "redirect:/login";
             }
-
             Map<String, Object> approval = approvalService.selectById(id);
             if (approval == null) {
                 model.addAttribute("error", "존재하지 않는 문서입니다.");
@@ -153,12 +152,22 @@ public class ApprovalController {
             ApprovalFormDTO approvalFormDTO = approvalFormService.selectByFormName(formName);
             List<ApproverDTO> nextId = approvalService.nextId(id);
             List<Map<String, Object>> approvers = approvalService.selectApproversList(id);
-
             if ("휴가계".equals(approval.get("FORMNAME"))) {
                 VacationDTO vacationDTO = vacationService.getVacationByApprovalId(id);
                 System.out.println(vacationDTO);
                 model.addAttribute("vacationDTO", vacationDTO);
             }
+            boolean isManagementDept = "경영팀".equals(employee.getDepartmentName());
+            if(isManagementDept) {
+                model.addAttribute("approval", approval);
+                model.addAttribute("nextId", nextId);
+                model.addAttribute("approvers", approvers);
+                model.addAttribute("employee", employee);
+                model.addAttribute("approvalFormDTO", approvalFormDTO);
+
+                return "approval/detail";
+            }
+
 
             model.addAttribute("approval", approval);
             model.addAttribute("nextId", nextId);
@@ -235,10 +244,10 @@ public class ApprovalController {
         String employeeId = employee.getId();
         String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
         boolean team = "경영팀".equals(departmentName);
-
+        System.out.println(team);
+        System.out.println(employeeId);
 
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
-
 
         List<Map<String, Object>> waitingList;
         List<Map<String, Object>> goingList;

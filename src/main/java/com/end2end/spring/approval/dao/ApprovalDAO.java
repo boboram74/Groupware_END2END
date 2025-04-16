@@ -93,4 +93,5 @@ public class ApprovalDAO {
     public List<Map<String, Object>> allApprovals() {
         return mybatis.selectList("approval.allApprovals");
     }
+
 }

@@ -160,7 +160,7 @@
     </div>
 
     <div class="signInform">
-        <button><a href="/approval/list">목록으로</a></button>
+        <button><a href="/approval/approval-test">목록으로</a></button>
     </div>
 </div>
 

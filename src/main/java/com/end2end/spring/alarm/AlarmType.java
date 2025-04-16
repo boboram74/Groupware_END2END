@@ -24,7 +24,9 @@ public enum AlarmType {
     CALENDAR_CREATE("calendar_month", "새로운 달력이 생성되었습니다.", "primary"),
     CALENDAR_UPDATE("edit_calendar", "달력이 변경되었습니다.", "info"),
     CALENDAR_DELETE("event_busy", "달력이 삭제되었습니다.", "danger"),
-    SCHEDULE_CREATE("event", "새로운 일정이 생성되었습니다.", "success")
+    SCHEDULE_CREATE("event", "새로운 일정이 생성되었습니다.", "success"),
+    SCHEDULE_UPDATE("update", "일정이 업데이트 되었습니다.", "warning"),
+    SCHEDULE_DELETE("event_busy", "일정이 삭제되었습니다.", "danger")
     ;
 
     private final String icons;

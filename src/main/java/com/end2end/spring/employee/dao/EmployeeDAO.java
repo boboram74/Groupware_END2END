@@ -129,4 +129,12 @@ public class EmployeeDAO {
     public List<Map<String, Object>> getAttendanceStats() {
         return mybatis.selectList("employee.attendanceStats");
     }
+
+    public List<EmployeeDTO> selectFromTo(int start, int end) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("start", start);
+        param.put("end", end);
+
+        return mybatis.selectList("employee.selectFromTo", param);
+    }
 }

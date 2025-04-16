@@ -61,7 +61,7 @@
         <span>Works</span>
       </div>
 
-      <div class="menu-item" onClick="location.href='/contact'">
+      <div class="menu-item" onClick="location.href='/contact?page=1'">
         <i class="material-icons">contacts</i>
         <span>주소록</span>
       </div>
@@ -183,7 +183,7 @@
             </a>
           </li>
           <li>
-            <a href="/contact">
+            <a href="/contact?page=1">
               <i class="material-icons">contacts</i>
               <span>주소록</span>
             </a>
@@ -447,7 +447,7 @@
             } else if (id === 'logout') {
               window.location.href = '/employee/logout';
             } else if (id === 'login-history') {
-              window.location.href = '/login/history/1';
+              window.location.href = '/login/history?page=1';
             }
           });
 

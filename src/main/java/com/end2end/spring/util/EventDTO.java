@@ -99,7 +99,7 @@ public class EventDTO {
         }
 
         String title = type + " : " + dto.getReason()
-                + "(" + dto.getStartDate().toInstant().toString() + " ~ " + dto.getEndDate().toInstant().toString() + ")";
+                + "(" + parseDateTime(dto.getStartDate()) + " ~ " + parseDateTime(dto.getEndDate()) + ")";
 
         return EventDTO.builder()
                 .title(title)
@@ -119,7 +119,8 @@ public class EventDTO {
         String endDateStr = (!endDateToLocalDate.isAfter(endDate)) ?
                 dto.getEndDate().toInstant().toString() : endDate.toString();
 
-        String title = String.format("%s 기간 (%s ~ %s)", dto.getTitle(), startDateStr, endDateStr);
+        String title = String.format("%s 기간 (%s ~ %s)", dto.getTitle(),
+                parseDateTime(dto.getStartDate()), parseDateTime(dto.getEndDate()));
 
         return EventDTO.builder()
                 .title(title)
@@ -129,5 +130,9 @@ public class EventDTO {
                 .eventName("period")
                 .backgroundColor(dto.getColor())
                 .build();
+    }
+
+    private static String parseDateTime(Timestamp date) {
+        return date.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }

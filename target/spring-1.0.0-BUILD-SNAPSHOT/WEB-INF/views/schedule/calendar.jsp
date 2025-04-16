@@ -620,7 +620,7 @@
                                 start: new Date(event.startDate),
                                 allDay: event.allDay,
                                 display: 'block',
-                                backgroundColor: event.backgroundColor,
+                                color: event.backgroundColor,
                             }
                         })
                         console.log(events);

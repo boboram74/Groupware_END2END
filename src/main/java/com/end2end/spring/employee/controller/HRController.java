@@ -53,12 +53,12 @@ public class HRController {
     }
 
     @RequestMapping("/chart")
-    public String toChart(Model model,HttpSession session, RedirectAttributes redirectAttributes) {
-        EmployeeDTO loginUser = (EmployeeDTO) session.getAttribute("loginUser");
+    public String toChart(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
 
-        if (loginUser == null ||
-                (!"ADMIN".equalsIgnoreCase(loginUser.getRole()) &&
-                        !"인사팀".equals(loginUser.getDepartmentName()))) {
+        if (employee == null ||
+                (!"ADMIN".equalsIgnoreCase(employee.getRole()) &&
+                        !"인사팀".equals(employee.getDepartmentName()))) {
 
             redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
             return "redirect:/";

@@ -194,4 +194,10 @@
         </foreach>
         )
     </select>
+
+    <update id="isResigned">
+        UPDATE EMPLOYEE
+        SET resigndate = SYSDATE
+        WHERE id = #{id}
+    </update>
 </mapper>

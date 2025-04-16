@@ -93,4 +93,11 @@ public class HRController {
         employeeService.deleteById(id);
         return "redirect:/hr/list";
     }
+
+    @RequestMapping("/isResigned/{id}")
+    public String isResigned(@PathVariable String id) {
+        // TODO: 퇴사 처리
+        employeeService.isResigned(id);
+        return "redirect:/hr/list";
+    }
 }

@@ -12,6 +12,7 @@ import java.util.Map;
 
 @Repository
 public class EmployeeDAO {
+
     @Autowired
     private SqlSession mybatis;
 
@@ -106,4 +107,6 @@ public class EmployeeDAO {
     public List<EmployeeDTO> selectByIdIn(List<String> ids) {
         return mybatis.selectList("employee.selectByIdIn", ids);
     }
+
+    public void isResigned(String id) {mybatis.update("employee.isResigned",id);}
 }

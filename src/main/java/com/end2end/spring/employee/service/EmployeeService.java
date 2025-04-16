@@ -24,4 +24,5 @@ public interface EmployeeService {
     boolean isNoAuthExist();
     List<EmployeeDTO> selectByThisMonthBirthday();
     void changePw(String newPw,String id);
+    void isResigned(String id);
 }

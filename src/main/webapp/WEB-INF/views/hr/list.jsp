@@ -72,7 +72,7 @@
                                     <td>${item.departmentName}</td>
                                     <td>${item.jobName}</td>
                                     <td class="btn">
-                                        <button type="button" class="resignationBtn secondary">처리 등록</button>
+                                        <button type="button" class="resignationBtn secondary" data-id="${item.id}">처리 등록</button>
                                     </td>
                                 </tr>
                             </c:if>

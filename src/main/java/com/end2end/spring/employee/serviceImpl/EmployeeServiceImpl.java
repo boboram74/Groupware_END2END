@@ -41,10 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDetailDTO selectDetailById(String employeeId) {
-        // TODO: 해당 id의 사원 상세정보 조회
-        return employeeDAO.selectDetailById(employeeId);
-    }
+    public EmployeeDetailDTO selectDetailById(String employeeId) {return employeeDAO.selectDetailById(employeeId);}
 
     @Override
     public EmployeeDTO login(LoginDTO dto) {
@@ -148,10 +145,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteById(String id) {
-        // TODO: 해당 id의 사원 삭제
-        employeeDAO.deleteById(id);
-    }
+    public void deleteById(String id) {employeeDAO.deleteById(id);}
 
     @Override
     public List<EmployeeDTO> selectByDepartmentId(int departmentId) {
@@ -179,14 +173,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDTO> selectByThisMonthBirthday() {
-        return employeeDAO.selectByThisMonthBirthday();
-    }
+    public List<EmployeeDTO> selectByThisMonthBirthday() {return employeeDAO.selectByThisMonthBirthday();}
 
     @Override
     public boolean pwVali(String currentPw) {return employeeDAO.pwVali(currentPw);}
 
     @Override
     public void changePw(String newPw,String id) {employeeDAO.changePw(newPw,id);}
+
+    @Override
+    public void isResigned(String id) {employeeDAO.isResigned(id);}
 
 }

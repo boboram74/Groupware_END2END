@@ -206,4 +206,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return result;
     }
+
+    @Override
+    public String findByLoginId(String id) {
+        return employeeDAO.findByLoginId(id);
+    }
 }

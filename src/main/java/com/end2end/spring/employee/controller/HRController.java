@@ -11,9 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,6 +68,14 @@ public class HRController {
     @RequestMapping("/roleUpdate/{id}")
     public String roleUpdate(@PathVariable("id") String id) {
         employeeService.roleUpdate(id);
+        String loginId = employeeService.findByLoginId(id);
+
+        RestTemplate restTemplate = new RestTemplate();
+        String mailUrl = "http://34.70.179.192/mail/employee";
+        Map<String, String> body = new HashMap<>();
+        body.put("name", loginId);
+        body.put("password", loginId);
+        restTemplate.postForObject(mailUrl, body, String.class);
         return "redirect:/hr/list";
     }
 

@@ -117,4 +117,8 @@ public class EmployeeDAO {
     public List<Map<String, Object>> getMonthlyStats() {
         return mybatis.selectList("employee.monthlyStats");
     }
+
+    public String findByLoginId(String id) {
+        return mybatis.selectOne("employee.findByLoginId", id);
+    }
 }

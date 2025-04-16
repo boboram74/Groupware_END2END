@@ -315,6 +315,7 @@ header .logo {
     padding: 0 10px;
     list-style: none;
     margin: 0;
+    justify-content: space-around;
 }
 
 .mobile-menu-item {

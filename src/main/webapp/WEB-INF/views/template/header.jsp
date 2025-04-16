@@ -200,25 +200,8 @@
             <i class="material-icons">list</i>
             <span>메뉴</span>
           </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">dashboard</i>
-            <span>게시판</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">description</i>
-            <span>전자결재</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">mail</i>
-            <span>메일</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">schedule</i>
-            <span>근태관리</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">event_available</i>
-            <span>예약</span>
+          <a href="/" class="mobile-menu-item">
+            <i class="material-icons">home</i>
           </a>
           <a href="#" class="mobile-menu-item mobile-chat-btn">
             <i class="material-icons">chat</i>

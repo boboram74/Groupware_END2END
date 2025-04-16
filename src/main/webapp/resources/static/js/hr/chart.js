@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("error: " + error);
         },
         success: function (data) {
+
             const labels = data.map(item => item.LABEL);
             const counts = data.map(item => item.COUNT);
 
@@ -54,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("error: " + error);
         },
         success: function (data) {
+
             const ctx2 = document.getElementById("chart2").getContext("2d");
 
             new Chart(ctx2, {
@@ -83,15 +85,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-
     // 3번 그래프 : 부서별 연차 사용 현황 (가로 막대 그래프)
     $.ajax({
         url: "/hr/chart/vacation",
         method: "GET",
+        error : function(request, status, error) {
+            console.log("code: " + request.status)
+            console.log("message: " + request.responseText)
+            console.log("error: " + error);
+        },
         success: function (data) {
-            const labels = data.map(item => item.LABEL);       // 부서명
-            const used = data.map(item => item.USED);          // 사용한 연차
-            const remain = data.map(item => item.REMAIN);      // 남은 연차
+            const labels = data.map(item => item.LABEL);
+            const used = data.map(item => item.USED);
+            const remain = data.map(item => item.REMAIN);
 
             const ctx3 = document.getElementById("chart3").getContext("2d");
 
@@ -136,6 +142,11 @@ document.addEventListener("DOMContentLoaded", function () {
     $.ajax({
         url: "/hr/chart/attendance",
         method: "GET",
+        error : function(request, status, error) {
+            console.log("code: " + request.status)
+            console.log("message: " + request.responseText)
+            console.log("error: " + error);
+        },
         success: function (data) {
             const labels = data.map(item => item.LABEL);
             const late = data.map(item => item.LATE);

@@ -248,16 +248,35 @@
 
     <select id="vacationStats" resultType="java.util.Map">
         SELECT
-        d.name AS label,
-        NVL(SUM(v.vacationDate), 0) AS used,
-        COUNT(e.id) * 15 - NVL(SUM(v.vacationDate), 0) AS remain
-        FROM EMPLOYEE e
-        JOIN DEPARTMENT d ON e.departmentId = d.id
-        LEFT JOIN VACATION v
-        ON e.id = v.employeeId
-        AND v.type = 'ANNUAL'
-        WHERE e.resignDate IS NULL
-        GROUP BY d.name
+        DEPARTMENT.NAME AS label,
+        A.remaining_days AS remain,
+        B.used_days AS used
+        FROM (
+        SELECT
+        NVL(SUM("휴가일"), 0) AS remaining_days,
+        DEPARTMENTID AS departmentId
+        FROM EMPLOYEE E
+        LEFT JOIN (
+        SELECT EMPLOYEEID, SUM(DATES) AS "휴가일"
+        FROM VACATION_MANAGEMENT
+        GROUP BY EMPLOYEEID
+        ) V ON E.ID = V.EMPLOYEEID
+        GROUP BY DEPARTMENTID
+        ) A
+        JOIN (
+        SELECT
+        NVL(SUM(VACATIONDATE), 0) AS used_days,
+        DEPARTMENTID
+        FROM EMPLOYEE
+        LEFT JOIN (
+        SELECT VACATION.*, VACATION.EMPLOYEEID AS empId
+        FROM VACATION
+        JOIN APPROVAL ON VACATION.APPROVALID = APPROVAL.ID
+        WHERE APPROVAL.STATE = 'SUBMIT'
+        ) V ON EMPLOYEE.ID = V.empId
+        GROUP BY DEPARTMENTID
+        ) B ON A.DEPARTMENTID = B.DEPARTMENTID
+        JOIN DEPARTMENT ON DEPARTMENT.ID = A.departmentId
     </select>
 
     <select id="attendanceStats" resultType="java.util.Map">

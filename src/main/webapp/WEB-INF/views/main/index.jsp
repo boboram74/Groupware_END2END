@@ -5,12 +5,6 @@
 <link rel="stylesheet" href="/css/template/exam.css" />
 <link rel="stylesheet" href="/css/main/index.css" />
 <style>
-    /* 기존 hover 스타일 수정 */
-    .board-table tbody tr:not(.no-data):hover {
-        background-color: var(--md-sys-color-outline);
-        cursor: pointer;
-    }
-
     /* 데이터 없음 스타일 */
     .board-table .no-data {
         height: 100px;
@@ -27,14 +21,6 @@
         cursor: default;
     }
 
-    .board-table .info-item {
-        display: flex;
-        align-items: center;
-        color: #666;
-        font-size: 0.9em;
-        gap: 3px;
-    }
-
     .board-table .info-item .material-icons {
         font-size: 16px;
     }
@@ -44,10 +30,9 @@
         color: #888;
     }
 
-    /* 게시판 테이블 기본 스타일 수정 */
-    .board-table {
-        width: 100%;
-        border-collapse: collapse;
+    .board-table .title-container .title-text:hover {
+        text-decoration: underline;
+        color: var(--md-sys-color-primary);
     }
 
     /* 제목 컨테이너 스타일 */
@@ -55,7 +40,6 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 8px 15px;
         cursor: pointer;
         width: 100%;
     }
@@ -116,11 +100,6 @@
         color: #888;
     }
 
-    /* 호버 효과 */
-    .board-table tr:hover {
-        background-color: var(--md-sys-color-surface-container);
-    }
-
     .board-table .info-items {
         display: flex;
         gap: 10px;
@@ -131,7 +110,7 @@
         display: flex;
         align-items: center;
         gap: 4px;
-        color: #666;
+        color: var(--md-custom-read-color);
         font-size: 0.9em;
     }
 
@@ -310,10 +289,14 @@
 
         $('.board-type-btn').click(function() {
             const type = $(this).data('type');
-            const tbody = $('.boardBox .board-table tbody');
-
             console.log(type);
 
+            renderBoardList(type);
+        })
+
+        renderBoardList('notice');
+
+        function renderBoardList(type) {
             let url;
 
             if (type === 'notice') {
@@ -322,8 +305,7 @@
                 url = '/board/recent'
             }
 
-            console.log(url);
-
+            const tbody = $('.boardBox .board-table tbody');
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -372,7 +354,7 @@
                     }
                 }
             })
-        })
+        }
     });
 
     // 창 크기 변경 시 자동 조절
@@ -442,7 +424,6 @@
                 <div class="board-type-buttons">
                     <button class="board-type-btn active" data-type="notice">공지 게시판</button>
                     <button class="board-type-btn" data-type="all">전사 게시판</button>
-                    <button class="board-type-btn">그룹 게시판</button>
                 </div>
 
                 <div class="category-list-container">
@@ -472,19 +453,7 @@
                             <th width="20%">등록일자</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <c:forEach begin="1" end="8" var="i">
-                            <tr>
-                                <td>${11 - i}</td> <!-- 10부터 1까지 역순으로 표시 -->
-                                <td class="title">샘플 게시글 제목입니다 ${11 - i}</td>
-                                <td class="writer-info">
-                                    <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
-                                    <span>작성자${i}</span>
-                                </td>
-                                <td>2024-03-19</td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>

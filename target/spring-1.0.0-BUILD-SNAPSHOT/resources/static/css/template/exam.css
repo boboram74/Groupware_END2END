@@ -361,7 +361,7 @@ input::-moz-placeholder {
 }
 
 .board-table td {
-    padding: 10px;
+    padding: 3px;
     border-bottom: 1px solid var(--md-sys-color-outline);
     text-align: center;
     vertical-align: middle;
@@ -373,6 +373,11 @@ input::-moz-placeholder {
 }
 
 .board-table td.title:hover {
+    text-decoration: underline;
+    color: var(--md-sys-color-primary);
+}
+
+.board-table td.title-text:hover {
     text-decoration: underline;
     color: var(--md-sys-color-primary);
 }

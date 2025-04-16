@@ -361,7 +361,7 @@ input::-moz-placeholder {
 }
 
 .board-table td {
-    padding: 3px;
+    padding: 10px;
     border-bottom: 1px solid var(--md-sys-color-outline);
     text-align: center;
     vertical-align: middle;

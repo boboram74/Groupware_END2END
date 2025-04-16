@@ -21,6 +21,8 @@ public enum AlarmType {
     PROJECT_WORK_FINISH("flag_2", "종료된 프로젝트 작업이 있습니다.", "success"),
     PROJECT_WORK_DEADLINE("schedule", "마감일이 얼마 남지 않은 프로젝트 작업이 있습니다.", "danger"),
     CALENDAR_CREATE("calendar_month", "새로운 달력이 생성되었습니다.", "primary"),
+    CALENDAR_UPDATE("edit_calendar", "달력이 변경되었습니다.", "info"),
+    CALENDAR_DELETE("event_busy", "달력이 삭제되었습니다.", "danger"),
     SCHEDULE_CREATE("calendar_add_on", "새로운 일정이 생성되었습니다.", "info")
     ;
 

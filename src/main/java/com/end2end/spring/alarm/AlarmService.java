@@ -93,6 +93,10 @@ public class AlarmService {
         }
     }
 
+    public void sendCalendarUpdateStateAlarm(AlarmType alarmType, String employeeId) {
+        send(AlarmDTO.of(alarmType, employeeId, "/calendar/list"), employeeId);
+    }
+
     public void sendScheduleAlarm(int calendarId) {
         List<CalendarUserDTO> calendarUserDTOList = calendarUserDAO.selectByCalendarId(calendarId);
 

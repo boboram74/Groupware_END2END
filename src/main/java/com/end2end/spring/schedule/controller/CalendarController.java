@@ -72,11 +72,10 @@ public class CalendarController {
         return "redirect:/calendar/list";
     }
 
+    @ResponseBody
     @RequestMapping("/update")
-    public String update(CalendarDTO dto) {
+    public void update(CalendarInsertDTO dto) {
         calendarService.update(dto);
-
-        return "redirect:/calendar/list";
     }
 
     @RequestMapping("/delete/{id}")

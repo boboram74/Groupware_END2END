@@ -1,6 +1,7 @@
 package com.end2end.spring.schedule.serviceImpl;
 
 import com.end2end.spring.alarm.AlarmService;
+import com.end2end.spring.alarm.AlarmType;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.schedule.dao.CalendarDAO;
@@ -73,8 +74,54 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public void update(CalendarDTO dto) {
-        calendarDAO.update(dto);
+    public void update(CalendarInsertDTO dto) {
+        CalendarDTO calendarDTO = CalendarDTO.builder()
+                .id(dto.getId())
+                .title(dto.getTitle())
+                .color(dto.getColor())
+                .build();
+        calendarDAO.update(calendarDTO);
+
+        List<CalendarUserDTO> calendarUserDTOList =
+                calendarUserDAO.selectByCalendarId(dto.getId());
+
+        for(CalendarUserDTO calendarUserDTO : calendarUserDTOList) {
+            boolean isExist = false;
+            for(String employeeId : dto.getEmployeeId()) {
+                if(employeeId.equals(calendarUserDTO.getEmployeeId())) {
+                    isExist = true;
+                    alarmService.sendCalendarUpdateStateAlarm(
+                            AlarmType.CALENDAR_UPDATE, employeeId);
+                    break;
+                }
+            }
+
+            if(!isExist) {
+                calendarUserDAO.deleteById(calendarUserDTO.getId());
+                alarmService.sendCalendarUpdateStateAlarm(
+                        AlarmType.CALENDAR_DELETE, calendarUserDTO.getEmployeeId());
+            }
+        }
+
+        for(String employeeId : dto.getEmployeeId()) {
+            boolean isExist = false;
+            for(CalendarUserDTO calendarUserDTO : calendarUserDTOList) {
+                if(employeeId.equals(calendarUserDTO.getEmployeeId())) {
+                    isExist = true;
+                    break;
+                }
+            }
+
+            if(!isExist) {
+                CalendarUserDTO calendarUserDTO = CalendarUserDTO.builder()
+                        .calendarId(dto.getId())
+                        .employeeId(employeeId)
+                        .build();
+                calendarUserDAO.insert(calendarUserDTO);
+                alarmService.sendCalendarUpdateStateAlarm(
+                        AlarmType.CALENDAR_CREATE, employeeId);
+            }
+        }
     }
 
     @Override

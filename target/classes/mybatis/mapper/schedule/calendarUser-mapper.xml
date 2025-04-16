@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="calenderUser">
+<mapper namespace="calendarUser">
     <select id="selectByCalendarId" resultType="com.end2end.spring.schedule.dto.CalendarUserDTO">
         SELECT *
         FROM CALENDAR_USER
@@ -18,7 +18,12 @@
         ) A
     </insert>
 
+    <insert id="insert">
+        INSERT INTO CALENDAR_USER(id, calendarId, employeeId)
+        VALUES (CALENDAR_USER_ID_SEQ.nextval, ${calendarId}, #{employeeId})
+    </insert>
+
     <delete id="deleteById">
-        DELETE FROM CALENDAR_USER WHERE id = #{id}
+        DELETE FROM CALENDAR_USER WHERE id = ${id}
     </delete>
 </mapper>

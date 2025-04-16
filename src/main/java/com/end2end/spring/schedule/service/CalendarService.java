@@ -11,6 +11,6 @@ public interface CalendarService {
     List<CalendarDTO> search();
     Map<String, Object> selectById(int id);
     void insert(CalendarInsertDTO dto);
-    void update(CalendarDTO dto);
+    void update(CalendarInsertDTO dto);
     void deleteById(int id);
 }

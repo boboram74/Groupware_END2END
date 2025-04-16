@@ -465,7 +465,7 @@
             <tbody>
             <c:forEach items="${projects}" var="list">
 
-                <tr class="${project.hideYn == 'Y' ? 'hidden-project' : ''}">
+                <tr class="${list.hideYn == 'Y' ? 'hidden-project' : ''}">
 
                     <td onclick="location.href='/project/detail/${list.id}'">${list.name}
                         <c:if test="${list.nearDeadline == 'Y'}"><span class="detail-badge">긴급</span></c:if></td>

@@ -44,6 +44,7 @@ public class ProjectController {
                     dto.setStatus("FINISH");
                     break;
                 }
+                System.out.println("nearDeadline: " + dto.getNearDeadline());
             }
 //        }
 

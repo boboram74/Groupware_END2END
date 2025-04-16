@@ -21,6 +21,25 @@
     </select>
     <!-- 프로젝트 진행중 보고된 게시물 모아보기-->
 
+
+    <select id="searchWorkList" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        SELECT
+      
+        pw.title,
+        e.name AS employeeName
+        FROM project_work pw
+        JOIN project_user pu ON pw.projectUserId = pu.id
+        JOIN employee e ON pu.employeeId = e.id
+        WHERE pw.projectId = #{projectId}
+        <if test="option == 'title'">
+            AND pw.title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="option == 'employeeName'">
+            AND e.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+    </select>
+
+
     <delete id="deleteById">
         delete from project_work where id=#{workId}
     </delete>

@@ -784,9 +784,9 @@
                     <div class="modal-header">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="/work/update" method="post">
+                    <form id="updateForm">
                         <div class="modal-body">
-                            <input tpye="hidden" name="id" value="1" />
+                            <input type="hidden" name="id" />
                             <input type="hidden" name="projectId" value="${project.id}"/>
                             <h5>게시물 title</h5>
                             <div id="updateTitle">
@@ -819,33 +819,11 @@
         </div>
 
         <script>
-            $('form').submit(function (e) {
-                e.preventDefault();
 
-                const formData = new FormData(this);
-                for(const [key, value] of formData.entries()) {
-                    console.log(key, value);
-                }
-                $.ajax({
-                    url: '/work/update',
-                    data: formData,
-                    type: 'POST',
-                    processData: false,
-                    contentType: false,
-                    error: function (xhr, status, error) {
-                        console.error('Error:', error);
-                        console.error('Status:', status);
-                        console.error('Response:', xhr.responseText);
-                    }
-                }).done(function(response) {
-                    console.log(response);
-                    location.reload();
-                })
-            })
+            let currentWorkId = null;
 
-            let currentWorkId = null; // 전역 변수
             function openWorkModal(workId) {
-                currentWorkId = workId; // 전역 변수
+                currentWorkId = workId;
                 $.ajax({
                     url: '/work/detail/' + workId,
                     type: 'GET',
@@ -859,7 +837,7 @@
                         $('#workType').html(work.type);
                         $('#workPriority').html(work.priority);
                         $('#workState').html(work.state);
-                        $('#workDate').html(work.regDate +"~"+work.deadLine);
+                        $('#workDate').html(work.regDate + "~" + work.deadLine);
                         $('#workContent').html(work.content);
 
                         // 파일 목록 업데이트
@@ -870,7 +848,7 @@
                                 console.log(file);
                                 fileList += '<li class="mb-2">' +
                                     '<i class="bi bi-paperclip"></i> ' +
-                                    '<a href="/download/' + file.filesId +
+                                    '<a href="/file/download?path=' + file.path +
                                     '" class="text-decoration-none">' +
 
                                     file.originFileName
@@ -894,6 +872,35 @@
                     }
                 });
             }
+
+
+
+            $('#updateForm').submit(function (e) {
+                e.preventDefault();
+                console.log("수정보내는곳")
+                const formData = new FormData(this);
+                for (const [key, value] of formData.entries()) {
+                    console.log(key, value);
+                }
+                $.ajax({
+                    url: '/work/update',
+                    data: formData,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        console.error('Status:', status);
+                        console.error('Response:', xhr.responseText);
+                    }
+                }).done(function (response) {
+                    console.log(response);
+                    location.reload();
+                })
+            })
+
+
 
             function deleteWork(workId) {
                 if (confirm("정말 삭제하시겠습니까?")) {
@@ -963,29 +970,29 @@
                     <option value="FINISH"` + work.state + ` == 'FINISH' ? 'selected' : ''}>완료</option>
                 </select>`);
 
-                        $('#updateDate').html(`<input type="date" class="form-control" name="deadLine" value=` + work.deadLine + ` >`);
+                        $('#updateDate').html(`<input type="date" class="form-control" name="deadLine" value="` + work.deadLine + `" >`);
 
                         $('#updateContet').html(`
                 <textarea class="form-control" name="content">` + work.content + ` </textarea>`);
 
-                        // 파일 input
-                        // $('#updatefileList').append('<input type="file" class="form-control" name="files" multiple>');
+                        $('#updatefileList').append('<input type="file" class="form-control" name="files" multiple>');
+                        let fileList = '';
+                        if (files && files.length > 0) {
+                            files.forEach(file => {
+                                fileList += `
+                            <li>
+                                <a href="/file/download?path=' + file.path +
+                                    '" class="text-decoration-none">' +
+                            file.originFileName
+                            + '</a>
+                            </li> `;
+                            });
+                        } else {
+                            fileList = '<li>첨부된 파일이 없습니다.</li>';
+                        }
 
-                        // 파일 안나와서 주석처리해둠
-                        <%--    let fileList = '';--%>
-                        <%--    if (files && files.length > 0) {--%>
-                        <%--        files.forEach(file => {--%>
-                        <%--            fileList += `--%>
-                        <%--    <li>--%>
-                        <%--        <a href="/download/${file.filesId}" target="_blank">${file.originFileName}</a>--%>
-                        <%--    </li>--%>
-                        <%--`;--%>
-                        <%--        });--%>
-                        <%--    } else {--%>
-                        <%--        fileList = '<li>첨부된 파일이 없습니다.</li>';--%>
-                        <%--    }--%>
 
-                        <%--$('#updatefileList').append(`<ul>${fileList}</ul>`);--%>
+                        $('#updatefileList').append(`<ul>${fileList}</ul>`);
                     },
                     error: function (xhr, status, error) {
                         console.error('수정 모달 데이터 실패:', error);
@@ -1012,10 +1019,7 @@
                     id: currentWorkId
 
                 };
-                console.log($('input[name=regDate]').val());
-                console.log($('input[type="date"][name=deadLine]').val());
-                console.log(dtobox.regDate);
-                console.log(dtobox.deadLine);
+
 
                 // let files =
                 //     $("#updatefileList")[0].files;

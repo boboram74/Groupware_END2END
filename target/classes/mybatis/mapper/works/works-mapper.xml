@@ -43,6 +43,9 @@
         #{deadLine},
         #{content, jdbcType=VARCHAR}
         )
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT Project_Work_id_SEQ.currval FROM DUAL
+        </selectKey>
     </insert>
 
     <!--차트에 보낼 데이터 완료된 게시물 수-->
@@ -96,7 +99,7 @@
         deadLine = #{deadLine,jdbcType=DATE},
         state = #{state, jdbcType=VARCHAR},
         content = #{content, jdbcType=VARCHAR}
-        WHERE id = #{id}
+        WHERE id = ${id}
     </update>
     <!-- 프로젝트 진행중 보고된 게시물 수정-->
 

@@ -40,6 +40,8 @@ public class ProjectWorkDAO {
     }
 
     public void update(ProjectWorkDTO dto) {
+        
+        System.out.println("dao도착");
         mybatis.update("works.update", dto);
     }
 

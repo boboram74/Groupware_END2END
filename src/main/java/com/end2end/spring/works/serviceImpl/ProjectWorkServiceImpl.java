@@ -35,7 +35,7 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
        //게시물 등록
         dao.insert(dto);
 
-        int projectWorkId = dto.getProjectId();
+        int projectWorkId = dto.getId();
         FileDTO fileDTO = FileDTO.builder()
                 .projectWorkId(projectWorkId)
                 .build();
@@ -59,10 +59,11 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     }
     @Override
     public ProjectWorkDTO update(ProjectWorkDTO dto) {
+        System.out.println("여기 서비스 수정확인1");
         dao.update(dto);
-
-        alarmService.sendProjectAlarm(
-                AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
+System.out.println("여기 서비스 수정확인2");
+//        alarmService.sendProjectAlarm(
+//                AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
 
         return dto;
     }

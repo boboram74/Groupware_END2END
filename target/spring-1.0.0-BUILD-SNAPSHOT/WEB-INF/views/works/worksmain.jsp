@@ -594,7 +594,7 @@
                     <div class="mb-3">
                         <label class="form-label">프로젝트 인원</label>
                         <button type="button" class="btn btn-outline-primary" onclick="updateOpenMemberSearch()">
-                            인원 추가
+                            인원 수정
                         </button>
 
                         <div id="updateMembers" name=class="mt-2">
@@ -734,17 +734,22 @@
                 $('#title').val(project.name);
                 $('input[name="deadLine"]').val(project.deadLine);
                 $('input[name="projectId"]').val(project.id);
-
+                if (!deadline) {
+                    alert("⚠️ 프로젝트 기간을 설정해주세요.");
+                    event.preventDefault(); // 폼 제출 막기
+                    return false;
+                }
+                return true;
                 if (selectedMembers.length > 0) {
                     selectedMembers.forEach(member => {
                         console.log("이름:", member.name);
                         console.log("이름:", member.id);
                         console.log("부서:", member.departmentName);
                         $('#updateSelectedMembersList').append(`
-                        <div class="updateSelected-user" data-id="`+member.id+`">
-                         <span>`+member.name+`</span>
+                        <div class="updateSelected-user" data-id="` + member.id + `">
+                         <span>` + member.name + `</span>
                             <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
-                            <input type="hidden" name="employeeId" value="`+member.id+`">
+                            <input type="hidden" name="employeeId" value="` + member.id + `">
                         </div>
 
                     `);
@@ -965,8 +970,9 @@
         }
 
     }
-        function addProjectToTable(response) {
-            const tableHtml = `
+
+    function addProjectToTable(response) {
+        const tableHtml = `
         <tr onClick="location.href='/works/work/${response.id}'">
             <td>${response.name}</td>
             <td>${response.regDate}</td>
@@ -978,9 +984,9 @@
 
                 <button class="deleteProjectBtn" onClick="deleteProject(${response.id})">삭제</button>
                  </tr>
+`;
+        $('.table tbody').append(tableHtml);
 
-                 $('.table tbody').append(tableHtml);`
-        // }
 
     }
 

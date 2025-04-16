@@ -28,16 +28,7 @@ public class HRController {
     private EmployeeService employeeService;
 
     @RequestMapping("/list")
-    public String toList(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-        EmployeeDTO loginUser = (EmployeeDTO) session.getAttribute("loginUser");
-
-        if (loginUser == null ||
-                (!"ADMIN".equalsIgnoreCase(loginUser.getRole()) &&
-                        !"인사팀".equals(loginUser.getDepartmentName()))) {
-
-            redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
-            return "redirect:/";
-        }
+    public String toList(Model model) {
 
         List<EmployeeDTO> list = employeeService.selectAll();
         model.addAttribute("employeeList", list);

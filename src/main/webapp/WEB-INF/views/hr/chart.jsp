@@ -5,13 +5,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<c:if test="${loginUser == null or (loginUser.role ne 'ADMIN' and loginUser.departmentName ne '인사팀')}">
-    <script>
-        alert('접근 권한이 없습니다.');
-        location.href = '/';
-    </script>
-</c:if>
-
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">

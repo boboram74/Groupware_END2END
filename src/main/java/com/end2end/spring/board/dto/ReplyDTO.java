@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 @Builder
 public class ReplyDTO {
     private int id;
+    private int boardId;
     private String employeeId;
     private String content;
     private Timestamp regDate;

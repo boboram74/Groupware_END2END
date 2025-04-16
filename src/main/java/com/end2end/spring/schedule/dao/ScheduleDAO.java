@@ -27,4 +27,12 @@ public class ScheduleDAO {
     public void insert(ScheduleDTO dto) {
         mybatis.insert("schedule.insert", dto);
     }
+
+    public void update(ScheduleDTO dto) {
+        mybatis.update("schedule.update", dto);
+    }
+
+    public void deleteById(int id) {
+        mybatis.delete("schedule.deleteById", id);
+    }
 }

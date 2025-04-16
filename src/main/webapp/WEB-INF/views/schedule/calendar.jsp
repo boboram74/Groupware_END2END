@@ -429,6 +429,7 @@
 
             <div class="box-content">
                 <form id="scheduleWriteForm" action="/schedule/insert" method="post">
+                    <input type="hidden" name="id" value="0">
                     <div class="form-group">
                         <label>캘린더 선택</label>
                         <select name="calendarId" class="form-select" required>
@@ -478,8 +479,10 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn primary">저장</button>
-                        <button type="button" class="btn secondary close-modal">취소</button>
+                        <button type="button" class="primary" style="display: none;" id="schedule-update-complete-btn">수정완료</button>
+                        <button type="button" class="secondary" style="display: none;" id="schedule-delete-btn">삭제</button>
+                        <button type="submit" class="primary" id="schedule-input-btn">저장</button>
+                        <button type="button" class="secondary" id="schedule-write-close-btn">취소</button>
                     </div>
                 </form>
             </div>
@@ -489,7 +492,7 @@
     <!-- 캘린더 목록 모달 -->
     <div class="detail-modal" id="listCalendarModal" style="display: none;">
         <div class="box modal-container surface-bright">
-            <div class="box-title modal-header">
+            <div class="box-title">
                 <h2>캘린더 관리</h2>
             </div>
             <div class="box-content">
@@ -525,6 +528,37 @@
                 <div class="modal-footer">
                     <button type="button" class="primary" id="editCalendarBtn">수정</button>
                     <button type="button" class="secondary close-modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상세 정보 모달 -->
+    <div class="detail-modal" id="eventDetailModal" style="display: none;">
+        <div class="modal-container box surface-bright">
+            <div class="modal-header box-title">
+                <h2>일정 상세 정보</h2>
+            </div>
+            <div class="box-content">
+                <div class="form-group">
+                    <label>제목</label>
+                    <div id="detail-title"></div>
+                </div>
+                <div class="form-group">
+                    <label>시작일</label>
+                    <div id="detail-start"></div>
+                </div>
+                <div class="form-group">
+                    <label>종료일</label>
+                    <div id="detail-end"></div>
+                </div>
+                <div class="form-group">
+                    <label>설명</label>
+                    <div id="detail-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="primary" id="schedule-detail-update">수정</button>
+                    <button type="button" class="secondary" id="schedule-detail-close">닫기</button>
                 </div>
             </div>
         </div>
@@ -566,8 +600,9 @@
                 },
                 eventClick: function(info) {
                     console.log(info);
-                    if (info.event.extendedProps.period) {
-                        window.location.href = '/schedule/detail?id=' + info.event.id;
+                    if (info.event.extendedProps.type === 'schedule') {
+                        console.log(info.event.extendedProps.id);
+                        openDetailModal(info.event.extendedProps.id);
                     }
                 },
                 eventDisplay: 'block',
@@ -619,7 +654,11 @@
                                     end: new Date(event.endDate),
                                     allDay: false,
                                     display: 'block',
-                                    backgroundColor: event.backgroundColor,
+                                    color: event.backgroundColor,
+                                    extendedProps: {
+                                        id: event.id,
+                                        type: 'schedule'
+                                    }
                                 }
                             }
                             return {
@@ -640,8 +679,74 @@
                 })
             }
 
+            function openDetailModal(id) {
+                $.ajax({
+                    url: '/schedule/detail/' + id,
+                    type: 'GET',
+                    success: function (data) {
+                        console.log(data);
+                        $('#detail-title').text(data.title);
+                        $('#detail-start').text(data.startDate);
+                        $('#detail-end').text(data.endDate);
+                        $('#detail-content').text(data.content);
+
+                        $('#eventDetailModal').show();
+
+                        $('#schedule-delete-btn').on('click', function() {
+                            location.href = '/schedule/delete/' + data.id;
+                        })
+
+                        $('#schedule-detail-update').on('click', function() {
+                            const startDateTime = new Date(data.startDate);
+                            const endDateTime = new Date(data.endDate);
+
+                            const startDate = formatDate(startDateTime);
+                            const startTime = ' ' + formatTimeToHHMMSS(startDateTime);
+
+                            const endDate = formatDate(endDateTime);
+                            const endTime = ' ' + formatTimeToHHMMSS(endDateTime);
+
+                            $('#scheduleWriteForm input[name=id]').val(data.id);
+                            $('#scheduleWriteForm select[name=calendarId]').val(data.calendarId);
+
+                            $('#scheduleWriteForm input[name=title]').val(data.id);
+                            $('#insert-startDate').val(startDate);
+                            $('#insert-startTime option[value="' + startTime + '"]').prop('selected', true);
+                            $('#scheduleWriteForm input[name=startDate]').val(startDate + startTime);
+
+                            $('#insert-endDate').val(endDate);
+                            $('#insert-endTime option[value="' + endTime + '"]').prop('selected', true);
+                            $('#scheduleWriteForm input[name=endDate]').val(endDate + endTime);
+
+                            $('#scheduleWriteForm textarea[name=content]').val(data.content);
+
+                            $('#schedule-update-complete-btn').show();
+                            $('#schedule-delete-btn').show();
+                            $('#schedule-input-btn').hide();
+
+                            $('#eventDetailModal').fadeOut(300);
+                            $('#scheduleWriteModal').fadeIn(300);
+                        })
+                    }
+                })
+            }
+
             calendar.render();
         });
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return year + '-' + month + '-' + day;
+        }
+
+        function formatTimeToHHMMSS(date) {
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return hours + ':' + minutes + ':' + seconds;
+        }
 
         // 창 크기 변경 시 자동 조절
         let resizeTimer;
@@ -653,6 +758,27 @@
                 // adjustCalendarSize();
             }, 100);
         });
+
+        $('#schedule-update-complete-btn').on('click', function() {
+            const formData = new FormData($('#scheduleWriteForm')[0]);
+
+            $.ajax({
+                url: '/schedule/update',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    alert("수정되었습니다.");
+                    location.reload();
+                },
+                errors: function(xhr, status, error) {
+                    console.log(xhr.status);
+                    console.log(xhr.responseText);
+                    console.log(error);
+                }
+            });
+        })
     </script>
     <script>
         $(document).ready(function() {
@@ -756,6 +882,18 @@
                 $('.calendar-write-form .box-title>h2').html('캘린더 추가');
             });
 
+            $('#schedule-write-close-btn').on('click', function() {
+                $('#schedule input').val();
+                $('#schedule textarea').val('');
+
+                $('#schedule-update-complete-btn').hide();
+                $('#schedule-delete-btn').hide();
+                $('#schedule-input-btn').show();
+
+                $('#scheduleWriteModal').fadeOut(300);
+                $('#eventDetailModal').fadeIn(300);
+            })
+
             // 모달 열기
             $('.open-list-calendar').click(function() {
                 console.log('open list calendar');
@@ -779,6 +917,11 @@
                 $.ajax({
                     url: '/calendar/detail/' + selectedId,
                     method: 'GET',
+                    error : function(request, status, error) {
+                        console.log("code: " + request.status)
+                        console.log("message: " + request.responseText)
+                        console.log("error: " + error);
+                    },
                     success: function(resp) {
                         console.log(resp);
                         const calendar = resp.calendar;
@@ -850,7 +993,7 @@
                         console.log("message: " + request.responseText)
                         console.log("error: " + error);
                     }
-                }).done(function(resp) {
+                }).done(function() {
                     alert("수정되었습니다.")
                     location.reload();
                 })
@@ -898,6 +1041,10 @@
                     $('#scheduleWriteModal').fadeOut(300);
                 }
             });
+
+            $('#schedule-detail-close').on('click', function() {
+                $('#eventDetailModal').fadeOut(300);
+            })
         });
     </script>
     <script>

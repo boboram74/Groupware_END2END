@@ -59,11 +59,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void update(ScheduleDTO dto) {
-
+        scheduleDAO.update(dto);
+        alarmService.sendScheduleUpdateAlarm(dto.getCalendarId());
     }
 
     @Override
     public void deleteById(int id) {
-
+        alarmService.sendScheduleDeleteAlarm(id);
+        scheduleDAO.deleteById(id);
     }
 }

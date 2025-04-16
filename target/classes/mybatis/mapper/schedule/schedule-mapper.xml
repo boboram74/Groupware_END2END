@@ -18,8 +18,6 @@
         FROM SCHEDULE
         JOIN CALENDAR
         ON SCHEDULE.CALENDARID = CALENDAR.ID
-        JOIN CALENDAR_USER
-        ON CALENDAR.ID = CALENDAR_USER.CALENDARID
         WHERE CALENDAR.id = ${calendarId}
     </select>
 
@@ -28,8 +26,6 @@
         FROM SCHEDULE
         JOIN CALENDAR
         ON SCHEDULE.calendarId = CALENDAR.ID
-        JOIN CALENDAR_USER
-        ON CALENDAR.ID = CALENDAR_USER.calendarId
         WHERE SCHEDULE.id = ${id}
     </select>
 
@@ -55,7 +51,8 @@
     </insert>
 
     <update id="update">
-        UPDATE SCHEDULE SET #{title}, #{content}, #{startDate}, #{endDate} WHERE id = ${id}
+        UPDATE SCHEDULE SET title = #{title}, content = #{content}, startDate = #{startDate}, endDate = #{endDate}
+        WHERE id = ${id}
     </update>
 
     <delete id="deleteById">

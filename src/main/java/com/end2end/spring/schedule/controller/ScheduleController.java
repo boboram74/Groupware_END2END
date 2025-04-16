@@ -38,7 +38,7 @@ public class ScheduleController {
     }
 
     @ResponseBody
-    @RequestMapping("/detail/${id}")
+    @RequestMapping("/detail/{id}")
     public ScheduleDTO selectById(@PathVariable int id) {
         return scheduleService.selectById(id);
     }
@@ -57,13 +57,23 @@ public class ScheduleController {
         return "redirect:/calendar/list";
     }
 
+    @ResponseBody
     @RequestMapping("/update")
-    public void update(ScheduleDTO dto) {
-        scheduleService.update(dto);
+    public void update(ScheduleInsertDTO dto) {
+        ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                .calendarId(dto.getCalendarId())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .startDate(Timestamp.valueOf(dto.getStartDate()))
+                .endDate(Timestamp.valueOf(dto.getEndDate()))
+                .build();
+        scheduleService.update(scheduleDTO);
     }
 
     @RequestMapping("/delete/{id}")
-    public void deleteById(@PathVariable int id) {
+    public String deleteById(@PathVariable int id) {
         scheduleService.deleteById(id);
+
+        return "redirect:/calendar/list";
     }
 }

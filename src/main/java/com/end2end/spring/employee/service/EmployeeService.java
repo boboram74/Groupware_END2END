@@ -28,6 +28,7 @@ public interface EmployeeService {
     void isResigned(String id);
     List<Map<String, Object>> employeeAll();
     Map<String, List<Integer>> getMonthlyLineData();
-
     String findByLoginId(String id);
+    List<Map<String, Object>> getVacationStats();
+    List<Map<String, Object>> getAttendanceStats();
 }

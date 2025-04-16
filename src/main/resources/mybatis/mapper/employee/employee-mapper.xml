@@ -246,6 +246,33 @@
         ORDER BY type, month
     </select>
 
+    <select id="vacationStats" resultType="java.util.Map">
+        SELECT
+        d.name AS label,
+        NVL(SUM(v.vacationDate), 0) AS used,
+        COUNT(e.id) * 15 - NVL(SUM(v.vacationDate), 0) AS remain
+        FROM EMPLOYEE e
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        LEFT JOIN VACATION v
+        ON e.id = v.employeeId
+        AND v.type = 'ANNUAL'
+        WHERE e.resignDate IS NULL
+        GROUP BY d.name
+    </select>
+
+    <select id="attendanceStats" resultType="java.util.Map">
+        SELECT
+        d.name AS label,
+        SUM(CASE WHEN s.state = 'LATE' THEN 1 ELSE 0 END) AS late,
+        SUM(CASE WHEN s.state = 'LEAVE_EARLY' THEN 1 ELSE 0 END) AS early,
+        SUM(CASE WHEN s.state = 'ABSENCE' THEN 1 ELSE 0 END) AS absent
+        FROM SOLDERING s
+        JOIN EMPLOYEE e ON s.employeeId = e.id
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        WHERE e.resignDate IS NULL
+        GROUP BY d.name
+    </select>
+
     <select id="findByLoginId"  resultType="java.lang.String">
         SELECT loginId FROM EMPLOYEE_DETAIL WHERE ID = #{value}
     </select>

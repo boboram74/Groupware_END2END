@@ -110,7 +110,6 @@ public class HRController {
     @ResponseBody
     public List<Map<String, Object>> getEmploymentTypeChart() {
         List<Map<String, Object>> result = employeeService.employeeAll();
-
         return result;
     }
 
@@ -118,6 +117,18 @@ public class HRController {
     @ResponseBody
     public Map<String, List<Integer>> getMonthlyLineChart() {
         return employeeService.getMonthlyLineData();
+    }
+
+    @RequestMapping("/chart/vacation")
+    @ResponseBody
+    public List<Map<String, Object>> getVacationStats() {
+        return employeeService.getVacationStats();
+    }
+
+    @RequestMapping("/chart/attendance")
+    @ResponseBody
+    public List<Map<String, Object>> getAttendanceStats() {
+        return employeeService.getAttendanceStats();
     }
 
 }

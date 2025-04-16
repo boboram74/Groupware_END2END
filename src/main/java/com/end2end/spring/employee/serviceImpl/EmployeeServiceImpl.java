@@ -10,6 +10,7 @@ import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.EmailAddressDTO;
 import com.end2end.spring.mail.dto.EmailAddressUserDTO;
 import com.end2end.spring.util.SecurityUtil;
+import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -220,5 +221,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Map<String, Object>> getAttendanceStats() {
         return employeeDAO.getAttendanceStats();
+    }
+
+    @Override
+    public List<EmployeeDTO> selectAll(int page) {
+        int start = (page - 1) * Statics.recordCountPerPage;
+        int end = Math.min(page * Statics.recordCountPerPage, employeeDAO.selectAll().size());
+
+        return employeeDAO.selectFromTo(start, end);
     }
 }

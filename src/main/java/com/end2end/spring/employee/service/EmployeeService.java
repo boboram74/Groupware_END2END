@@ -31,4 +31,5 @@ public interface EmployeeService {
     String findByLoginId(String id);
     List<Map<String, Object>> getVacationStats();
     List<Map<String, Object>> getAttendanceStats();
+    List<EmployeeDTO> selectAll(int page);
 }

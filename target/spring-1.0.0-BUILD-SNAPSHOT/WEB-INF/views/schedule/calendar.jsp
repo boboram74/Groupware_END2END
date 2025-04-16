@@ -234,7 +234,7 @@
         border: 1px solid var(--md-sys-color-outline-variant);
         border-radius: 4px;
         background-color: var(--md-sys-color-surface-bright);
-        color: var(--md-sys-color-on-surface);
+        color: var(--md-sys-color-surface);
         font-size: 14px;
     }
 

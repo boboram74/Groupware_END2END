@@ -81,11 +81,15 @@ System.out.println("여기 서비스 수정확인2");
     public int countByState(int selectedId, String state){
         return dao.countByState(selectedId,state);
     }
+    @Override
     public int countByType(int selectedId, String type){
         return dao.countByType(selectedId,type);
     }
 
-
+@Override
+public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, int projectId, String searchOption) {
+        return dao.searchBynameAndTitle(keyword, projectId,searchOption);
+}
 
 //    @Override
 //    public void update(MultipartFile[]files,ProjectWorkDTO dto) throws Exception {

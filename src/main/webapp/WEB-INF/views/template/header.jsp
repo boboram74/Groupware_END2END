@@ -50,7 +50,7 @@
         <i class="material-icons">event_available</i>
         <span>일정/예약</span>
       </div>
-      <c:if test="${loginUser.role eq 'ADMIN' || loginUser.departmentName eq '인사팀'}">
+      <c:if test="${employee.role eq 'ADMIN' || employee.departmentName eq '인사팀'}">
         <div class="menu-item" onclick="location.href='/hr/list'">
           <i class="material-icons">people</i>
           <span>인사관리</span>

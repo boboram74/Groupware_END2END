@@ -1,12 +1,8 @@
 package com.end2end.spring.works.controller;
 
 import com.end2end.spring.employee.dto.EmployeeDTO;
-import com.end2end.spring.works.dto.ProjectDTO;
+import com.end2end.spring.works.dto.*;
 
-import com.end2end.spring.works.dto.ProjectInsertDTO;
-
-import com.end2end.spring.works.dto.ProjectSelectDTO;
-import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.service.ProjectService;
 
 import com.end2end.spring.works.service.ProjectWorkService;
@@ -17,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/project")
 @Controller
@@ -35,12 +33,12 @@ public class ProjectController {
 
         List<ProjectSelectDTO> projects = projectService.selectAllProject();
 
-
         model.addAttribute("projects", projects);
-
+        model.addAttribute("employee", EmployeeDTO);
 
         return "works/worksmain";
     }
+
 
 //    @RequestMapping("/profileSelect")
 //    public String selectProjectMemberProfiles(Model model, @RequestParam int id) {
@@ -64,15 +62,17 @@ public class ProjectController {
 //        }
     @RequestMapping("/insert")
     public String insert(@ModelAttribute ProjectInsertDTO dto) {
-        System.out.println(dto);
-        System.out.println("프로젝트컨트롤러도착");
-
-        projectService.insert(dto);
+            projectService.insert(dto);
 
         // TODO: 프로젝트 생성
         return "redirect:/project/main";
     }
 
+    @ResponseBody
+    @GetMapping("/members/{projectId}")
+    public List<EmployeeDTO> getProjectMembers(@PathVariable int projectId) {
+        return projectService.getMembersByProjectId(projectId);
+    }
 
     @RequestMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model) {
@@ -86,37 +86,53 @@ public class ProjectController {
             for (ProjectSelectDTO dto : projects) {
                 if (dto.getId() == id) {
                     dto.setStatus("FINISH");
+
+
                     break;
                 }
             }
         }
         //isProjectFinish는 완료된 프로젝트만 숨길수있도록 조건을 걸어서 필요한거임 !!!!
         System.out.println(isProjectFinish);
+
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
         model.addAttribute("works", list);
         model.addAttribute("isProjectFinish", isProjectFinish);
         return "works/detailpage";
     }
+
     @ResponseBody
     @RequestMapping("/latestProjectId")
     public int findLatestProject(Model model) {
         ProjectDTO latestProject = projectService.findLatestProject();
-        System.out.println("최근프로젝트번호:"+latestProject);
         model.addAttribute("latestProjectId", latestProject != null ? latestProject.getId() : -1);
         return latestProject.getId();
     }
 
     @ResponseBody
     @RequestMapping("/update/{id}")
-    public ProjectDTO updateForm(@PathVariable int id) {
-        return projectService.selectById(id);
+    public Map<String, Object> updateForm(@PathVariable int id) {
+        List<EmployeeDTO> selectedMembers = projectService.getMembersByProjectId(id);//선택되었던 멤버들
+        Map<String, Object> result = new HashMap<>();
+
+        ProjectDTO dto = projectService.selectById(id);//저장된 프젝 정보
+        result.put("project", dto);
+        result.put("selectedMembers", selectedMembers);
+
+
+        return result;
     }
 
     @RequestMapping("/update")
-    public String update(@ModelAttribute ProjectDTO dto, Model model) {
-        projectService.update(dto);
-        return "redirect:/project/detail/" + dto.getId();
+    public String update(@ModelAttribute ProjectInsertDTO dto, @RequestParam("employeeId") List<String> employeeId) {
+
+        projectService.updateProject(dto); // 기본 정보 수정
+        int projectId = dto.getProjectId();
+        projectService.updateProjectUser(projectId, employeeId);
+
+
+        return "redirect:/project/main";
     }
 
     // Delete
@@ -131,7 +147,7 @@ public class ProjectController {
 
         List<ProjectDTO> result = projectService.selectByName(name);
         model.addAttribute("projects", result);
-        //jsp에서 검색해서 나오는 부분에 projects로 c:foreach로 풀어줘야됨
+
         return "works/worksmain";
     }
 
@@ -140,7 +156,6 @@ public class ProjectController {
     public List<EmployeeDTO> selectByUser(@RequestParam String name) {
 
         return projectService.selectByUser(name);
+
     }
-
-
 }

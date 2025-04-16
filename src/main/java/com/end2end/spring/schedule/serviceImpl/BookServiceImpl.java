@@ -1,7 +1,7 @@
 package com.end2end.spring.schedule.serviceImpl;
 
 import com.end2end.spring.schedule.dto.BookDTO;
-import com.end2end.spring.schedule.dto.CalenderDTO;
+import com.end2end.spring.schedule.dto.CalendarDTO;
 import com.end2end.spring.schedule.service.BookService;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +28,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void insert(CalenderDTO dto) {
+    public void insert(CalendarDTO dto) {
         // TODO: 예약 등록
     }
 
     @Override
-    public void update(CalenderDTO dto) {
+    public void update(CalendarDTO dto) {
         // TODO: 예약 수정
     }
 

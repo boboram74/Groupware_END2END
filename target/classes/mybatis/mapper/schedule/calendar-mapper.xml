@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="calendar">
+    <select id="selectByEmployeeId" resultType="com.end2end.spring.schedule.dto.CalendarDTO">
+        SELECT *
+        FROM CALENDAR
+        JOIN CALENDAR_USER
+        ON CALENDAR.ID = CALENDAR_USER.calendarId
+        WHERE employeeId = #{employeeId}
+    </select>
+
+    <select id="selectById" resultType="com.end2end.spring.schedule.dto.CalendarDTO">
+        SELECT *
+        FROM CALENDAR
+        WHERE id = ${id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO CALENDAR(id, title, color) VALUES (CALENDAR_ID_SEQ.nextval, #{title}, #{color})
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT CALENDAR_ID_SEQ.currval FROM DUAL
+        </selectKey>
+    </insert>
+
+    <update id="update">
+        UPDATE CALENDAR SET title = #{title}, color = #{color} WHERE id = ${id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM CALENDAR WHERE id = ${id}
+    </delete>
+</mapper>

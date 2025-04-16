@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="/css/approval/draft.css">
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <style>
     .modal {
         position: fixed;
@@ -29,10 +28,30 @@
     .modalActions button {
         margin-left: 10px;
     }
+    .vacationBox {
+        background-color: #f9f9f9;
+        padding: 15px;
+        margin: 20px 0;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+    .vacationTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .vacationTable th, .vacationTable td {
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+    }
+    .vacationTable th {
+        background-color: #f0f0f0;
+        text-align: left;
+    }
 </style>
 <div class="container">
+
     <table>
-        <th>기 안 문</th>
+        <th>${approvalFormDTO.name}</th>
     </table>
     <hr>
 
@@ -102,7 +121,33 @@
             </div>
         </div>
     </div>
-
+    <c:if test="${approvalFormDTO.name eq '휴가계'}">
+        <div class="vacationBox">
+            <h3>휴가 정보</h3>
+            <table class="vacationTable">
+                <tr>
+                    <th>휴가 유형</th>
+                    <td>${vacationDTO.type}</td>
+                </tr>
+                <tr>
+                    <th>시작일</th>
+                    <td><fmt:formatDate value="${vacationDTO.startDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                </tr>
+                <tr>
+                    <th>종료일</th>
+                    <td><fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                </tr>
+                <tr>
+                    <th>총 휴가 일수</th>
+                    <td>${vacationDTO.vacationDate}일</td>
+                </tr>
+                <tr>
+                    <th>사유</th>
+                    <td>${vacationDTO.reason}</td>
+                </tr>
+            </table>
+        </div>
+    </c:if>
     <div class="body">
         <div class="titleBox">
             <input type="text" id="title" name="title" value="${approval.TITLE}" readonly>

@@ -11,12 +11,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageHistoryDTO {
-    private Integer id;
+    private int id;
+    private int messageRoomId;
     private String employeeId;
     private String content;
     private String name;
     private String profileImg;
-    private String jName;
-    private String dName;
     private Timestamp regDate;
 }

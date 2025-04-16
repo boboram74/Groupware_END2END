@@ -2,6 +2,7 @@ package com.end2end.spring.approval.controller;
 
 import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.approval.service.ApprovalFormService;
+import com.end2end.spring.commute.dto.VacationDTO;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +38,9 @@ public class ApprovalController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
 
+        String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+        boolean team = "경영팀".equals(departmentName);
+
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
         List<Map<String, Object>> waitingList = approvalService.selectByState("ONGOING", employeeId);
         List<Map<String, Object>> goingList = approvalService.selectByState("ONGOING", employeeId);
@@ -48,6 +53,29 @@ public class ApprovalController {
         model.addAttribute("completedList", completedList);
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("formList", formList);
+        model.addAttribute("team", team);
+
+        return "approval/approval-test";
+    }
+
+    @RequestMapping("/all")
+    public String allList(HttpSession session,Model model) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        String employeeId = employee.getId();
+
+        Map<String, List<Map<String, Object>>> approvalByState = approvalService.allApprovals();
+        System.out.println("approvalByState: " + approvalByState);
+        List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
+        String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+        boolean team = "경영팀".equals(departmentName);
+
+        model.addAttribute("waitingList", approvalByState.get("WAITING"));
+        model.addAttribute("goingList", approvalByState.get("ONGOING"));
+        model.addAttribute("completedList", approvalByState.get("SUBMIT"));
+        model.addAttribute("rejectList", approvalByState.get("REJECT"));
+        model.addAttribute("formList", formList);
+        model.addAttribute("isAll", true);
+        model.addAttribute("team", team);
 
         return "approval/approval-test";
     }
@@ -121,17 +149,22 @@ public class ApprovalController {
                 model.addAttribute("error", "존재하지 않는 문서입니다.");
                 return "error/404";
             }
-
+            String formName = (String) approval.get("FORMNAME");
+            ApprovalFormDTO approvalFormDTO = approvalFormService.selectByFormName(formName);
             List<ApproverDTO> nextId = approvalService.nextId(id);
-
-
             List<Map<String, Object>> approvers = approvalService.selectApproversList(id);
 
+            if ("휴가계".equals(approval.get("FORMNAME"))) {
+                VacationDTO vacationDTO = vacationService.getVacationByApprovalId(id);
+                System.out.println(vacationDTO);
+                model.addAttribute("vacationDTO", vacationDTO);
+            }
 
             model.addAttribute("approval", approval);
             model.addAttribute("nextId", nextId);
             model.addAttribute("approvers", approvers);
             model.addAttribute("employee", employee);
+            model.addAttribute("approvalFormDTO", approvalFormDTO);
 
             return "approval/detail";
         } catch (Exception e) {
@@ -197,21 +230,95 @@ public class ApprovalController {
 
     @RequestMapping("/search")
     public String search(HttpSession session, String keyword, Model model) {
+        System.out.println("도착2");
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
+        String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+        boolean team = "경영팀".equals(departmentName);
 
-        List<Map<String, Object>> waitingList = approvalService.search("ONGOING", employeeId, keyword);
-        List<Map<String, Object>> goingList = approvalService.search("ONGOING", employeeId, keyword);
-        List<Map<String, Object>> rejectList = approvalService.search("REJECT", employeeId, keyword);
-        List<Map<String, Object>> completedList = approvalService.search("SUBMIT", employeeId, keyword);
+
+        List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
+
+
+        List<Map<String, Object>> waitingList;
+        List<Map<String, Object>> goingList;
+        List<Map<String, Object>> rejectList;
+        List<Map<String, Object>> completedList;
+
+        if (team) {
+            Map<String, List<Map<String, Object>>> approvalByState = approvalService.SearchallApprovals(keyword);
+            waitingList = approvalByState.get("ONGOING");
+            goingList = approvalByState.get("ONGOING");
+            rejectList = approvalByState.get("REJECT");
+            completedList = approvalByState.get("SUBMIT");
+        } else {
+            waitingList = approvalService.search("ONGOING", employeeId, keyword);
+            goingList = approvalService.search("ONGOING", employeeId, keyword);
+            rejectList = approvalService.search("REJECT", employeeId, keyword);
+            completedList = approvalService.search("SUBMIT", employeeId, keyword);
+        }
 
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("formList", formList);
+        model.addAttribute("team", team);
 
-        return "approval/list";
+        return "approval/approval-test";
     }
+
+    @GetMapping("/searchDetail")
+    public String searchDetail(@RequestParam Map<String, Object> searchParams, HttpSession session, Model model) {
+        System.out.println("도착");
+
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        String employeeId = employee.getId();
+        System.out.println("employeeId: " + employeeId);
+
+        searchParams.put("employeeId", employeeId);
+        System.out.println("searchParams: " + searchParams);
+
+        List<Map<String, Object>> approvalList = approvalService.searchDetail(searchParams);
+        System.out.println("approvalList: " + approvalList);
+
+        List<Map<String, Object>> waitingList = new ArrayList<>();
+        List<Map<String, Object>> goingList = new ArrayList<>();
+        List<Map<String, Object>> completedList = new ArrayList<>();
+        List<Map<String, Object>> rejectList = new ArrayList<>();
+
+        for (Map<String, Object> approval : approvalList) {
+            String STATE = (String) approval.get("STATE");
+            System.out.println("STATE: " + STATE);
+            if ("WAITING".equals(STATE)) {
+                waitingList.add(approval);
+            } else if ("ONGOING".equals(STATE)) {
+                goingList.add(approval);
+            } else if ("SUBMIT".equals(STATE)) {
+                completedList.add(approval);
+            } else if ("REJECT".equals(STATE)) {
+                rejectList.add(approval);
+            }
+        }
+        System.out.println("waitingList: " + waitingList);
+        System.out.println("goingList: " + goingList);
+        System.out.println("completedList: " + completedList);
+        System.out.println("rejectList: " + rejectList);
+
+
+        model.addAttribute("waitingList", waitingList);
+        model.addAttribute("goingList", goingList);
+        model.addAttribute("completedList", completedList);
+        model.addAttribute("rejectList", rejectList);
+        model.addAttribute("searchParams", searchParams);
+
+        return "approval/approval-test";
+    }
+
+
 
 }

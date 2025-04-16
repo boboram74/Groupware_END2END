@@ -58,6 +58,13 @@
         text-align: center;
         margin-left: 10px;
     }
+
+    .hidden-project {
+        opacity: 0.4;
+        transition: opacity 0.3s ease;
+        color: #7f8c8d;
+    }
+
 </style>
 
 <div class="pageName">
@@ -458,7 +465,7 @@
             <tbody>
             <c:forEach items="${projects}" var="list">
 
-                <tr id="changeRow-${list.id}">
+                <tr class="${project.hideYn == 'Y' ? 'hidden-project' : ''}">
 
                     <td onclick="location.href='/project/detail/${list.id}'">${list.name}
                         <c:if test="${list.nearDeadline == 'Y'}"><span class="detail-badge">긴급</span></c:if></td>
@@ -481,29 +488,42 @@
                             </c:if>
                         </div>
                     </td>
+                    <td>${list.status}</td>
 
-                    <c:if test="${projectFinish}">
-                        <td>${list.status}</td>
-                    </c:if>
-                    <c:if test="${employee.role!='TEAM_LEADER'}">
+                    <c:if test="${!isTeamLeader}">
                         <td>
 
                             <button class="updateProjectBtn" onclick="openUpdateModal(${list.id})">수정</button>
 
                         </td>
-                        <td><c:if test="${list.status!=('FINISH')}">
-                            <%-- 상태가 피니쉬면 숨김버튼을 볼수있고 check하면 hideYn에서 Y 값을줘야됨<td>${list.hideYn}</td>--%>
-                            <div class="form-check form-switch">
-
-                                <input class="form-check-input" type="checkbox" id="hidetarget-${list.id}"
-                                       onchange="handleHide(${list.id})">
-
-                                <label class="form-check-label" for="hidetarget-${list.id}"></label>
-
-                            </div>
-                        </c:if>
+                    </c:if>
+                    <c:if test="${isTeamLeader}">
+                        <td>
+                            <c:if test="${list.status == 'FINISH'}">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="hideSwitch-${list.id}"
+                                           onchange="handleHide(${list.id})"
+                                           <c:if test="${list.hideYn == 'Y'}">checked</c:if>>
+                                    <label class="form-check-label" for="hideSwitch-${list.id}"></label>
+                                </div>
+                            </c:if>
                         </td>
                     </c:if>
+                        <%--                        <td><c:if test="${list.status!=('FINISH')}">--%>
+                        <%--                            &lt;%&ndash; 상태가 피니쉬면 숨김버튼을 볼수있고 check하면 hideYn에서 Y 값을줘야됨<td>${list.hideYn}</td>&ndash;%&gt;--%>
+                        <%--                            <div class="form-check form-switch">--%>
+
+                        <%--                                <input class="form-check-input" type="checkbox" id="hidetarget-${list.id}"--%>
+                        <%--                                       onchange="handleHide(${list.id})">--%>
+
+                        <%--                                <label class="form-check-label" for="hidetarget-${list.id}"></label>--%>
+
+                        <%--                            </div>--%>
+                        <%--                        </c:if>--%>
+                        <%--                        </td>--%>
+
 
                 </tr>
 
@@ -903,19 +923,37 @@
 
     function handleHide(projectId) {
 
-        const row = $(`changeRow-${projectId}`);
+        const row = $(`#changeRow-${projectId}`);
         const checkbox = $(`#hidetarget-${projectId}`);
-
-        if (checkbox.prop('checked')) {
-            //속성의 현재 상태 제어를 위해 prop씀
-            row.css('opacity', '0.3');
-            // 숨김처리하면 팀리더만 투명하게 보임
-            // 서버에 hideYn = 'Y' 전송하는 AJAX 추가 가능
-        } else {
-            row.css('opacity', '1');
-            //서버에 hideYn = 'N' 전송 가능
-        }
+        $.ajax({
+            url: "/project/hide",
+            method: "POST",
+            data: {
+                id: projectId,
+                hideYn: isChecked ? 'Y' : 'N'
+            },
+            success: function () {
+                if (isChecked) {
+                    row.addClass("hidden-project");
+                } else {
+                    row.removeClass("hidden-project");
+                }
+            },
+            error: function () {
+                alert("숨김 상태 변경 실패");
+            }
+        });
+        // if (checkbox.prop('checked')) {
+        //     //속성의 현재 상태 제어를 위해 prop씀
+        //     row.css('opacity', '0.3');
+        //     // 숨김처리하면 팀리더만 투명하게 보임
+        //     // 서버에 hideYn = 'Y' 전송하는 AJAX 추가 가능
+        // } else {
+        //     row.css('opacity', '1');
+        //     //서버에 hideYn = 'N' 전송 가능
+        // }
     }
+
 
     function confirmSelectedMembers() {
 

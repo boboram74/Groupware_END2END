@@ -5,8 +5,18 @@
 <mapper namespace="works">
 
     <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
-        SELECT * FROM project_work WHERE projectid = #{id}
-        order by id desc
+        SELECT
+        pw.*,
+        pu.employeeId As employeeId,
+        e.name AS employeeName,
+        d.name AS departmentName,
+        j.name AS jobName
+        FROM project_work pw
+        JOIN PROJECT_USER pu ON pu.id = pw.projectUserId
+        JOIN employee e ON pu.employeeId = e.id
+        JOIN job j ON j.id = e.jobid
+        JOIN department d ON e.jobId = d.id
+        WHERE pw.projectid = #{id}
 
     </select>
     <!-- 프로젝트 진행중 보고된 게시물 모아보기-->
@@ -61,12 +71,14 @@
         FROM PROJECT_WORK
         WHERE projectId = #{selectedId}
     </select>
+
     <select id="countByState" resultType="int">
         SELECT COUNT(*)
         FROM project_work
         WHERE projectId = #{selectedId}
         AND state = #{state}
     </select>
+
     <select id="countByType" resultType="int">
         SELECT COUNT(*)
         FROM project_work

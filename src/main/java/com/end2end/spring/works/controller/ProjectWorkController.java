@@ -56,6 +56,15 @@ public class ProjectWorkController {
         return response;
     }
 
+//    @ResponseBody
+//    @RequestMapping("/searchName")
+//    public List<ProjectWorkDTO> selectByName(@RequestParam String name) {}
+//
+//    @RequestMapping("/searchWriter")
+//    public List<ProjectWorkDTO> selectByWorksId(int worksId) {}
+
+
+
     @RequestMapping("/insert")
     public String insert(int projectId, HttpSession session, ProjectWorkDTO wdto, @RequestParam("files") MultipartFile[] files) throws Exception {
 

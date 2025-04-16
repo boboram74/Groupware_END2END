@@ -83,11 +83,6 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void update(MultipartFile[] files, FileDTO dto) {
-
-    }
-
-    @Override
     public List<FileDetailDTO> selectByEmail(String email) {
         return dao.selectByEmail(email);
     }

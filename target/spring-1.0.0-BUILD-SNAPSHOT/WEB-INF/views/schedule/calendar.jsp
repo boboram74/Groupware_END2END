@@ -400,7 +400,7 @@
                                             <div class="profile-img" style="background-image: url('${item.profileImg}');">
                                             </div>
                                             <div class="employee-info">
-                                                <span class="employee-name">${item.name}</span>
+                                                <span class="employee-name">${item.name} ${item.jobName}</span>
                                                 <span class="employee-dept">${item.departmentName}</span>
                                             </div>
                                         </div>
@@ -411,7 +411,9 @@
                         <input type="hidden" name="selectedEmployees" id="selectedEmployees">
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="primary">저장</button>
+                        <button type="submit" class="primary" style="display: block;" id="calendar-insert-btn">저장</button>
+                        <button type="button" class="primary" style="display: none;" id="calendar-update-complete-btn">수정 완료</button>
+                        <button type="button" class="secondary" style="display: none;" id="calendar-delete-btn">삭제</button>
                         <button type="button" class="secondary modal-close">취소</button>
                     </div>
                 </form>
@@ -501,9 +503,7 @@
                         </c:forEach>
                     </select>
                 </div>
-
-                <!-- 선택된 캘린더 정보 표시 영역 -->
-                <div id="calendar-info" style="display: none;">
+                <div id="calendar-info">
                     <div class="form-group">
                         <label>캘린더 정보</label>
                         <div class="info-container">
@@ -745,7 +745,6 @@
         $(document).ready(function() {
             // 모달 열기
             $('.open-list-calendar').click(function() {
-                loadCalendarList();
                 $('#listCalendarModal').show();
             });
 
@@ -753,22 +752,6 @@
             $('#listCalendarModal .close-modal').click(function() {
                 $('#listCalendarModal').hide();
             });
-
-            // 캘린더 목록 불러오기
-            function loadCalendarList() {
-                $.ajax({
-                    url: '/schedule/calendar/list',
-                    method: 'GET',
-                    success: function(calendars) {
-                        const select = $('#calendar-select');
-                        select.find('option:not(:first)').remove();
-
-                        calendars.forEach(calendar => {
-                            select.append(`<option value="${calendar.id}">${calendar.title}</option>`);
-                        });
-                    }
-                });
-            }
 
             // 캘린더 선택 시 정보 표시
             $('#calendar-select').change(function() {
@@ -782,8 +765,13 @@
                 $.ajax({
                     url: '/calendar/detail/' + selectedId,
                     method: 'GET',
-                    success: function(calendar) {
+                    success: function(resp) {
+                        console.log(resp);
+                        const calendar = resp.calendar;
+                        const members = resp.members;
+
                         console.log(calendar);
+                        console.log(members);
 
                         $('#cal-name').val(calendar.title);
                         $('#cal-color').css('background-color', calendar.color);
@@ -791,18 +779,34 @@
                         // 공유 멤버 표시
                         const $members = $('#cal-members');
                         $members.empty();
-                        calendar.members.forEach(member => {
-                            $members.append(`
-                        <div class="selected-employee-tag">
-                            <span>${member.name}</span>
-                        </div>
-                    `);
+                        members.forEach(member => {
+                            $members.append($('<div class="selected-employee-tag">')
+                                .append($('<span>').text(member.name + " " + member.departmentName)));
                         });
 
                         $('#calendar-info').show();
+
+                        $('#editCalendarBtn').click(function() {
+                            openUpdateCalendarModal(resp);
+                        })
                     }
                 });
             });
+
+            function openUpdateCalendarModal(resp) {
+                $('#listCalendarModal').hide();
+
+                const calendar = resp.calendar;
+                const members = resp.members;
+
+                $('#calendarWriteForm input[name=title]').val(calendar.title);
+                $('#calendarWriteForm input[value="' + calendar.color + '"]').attr('checked', true);
+
+                $('.calendar-write-form').show();
+                $('#calendar-update-complete-btn').show();
+                $('#calendar-delete-btn').show();
+                $('#calender-insert-btn').style('display', 'none');
+            }
         });
     </script>
     <script>

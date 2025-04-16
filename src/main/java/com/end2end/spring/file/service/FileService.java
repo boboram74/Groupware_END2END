@@ -13,5 +13,6 @@ public interface FileService {
     void removeByPath(String path);
     void removeByParentsId(FileDTO dto);
     void download(String path, HttpServletResponse response);
+    void update(MultipartFile[] files, FileDTO dto);
     List<FileDetailDTO> selectByEmail(String email);
 }

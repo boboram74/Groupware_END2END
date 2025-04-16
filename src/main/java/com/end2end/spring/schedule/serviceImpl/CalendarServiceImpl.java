@@ -1,6 +1,8 @@
 package com.end2end.spring.schedule.serviceImpl;
 
 import com.end2end.spring.alarm.AlarmService;
+import com.end2end.spring.employee.dao.EmployeeDAO;
+import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.schedule.dao.CalendarDAO;
 import com.end2end.spring.schedule.dao.CalendarUserDAO;
 import com.end2end.spring.schedule.dto.CalendarDTO;
@@ -21,6 +23,7 @@ public class CalendarServiceImpl implements CalendarService {
     @Autowired private CalendarDAO calendarDAO;
     @Autowired private CalendarUserDAO  calendarUserDAO;
     @Autowired private AlarmService alarmService;
+    @Autowired private EmployeeDAO employeeDAO;
 
     @Override
     public List<CalendarDTO> selectByEmployeeId(String employeeId) {
@@ -37,7 +40,13 @@ public class CalendarServiceImpl implements CalendarService {
     public Map<String, Object> selectById(int id) {
         Map<String, Object> map = new HashMap<>();
         map.put("calendar", calendarDAO.selectById(id));
-        map.put("members", calendarUserDAO.selectByCalendarId(id));
+
+        List<CalendarUserDTO> calendarDTOList = calendarUserDAO.selectByCalendarId(id);
+        List<EmployeeDTO> members = employeeDAO.selectByIdIn(
+                calendarDTOList.stream()
+                        .map(CalendarUserDTO::getEmployeeId)
+                        .collect(Collectors.toList()));
+        map.put("members", members);
 
         return map;
     }

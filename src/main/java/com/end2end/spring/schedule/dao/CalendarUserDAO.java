@@ -13,11 +13,15 @@ public class CalendarUserDAO {
     private SqlSession mybatis;
 
     public List<CalendarUserDTO> selectByCalendarId(int calendarId) {
-        return mybatis.selectList("calenderUser.selectByCalendarId", calendarId);
+        return mybatis.selectList("calendarUser.selectByCalendarId", calendarId);
     }
 
     public void insertAll(List<CalendarUserDTO> dtos) {
-        mybatis.insert("calenderUser.insertAll", dtos);
+        mybatis.insert("calendarUser.insertAll", dtos);
+    }
+
+    public void insert(CalendarUserDTO dto) {
+        mybatis.insert("calendarUser.insert", dto);
     }
 
     public void deleteById(int id) {

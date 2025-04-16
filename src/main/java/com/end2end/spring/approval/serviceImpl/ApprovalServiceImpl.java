@@ -1,5 +1,6 @@
 package com.end2end.spring.approval.serviceImpl;
 
+import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dao.ApprovalRejectDAO;
 import com.end2end.spring.approval.dao.ApproverDAO;
@@ -29,6 +30,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Autowired private FileService fileService;
     @Autowired private VacationService vacationService;
     @Autowired private CommuteService commuteService;
+    @Autowired private AlarmService alarmService;
 
     @Override
     public List<ApprovalDTO> myList(String state) {
@@ -148,10 +150,15 @@ public class ApprovalServiceImpl implements ApprovalService {
             ApproverDTO approverDTO = ApproverDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(approverId)
-                    .orders(order++)
+                    .orders(order)
                     .build();
             approverDAO.insertApprover(approverDTO);
             added.add(approverId);
+
+            if(order == 1) {
+                alarmService.sendApproveCheckAlarm("/approval/detail/" + approvalDTO.getId(), approverId);
+            }
+            order++;
         }
     }
 
@@ -173,8 +180,13 @@ public class ApprovalServiceImpl implements ApprovalService {
                     commuteService.update(extendedCommuteDTO);
                 }
             }
+
+            alarmService.sendApprovalResultAlarm("/approval/detail/" + approvalId, approvalId);
         } else {
             approvalDAO.updateState(approvalId, "ONGOING");
+
+            String approver = nextApprovers.get(0).getEmployeeId();
+            alarmService.sendApproveCheckAlarm("/approval/detail/" + approvalId, approver);
         }
 
     }
@@ -182,12 +194,11 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Transactional
     @Override
     public void rejectApproval(ApprovalRejectDTO rejectDTO) {
-
         approvalRejectDAO.insertReject(rejectDTO);
-
         approverDAO.updateSubmitYn(rejectDTO.getApproverId(), "N", new Timestamp(System.currentTimeMillis()));
-
         approvalDAO.updateState(rejectDTO.getApprovalId(), "REJECT");
+
+        alarmService.sendApprovalResultAlarm("/approval/detail/" + rejectDTO.getApprovalId(), rejectDTO.getApprovalId());
     }
 
     @Override

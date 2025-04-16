@@ -2,6 +2,7 @@ package com.end2end.spring.alarm;
 
 import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
+import com.end2end.spring.board.dao.BoardDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.MailURLDTO;
@@ -26,6 +27,7 @@ public class AlarmService {
     @Autowired private ProjectUserDAO projectUserDAO;
     @Autowired private CalendarUserDAO calendarUserDAO;
     @Autowired private ScheduleDAO scheduleDAO;
+    @Autowired private BoardDAO boardDAO;
 
     public void sendNewLoginIpAlarm(String employeeId) {
         send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
@@ -44,7 +46,13 @@ public class AlarmService {
         ApprovalDTO approvalDTO = approvalDAO.selectDTOById(approvalId);
 
         if (approvalDTO.getState().equals("SUBMIT")) {
-            send(AlarmDTO.of(AlarmType.SUBMIT_APPROVAL, approvalDTO.getEmployeeId(), url),
+            AlarmType alarmType = null;
+            if (approvalDAO.selectByFormId(approvalDTO.getApprovalFormId()).getName().contains("휴가")) {
+                alarmType = AlarmType.VACATION_APPROVE;
+            } else {
+                alarmType = AlarmType.SUBMIT_APPROVAL;
+            }
+            send(AlarmDTO.of(alarmType, approvalDTO.getEmployeeId(), url),
                     approvalDTO.getEmployeeId());
         } else if (approvalDTO.getState().equals("REJECT")) {
             send(AlarmDTO.of(AlarmType.REJECT_APPROVAL, approvalDTO.getEmployeeId(), url),
@@ -93,6 +101,10 @@ public class AlarmService {
         }
     }
 
+    public void sendCalendarUpdateStateAlarm(AlarmType alarmType, String employeeId) {
+        send(AlarmDTO.of(alarmType, employeeId, "/calendar/list"), employeeId);
+    }
+
     public void sendScheduleAlarm(int calendarId) {
         List<CalendarUserDTO> calendarUserDTOList = calendarUserDAO.selectByCalendarId(calendarId);
 
@@ -100,6 +112,11 @@ public class AlarmService {
             String employeeId = calendarUserDTO.getEmployeeId();
             send(AlarmDTO.of(AlarmType.SCHEDULE_CREATE, employeeId, "/schedule/list"), employeeId);
         }
+    }
+
+    public void sendAddReplyAlarm(int boardId) {
+        String employeeId = boardDAO.selectById(boardId).getEmployeeId();
+        send(AlarmDTO.of(AlarmType.GET_REPLY, employeeId, "/board/detail/" + boardId), employeeId);
     }
 
     private void send(AlarmDTO dto, String employeeId) {

@@ -5,6 +5,14 @@
 <link rel="stylesheet" href="/css/template/exam.css" />
 <link rel="stylesheet" href="/css/hr/list.css" />
 
+<c:if test="${loginUser == null or (loginUser.role ne 'ADMIN' and loginUser.departmentName ne '인사팀')}">
+    <script>
+        alert('접근 권한이 없습니다.');
+        location.href = '/';
+    </script>
+</c:if>
+
+
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">

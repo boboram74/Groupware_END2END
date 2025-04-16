@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -27,13 +28,23 @@ public class HRController {
     private EmployeeService employeeService;
 
     @RequestMapping("/list")
-    public String toList(Model model) {
-        // TODO: 직원 관리 페이지로 이동
+    public String toList(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+        EmployeeDTO loginUser = (EmployeeDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null ||
+                (!"ADMIN".equalsIgnoreCase(loginUser.getRole()) &&
+                        !"인사팀".equals(loginUser.getDepartmentName()))) {
+
+            redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
+            return "redirect:/";
+        }
+
         List<EmployeeDTO> list = employeeService.selectAll();
         model.addAttribute("employeeList", list);
         model.addAttribute("isNoAuthExist", employeeService.isNoAuthExist());
         return "hr/list";
     }
+
 
     @RequestMapping("/list/search")
     public String toListSearch(Model model) {
@@ -42,8 +53,16 @@ public class HRController {
     }
 
     @RequestMapping("/chart")
-    public String toChart(Model model) {
-        // TODO: 직원 통계 페이지로 이동
+    public String toChart(Model model,HttpSession session, RedirectAttributes redirectAttributes) {
+        EmployeeDTO loginUser = (EmployeeDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null ||
+                (!"ADMIN".equalsIgnoreCase(loginUser.getRole()) &&
+                        !"인사팀".equals(loginUser.getDepartmentName()))) {
+
+            redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
+            return "redirect:/";
+        }
         return "hr/chart";
     }
 

@@ -86,18 +86,8 @@
         display: flex;
     }
 
-    .addFile {
-        width: 10%;
-        height: 100%;
-    }
-
-    .addFile input {
-        width: 100%;
-        height: 100%
-    }
-
     .addInput {
-        width: 85%;
+        width: 95%;
         height: 100%;
     }
 
@@ -238,12 +228,9 @@
     </form>
 </div>
 <hr>
-<div class="replyContainer">
-    <form id="replyForm" enctype="multipart/form-data">
+<form id="replyForm" enctype="multipart/form-data">
+    <div class="replyContainer">
         <div class="addReply">
-            <div class="addFile">
-                <input type="file" name="uploadFile" placeholder="파일">
-            </div>
             <div class="addInput">
                 <input type="text" id="content" placeholder="댓글 입력"></input>
             </div>
@@ -251,8 +238,8 @@
                 <button type="submit" id="addButton">등록</button>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 <hr>
 
 <h3>댓글</h3>
@@ -268,7 +255,7 @@
             e.preventDefault();
         }
     })
-    document.getElementById("replyForm").addEventListener("submit",function(e){
+    document.getElementById("replyForm").addEventListener("submit", function (e) {
         e.preventDefault();
         addContent();
     })

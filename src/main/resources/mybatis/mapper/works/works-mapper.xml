@@ -24,20 +24,25 @@
 
     <select id="searchWorkList" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
         SELECT
-      
         pw.title,
-        e.name AS employeeName
+        e.name AS employeeName,
+        pw.priority,
+        pw.state
         FROM project_work pw
         JOIN project_user pu ON pw.projectUserId = pu.id
         JOIN employee e ON pu.employeeId = e.id
         WHERE pw.projectId = #{projectId}
-        <if test="option == 'title'">
-            AND pw.title LIKE CONCAT('%', #{title}, '%')
-        </if>
-        <if test="option == 'employeeName'">
-            AND e.name LIKE CONCAT('%', #{name}, '%')
-        </if>
+        <choose>
+            <when test="searchOption == 'title'">
+                AND pw.title LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="searchOption == 'name'">
+                AND e.name LIKE '%' || #{keyword} || '%'
+            </when>
+        </choose>
     </select>
+
+
 
 
     <delete id="deleteById">

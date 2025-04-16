@@ -17,18 +17,18 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <a href="/hr/list">
             <li class="detail-menu-item active">
+                <a href="/hr/list">
                     <span class="material-icons">badge</span>
                     <span>직원 관리</span>
+                </a>
             </li>
-            </a>
-            <a href="/hr/chart">
             <li class="detail-menu-item">
+                <a href="/hr/chart">
                     <span class="material-icons">insert_chart</span>
                     <span>직원 통계</span>
+                </a>
             </li>
-            </a>
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>

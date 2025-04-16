@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("error: " + error);
         },
         success: function (data) {
+
             const labels = data.map(item => item.LABEL);
             const counts = data.map(item => item.COUNT);
 
@@ -54,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("error: " + error);
         },
         success: function (data) {
+
             const ctx2 = document.getElementById("chart2").getContext("2d");
 
             new Chart(ctx2, {
@@ -63,13 +65,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                     datasets: [{
                         label: "입사자",
-                        data: data.join,    // ⚠️ key가 소문자 "join"이어야 함
+                        data: data.join,
                         borderColor: "rgba(54, 162, 235, 1)",
                         borderWidth: 2,
                         fill: false
                     }, {
                         label: "퇴사자",
-                        data: data.resign,  // ⚠️ key가 소문자 "resign"이어야 함
+                        data: data.resign,
                         borderColor: "rgba(255, 99, 132, 1)",
                         borderWidth: 2,
                         fill: false
@@ -83,59 +85,112 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-
-    // 3번 그래프 : 부서별 직원 수 (가로 막대 그래프)
-    const ctx3 = document.getElementById("chart3").getContext("2d");
-    new Chart(ctx3, {
-        type: "bar",
-        data: {
-            labels: ["인사", "개발", "운영", "경영", "총무"],
-            datasets: [{
-                label: "부서별 직원 수",
-                data: [25, 40, 30, 35, 20],
-                backgroundColor: "rgba(153, 102, 255, 0.6)"
-            }]
+    // 3번 그래프 : 부서별 연차 사용 현황 (가로 막대 그래프)
+    $.ajax({
+        url: "/hr/chart/vacation",
+        method: "GET",
+        error : function(request, status, error) {
+            console.log("code: " + request.status)
+            console.log("message: " + request.responseText)
+            console.log("error: " + error);
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: "y",
-            scales: {
-                x: {
-                    beginAtZero: true
+        success: function (data) {
+            const labels = data.map(item => item.LABEL);
+            const used = data.map(item => item.USED);
+            const remain = data.map(item => item.REMAIN);
+
+            const ctx3 = document.getElementById("chart3").getContext("2d");
+
+            new Chart(ctx3, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "사용한 연차",
+                        data: used,
+                        backgroundColor: "rgba(75, 192, 192, 0.6)"
+                    }, {
+                        label: "남은 연차",
+                        data: remain,
+                        backgroundColor: "rgba(153, 102, 255, 0.6)"
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: "y",
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: "top"
+                        },
+                        title: {
+                            display: true,
+                            text: "부서별 연차 사용 현황"
+                        }
+                    }
                 }
-            }
+            });
         }
     });
 
     // 4번 그래프 : 부서별 지각/조퇴/결근 통계 (막대 그래프)
-    const ctx4 = document.getElementById("chart4").getContext("2d");
-    new Chart(ctx4, {
-        type: "bar",
-        data: {
-            labels: ["인사", "개발", "운영", "경영", "총무"],
-            datasets: [{
-                label: "지각",
-                data: [5, 12, 8, 10, 7],
-                backgroundColor: "rgba(255, 99, 132, 0.6)"
-            }, {
-                label: "조퇴",
-                data: [2, 5, 3, 4, 6],
-                backgroundColor: "rgba(255, 205, 86, 0.6)"
-            }, {
-                label: "결근",
-                data: [1, 2, 3, 2, 4],
-                backgroundColor: "rgba(54, 162, 235, 0.6)"
-            }]
+    $.ajax({
+        url: "/hr/chart/attendance",
+        method: "GET",
+        error : function(request, status, error) {
+            console.log("code: " + request.status)
+            console.log("message: " + request.responseText)
+            console.log("error: " + error);
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
+        success: function (data) {
+            const labels = data.map(item => item.LABEL);
+            const late = data.map(item => item.LATE);
+            const early = data.map(item => item.EARLY);
+            const absent = data.map(item => item.ABSENT);
+
+            const ctx4 = document.getElementById("chart4").getContext("2d");
+            new Chart(ctx4, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "지각",
+                        data: late,
+                        backgroundColor: "rgba(255, 99, 132, 0.6)"
+                    }, {
+                        label: "조퇴",
+                        data: early,
+                        backgroundColor: "rgba(255, 205, 86, 0.6)"
+                    }, {
+                        label: "결근",
+                        data: absent,
+                        backgroundColor: "rgba(54, 162, 235, 0.6)"
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "부서별 지각/조퇴/결근 통계"
+                        }
+                    }
                 }
-            }
+            });
+        },
+        error: function (err) {
+            console.error("지각/조퇴/결근 차트 로딩 실패", err);
         }
     });
 });

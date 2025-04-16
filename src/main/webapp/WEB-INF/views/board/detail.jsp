@@ -238,21 +238,21 @@
     </form>
 </div>
 <hr>
-
 <div class="replyContainer">
-    <div class="addReply">
-        <div class="addFile">
-            <input type="file" placeholder="파일">
+    <form id="replyForm" enctype="multipart/form-data">
+        <div class="addReply">
+            <div class="addFile">
+                <input type="file" name="uploadFile" placeholder="파일">
+            </div>
+            <div class="addInput">
+                <input type="text" id="content" placeholder="댓글 입력"></input>
+            </div>
+            <div class="addBtn">
+                <button type="submit" id="addButton">등록</button>
+            </div>
         </div>
-        <div class="addInput">
-            <input type="text" id="content" placeholder="댓글 입력"></input>
-        </div>
-        <div class="addBtn">
-            <button id="addButton" onclick="addContent()">등록</button>
-        </div>
-    </div>
+    </form>
 </div>
-
 <hr>
 
 <h3>댓글</h3>
@@ -268,6 +268,10 @@
             e.preventDefault();
         }
     })
+    document.getElementById("replyForm").addEventListener("submit",function(e){
+        e.preventDefault();
+        addContent();
+    })
 
     const addContent = () => {
         const content = document.getElementById("content").value;
@@ -279,16 +283,19 @@
             data: {
                 content: content,
                 boardId: board,
-                employeeId:employee
+                employeeId: employee
             },
             dataType: "JSON",
             success: function (response) {
                 console.log("작성성공");
+                loadReplies();
                 document.getElementById("content").value = ""; // 입력창 초기화
-                loadReplies(); //
+
             },
-            error: function () {
+            error: function (status, request, error) {
                 console.log("실패");
+                console.log(request.status);
+                console.log(error);
             }
         });
     }
@@ -304,7 +311,7 @@
                 $(".replyListContainer").empty();
 
                 replyList.forEach(reply => {
-                   const $replyDiv = $('<div class="replyList">')
+                    const $replyDiv = $('<div class="replyList">')
                         .append($('<div class="profile">'))
                         .append(
                             $('<div class="replyWrite">')

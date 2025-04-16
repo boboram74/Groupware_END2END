@@ -23,7 +23,6 @@ public class ReplyController {
     public List<ReplyDTO> list(@RequestParam("boardId") int boardId) {
         List<ReplyDTO> replyDTOList = replyService.selectByBoardId(boardId);
         return replyService.selectByBoardId(boardId);
-
         // TODO: 게시글 id로 댓글 조회
     }
 

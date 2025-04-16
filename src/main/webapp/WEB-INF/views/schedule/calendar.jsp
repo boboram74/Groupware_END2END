@@ -815,11 +815,6 @@
     </script>
     <script>
         $(document).ready(function() {
-
-        })
-    </script>
-    <script>
-        $(document).ready(function() {
             let selectedEmployees = new Map();
 
             // 사원 선택/해제

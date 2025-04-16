@@ -114,13 +114,16 @@
             width: '100%',
             height: 'auto',
             events: function(info, successCallback) {
-                const view = info.view;
-                const visibleStart = info.start;
-                const visibleEnd = info.end;
+                const startDate = info.start;
+                const endDate = info.end;
 
-                console.log(visibleStart);
-                console.log(visibleEnd);
-              //  loadEvents(startDate, endDate, successCallback);
+                loadEvents(startDate, endDate, successCallback);
+            },
+            eventClick: function(info) {
+                console.log(info);
+                if (info.event.extendedProps.type === 'schedule') {
+                    location.href = '/calendar/list';
+                }
             },
             eventDisplay: 'block',
             // 헤더 스타일 설정
@@ -145,19 +148,49 @@
             });
         }
 
+        function parseDate(dates) {
+            const parsedMonth = (dates.getMonth() + 1) < 10 ? '0' + (dates.getMonth() + 1) : (dates.getMonth() + 1);
+            return dates.getFullYear() + '-' + parsedMonth + '-' + dates.getDate();
+        }
+
         function loadEvents(startDate, endDate, successCallback) {
-            const currentYear = startDate.getFullYear();
-            const currentMonth = (startDate.getMonth() > 10) ?
-                startDate.getMonth() + 1 : '0' + (startDate.getMonth() + 1);
-            console.log(currentMonth, currentYear);
+            startDate = parseDate(startDate);
+            endDate = parseDate(endDate);
+
+            console.log(startDate, endDate);
 
             $.ajax({
-                url: '/holiday?year=' + currentYear + '&month=' + currentMonth,
+                url: '/schedule/list?startDate=' + startDate + '&endDate=' + endDate,
                 type: 'GET',
-                dataType: 'application/json',
                 success: function (data) {
                     console.log(data);
-                    // successCallback(data);
+                    const events = data.map(function(event) {
+                        console.log(event);
+                        if (event.eventName === 'period') {
+                            return {
+                                id: event.id,
+                                title: event.title,
+                                start: new Date(event.startDate),
+                                end: new Date(event.endDate),
+                                allDay: false,
+                                display: 'block',
+                                color: event.backgroundColor,
+                                extendedProps: {
+                                    id: event.id,
+                                    type: 'schedule'
+                                }
+                            }
+                        }
+                        return {
+                            title: event.title,
+                            start: new Date(event.startDate),
+                            allDay: event.allDay,
+                            display: 'block',
+                            color: event.backgroundColor,
+                        }
+                    })
+                    console.log(events);
+                    successCallback(events);
                 }, errors: function(xhr, status, error) {
                     console.log(xhr.status);
                     console.log(xhr.responseText);

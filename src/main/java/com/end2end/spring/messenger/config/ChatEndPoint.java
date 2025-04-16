@@ -179,5 +179,27 @@ public class ChatEndPoint {
         clientSessions.values().removeIf(s -> s.equals(session));
         throwable.printStackTrace();
     }
-
 }
+//private static final Map<String, Map<Integer, Integer>> alarmCounts = new ConcurrentHashMap<>();
+//// 사번: {방번호: 안읽은 개수}
+//public void a(int roomId, String employeeId) {  // onMessage 때
+//    // select * from room_user where roomId = 1;
+//    List<EmployeeDTO> employeeDTOList = new ArrayList<>();
+//    for (EmployeeDTO employeeDTO : employeeDTOList) {
+//        Map<Integer, Integer> a = alarmCounts.get(employeeDTO.getId());  // 1: 10, 2: 20
+//        int count = a.get(roomId);  // 10;
+//        a.put(roomId, count++); // 11
+//    }
+//}
+//
+//public void b(int roomId, String employeeId) {  // 방 들어갈 때
+//    Map<Integer, Integer> a = alarmCounts.get(employeeId);  // 1: 11, 2: 20
+//    int count = a.get(roomId); // 11
+//    a.put(roomId, 0);
+//}
+//
+//public int c(String employeeId) {  // onOpen, onMessage
+//    Map<Integer, Integer> a = alarmCounts.get(employeeId);
+//
+//    return 100;
+//}

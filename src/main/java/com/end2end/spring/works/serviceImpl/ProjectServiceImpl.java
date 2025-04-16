@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -74,8 +74,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectDTO findLatestProject(){
+    public ProjectDTO findLatestProject() {
         return projectDao.findLatestProject();
+    }
+
+    @Override
+    public List<EmployeeDTO> getMembersByProjectId(int projectId) {
+        return projectDao.getMembersByProjectId(projectId);
     }
 
     @Override
@@ -85,11 +90,12 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ProjectSelectDTO> result = new ArrayList<>();
         for (ProjectDTO dto : projectDTO) {
+            int id = dto.getId();
             List<EmployeeDTO> projectUserList =
-                    projectUserDao.selectByprojectId(dto.getId());
+                    projectUserDao.selectByprojectId(id);
             // SELECT EMPLOYEE.* FROM PROJECT_USER JOIN EMPLOYEE ON PROJECT_USER.EMPLOYEEID = EMPLOYEE.ID WHERE PROJECTID = ?
 
-            List<String>profileImgList = new ArrayList<>();
+            List<String> profileImgList = new ArrayList<>();
             for (EmployeeDTO employeeDTO : projectUserList) {
                 profileImgList.add(employeeDTO.getProfileImg());
             }
@@ -110,21 +116,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
-//    public void insert(ProjectDTO dto, ProjectUserDTO udto) {
-//        // String departmentId = departmentDAO.selectByName("연구팀"); 부서 가져올수있는 테이블 dao에 메서드 추가하기 !
-
-    /// /        if (!"Team_Leader".equals(employeeDTO.getRole()) && (departmentId.equals(employeeDTO.getDepartmentId()))) {
-    /// /            throw new RuntimeException("프로젝트 생성 권한이 없습니다.");}
-    /// / 개발팀 팀리더가 아닌 경우 생성불가 코드인데 다른테이블 dao에 메서드 생성하기 전까지 주석처리
-//        // 1. project inert (name)
-//
-//        projectDao.insert(dto);
-//
-//        // 2. employee list -> project_user insert (employeeList, projectId)
-//
-//        projectUserDao.insert(udto);
-//
-//    }
     @Override
     public ProjectDTO selectById(int id) {
 
@@ -138,9 +129,51 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void update(ProjectDTO dto) {
+    public ProjectInsertDTO update(ProjectInsertDTO dto) {
         // TODO: 프로젝트 수정
+        projectDao.update(dto);
+        return dto;
     }
+
+
+    @Override
+    public void updateProjectUser(int projectId, List<String> employeeId) {
+        // 기존 멤버 목록 조회
+        List<EmployeeDTO> members = projectUserDao.selectByprojectId(projectId);
+
+        for (EmployeeDTO member : members) {
+            boolean isDuplicate = false;
+            for (String employee : employeeId) {
+                if (employee.equals(member.getId()))
+                    isDuplicate = true;
+                break;
+            }
+            if(!isDuplicate){
+                projectUserDao.deleteMemberById(projectId,member.getId());
+            }
+        }
+        for (String employee : employeeId) {
+            boolean isDuplicat = false;
+            for (EmployeeDTO member : members) {
+                if (employee.equals(member.getId()))
+                    isDuplicat = true;
+                break;
+            }
+
+            if(!isDuplicat){
+                projectUserDao.insertProjectMember(projectId,employee);
+            }
+
+        }
+        //있는 멤버인지 확인후 없으면 추가
+    }
+
+    @Override
+    public void updateProject(ProjectInsertDTO dto) {
+        projectDao.update(dto);
+
+    }
+
 
     @Override
     public List<ProjectDTO> selectByName(String name) {
@@ -155,7 +188,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectDao.selectByUser(target);
     }
-
 
 
 }

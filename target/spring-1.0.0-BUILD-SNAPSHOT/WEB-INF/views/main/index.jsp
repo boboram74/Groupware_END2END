@@ -230,8 +230,9 @@
         }
 
         function parseDate(dates) {
-            const parsedMonth = (dates.getMonth() + 1) < 10 ? '0' + (dates.getMonth() + 1) : (dates.getMonth() + 1);
-            return dates.getFullYear() + '-' + parsedMonth + '-' + dates.getDate();
+            const month = String(dates.getMonth() + 1).padStart(2, '0');
+            const date = String(dates.getDate()).padStart(2, '0');
+            return dates.getFullYear() + '-' + month + '-' + date;
         }
 
         function loadEvents(startDate, endDate, successCallback) {

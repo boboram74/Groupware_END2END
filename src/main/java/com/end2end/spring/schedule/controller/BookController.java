@@ -2,6 +2,7 @@ package com.end2end.spring.schedule.controller;
 
 import com.end2end.spring.schedule.dto.BookDTO;
 import com.end2end.spring.schedule.dto.BookInsertDTO;
+import com.end2end.spring.schedule.dto.BookTargetDTO;
 import com.end2end.spring.schedule.service.BookService;
 import com.end2end.spring.util.EventDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,12 @@ public class BookController {
     @RequestMapping("/search")
     public String toBookSearch(Model model) {
         return "schedule/book";
+    }
+
+    @ResponseBody
+    @RequestMapping("/list/items")
+    public List<BookTargetDTO> selectAllTarget() {
+        return bookService.selectAllTarget();
     }
 
     @ResponseBody

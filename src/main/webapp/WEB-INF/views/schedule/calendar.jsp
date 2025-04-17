@@ -289,11 +289,11 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item active">
+            <li class="detail-menu-item active" onclick="location.href='/calendar/list'">
                 <span class="material-icons">calendar_month</span>
                 <span>일정</span>
             </li>
-            <li class="detail-menu-item">
+            <li class="detail-menu-item" onclick="location.href='/book/list'">
                 <span class="material-icons">event_available</span>
                 <span>예약</span>
             </li>

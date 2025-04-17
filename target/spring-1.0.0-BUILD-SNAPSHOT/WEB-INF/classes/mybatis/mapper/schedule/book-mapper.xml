@@ -4,12 +4,12 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="book">
     <select id="selectAllBookTarget" resultType="com.end2end.spring.schedule.dto.BookTargetDTO">
-        SELECT id, name, img, location, capacity, 'MEETING_ROOM' AS bookType
+        SELECT id, name, img, location, capacity, 'MEETING_ROOM' AS targetType
         FROM MEETING_ROOM
 
         UNION ALL
 
-        SELECT id, name, img, NULL, NVL(NULL, 0), 'FURNITURE' AS bookType
+        SELECT id, name, img, NULL, NVL(NULL, 0), 'FURNITURE' AS targetType
         FROM FURNITURE
     </select>
 
@@ -22,11 +22,12 @@
             BOOK
         JOIN
             MEETING_ROOM
+        ON
+            BOOK.meetingRoomId = MEETING_ROOM.id
         JOIN
             SCHEDULE
         ON
             SCHEDULE.bookId = BOOK.id
-        ON BOOK.meetingRoomId = MEETING_ROOM.id
 
         UNION ALL
 
@@ -38,12 +39,12 @@
             BOOK
         JOIN
             FURNITURE
-        ON BOOK.furnitureId = FURNITURE.id
+        ON
+            BOOK.furnitureId = FURNITURE.id
         JOIN
             SCHEDULE
         ON
             SCHEDULE.bookId = BOOK.id
-        ON BOOK.meetingRoomId = MEETING_ROOM.id
     </select>
 
     <select id="selectByEmployeeId" resultType="com.end2end.spring.schedule.dto.BookDTO">
@@ -114,6 +115,24 @@
         WHERE A.id = ${id}
     </select>
 
+    <select id="countReserved" resultType="Integer">
+        SELECT COUNT(*)
+        FROM SCHEDULE
+        JOIN BOOK
+        ON SCHEDULE.BOOKID = BOOK.ID
+        WHERE
+            SYSDATE BETWEEN STARTDATE AND ENDDATE
+        AND
+        <choose>
+            <when test="targetType.equals('MEETING_ROOM')">
+                meetingRoomId = ${targetId}
+            </when>
+            <otherwise>
+                furnitureId = ${targetId}
+            </otherwise>
+        </choose>
+    </select>
+
     <insert id="insert">
         <choose>
             <when test="targetType.equals('MEETING_ROOM')">
@@ -131,11 +150,16 @@
     </insert>
 
     <update id="update">
+        UPDATE BOOK SET
         <choose>
             <when test="targetType.equals('MEETING_ROOM')">
-                UPDATE BOOK SET 
+                meetingRoomId = ${targetId}
             </when>
+            <otherwise>
+                furnitureId = ${targetId}
+            </otherwise>
         </choose>
+        WHERE id = ${id}
     </update>
 
     <delete id="deleteById">

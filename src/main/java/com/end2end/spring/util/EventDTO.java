@@ -2,6 +2,7 @@ package com.end2end.spring.util;
 
 import com.end2end.spring.commute.dto.CommuteStateDTO;
 import com.end2end.spring.commute.dto.VacationDTO;
+import com.end2end.spring.schedule.dto.BookDTO;
 import com.end2end.spring.schedule.dto.ScheduleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -120,7 +121,7 @@ public class EventDTO {
         String endDateStr = (!endDateToLocalDate.isAfter(endDate)) ?
                 dto.getEndDate().toInstant().toString() : endDate.toString();
 
-        String title = String.format("%s 기간 (%s ~ %s)", dto.getTitle(),
+        String title = String.format("%s: 기간 (%s ~ %s)", dto.getTitle(),
                 parseDateTime(dto.getStartDate()), parseDateTime(dto.getEndDate()));
 
         return EventDTO.builder()
@@ -131,6 +132,28 @@ public class EventDTO {
                 .display("block")
                 .eventName("period")
                 .backgroundColor(dto.getColor())
+                .build();
+    }
+
+    public static EventDTO convertFromBook(BookDTO dto, LocalDate startDate, LocalDate endDate) {
+        LocalDate srateDateToLocalDate = dto.getStartDate().toLocalDateTime().toLocalDate();
+        LocalDate endDateToLocalDate = dto.getEndDate().toLocalDateTime().toLocalDate();
+
+        String startDateStr = (!srateDateToLocalDate.isBefore(startDate)) ?
+                dto.getStartDate().toInstant().toString() : startDate.toString();
+        String endDateStr = (!endDateToLocalDate.isAfter(endDate)) ?
+                dto.getEndDate().toInstant().toString() : endDate.toString();
+
+        String title = String.format("%s: t 기간 (%s ~ %s)", dto.getTargetName(),
+                parseDateTime(dto.getStartDate()), parseDateTime(dto.getEndDate()));
+
+        return EventDTO.builder()
+                .id(dto.getId())
+                .title(title)
+                .startDate(startDateStr)
+                .endDate(endDateStr)
+                .display("block")
+                .eventName("period")
                 .build();
     }
 

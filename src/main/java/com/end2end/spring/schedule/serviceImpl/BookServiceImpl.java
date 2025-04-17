@@ -8,11 +8,15 @@ import com.end2end.spring.schedule.dto.BookInsertDTO;
 import com.end2end.spring.schedule.dto.BookTargetDTO;
 import com.end2end.spring.schedule.dto.ScheduleDTO;
 import com.end2end.spring.schedule.service.BookService;
+import com.end2end.spring.util.EventDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -23,6 +27,23 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookTargetDTO> selectAllTarget() {
         return bookDAO.selectAllBookTarget();
+    }
+
+    @Override
+    public List<EventDTO> selectByPeriod(LocalDate startDate, LocalDate endDate) {
+        List<BookDTO> bookDTOList = bookDAO.selectAll();
+
+        return bookDTOList.stream()
+                .filter(bookDTO -> {
+                    LocalDateTime bookStartDateTime = bookDTO.getStartDate().toLocalDateTime();
+                    LocalDateTime bookEndDateTime = bookDTO.getEndDate().toLocalDateTime();
+                    return (bookStartDateTime.isBefore(endDate.atStartOfDay())
+                            && bookEndDateTime.isAfter(startDate.atStartOfDay())) ||
+                            (bookStartDateTime.isBefore(startDate.atStartOfDay())
+                            && bookEndDateTime.isAfter(endDate.atStartOfDay()));
+                })
+                .map(bookDTO -> EventDTO.convertFromBook(bookDTO, startDate, endDate))
+                .collect(Collectors.toList());
     }
 
     @Override

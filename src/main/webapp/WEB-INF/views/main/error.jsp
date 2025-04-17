@@ -184,9 +184,9 @@
 </head>
 <body>
 <div class="error-container-box">
-    <div class="error-code">404</div>
+    <div class="error-code">${state}</div>
     <h1 class="error-message">
-        페이지를 찾을 수 없습니다
+        ${message}
     </h1>
     <p class="error-description">
         요청하신 페이지가 삭제되었거나 일시적으로 사용할 수 없습니다.<br>

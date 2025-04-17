@@ -332,13 +332,18 @@
         function renderBoardList(type) {
             let url;
 
+            const tbody = $('.boardBox .board-table tbody');
             if (type === 'notice') {
-                url = '/notice/recent'
+                tbody.empty();
+                tbody.append(
+                    $('<tr class="no-data">').append(
+                        $('<td colspan="4">').html('게시글이 없습니다.')))
+
+                return;
             } else if (type === 'all') {
                 url = '/board/recent'
             }
 
-            const tbody = $('.boardBox .board-table tbody');
             $.ajax({
                 url: url,
                 type: 'GET',

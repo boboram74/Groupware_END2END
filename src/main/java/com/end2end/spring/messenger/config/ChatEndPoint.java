@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatEndPoint {
 
     private MessengerService messengerService = SpringProvider.Spring.getBean(MessengerService.class);
+
     // 사용자 ID로 세션 매핑 (동시성 처리)
     private static final Map<String, Session> clientSessions = new ConcurrentHashMap<>();
     // 사번 : {방번호: 안읽은 갯수}
@@ -27,8 +28,13 @@ public class ChatEndPoint {
     private final Gson gson = new Gson();
 
     @OnOpen
-    public void onConnect(Session session, EndpointConfig config) {
+    public void onConnect(Session session, EndpointConfig config) throws Exception{
         this.hSession = (HttpSession) config.getUserProperties().get("hSession");
+        if (hSession == null) {
+            session.close(new CloseReason(
+                    CloseReason.CloseCodes.VIOLATED_POLICY,"익명유저"));
+            return;
+        }
         dto = (EmployeeDTO) hSession.getAttribute("employee");
         if (dto != null) {
 //            System.out.println("유저 추가됨 : " + dto.getName() + " session ID : " + session.getId());

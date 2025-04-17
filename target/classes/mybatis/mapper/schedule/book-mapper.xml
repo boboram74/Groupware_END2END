@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="book">
+    <select id="selectAllBookTarget" resultType="com.end2end.spring.schedule.dto.BookTargetDTO">
+        SELECT id, name, img, location, capacity, 'MEETING_ROOM' AS bookType
+        FROM MEETING_ROOM
+
+        UNION ALL
+
+        SELECT id, name, img, NULL, NVL(NULL, 0), 'FURNITURE' AS bookType
+        FROM FURNITURE
+    </select>
+
+    <select id="selectAll" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT
+            BOOK.id AS id, employeeId, startDate, endDate, regDate,
+            meetingRoomId AS targetId, 'MEETING_ROOM' AS targetType, MEETING_ROOM.NAME AS targetName
+        FROM
+            BOOK
+        JOIN
+            MEETING_ROOM
+        ON BOOK.meetingRoomId = MEETING_ROOM.id
+
+        UNION ALL
+
+        SELECT
+            BOOK.id AS id, employeeId, startDate, endDate, regDate,
+            furnitureId AS targetId, 'FURNITURE' AS targetType, FURNITURE.NAME AS targetName
+        FROM
+            BOOK
+        JOIN
+            FURNITURE
+        ON BOOK.furnitureId = FURNITURE.id
+    </select>
+
+    <select id="selectByEmployeeId" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT *
+        FROM (
+            SELECT
+                BOOK.id AS id, employeeId, startDate, endDate, regDate,
+                meetingRoomId AS targetId, 'MEETING_ROOM' AS targetType, MEETING_ROOM.NAME AS targetName
+            FROM
+                BOOK
+            JOIN
+                MEETING_ROOM
+            ON BOOK.meetingRoomId = MEETING_ROOM.ID
+
+            UNION ALL
+
+            SELECT
+                BOOK.id AS id, employeeId, startDate, endDate, regDate,
+                furnitureId AS targetId, 'FURNITURE' AS targetType, FURNITURE.NAME AS targetName
+            FROM
+                BOOK
+            JOIN
+                FURNITURE
+            ON BOOK.furnitureId = FURNITURE.ID) A
+        WHERE A.employeeId = #{employeeId}
+    </select>
+</mapper>

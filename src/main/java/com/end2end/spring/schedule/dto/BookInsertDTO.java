@@ -1,21 +1,19 @@
 package com.end2end.spring.schedule.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-
-import java.sql.Timestamp;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class BookDTO {
+@NoArgsConstructor
+@Builder
+public class BookInsertDTO {
     private int id;
     private String employeeId;
-
     private int targetId;
     private String targetType;
-    private String targetName;
-
-    private Timestamp startDate;
-    private Timestamp endDate;
-    private Timestamp regDate;
+    private String startDate;
+    private String endDate;
 }

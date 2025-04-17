@@ -12,4 +12,5 @@ public interface BookService {
     void insert(CalendarDTO dto);
     void update(CalendarDTO dto);
     void deleteById(int id);
+    boolean isReserved(int itemId);
 }

@@ -41,4 +41,9 @@ public class BookServiceImpl implements BookService {
     public void deleteById(int id) {
         // TODO: 해당 id의 모든 예약 삭제
     }
+
+    @Override
+    public boolean isReserved(int itemId) {
+        return false;
+    }
 }

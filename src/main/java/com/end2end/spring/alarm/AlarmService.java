@@ -31,7 +31,7 @@ public class AlarmService {
     @Autowired private BoardDAO boardDAO;
 
     public void sendNewLoginIpAlarm(String employeeId) {
-        send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
+        send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history?page=1"), employeeId);
     }
 
     public void sendMailAlarm(int emailId) {

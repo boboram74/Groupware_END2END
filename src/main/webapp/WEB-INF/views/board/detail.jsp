@@ -199,7 +199,7 @@
     </tr>
     <tr>
         <td class="label">작성자</td>
-        <td colspan="3">${board.employeeId}</td>
+        <td colspan="3">${board.employeeName}</td>
     </tr>
     <tr>
         <td class="label">내용</td>
@@ -232,6 +232,10 @@
 </div>
 
 <hr>
+
+<input type="hidden" id="loginUserId" value="${employee.id}"/>
+
+
 <form id="replyForm" enctype="multipart/form-data">
     <div class="replyContainer">
         <div class="addReply">
@@ -249,11 +253,11 @@
 
 <h3>댓글</h3>
 
-<form action="" >
+
 <div class="replyListContainer">
 
 </div>
-</form>
+
 
 <script>
     $(".deleteBtn").on("click", function (e) {
@@ -265,6 +269,38 @@
         e.preventDefault();
         addContent();
     })
+
+    $(document).on("click", ".deleteReplyBtn", function () {
+        const replyId = $(this).data("id");
+        const employeeId = String($('#loginUserId').val());
+        const replyEmployeeId = String($(this).data("employeeId"));
+
+        console.log("전송할 댓글 ID:", replyId);
+        console.log("로그인된 사용자 employeeId:", employeeId);
+        console.log("댓글 작성자 employeeId:", replyEmployeeId);
+
+
+        if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {
+            $.ajax({
+                type: "GET",
+                url: "/reply/delete/" + replyId,
+                success: function (response) {
+                    response = JSON.parse(response)
+                    console.log("댓글삭제", response);
+                    if(response){
+                        loadReplies(); // 댓글 다시 불러오기
+                    }else{
+                        alert("삭제 실패했습니다.");
+                    }
+                },
+                error: function () {
+                    console.log("댓글 삭제 실패");
+                }
+            });
+        } else {
+            alert("댓글을 작성한 사람만 삭제할 수 있습니다.");
+        }
+    });
 
     const addContent = () => {
         const content = document.getElementById("content").value;
@@ -292,6 +328,9 @@
                 console.log("실패");
                 console.log(request.status);
                 console.log(error);
+                console.log("상태:", status);
+                console.log("요청:", request);
+                console.log("오류:", error);
             }
         });
     }
@@ -374,28 +413,7 @@
     <%--});--%>
 
 
-    $(document).on("click", ".deleteReplyBtn", function () {
-        const replyId = $(this).data("id");
-        const employeeId = '${employee.id}';
-        const replyEmployeeId = $(this).data("employeeId");
 
-
-        if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {
-            $.ajax({
-                type: "post",
-                url: "/reply/delete",
-                data: {id: replyId},
-                success: function () {
-                    loadReplies(); // 댓글 다시 불러오기
-                },
-                error: function () {
-                    console.log("댓글 삭제 실패");
-                }
-            });
-        } else {
-            alert("댓글을 작성한 사람만 삭제할 수 있습니다.");
-        }
-    });
 </script>
 
 

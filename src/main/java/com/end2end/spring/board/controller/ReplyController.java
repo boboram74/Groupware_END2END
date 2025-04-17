@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -48,20 +45,23 @@ public class ReplyController {
         // TODO: 댓글을 수정함
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping("/delete/{id}")
     @ResponseBody
-    public ResponseEntity<String>  deleteById(@RequestParam("id") int id, HttpSession session) {
+    public boolean  deleteById(@PathVariable int id, HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         ReplyDTO reply = replyService.selectById(id);
 
+        System.out.println("로그인한 사용자 ID: " + employee.getId());
+        System.out.println("댓글 작성자 ID: " + reply.getEmployeeId());
+
+
         if (employee.getId().equals(reply.getEmployeeId())) {
+            System.out.println("댓글 삭제 진행 중... 댓글 ID: " + id); //삭제필요
             System.out.println("성공");
             replyService.deleteById(id);
-            return ResponseEntity.ok().build();
+            return true;
         }
-       int deleteId = replyService.deleteById(id);
 //        int result = replyService.deleteById(id);
-        return ResponseEntity.ok().build();
-        // TODO: 해당 댓글 id로 삭제
+        return false;
     }
 }

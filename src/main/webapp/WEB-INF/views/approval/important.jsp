@@ -320,7 +320,7 @@
     }
   });
 
-  function remove(approvalId) {// approvalId가 제대로 전달되는지 확인
+  function remove(approvalId) {
 
     const employeeId = '${employeeId}';
 

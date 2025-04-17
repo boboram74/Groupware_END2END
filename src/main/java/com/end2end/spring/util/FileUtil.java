@@ -54,7 +54,7 @@ public class FileUtil {
 
         File filePath = new File(uploadPath);
 
-        filePath.mkdir();
+        filePath.mkdirs();
 
         // 원본 파일명에서 확장자만 추출
         String originalFilename = file.getOriginalFilename();

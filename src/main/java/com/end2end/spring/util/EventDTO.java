@@ -76,7 +76,7 @@ public class EventDTO {
                 .startDate(Timestamp.valueOf(newDate).toInstant().toString())
                 .allDay(true)
                 .display("block")
-                .backgroundColor("red")
+                .eventName("holiday")
                 .build();
     }
 
@@ -144,16 +144,16 @@ public class EventDTO {
         String endDateStr = (!endDateToLocalDate.isAfter(endDate)) ?
                 dto.getEndDate().toInstant().toString() : endDate.toString();
 
-        String title = String.format("%s: t 기간 (%s ~ %s)", dto.getTargetName(),
+        String title = String.format("%s: 사용기간 (%s ~ %s)", dto.getTargetName(),
                 parseDateTime(dto.getStartDate()), parseDateTime(dto.getEndDate()));
 
         return EventDTO.builder()
                 .id(dto.getId())
                 .title(title)
-                .startDate(startDateStr)
-                .endDate(endDateStr)
+                .startDate(dto.getStartDate().toInstant().toString())
+                .endDate(dto.getEndDate().toInstant().toString())
                 .display("block")
-                .eventName("period")
+                .eventName(dto.getTargetName())
                 .build();
     }
 

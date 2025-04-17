@@ -14,6 +14,7 @@ public interface BookService {
     List<BookDTO> selectAll();
     List<BookDTO> search();
     BookDTO selectById(int id);
+    BookDTO selectDateAndTarget(LocalDate date, String targetType, int targetId);
     void insert(BookInsertDTO dto);
     void update(BookInsertDTO dto);
     void deleteById(int id);

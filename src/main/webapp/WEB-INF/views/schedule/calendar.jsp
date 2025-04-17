@@ -688,8 +688,10 @@
                 startDate = parseDate(startDate);
                 endDate = parseDate(endDate);
 
+                console.log(startDate, endDate);
+
                 $.ajax({
-                    url: '/book/list/period?startDate=' + startDate + '&endDate=' + endDate,
+                    url: '/schedule/list?startDate=' + startDate + '&endDate=' + endDate,
                     type: 'GET',
                     success: function (data) {
                         console.log(data);
@@ -709,6 +711,13 @@
                                         type: 'schedule'
                                     }
                                 }
+                            }
+                            return {
+                                title: event.title,
+                                start: new Date(event.startDate),
+                                allDay: event.allDay,
+                                display: 'block',
+                                color: event.backgroundColor,
                             }
                         })
                         console.log(events);

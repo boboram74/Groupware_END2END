@@ -22,4 +22,7 @@ public class BookDTO {
     private Timestamp startDate;
     private Timestamp endDate;
     private Timestamp regDate;
+
+    private int furnitureId;
+    private int meetingRoomId;
 }

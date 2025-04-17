@@ -4,12 +4,12 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="book">
     <select id="selectAllBookTarget" resultType="com.end2end.spring.schedule.dto.BookTargetDTO">
-        SELECT id, name, img, location, capacity, 'MEETING_ROOM' AS bookType
+        SELECT id, name, img, location, capacity, 'meetingRoomId' AS targetType
         FROM MEETING_ROOM
 
         UNION ALL
 
-        SELECT FURNITURE.*, NULL, NVL(NULL, 0), 'FURNITURE' AS bookType
+        SELECT FURNITURE.*, NULL, NVL(NULL, 0), 'furnitureId' AS targetType
         FROM FURNITURE
     </select>
 
@@ -123,46 +123,50 @@
         WHERE
             SYSDATE BETWEEN STARTDATE AND ENDDATE
         AND
-        <choose>
-            <when test="targetType.equals('MEETING_ROOM')">
-                meetingRoomId = ${targetId}
-            </when>
-            <otherwise>
-                furnitureId = ${targetId}
-            </otherwise>
-        </choose>
+            ${targetType} = ${targetId}
+    </select>
+
+    <select id="selectByDateAndTarget" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT *
+        FROM BOOK
+        JOIN SCHEDULE
+        ON BOOK.id = SCHEDULE.BOOKID
+        WHERE
+            #{date} BETWEEN startDate AND endDate
+        AND
+            ${targetType} = ${targetId}
     </select>
 
     <insert id="insert">
-        <choose>
-            <when test="targetType.equals('MEETING_ROOM')">
-                INSERT INTO BOOK(id, employeeId, meetingRoomId)
-                VALUES (BOOK_ID_SEQ.nextval, #{employeeId}, ${targetId})
-            </when>
-            <otherwise>
-                INSERT INTO BOOK(id, employeeId, furnitureId)
-                VALUES (BOOK_ID_SEQ.nextval, #{employeeId}, ${targetId})
-            </otherwise>
-        </choose>
+        INSERT INTO BOOK(id, employeeId, ${targetType})
+        VALUES (BOOK_ID_SEQ.nextval, #{employeeId}, ${targetId})
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             SELECT BOOK_ID_SEQ.currval FROM DUAL
         </selectKey>
     </insert>
 
     <update id="update">
-        UPDATE BOOK SET
-        <choose>
-            <when test="targetType.equals('MEETING_ROOM')">
-                meetingRoomId = ${targetId}
-            </when>
-            <otherwise>
-                furnitureId = ${targetId}
-            </otherwise>
-        </choose>
-        WHERE id = ${id}
+        UPDATE BOOK SET ${targetType} = ${targetId} WHERE id = ${id}
     </update>
 
     <delete id="deleteById">
         DELETE FROM BOOK WHERE id = ${id}
     </delete>
+
+    <select id="selectEntityById" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT * FROM BOOK WHERE ID = ${id}
+    </select>
+
+    <select id="selectByTarget" resultType="com.end2end.spring.schedule.dto.BookTargetDTO">
+        SELECT *
+        FROM
+        <choose>
+            <when test="targetType.equals('meetingRoomId')">
+                MEETING_ROOM WHERE id = ${targetId}
+            </when>
+            <otherwise>
+                FURNITURE WHERE id = ${targetId}
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

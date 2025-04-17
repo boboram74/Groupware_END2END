@@ -63,18 +63,26 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public BookDTO selectDateAndTarget(LocalDate date, String targetType, int targetId) {
+        BookDTO dto = bookDAO.selectByDateAndTarget(date, targetType, targetId);
+
+        return (dto == null) ? new BookDTO() : dto;
+    }
+
+    @Override
     public void insert(BookInsertDTO dto) {
         BookDTO bookDTO = BookDTO.builder()
                 .employeeId(dto.getEmployeeId())
+                .targetType(dto.getTargetType())
                 .targetId(dto.getTargetId())
                 .build();
         bookDAO.insert(bookDTO);
 
-        BookDTO insertBookDTO = bookDAO.selectById(bookDTO.getId());
+        BookTargetDTO insertBookDTO = bookDAO.selectByTarget(bookDTO);
 
         ScheduleDTO scheduleDTO = ScheduleDTO.builder()
                 .title("예약")
-                .content(insertBookDTO.getTargetName())
+                .content(insertBookDTO.getName())
                 .calendarId(dto.getCalendarId())
                 .startDate(Timestamp.valueOf(dto.getStartDate()))
                 .endDate(Timestamp.valueOf(dto.getEndDate()))

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -117,9 +119,18 @@
           <div class="profile-menu surface-bright" id="profileMenu">
             <div class="menu-item" id="mypage">마이페이지</div>
             <div class="menu-item" id="login-history">로그인 기록</div>
-            <c:if test='${employee.role.equals("ADMIN")}'>
-              <div class="menu-item" id="admin">관리자 페이지</div>
+
+            <c:if test="${employee.role eq 'ADMIN'}">
+              <c:choose>
+                <c:when test="${fn:contains(pageContext.request.requestURI, '/admin')}">
+                  <div class="menu-item" onclick="location.href='/'">사용자 페이지</div>
+                </c:when>
+                <c:otherwise>
+                  <div class="menu-item" onclick="location.href='/admin'">관리자 페이지</div>
+                </c:otherwise>
+              </c:choose>
             </c:if>
+
             <div class="menu-item" id="logout">로그아웃</div>
           </div>
         </div>
@@ -217,7 +228,7 @@
 
       <script>
         $(document).ready(function() {
-          const alarm = new WebSocket('ws://end2end.site/alarm');
+          const alarm = new WebSocket('ws://localhost/alarm');
 
           alarm.onopen = function() {
             console.log('알람 웹소켓 연결됨');

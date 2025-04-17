@@ -6,7 +6,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class BookDAO {
@@ -42,5 +45,22 @@ public class BookDAO {
 
     public int isReserved(BookDTO dto) {
         return mybatis.selectOne("book.isReserved", dto);
+    }
+
+    public BookDTO selectByDateAndTarget(LocalDate date, String targetType, int targetId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("date", date);
+        params.put("targetId", targetId);
+        params.put("targetType", targetType);
+
+        return mybatis.selectOne("book.selectByDateAndTarget", params);
+    }
+
+    public BookDTO selectEntityById(int id) {
+        return mybatis.selectOne("book.selectEntityById", id);
+    }
+
+    public BookTargetDTO selectByTarget(BookDTO bookDTO) {
+        return mybatis.selectOne("book.selectByTarget", bookDTO);
     }
 }

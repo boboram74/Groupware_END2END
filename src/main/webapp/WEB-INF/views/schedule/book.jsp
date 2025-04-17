@@ -278,6 +278,94 @@
         color: var(--md-sys-color-surface);
     }
 </style>
+<style>
+    /* 이벤트 전체 너비 설정 */
+    .full-width-event {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 0 2px !important;
+        left: 0 !important;
+        right: 0 !important;
+    }
+
+    /* 타임그리드 셀 설정 */
+    .fc-timegrid-event-harness {
+        width: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+    }
+
+    /* 이벤트 컨테이너 설정 */
+    .fc-timegrid-event {
+        margin: 0 !important;
+        border-radius: 0 !important; /* 선택사항: 모서리를 직각으로 */
+        border-left: none !important;
+        border-right: none !important;
+    }
+
+    /* 시간 표시 영역 */
+    .fc-timegrid-slot-lane {
+        height: 100% !important;
+    }
+
+    /* 리소스 열 설정 */
+    .fc-timegrid-col {
+        width: 100% !important;
+    }
+
+    /* 이벤트 내부 패딩 */
+    .fc-event-main {
+        padding: 4px 8px !important;
+    }
+
+    /* 이벤트 타이틀 스타일링 */
+    .fc-event-title {
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* 시간 표시 스타일링 */
+    .fc-event-time {
+        font-size: 0.9em;
+        opacity: 0.8;
+    }
+
+    select option:disabled {
+        color: #999;
+        background-color: #f5f5f5;
+    }
+
+    select option.reserved {
+        text-decoration: line-through;
+        background-color: #ffe3e3;
+    }
+
+    .reservation-form {
+        display: flex;
+        gap: 15px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    input[type="date"],
+    select {
+        padding: 8px 12px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    input[type="date"]:focus,
+    select:focus {
+        outline: none;
+        border-color: #4dabf7;
+        box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+    }
+</style>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
@@ -323,9 +411,8 @@
             </div>
         </div>
         <div class="button-container">
-            <button class="primary insert-schedule open-write-schedule">일정 추가</button>
-            <button class="primary open-write-calender">캘린더 추가</button>
-            <button class="secondary open-list-calendar">캘린더 관리</button>
+            <button class="primary insert-schedule open-write-schedule">예약하기</button>
+            <button class="secondary open-list-calendar">예약 변경</button>
         </div>
         <div class="calender-container">
             <div id="calendar"></div>
@@ -336,11 +423,11 @@
     <div class="detail-modal" id="scheduleWriteModal" style="display: none;">
         <div class="box modal-container surface-bright">
             <div class="box-title">
-                <h2>일정 등록</h2>
+                <h2>예약 등록</h2>
             </div>
 
             <div class="box-content">
-                <form id="scheduleWriteForm" action="/schedule/insert" method="post">
+                <form id="scheduleWriteForm" action="/book/insert" method="post">
                     <input type="hidden" name="id" value="0">
                     <div class="form-group">
                         <label>캘린더 선택</label>
@@ -351,17 +438,31 @@
                             </c:forEach>
                         </select>
                     </div>
-
                     <div class="form-group">
-                        <label>일정 제목</label>
-                        <input type="text" name="title" class="form-input" required>
+                        <label>예약 종류</label>
+                        <select name="targetType" class="form-select" required onChange="updateTarget()">
+                            <option value="">선택하십시오.</option>
+                            <option value="meetingRoomId">회의실</option>
+                            <option value="furnitureId">비품</option>
+                        </select>
                     </div>
-
+                    <div class="form-group">
+                        <label>예약 상세</label>
+                        <select name="targetId" class="form-select" id="sub-select" onChange="showImg()">
+                            <option value="" disabled selected>먼저 분류를 선택해주세요</option>
+                            <c:forEach items="${bookTargetList}" var="item">
+                                <option value="${item.id}" data-type="${item.targetType}" style="display: none;">
+                                        ${item.name}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label>시작 일시</label>
                         <div class="datetime-wrapper">
                             <input type="date" id="insert-startDate" class="form-input" required>
                             <select required id="insert-startTime">
+                                <option value="">선택하십시오</option>
                                 <c:forEach begin="9" end="18" var="i">
                                     <option value=" ${i < 10 ? '0'.concat(i) : i}:00:00">${i < 10 ? '0'.concat(i) : i}:00</option>
                                     <option value=" ${i < 10 ? '0'.concat(i) : i}:30:00">${i < 10 ? '0'.concat(i) : i}:30</option>
@@ -376,6 +477,7 @@
                         <div class="datetime-wrapper">
                             <input type="date" id="insert-endDate" class="form-input" required>
                             <select required id="insert-endTime">
+                                <option value="">선택하십시오</option>
                                 <c:forEach begin="9" end="18" var="i">
                                     <option value=" ${i < 10 ? "0" + i : i}:00:00">${i < 10 ? "0" + i : i}:00</option>
                                     <option value=" ${i < 10 ? "0" + i : i}:30:00">${i < 10 ? "0" + i : i}:30</option>
@@ -384,12 +486,6 @@
                         </div>
                         <input type="hidden" name="endDate" class="form-input">
                     </div>
-
-                    <div class="form-group">
-                        <label>일정 내용</label>
-                        <textarea name="content" rows="4" class="form-input"></textarea>
-                    </div>
-
                     <div class="modal-footer">
                         <button type="button" class="primary" style="display: none;" id="schedule-update-complete-btn">수정완료</button>
                         <button type="button" class="secondary" style="display: none;" id="schedule-delete-btn">삭제</button>
@@ -477,17 +573,39 @@
     </div>
 
     <script>
+        function updateTarget() {
+            const mainSelect = $('select[name=targetType]');
+            const subSelect = $('select[name=targetId]');
+            const mainValue = mainSelect.val();
+
+            console.log(mainValue, mainSelect, subSelect);
+
+            subSelect.find('option').each(function() {
+                $(this).hide();
+            });
+            subSelect.find('option').hide();
+
+
+            if (mainValue) {
+                subSelect.find('option[data-type="' + mainValue + '"]').show();
+                subSelect.prop('disabled', false);
+            } else {
+                subSelect.prop('disabled', true);
+            }
+        }
+
         function calculateAvailableDimensions() {
             const $container = $('.calenda-container');
             const totalHeight = $container.height();
             const totalWidth = $container.width();
-            const padding = 40; // 상하/좌우 padding 20px * 2
+            const padding = 40;
 
             return {
                 height: totalHeight - padding,
                 width: totalWidth - padding
             };
         }
+
         $(document).ready(function() {
             const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
                 locale: 'ko',
@@ -508,6 +626,8 @@
                                 capacity: item.capacity,
                             }
                         })
+
+                        console.log(resources);
                         successCallback(resources);
                     })
                 },
@@ -540,7 +660,6 @@
                 nowIndicator: true, // 현재 시간 표시
                 scrollTime: '09:00:00', // 초기 스크롤 위치
                 businessHours: { // 업무 시간 강조
-                    daysOfWeek: [1, 2, 3, 4, 5], // 월-금
                     startTime: '09:00',
                     endTime: '18:00'
                 },
@@ -553,7 +672,16 @@
                         titleFormat: { year: 'numeric', month: 'long', day: '2-digit' }
                     }
                 },
+                slotMinWidth: '100%', // 슬롯 최소 너비
+                expandRows: true, // 행 확장
 
+                // 이벤트 렌더링 커스터마이징
+                eventDidMount: function(info) {
+                    info.el.style.width = '100%';
+                    info.el.style.margin = '0';
+                    info.el.style.left = '0';
+                },
+                eventClassNames: ['full-width-event']
             });
 
             function parseDate(dates) {
@@ -569,33 +697,24 @@
                 console.log(startDate, endDate);
 
                 $.ajax({
-                    url: '/schedule/list?startDate=' + startDate + '&endDate=' + endDate,
+                    url: '/book/list/period?startDate=' + startDate + '&endDate=' + endDate,
                     type: 'GET',
                     success: function (data) {
                         console.log(data);
                         const events = data.map(function(event) {
                             console.log(event);
-                            if (event.eventName === 'period') {
-                                return {
-                                    id: event.id,
-                                    title: event.title,
-                                    start: new Date(event.startDate),
-                                    end: new Date(event.endDate),
-                                    allDay: false,
-                                    display: 'block',
-                                    color: event.backgroundColor,
-                                    extendedProps: {
-                                        id: event.id,
-                                        type: 'schedule'
-                                    }
-                                }
-                            }
                             return {
+                                resourceId: event.eventName,
                                 title: event.title,
                                 start: new Date(event.startDate),
-                                allDay: event.allDay,
+                                end: new Date(event.endDate),
+                                allDay: false,
                                 display: 'block',
                                 color: event.backgroundColor,
+                                extendedProps: {
+                                    id: event.id,
+                                    type: 'schedule'
+                                }
                             }
                         })
                         console.log(events);
@@ -604,59 +723,6 @@
                         console.log(xhr.status);
                         console.log(xhr.responseText);
                         console.log(error);
-                    }
-                })
-            }
-
-            function openDetailModal(id) {
-                $.ajax({
-                    url: '/schedule/detail/' + id,
-                    type: 'GET',
-                    success: function (data) {
-                        console.log(data);
-                        const startDateTime = new Date(data.startDate);
-                        const endDateTime = new Date(data.endDate);
-
-                        const startDate = formatDate(startDateTime);
-                        const startTime = ' ' + formatTimeToHHMMSS(startDateTime);
-
-                        const endDate = formatDate(endDateTime);
-                        const endTime = ' ' + formatTimeToHHMMSS(endDateTime);
-
-                        $('#detail-title').text(data.title);
-                        $('#detail-start').text(startDate + startTime);
-                        $('#detail-end').text(endDate + endTime);
-                        $('#detail-content').text(data.content);
-
-                        $('#eventDetailModal').show();
-
-                        $('#schedule-delete-btn').on('click', function() {
-                            location.href = '/schedule/delete/' + data.id;
-                        })
-
-                        $('#schedule-detail-update').on('click', function() {
-
-                            $('#scheduleWriteForm input[name=id]').val(data.id);
-                            $('#scheduleWriteForm select[name=calendarId]').val(data.calendarId);
-
-                            $('#scheduleWriteForm input[name=title]').val(data.id);
-                            $('#insert-startDate').val(startDate);
-                            $('#insert-startTime option[value="' + startTime + '"]').prop('selected', true);
-                            $('#scheduleWriteForm input[name=startDate]').val(startDate + startTime);
-
-                            $('#insert-endDate').val(endDate);
-                            $('#insert-endTime option[value="' + endTime + '"]').prop('selected', true);
-                            $('#scheduleWriteForm input[name=endDate]').val(endDate + endTime);
-
-                            $('#scheduleWriteForm textarea[name=content]').val(data.content);
-
-                            $('#schedule-update-complete-btn').show();
-                            $('#schedule-delete-btn').show();
-                            $('#schedule-input-btn').hide();
-
-                            $('#eventDetailModal').fadeOut(300);
-                            $('#scheduleWriteModal').fadeIn(300);
-                        })
                     }
                 })
             }
@@ -688,6 +754,60 @@
                 // adjustCalendarSize();
             }, 100);
         });
+
+        $('#insert-startDate').on('change', function() {
+            const date = $(this).val();
+            const targetType = $('select[name=targetType]').val();
+            const targetId = $('select[name=targetId]').val();
+            console.log(date, targetType, targetId);
+
+            $.ajax({
+                url: '/book/detail/date?date=' + date + '&targetType=' + targetType + '&targetId=' + targetId,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data);
+                    const dataStartDate = new Date(data.startDate);
+                    const dataEndDate = new Date(data.endDate);
+
+                    $('#insert-startTime').find('option')
+                        .prop('disabled', false).removeClass('reserved')
+                        .each(function() {
+                        const startDateTime = new Date(date + $(this).val());
+                            if (startDateTime > dataStartDate && startDateTime < dataEndDate) {
+                                console.log(1);
+                                $(this).prop('disabled', true).addClass('reserved');
+                            }
+                    })
+                }
+            })
+        })
+
+        $('#insert-endDate').on('change', function() {
+            const date = $(this).val();
+            const targetType = $('select[name=targetType]').val();
+            const targetId = $('select[name=targetId]').val();
+            console.log(date, targetType, targetId);
+
+            $.ajax({
+                url: '/book/detail/date?date=' + date + '&targetType=' + targetType + '&targetId=' + targetId,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data);
+                    const dataStartDate = new Date(data.startDate);
+                    const dataEndDate = new Date(data.endDate);
+
+                    $('#insert-endTime').find('option')
+                        .prop('disabled', false).removeClass('reserved')
+                        .each(function() {
+                            const startDateTime = new Date(date + $(this).val());
+                            if (startDateTime > dataStartDate && startDateTime < dataEndDate) {
+                                console.log(1);
+                                $(this).prop('disabled', true).addClass('reserved');
+                            }
+                        })
+                }
+            })
+        })
 
         $('#schedule-update-complete-btn').on('click', function() {
             const formData = new FormData($('#scheduleWriteForm')[0]);
@@ -745,68 +865,6 @@
     </script>
     <script>
         $(document).ready(function() {
-            let selectedEmployees = new Map();
-
-            // 사원 선택/해제
-            $('.calendar-employee-item').click(function() {
-                const $this = $(this);
-                const empId = $this.data('id');
-                const empName = $this.find('.employee-name').text();
-                const empDept = $this.find('.employee-dept').text();
-
-                insertSelectEmployees($this, empId, empName, empDept);
-            });
-
-            // 선택된 사원 태그 렌더링
-            function renderSelectedEmployees() {
-                const $selected = $('.selected-employees');
-                $selected.empty();
-
-                selectedEmployees.forEach((emp, id) => {
-                    $selected.append(
-                        $('<div class="selected-employee-tag">').attr('data-id', id)
-                            .append($('<span>').text(emp.name))
-                            .append($('<span class="material-icons remove-employee">').text('close'))
-                            .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(emp.id))
-                    );
-                });
-
-                // hidden input 업데이트
-                $('#selectedEmployees').val(Array.from(selectedEmployees.keys()));
-            }
-
-            // 선택된 사원 제거
-            $(document).on('click', '.remove-employee', function(e) {
-                e.stopPropagation();
-                const empId = $(this).closest('.selected-employee-tag').data('id');
-                selectedEmployees.delete(empId);
-                $('.calendar-employee-item[data-id="' +  empId + '"]').removeClass('selected');
-                renderSelectedEmployees();
-            });
-
-            // 모달 열기
-            $('.open-write-calender').click(function () {
-                $('.calendar-write-form').show();
-            });
-
-            // 모달 닫기
-            $('.calendar-write-form .modal-close').click(function () {
-                $('.calendar-write-form').hide();
-
-                $('.calendar-write-form input[type="text"]').val('');
-                $('.calendar-write-form input[type="radio"]').prop('checked', false);
-
-
-                $('#calendar-update-complete-btn').hide();
-                $('#calendar-delete-btn').hide();
-                $('#calendar-insert-btn').show();
-
-                selectedEmployees = new Map();
-                $('.selected-employees').empty();
-
-                $('.calendar-write-form .box-title>h2').html('캘린더 추가');
-            });
-
             $('#schedule-write-close-btn').on('click', function() {
                 $('#schedule input').val();
                 $('#schedule textarea').val('');

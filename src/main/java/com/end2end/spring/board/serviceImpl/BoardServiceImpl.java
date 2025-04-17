@@ -9,6 +9,7 @@ import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.file.servieImpl.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,6 +63,9 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void insert(MultipartFile[] files, BoardDTO dto) throws Exception {
+        int id = boardDAO.selectNextVal();
+        dto.setId(id);
+
          boardDAO.insert(dto);
 
          FileDTO fileDTO = FileDTO.builder()
@@ -79,6 +83,11 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int deleteById(int id) {
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(id)
+                .build();
+        fileService.removeByParentsId(fileDTO);
+
         return boardDAO.deleteById(id);
         // TODO: 해당 id의 게시글 삭제
     }

@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
+<script src="/js/summernote/summernote-lite.js"></script>
+<script src="/js/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="/js/summernote/summernote-lite.css">
 <style>
     * {
         box-sizing: border-box;
@@ -142,7 +145,7 @@
     <tr>
         <th>내용 <span class="required">*</span></th>
         <td colspan="3">
-            <input type="text" name="content">
+            <input type="text" id="content" name="content">
         </td>
     </tr>
 </table>
@@ -156,4 +159,16 @@
     </a>
 </div>
 </form>
+<script type="text/javascript" src="/js/template/summernote.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#content').summernote(summernoteSetting($('#content')));
+
+        $('form').on('submit', function () {
+            const content = $('#content').summernote('code');
+            $('input[name="content"]').val(content);
+            return true;
+        })
+    })
+</script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

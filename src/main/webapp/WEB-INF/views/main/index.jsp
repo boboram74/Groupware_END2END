@@ -129,6 +129,37 @@
             font-size: 12px;
         }
     }
+
+    /* 이벤트 높이 조절 */
+    .fc-event {
+        height: 5px !important;  /* 원하는 높이로 조절 */
+        line-height: 5px !important;
+        padding: 0 !important;
+        margin: 1px 0 !important;
+    }
+
+    /* 이벤트 컨테이너 높이 조절 */
+    .fc-daygrid-event-harness {
+        height: 5px !important;
+    }
+
+    /* 여러 이벤트가 있을 때의 간격 조절 */
+    .fc .fc-daygrid-day-events {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* 이벤트 내부 여백 제거 */
+    .fc-daygrid-event {
+        padding: 0 !important;
+    }
+
+    .board-table td {
+        padding: 3px;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+        text-align: center;
+        vertical-align: middle;
+    }
 </style>
 <script>
     function calculateAvailableDimensions() {
@@ -385,14 +416,14 @@
                         <span class="material-icons">mail</span>
                         <span class="summary-text">새 메일</span>
                     </div>
-                    <span class="summary-count">5</span>
+                    <span class="summary-count">${mailReadCount}</span>
                 </div>
                 <div class="summary-item">
                     <div class="summary-left">
                         <span class="material-icons">event</span>
                         <span class="summary-text">오늘 일정</span>
                     </div>
-                    <span class="summary-count">3</span>
+                    <span class="summary-count">${todayScheduleCount}</span>
                 </div>
             </div>
         </div>

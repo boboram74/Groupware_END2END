@@ -6,6 +6,8 @@ import com.end2end.spring.board.dto.ComplaintDTO;
 import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,8 @@ public class BoardController {
 
     @Autowired
     private BoardCategoryService boardCategoryService;
+
+    @Autowired private FileService fileService;
 
     @RequestMapping("/list")
     public String list(Model model) {
@@ -117,7 +121,12 @@ public class BoardController {
     @RequestMapping("/detail/{id}")
     public String toDetail(@PathVariable int id, Model model) {
         model.addAttribute("board", boardService.selectById(id));
-        // TODO: 게시글 상세글로 이동
+
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(id)
+                .build();
+        model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+
         return "/board/detail";
     }
 

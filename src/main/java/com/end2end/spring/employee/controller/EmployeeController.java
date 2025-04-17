@@ -34,9 +34,21 @@ public class EmployeeController {
     private CommuteService commuteService;
 
     @RequestMapping("/login")
-    public String login(@ModelAttribute LoginDTO dto, HttpSession session, HttpServletRequest request, Model model) {
+    public String login(@ModelAttribute LoginDTO dto, HttpSession session, HttpServletRequest request) {
         EmployeeDTO employee = employeeService.login(dto);
 
+        // 1. 인증 실패
+        if (employee == null) {
+            return "redirect:/";
+        }
+
+        // 2. 권한 없음(no_auth) 체크
+        String role = employee.getRole();
+        if ("no_auth".equalsIgnoreCase(role)) {
+            return "redirect:/";
+        }
+
+        // 3. 정상 로그인 처리
         if (employee != null) {
             LoginHistoryDTO loginHistoryDTO = LoginHistoryDTO.builder()
                     .employeeId(employee.getId())

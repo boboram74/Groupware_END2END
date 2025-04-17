@@ -172,9 +172,7 @@
         ORDER BY e.name ASC
     </select>
 
-    <select id="searchContactList"
-            parameterType="map"
-            resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+    <select id="searchContactList" parameterType="map" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT
         e.id,
         e.name,

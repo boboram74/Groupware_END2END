@@ -5,11 +5,22 @@
 <mapper namespace="board">
 
     <select id="toList" resultType="com.end2end.spring.board.dto.BoardDTO">
-      select * from board ORDER BY ID DESC
+        SELECT
+            B.*,
+            E.NAME AS employeeName
+        FROM BOARD B
+                 JOIN EMPLOYEE E ON B.EMPLOYEEID = E.ID
+        ORDER BY B.ID DESC
     </select>
 
     <select id="selectByCategoryId" resultType="com.end2end.spring.board.dto.BoardDTO">
-        SELECT * FROM BOARD
+        SELECT
+            B.*,
+            E.NAME AS employeeName
+        FROM BOARD B
+                 JOIN EMPLOYEE E ON B.EMPLOYEEID = E.ID
+        WHERE B.BOARDCTID = #{categoryId}
+        ORDER BY B.ID DESC
     </select>
 
     <delete id="deleteById">
@@ -17,7 +28,10 @@
     </delete>
 
     <select id="selectById" resultType="com.end2end.spring.board.dto.BoardDTO">
-        select * from board where id = #{id}
+        SELECT B.*, E.NAME AS employeeName
+        FROM BOARD B
+        JOIN EMPLOYEE E ON B.EMPLOYEEID = E.ID
+        WHERE B.ID = #{id}
     </select>
 
     <select id="selectCategoryByName" resultType="com.end2end.spring.board.dto.BoardCategoryDTO">

@@ -19,4 +19,13 @@
         order by regDate desc
     </select>
 
+    <delete id="deleteById" >
+        delete from reply where id = #{id}
+    </delete>
+
+    <select id="selectById" parameterType="int" resultType="com.end2end.spring.board.dto.ReplyDTO">
+        SELECT id, boardId, employeeId, content, regDate
+        FROM reply
+        WHERE id = #{id}
+    </select>
 </mapper>

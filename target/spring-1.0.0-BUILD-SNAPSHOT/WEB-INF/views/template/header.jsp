@@ -217,7 +217,7 @@
 
       <script>
         $(document).ready(function() {
-          const alarm = new WebSocket('ws://localhost/alarm');
+          const alarm = new WebSocket('ws://end2end.site/alarm');
 
           alarm.onopen = function() {
             console.log('알람 웹소켓 연결됨');

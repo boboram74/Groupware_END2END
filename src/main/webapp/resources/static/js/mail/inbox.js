@@ -127,6 +127,39 @@ $(function () {
         }).done(function (resp) {
         });
     });
+    $("#searchBtn").on("click", function() {
+        const option = $("#searchOption").val().trim();
+        const keyword = $("#input").val().trim().toLowerCase();
+
+        if (!keyword) {
+            $(".mailList tbody tr").show();
+            return;
+        }
+        $(".mailList tbody tr").each(function() {
+            const $row = $(this);
+            let isMatch = false;
+            switch(option) {
+                case "보낸 사람":
+                    isMatch = $row.find("td:eq(2)").text().toLowerCase().includes(keyword);
+                    break;
+                case "제목":
+                    isMatch = $row.find("td.contents").text().toLowerCase().includes(keyword);
+                    break;
+                case "내용":
+                    isMatch = $row.find("td.contents").text().toLowerCase().includes(keyword);
+                    break;
+                default:
+                    isMatch = $row.text().toLowerCase().includes(keyword);
+            }
+            $row.toggle(isMatch);
+        });
+    });
+
+    $("#input").on("keypress", function(e) {
+        if (e.which === 13) {
+            $("#searchBtn").click();
+        }
+    });
 
 });
 

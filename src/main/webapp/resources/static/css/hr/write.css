@@ -1,86 +1,210 @@
-*{
-    /*border: 1px solid red;*/
-    box-sizing: border-box;
+html, body {
+    margin: 0;
+    padding: 0;
 }
-.mainContainer{
-    width: 90%;
-    height: 100vh;
-    margin: auto;
-    padding: 10px;
+
+.mainContainer {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
-.mainHeader{
-    width: 100%;
-    height: 10%;
-    margin: 10px;
+.card {
+    height: 92%;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
 }
-.title{
-    width: 100%;
-    height: 40%;
+.card-header {
+    background: #fafafa;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
 }
-.title span {
-    font-size: 60px;
-}
-.title h2 {
+.card-header h2 {
     display: flex;
     align-items: center;
+    font-size: 24px;
+    margin: 0;
 }
-.title h2 .material-icons {
-    font-size: 65px;
-    margin-right: 8px;
+.card-header .material-icons {
+    font-size: 32px;
+    margin-right: 10px;
+    color: #555;
 }
-.mainBody{
-    width: 100%;
-    height: 90%;
+.card-body {
+    padding: 20px;
 }
-.content {
+.card-footer {
+    padding: 20px;
+    text-align: right;
+    border-top: 1px solid #eee;
+}
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
+/* 프로필 업로드 */
+.profile-upload {
+    grid-column: span 2;
+    text-align: center;
+    position: relative;
+}
+.profile-upload img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    object-fit: cover;
+}
+.profile-upload .material-icons {
+    position: absolute;
+    bottom: 0;
+    right: 40%;
+    background: #fff;
+    border-radius: 50%;
+    padding: 6px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.form-group {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    gap: 10px;
-    width: 100%;
 }
-.btn{
-    display: flex;
-    justify-content: end;
-    gap: 10px;
-}
-.loginId input,.pw input,.repw input{
-    width: 40vw;
-}
-.address input,.detailAddress input{
-    width: 30vw;
-}
-.hrProfile {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    margin:10px;
-}
-
-.hrProfile label {
-    display: block;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    position: relative;
-}
-
-.hrProfile img#profilePreview {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid dimgray;
-}
-
-.hrProfile .material-icons {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background-color: white;
-    border-radius: 50%;
-    padding: 5px;
-    font-size: 20px;
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 6px;
     color: #333;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+.form-group input,
+.form-group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.input-with-btn {
+    display: flex;
+}
+.input-with-btn input { flex: 1; }
+.input-with-btn button {
+    margin-left: 8px;
+    padding: 0 12px;
+    border: none;
+    background: #3f51b5;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 유효성 메시지 */
+.validation-msg {
+    font-size: 12px;
+    color: #e53935;
+    margin-top: 4px;
+}
+
+/* 공용 버튼 */
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+.btn.primary {
+    background: #3f51b5;
+    color: #fff;
+}
+.btn.secondary {
+    background: #eee;
+    color: #555;
+    margin-left: 8px;
+}
+
+input::placeholder {
+    opacity: 0;
+}
+@media (max-width: 768px) {
+    .mainContainer {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+    }
+
+    .material-icons {
+        display: none !important;
+    }
+
+    input::placeholder {
+        opacity: 1;
+        color: #888;
+        font-size: 14px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        max-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .card-header {
+        display: none;
+    }
+    .mainContainer { padding: 4px; }
+
+    .card-body {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .profile-upload img {
+        width: 60%;
+        height: auto;
+        border-radius: 8px;
+    }
+    .profile-upload { margin-bottom: 8px; }
+    .form-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px;
+    }
+    .form-group label { display: none; }
+    .form-group input,
+    .form-group select,
+    .input-with-btn input {
+        padding: 6px;
+        font-size: 13px;
+        height: auto;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+
+    .input-with-btn button {
+        padding: 6px 8px;
+        font-size: 13px;
+    }
+    .card-footer {
+        flex-shrink: 0;
+        padding: 8px;
+    }
+    .card-footer .btn {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .btn.secondary {
+        background: #eee;
+        color: #555;
+        margin-left: 0px;
+        margin-top: 14px;
+    }
 }

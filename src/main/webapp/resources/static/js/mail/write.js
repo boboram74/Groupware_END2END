@@ -8,7 +8,11 @@ $("#sendMail").on("click", function () {
     let receiveMail = $("#receiveMail").val();
     let inputTitle = $("#inputTitle").val();
     let contents = $("#mailContent").val();
-    console.log(sender + "발신자");
+
+    if ($(this).prop("disabled")) {
+        return;
+    }
+    $(this).prop("disabled", true).text("전송중...");
 
     let mail = {
         from: sender,

@@ -45,7 +45,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO login(LoginDTO dto) {
         String password = SecurityUtil.hashPassword(dto.getPassword());
         dto.setPassword(password);
-        System.out.println(password);
         return employeeDAO.login(dto);
     }
 

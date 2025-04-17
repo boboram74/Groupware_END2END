@@ -124,7 +124,7 @@ public class BoardController {
                 .build();
         model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
 
-        return "/board/detail";
+        return "board/detail";
     }
 
     @RequestMapping("/category")

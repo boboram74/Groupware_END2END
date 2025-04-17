@@ -279,6 +279,9 @@
         console.log("로그인된 사용자 employeeId:", employeeId);
         console.log("댓글 작성자 employeeId:", replyEmployeeId);
 
+        if(employeeId !== replyEmployeeId){
+            alert("다른 게시물은 삭제 할 수 없습니다.");
+        }
 
         if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {
             $.ajax({
@@ -287,6 +290,7 @@
                 success: function (response) {
                     response = JSON.parse(response)
                     console.log("댓글삭제", response);
+
                     if(response){
                         loadReplies(); // 댓글 다시 불러오기
                     }else{
@@ -297,8 +301,6 @@
                     console.log("댓글 삭제 실패");
                 }
             });
-        } else {
-            alert("댓글을 작성한 사람만 삭제할 수 있습니다.");
         }
     });
 
@@ -337,24 +339,28 @@
 
     const loadReplies = () => {
         const boardId = '${board.id}';
+        console.log(boardId);
+
         $.ajax({
             type: "get",
             url: "/reply/list",
             data: {boardId: boardId},
-            dataType: "json",
             success: function (replyList) {
                 $(".replyListContainer").empty();
+                console.log(replyList);
 
                 replyList.forEach(reply => {
+                    console.log(reply.regDate);
                     const $replyDiv = $('<div class="replyList">')
-                        .append($('<div class="profile">'))
+                        .append(
+                            $('<div class="profile" style="background-image: url(' + reply.profileImg + ')">'))
                         .append(
                             $('<div class="replyWrite">')
                                 .append(
                                     $('<div class="writerSysdate">')
                                         .append(
                                             $('<div class="realContents">')
-                                                .append($('<input type="text" readonly>').val(reply.employeeId))
+                                                .append($('<input type="text" readonly>').val(reply.employeeName))
                                                 .append($('<input type="text" readonly>').val(reply.regDate))
                                         )
                                 )
@@ -371,7 +377,7 @@
                                 )
                                 .append(
                                     $('<div class="report">')
-                                        .append($('<button>').text('수정').attr('data-id', reply.id))
+                                        .append($('<button>').text('따봉').attr('data-id', reply.id))
                                 )
                         );
                     $('.replyListContainer').append($replyDiv);

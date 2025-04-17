@@ -12,6 +12,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 
 - 프로젝트 소개
 - 화면 구성
+- 주요 기능
 - 사용한 기술 스택
 - 프로젝트 아키텍처
 - ERD

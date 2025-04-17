@@ -52,9 +52,7 @@ public class AlarmEndPoint {
 
         try {
             clients.get(employeeId).getBasicRemote().sendText(g.toJson(queue));
-        } catch (NullPointerException ignore) {
-            // 현재 로그인한 사원에게는 딱히 안줘도 됨
-            ignore.printStackTrace();
+        } catch (NullPointerException ignore) { // 현재 로그인 안한 사원에게는 딱히 안줘도 됨
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

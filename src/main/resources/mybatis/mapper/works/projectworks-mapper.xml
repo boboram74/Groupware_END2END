@@ -22,6 +22,8 @@
     </select>
     <!-- 프로젝트 모아보기-->
 
+
+
     <select id="selectByprojectId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
 
         SELECT EMPLOYEE.* FROM
@@ -31,6 +33,16 @@
 
     </select>
     <!-- 프로젝트 멤버 프로필 가져오기-->
+
+
+
+    <update id="updateStatusByProjectId">
+
+        UPDATE project SET status = 'FINISH' WHERE id = #{id}
+
+    </update>
+<!-- 프젝 상태 변환쿼리   -->
+
 
 
     <delete id="deleteMemberById">
@@ -100,7 +112,7 @@
 
 
     <!--  모달창에서 추가할 프로젝트 인원 검색-->
-    <select id="selectByUser"  resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+    <select id="selectByUser" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT EMPLOYEE.*, DEPARTMENT.NAME AS departmentName, job.name as jobName
         FROM EMPLOYEE
         JOIN DEPARTMENT
@@ -112,7 +124,7 @@
     </select>
 
     <!--프로젝트에 추가되어 있던 멤버-->
-    <select id="getMembersByProjectId"   resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+    <select id="getMembersByProjectId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT
         e.name,
         e.id,

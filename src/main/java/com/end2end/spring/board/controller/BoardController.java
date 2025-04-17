@@ -6,6 +6,8 @@ import com.end2end.spring.board.dto.ComplaintDTO;
 import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,8 @@ public class BoardController {
 
     @Autowired
     private BoardCategoryService boardCategoryService;
+
+    @Autowired private FileService fileService;
 
     @RequestMapping("/list")
     public String list(Model model) {
@@ -114,7 +118,12 @@ public class BoardController {
     @RequestMapping("/detail/{id}")
     public String toDetail(@PathVariable int id, Model model) {
         model.addAttribute("board", boardService.selectById(id));
-        // TODO: 게시글 상세글로 이동
+
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(id)
+                .build();
+        model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+
         return "/board/detail";
     }
 
@@ -125,26 +134,15 @@ public class BoardController {
     }
 
     @RequestMapping("/insert")
-    public String insert(HttpSession session, BoardDTO dto,  @RequestParam("file") MultipartFile file)throws Exception {
+    public String insert(HttpSession session, BoardDTO dto, MultipartFile[] files)throws Exception {
         System.out.println("insert 메서드 호출");
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         if (employee == null) {
             return "redirect:/login"; // 세션이 없으면 로그인 페이지로 리다이렉트
         }
 
-        System.out.println("DTO 값: " + dto);
-        System.out.println("첨부 파일: " + file.getOriginalFilename());
-
-        // 파일 처리 로직 (파일 저장 경로 등 추가 필요)
-        if (!file.isEmpty()) {
-            String filePath = "/path/to/save"; // 저장할 경로 설정
-            String fileName = file.getOriginalFilename();
-            file.transferTo(new File(filePath + "/" + fileName)); // 파일 저장
-            dto.setFilePath(filePath + "/" + fileName); // 파일 경로 추가
-        }
-
         dto.setEmployeeId(employee.getId()); // 작성자 ID 설정
-        boardService.insert(dto);
+        boardService.insert(files, dto);
         return "redirect:/board/list";
     }
 
@@ -172,6 +170,11 @@ public class BoardController {
         // TODO: 카테고리 입력을 받음
     }
 
+    @ResponseBody
+    @RequestMapping("/recent")
+    public List<BoardDTO> recent() {
+        return boardService.selectRecent();
+    }
 
     @RequestMapping("/category/update")
     public void updateCategory(BoardCategoryDTO dto) {

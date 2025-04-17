@@ -30,8 +30,13 @@
     </insert>
 
     <insert id="insert" parameterType="com.end2end.spring.board.dto.BoardDTO">
-        insert into board (id, boardCtId, employeeId, title, content) values (board_id_seq.nextval, #{boardCtId,jdbcType=INTEGER}, #{employeeId}, #{title}, #{content})
+        insert into board (id, boardCtId, employeeId, title, content)
+        values (${id}, #{boardCtId,jdbcType=INTEGER}, #{employeeId}, #{title}, #{content})
     </insert>
+
+    <select id="selectNextVal" resultType="int">
+        SELECT BOARD_ID_SEQ.nextval FROM DUAL
+    </select>
 
     <update id="update" parameterType="com.end2end.spring.board.dto.BoardDTO">
         UPDATE board
@@ -40,5 +45,27 @@
         WHERE id = #{id}
     </update>
 
+    <select id="selectRecent" resultType="com.end2end.spring.board.dto.BoardDTO">
+        SELECT A.*
+        FROM (
+            SELECT
+                BOARD.*,
+                NVL(replyCount, 0) AS replyCount,
+                EMPLOYEE.NAME as employeeName,
+                EMPLOYEE.profileImg AS profileImg,
+                ROW_NUMBER() over (ORDER BY BOARD.id DESC) AS rnum
+            FROM BOARD
+            JOIN EMPLOYEE
+                ON BOARD.EMPLOYEEID = EMPLOYEE.ID
+            LEFT JOIN (
+                SELECT COUNT(*) AS replyCount, boardId
+                FROM REPLY
+                GROUP BY BOARDID) R
+        ON R.boardId = BOARD.id) A
+        WHERE rnum BETWEEN 1 AND 8
+    </select>
 
+    <update id="increaseViewCount">
+        UPDATE BOARD SET VIEWCOUNT = VIEWCOUNT + 1 WHERE ID = ${id}
+    </update>
 </mapper>

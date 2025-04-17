@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 @Builder
 public class ScheduleDTO {
     private int id;
+    private String calendarTitle;
     private int calendarId;
     private int bookId;
     private String title;

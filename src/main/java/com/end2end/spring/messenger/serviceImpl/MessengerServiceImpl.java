@@ -41,7 +41,6 @@ public class MessengerServiceImpl implements MessengerService {
     @Transactional
     @Override
     public Map<String, Object> createChatRoom(String employeeId, String senderId, String roomName) {
-        //새로운 채팅방 일때
         int messageRoomId = messengerDAO.messageFirstInsert(roomName);
         int messageRoomUserId = messengerDAO.messageFirstRoomInsert(messageRoomId, employeeId);
         messengerDAO.messageFirstRoomInsert(messageRoomId, senderId);

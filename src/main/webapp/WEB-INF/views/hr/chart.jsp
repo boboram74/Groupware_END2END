@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
 <div class="mainContainer">
     <div class="mainHeader">
         <div class="title">

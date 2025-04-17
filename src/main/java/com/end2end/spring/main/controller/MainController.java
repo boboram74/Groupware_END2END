@@ -5,8 +5,10 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.dto.JobDTO;
 import com.end2end.spring.employee.service.EmployeeService;
+import com.end2end.spring.mail.service.MailService;
 import com.end2end.spring.main.dto.LoginHistoryDTO;
 import com.end2end.spring.main.service.LoginHistoryService;
+import com.end2end.spring.schedule.dao.ScheduleDAO;
 import com.end2end.spring.util.HolidayUtil;
 import com.end2end.spring.util.PageNaviUtil;
 import com.end2end.spring.works.dto.ProjectSelectDTO;
@@ -22,9 +24,9 @@ import java.util.List;
 @Controller
 public class MainController {
 
-	@Autowired
-	private EmployeeService employeeService;
-
+	@Autowired private EmployeeService employeeService;
+	@Autowired MailService mailService;
+	@Autowired private ScheduleDAO scheduleDAO;
 	@Autowired
 	private LoginHistoryService loginHistoryService;
 
@@ -35,6 +37,8 @@ public class MainController {
 			return "main/login";
 		}
 		model.addAttribute("birthdayList", employeeService.selectByThisMonthBirthday());
+		model.addAttribute("mailReadCount", mailService.getRecordReadCount(loginUser.getId()));
+		model.addAttribute("todayScheduleCount", scheduleDAO.countTodayScheduleByEmployeeId(loginUser.getId()));
 		return "main/index";
 	}
 
@@ -61,8 +65,8 @@ public class MainController {
 		return "main/mypage";
 	}
 
-	@RequestMapping("/login/history/{page}")
-	public String toLoginHistory(HttpSession session, Model model, @PathVariable int page) {
+	@RequestMapping("/login/history")
+	public String toLoginHistory(HttpSession session, Model model, int page) {
 		EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
 
 		int totalLength = loginHistoryService.selectByEmployeeId(employee.getId()).size();
@@ -78,9 +82,15 @@ public class MainController {
 	}
 
 	@RequestMapping("/contact")
-	public String selectContactList(Model model) {
-		List<EmployeeDTO> contactList = employeeService.selectContactList();
-		model.addAttribute("contactList", contactList);
+	public String selectContactList(Model model, int page) {
+		List<EmployeeDTO> contactList = employeeService.selectAll();
+
+		PageNaviUtil.PageNavi pageNavi = new PageNaviUtil(page, contactList.size()).generate();
+		List<EmployeeDTO> employeeDTOList = employeeService.selectAll(page);
+
+		model.addAttribute("contactList", employeeDTOList);
+		model.addAttribute("pageNavi", pageNavi);
+
 		return "main/contact";
 	}
 

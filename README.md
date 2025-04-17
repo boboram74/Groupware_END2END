@@ -3,7 +3,7 @@
 # [Spring Boot] GROUPWARE Project
 
 [![readme.md](https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white)]() [![release](https://img.shields.io/badge/release-v2.0.0-yellow?style=flat&logo=google-chrome&logoColor=white)]()  
-[![프로젝트 기간](https://img.shields.io/badge/프로젝트_기간-2025.03.01~2025.04.17-green?style=flat)]()
+[![프로젝트 기간](https://img.shields.io/badge/프로젝트_기간-2025.03.31~2025.04.18-green?style=flat)]()
 
 ---
 

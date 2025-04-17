@@ -93,7 +93,7 @@ public class MainController {
 	@RequestMapping("/contact/search")
 	public String searchContactList(Model model, String searchOption, String keyword) {
 		if (keyword == null || keyword.trim().isEmpty()) {
-			return "redirect:main/contact";
+			return "redirect:/contact?page=1";
 		}
 
 		List<EmployeeDTO> contactList = employeeService.searchContactList(searchOption, keyword);

@@ -29,6 +29,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     private BoardDAO boardDAO;
 
     @Override
+    public EmployeeDTO selectById(String id) {
+        return null;
+    }
+
+    @Override
     public List<EmployeeDTO> selectAll() {
         return employeeDAO.selectAll();
     }

@@ -19,4 +19,8 @@
         order by regDate desc
     </select>
 
+    <delete id="deleteById" >
+        delete from reply where id = #{id}
+    </delete>
+
 </mapper>

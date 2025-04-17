@@ -243,22 +243,24 @@
         </div>
     </div>
 </form>
+
 <hr>
 
 <h3>댓글</h3>
 
+<form action="" >
 <div class="replyListContainer">
 
 </div>
-
+</form>
 
 <script>
-    document.querySelector(".deleteBtn").addEventListener("click", function (e) {
+    $(".deleteBtn").on("click", function (e) {
         if (!confirm("정말 삭제하시겠습니까?")) {
             e.preventDefault();
         }
     })
-    document.getElementById("replyForm").addEventListener("submit", function (e) {
+    $("#replyForm").on("submit", function (e) {
         e.preventDefault();
         addContent();
     })
@@ -325,11 +327,11 @@
                             $('<div class="replyReport">')
                                 .append(
                                     $('<div class="reReply">')
-                                        .append($('<button>').text('댓글').attr('data-id', reply.id))
+                                        .append($('<button>').addClass('deleteReplyBtn').text('삭제').attr('data-id', reply.id).attr('data-employee-id', reply.employeeId))
                                 )
                                 .append(
                                     $('<div class="report">')
-                                        .append($('<button>').text('신고').attr('data-id', reply.id))
+                                        .append($('<button>').text('수정').attr('data-id', reply.id))
                                 )
                         );
                     $('.replyListContainer').append($replyDiv);
@@ -339,10 +341,59 @@
                 console.log("실패");
             }
         });
+
+
+
     };
     // 페이지 로드 시 댓글 목록 불러오기
     $(document).ready(function () {
         loadReplies();
+    });
+
+    <%--$(".deleteReplyBtn").on("click", function () {--%>
+    <%--    const replyId = $(this).data("id"); // 삭제할 댓글의 ID--%>
+    <%--    const employeeId = '${employee.id}'; // 현재 로그인된 사용자 ID--%>
+    <%--    const replyEmployeeId = $(this).data("employeeId"); // 댓글 작성자의 ID--%>
+
+    <%--    if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {--%>
+    <%--        $.ajax({--%>
+    <%--            type: "post",--%>
+    <%--            url: "/reply/delete",--%>
+    <%--            data: {id: replyId},--%>
+    <%--            success: function () {--%>
+    <%--                loadReplies(); // 댓글 목록 갱신--%>
+    <%--            },--%>
+    <%--            error: function () {--%>
+    <%--                console.log("댓글 삭제 실패");--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    } else {--%>
+    <%--        alert("댓글을 작성한 사람만 삭제할 수 있습니다.");--%>
+    <%--    }--%>
+    <%--});--%>
+
+
+    $(document).on("click", ".deleteReplyBtn", function () {
+        const replyId = $(this).data("id");
+        const employeeId = '${employee.id}';
+        const replyEmployeeId = $(this).data("employeeId");
+
+
+        if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {
+            $.ajax({
+                type: "post",
+                url: "/reply/delete",
+                data: {id: replyId},
+                success: function () {
+                    loadReplies(); // 댓글 다시 불러오기
+                },
+                error: function () {
+                    console.log("댓글 삭제 실패");
+                }
+            });
+        } else {
+            alert("댓글을 작성한 사람만 삭제할 수 있습니다.");
+        }
     });
 </script>
 

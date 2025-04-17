@@ -37,6 +37,7 @@ public class BoardController {
 
         return "/board/list";
     }
+    
     @RequestMapping("/delete")
     public String deleteById(@RequestParam("id") int id, HttpSession session){
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");

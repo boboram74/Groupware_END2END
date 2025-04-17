@@ -4,6 +4,7 @@ import com.end2end.spring.board.dto.ReplyDTO;
 import com.end2end.spring.board.service.ReplyService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +49,19 @@ public class ReplyController {
     }
 
     @RequestMapping("/delete")
-    public void deleteById(int id) {
+    @ResponseBody
+    public ResponseEntity<String>  deleteById(@RequestParam("id") int id, HttpSession session) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        ReplyDTO reply = replyService.selectById(id);
+
+        if (employee.getId().equals(reply.getEmployeeId())) {
+            System.out.println("성공");
+            replyService.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+       int deleteId = replyService.deleteById(id);
+//        int result = replyService.deleteById(id);
+        return ResponseEntity.ok().build();
         // TODO: 해당 댓글 id로 삭제
     }
 }

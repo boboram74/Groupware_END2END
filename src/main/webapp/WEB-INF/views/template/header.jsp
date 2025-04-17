@@ -30,7 +30,7 @@
       <h3>END2END</h3>
     </div>
     <div class="menu-items">
-      <div class="menu-item" onClick="location.href='/board/list/1'">
+      <div class="menu-item" onClick="location.href='/board/list'">
         <i class="material-icons">dashboard</i>
         <span>게시판</span>
       </div>

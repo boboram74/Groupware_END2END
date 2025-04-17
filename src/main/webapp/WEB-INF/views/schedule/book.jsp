@@ -354,7 +354,7 @@
     input[type="date"],
     select {
         padding: 8px 12px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--md-sys-color-outline-variant);
         border-radius: 4px;
         font-size: 14px;
     }
@@ -362,8 +362,7 @@
     input[type="date"]:focus,
     select:focus {
         outline: none;
-        border-color: #4dabf7;
-        box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+        border-color: var(--md-sys-color-primary);
     }
 </style>
 <div class="mainHeader surface-bright">

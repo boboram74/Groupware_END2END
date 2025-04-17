@@ -354,7 +354,7 @@
     input[type="date"],
     select {
         padding: 8px 12px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--md-sys-color-outline-variant);
         border-radius: 4px;
         font-size: 14px;
     }
@@ -362,8 +362,7 @@
     input[type="date"]:focus,
     select:focus {
         outline: none;
-        border-color: #4dabf7;
-        box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+        border-color: var(--md-sys-color-primary);
     }
 </style>
 <div class="mainHeader surface-bright">
@@ -412,7 +411,7 @@
         </div>
         <div class="button-container">
             <button class="primary insert-schedule open-write-schedule">예약 하기</button>
-            <button class="secondary open-list-calendar"></button>
+            <button class="secondary open-list-calendar">사용 완료</button>
         </div>
         <div class="calender-container">
             <div id="calendar"></div>
@@ -843,15 +842,7 @@
     <script>
         $(document).ready(function() {
             $('#schedule-write-close-btn').on('click', function() {
-                $('#schedule input').val();
-                $('#schedule textarea').val('');
-
-                $('#schedule-update-complete-btn').hide();
-                $('#schedule-delete-btn').hide();
-                $('#schedule-input-btn').show();
-
                 $('#scheduleWriteModal').fadeOut(300);
-                $('#eventDetailModal').fadeIn(300);
             })
 
             // 모달 열기

@@ -105,23 +105,8 @@ public class MainController {
 		return "main/contact";
 	}
 
-	@RequestMapping("/worktree")
-	public String toWorktree() {
-		return "main/worktree";
-	}
-
-	@ResponseBody
-	@RequestMapping("/holiday")
-	public List<HolidayUtil.HolidayDTO> getHoliday(String year, String month) {
-		try {
-			return HolidayUtil.generateHolidayList(year, month);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	@RequestMapping("/test")
 	public String toTest() {
-		return "/template/exam";
+		return "main/error";
 	}
 }

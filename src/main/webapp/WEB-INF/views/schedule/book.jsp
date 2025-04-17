@@ -538,37 +538,6 @@
         </div>
     </div>
 
-    <!-- 상세 정보 모달 -->
-    <div class="detail-modal" id="eventDetailModal" style="display: none;">
-        <div class="modal-container box surface-bright">
-            <div class="modal-header box-title">
-                <h2>일정 상세 정보</h2>
-            </div>
-            <div class="box-content">
-                <div class="form-group">
-                    <label>제목</label>
-                    <div id="detail-title"></div>
-                </div>
-                <div class="form-group">
-                    <label>시작일</label>
-                    <div id="detail-start"></div>
-                </div>
-                <div class="form-group">
-                    <label>종료일</label>
-                    <div id="detail-end"></div>
-                </div>
-                <div class="form-group">
-                    <label>설명</label>
-                    <div id="detail-content"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="primary" id="schedule-detail-update">수정</button>
-                    <button type="button" class="secondary" id="schedule-detail-close">닫기</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         function updateTarget() {
             const mainSelect = $('select[name=targetType]');

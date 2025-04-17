@@ -882,13 +882,9 @@
                 name: $('#memberSearchInput').val()
             },
             success: function (data) {
-
-
                 let memberList = '';
                 for (let i = 0; i < data.length; i++) {
-
                     memberList += '<div class="user-item" data-id="' + data[i].id + '" data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].jobName + ' ' + data[i].departmentName + '</div>'
-
                 }
 
                 $('#memberSearchResults').html(memberList);

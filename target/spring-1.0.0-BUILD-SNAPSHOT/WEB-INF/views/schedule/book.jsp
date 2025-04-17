@@ -478,16 +478,13 @@
 
     <script>
         function calculateAvailableDimensions() {
-            const $container = $('.calendarBox');
+            const $container = $('.calenda-container');
             const totalHeight = $container.height();
             const totalWidth = $container.width();
-            const titleHeight = $('.boxTitle').outerHeight(true);
             const padding = 40; // 상하/좌우 padding 20px * 2
 
-            console.log(totalHeight - titleHeight - padding);
-            console.log(totalWidth - padding);
             return {
-                height: totalHeight - titleHeight - padding,
+                height: totalHeight - padding,
                 width: totalWidth - padding
             };
         }
@@ -502,9 +499,10 @@
 
                         const resources = data.map((item) => {
                             return {
-                                id: String(item.id),
+                                id: item.name,
                                 name: item.name,
                                 img: item.img,
+                                targetId: String(item.id),
                                 type: item.targetType,
                                 location: item.location,
                                 capacity: item.capacity,
@@ -539,18 +537,23 @@
                 slotMinTime: '09:00:00', // 시작 시간
                 slotMaxTime: '18:00:00', // 종료 시간
                 allDaySlot: false, // 종일 슬롯 숨기기
-
-                // 날짜 헤더 포맷 설정
+                nowIndicator: true, // 현재 시간 표시
+                scrollTime: '09:00:00', // 초기 스크롤 위치
+                businessHours: { // 업무 시간 강조
+                    daysOfWeek: [1, 2, 3, 4, 5], // 월-금
+                    startTime: '09:00',
+                    endTime: '18:00'
+                },
+                slotLabelInterval: '01:00', // 시간 레이블 간격
+                // 주말 숨기기
+                hiddenDays: [0, 6], // 일요일(0), 토요일(6)
+                // 시간 포맷
                 views: {
-                    resourceTimelineWeek: {
-                        type: 'resourceTimeline',
-                        duration: { days: 7 },
-                        slotDuration: { days: 1 },
-                        headerToolbar: {
-                            start: 'M/D'
-                        }
+                    timeGridWeek: {
+                        titleFormat: { year: 'numeric', month: 'long', day: '2-digit' }
                     }
                 },
+
             });
 
             function parseDate(dates) {

@@ -277,6 +277,52 @@
         color: var(--md-sys-color-surface);
     }
 </style>
+<style>
+    /* 리소스 영역 스타일링 */
+    .fc-resource-area {
+        background-color: #f8f9fa;
+        border-right: 1px solid #ddd;
+    }
+
+    .resource-label {
+        padding: 8px;
+        height: 50px !important; /* 리소스 높이 고정 */
+        display: flex;
+        align-items: center;
+    }
+
+    /* 시간 슬롯 스타일링 */
+    .fc-timegrid-slot {
+        height: 50px !important; /* 시간 슬롯 높이 고정 */
+    }
+
+    /* 헤더 스타일링 */
+    .fc-header-toolbar {
+        margin-bottom: 1.5em !important;
+    }
+
+    /* 리소스 타이틀 스타일링 */
+    .resource-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .profile-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        flex-shrink: 0;
+    }
+
+    /* 이벤트 스타일링 */
+    .fc-event {
+        border-radius: 4px;
+        margin: 2px 0;
+    }
+
+</style>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
@@ -609,6 +655,11 @@
                 // 헤더 스타일 설정
                 viewDidMount: function () {
                     adjustCalendarSize();
+                },
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
                 }
             });
 
@@ -637,10 +688,8 @@
                 startDate = parseDate(startDate);
                 endDate = parseDate(endDate);
 
-                console.log(startDate, endDate);
-
                 $.ajax({
-                    url: '/schedule/list?startDate=' + startDate + '&endDate=' + endDate,
+                    url: '/book/list/period?startDate=' + startDate + '&endDate=' + endDate,
                     type: 'GET',
                     success: function (data) {
                         console.log(data);
@@ -660,13 +709,6 @@
                                         type: 'schedule'
                                     }
                                 }
-                            }
-                            return {
-                                title: event.title,
-                                start: new Date(event.startDate),
-                                allDay: event.allDay,
-                                display: 'block',
-                                color: event.backgroundColor,
                             }
                         })
                         console.log(events);

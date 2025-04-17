@@ -4,12 +4,12 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="book">
     <select id="selectAllBookTarget" resultType="com.end2end.spring.schedule.dto.BookTargetDTO">
-        SELECT id, name, img, location, capacity, 'MEETING_ROOM' AS targetType
+        SELECT id, name, img, location, capacity, 'MEETING_ROOM' AS bookType
         FROM MEETING_ROOM
 
         UNION ALL
 
-        SELECT id, name, img, NULL, NVL(NULL, 0), 'FURNITURE' AS targetType
+        SELECT FURNITURE.*, NULL, NVL(NULL, 0), 'FURNITURE' AS bookType
         FROM FURNITURE
     </select>
 

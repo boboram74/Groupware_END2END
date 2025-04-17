@@ -28,7 +28,6 @@
   </style>
 </head>
 
-<body>
 <div class="loginContainer">
   <div class="loginLeft">
     <div class="loginLogo">

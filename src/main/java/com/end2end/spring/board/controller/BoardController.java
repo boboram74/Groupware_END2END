@@ -41,14 +41,11 @@ public class BoardController {
 
         return "/board/list";
     }
+    
     @RequestMapping("/delete")
     public String deleteById(@RequestParam("id") int id, HttpSession session){
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         BoardDTO board = boardService.selectById(id);
-
-        if(board == null){
-            return  "redirect:/board/list?error=notfound";
-        }
         if(!employee.getId().equals(board.getEmployeeId())){
             return "redirect:/board/list?error=unauthorized";
         }

@@ -48,4 +48,14 @@ public class BoardDAO {
         return mybatis.update("board.update",dto);
     }
 
+    public List<BoardDTO> selectRecent() {
+        return mybatis.selectList("board.selectRecent");}
+
+    public void increaseViewCount(int id) {
+        mybatis.update("board.increaseViewCount", id);
+    }
+
+    public int selectNextVal() {
+        return mybatis.selectOne("board.selectNextVal");
+    }
 }

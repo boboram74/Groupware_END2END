@@ -26,9 +26,10 @@
 
 <div class="mainContainer">
     <div class="mainBody">
+        <form action="/contact/search" method="post" id="searchForm">
         <div class="search">
             <div>
-                <select id="searchOption">
+                <select name="searchOption" id="searchOption">
                     <option>이름</option>
                     <option>연락처</option>
                 </select>
@@ -40,6 +41,8 @@
                 <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
             </div>
         </div>
+        </form>
+
         <div class="bord-table-container">
             <table class="board-table">
                 <thead>
@@ -66,6 +69,22 @@
             </table>
         </div>
         <div class="pageNavi">
+            <c:if test="${pageNavi.hasPrev}">
+                <span class="material-icons paging" onclick="location.href='/contact?page=${pageNavi.start - 1}'">chevron_left</span>
+            </c:if>
+            <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
+                <c:choose>
+                    <c:when test="${item == pageNavi.page}">
+                        <span class="paging active" onClick="location.href='/contact?page=${item}'">${item}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="paging" onClick="location.href='/contact?page=${item}'">${item}</span>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:if test="${pageNavi.hasNext}">
+                <span class="material-icons paging" onclick="location.href='/contact?page=${pageNavi.end + 1}'">chevron_right</span>
+            </c:if>
         </div>
     </div>
 

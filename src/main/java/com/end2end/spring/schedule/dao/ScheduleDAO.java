@@ -16,11 +16,27 @@ public class ScheduleDAO {
         return mybatis.selectList("schedule.selectByEmployeeId", employeeId);
     }
 
-    public List<ScheduleDTO> selectByEmployeeIdAndCalendarId(CalendarDTO dto) {
-        return mybatis.selectList("schedule.selectByEmployeeIdAndCalendarId", dto);
+    public List<ScheduleDTO> selectByCalendarId(int calendarId) {
+        return mybatis.selectList("schedule.selectByCalendarId", calendarId);
+    }
+
+    public ScheduleDTO selectById(int id) {
+        return mybatis.selectOne("schedule.selectById", id);
     }
 
     public void insert(ScheduleDTO dto) {
         mybatis.insert("schedule.insert", dto);
+    }
+
+    public void update(ScheduleDTO dto) {
+        mybatis.update("schedule.update", dto);
+    }
+
+    public void deleteById(int id) {
+        mybatis.delete("schedule.deleteById", id);
+    }
+
+    public int countTodayScheduleByEmployeeId(String employeeId) {
+        return mybatis.selectOne("schedule.countTodayScheduleByEmployeeId", employeeId);
     }
 }

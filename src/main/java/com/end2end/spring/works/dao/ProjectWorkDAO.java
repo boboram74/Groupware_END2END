@@ -40,9 +40,20 @@ public class ProjectWorkDAO {
     }
 
     public void update(ProjectWorkDTO dto) {
+        
+        System.out.println("dao도착");
         mybatis.update("works.update", dto);
     }
+public List<ProjectWorkDTO> searchBynameAndTitle(String keyword,int projectId, String searchOption) {
 
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("projectId", projectId);
+    params.put("searchOption", searchOption);
+        params.put("keyword",keyword);
+
+    return mybatis.selectList("searchWorkList",params);
+}
 
     public void updateState(String state, int workItemId) {
 

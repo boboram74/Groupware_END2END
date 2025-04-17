@@ -10,6 +10,7 @@ import com.end2end.spring.schedule.dao.CalendarUserDAO;
 import com.end2end.spring.schedule.dao.ScheduleDAO;
 import com.end2end.spring.schedule.dto.CalendarDTO;
 import com.end2end.spring.schedule.dto.CalendarUserDTO;
+import com.end2end.spring.schedule.dto.ScheduleDTO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
@@ -110,7 +111,26 @@ public class AlarmService {
 
         for (CalendarUserDTO calendarUserDTO : calendarUserDTOList) {
             String employeeId = calendarUserDTO.getEmployeeId();
-            send(AlarmDTO.of(AlarmType.SCHEDULE_CREATE, employeeId, "/schedule/list"), employeeId);
+            send(AlarmDTO.of(AlarmType.SCHEDULE_CREATE, employeeId, "/calendar/list"), employeeId);
+        }
+    }
+
+    public void sendScheduleUpdateAlarm(int calendarId) {
+        List<CalendarUserDTO> calendarUserDTOList = calendarUserDAO.selectByCalendarId(calendarId);
+
+        for (CalendarUserDTO calendarUserDTO : calendarUserDTOList) {
+            String employeeId = calendarUserDTO.getEmployeeId();
+            send(AlarmDTO.of(AlarmType.SCHEDULE_UPDATE, employeeId, "/calendar/list"), employeeId);
+        }
+    }
+
+    public void sendScheduleDeleteAlarm(int id) {
+        ScheduleDTO scheduleDTO = scheduleDAO.selectById(id);
+        List<CalendarUserDTO> calendarUserDTOList = calendarUserDAO.selectByCalendarId(scheduleDTO.getCalendarId());
+
+        for (CalendarUserDTO calendarUserDTO : calendarUserDTOList) {
+            String employeeId = calendarUserDTO.getEmployeeId();
+            send(AlarmDTO.of(AlarmType.SCHEDULE_DELETE, employeeId, "/calendar/list"), employeeId);
         }
     }
 

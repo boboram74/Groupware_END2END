@@ -86,7 +86,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectSelectDTO> selectAllProject() {
         List<ProjectDTO> projectDTO = projectDao.selectAll();
-        // SELECT * FROM PROJECT;
+        // SELECT * FROM PROJECT 인데 마감일자 5일 안인지 체크하는 조건도 걸어둠
 
         List<ProjectSelectDTO> result = new ArrayList<>();
         for (ProjectDTO dto : projectDTO) {
@@ -107,6 +107,7 @@ public class ProjectServiceImpl implements ProjectService {
                     .status(dto.getStatus())
                     .regDate(dto.getRegDate())
                     .deadLine(dto.getDeadLine())
+                    .nearDeadline(dto.getNearDeadline())
                     .profileImg(profileImgList)
                     .build();
             result.add(projectSelectDTO);

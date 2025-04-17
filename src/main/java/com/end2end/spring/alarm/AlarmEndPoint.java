@@ -4,6 +4,7 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.messenger.config.WebSocketConfig;
 import com.google.common.collect.EvictingQueue;
 import com.google.gson.Gson;
+import org.apache.ibatis.jdbc.Null;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
@@ -36,7 +37,8 @@ public class AlarmEndPoint {
             EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employee.getId());
 
             clients.get(employee.getId()).getBasicRemote().sendText(g.toJson(queue));
-        } catch (Exception e) {
+        } catch (NullPointerException ignored) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -52,9 +54,7 @@ public class AlarmEndPoint {
 
         try {
             clients.get(employeeId).getBasicRemote().sendText(g.toJson(queue));
-        } catch (NullPointerException ignore) {
-            // 현재 로그인한 사원에게는 딱히 안줘도 됨
-            ignore.printStackTrace();
+        } catch (NullPointerException ignore) { // 현재 로그인 안한 사원에게는 딱히 안줘도 됨
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

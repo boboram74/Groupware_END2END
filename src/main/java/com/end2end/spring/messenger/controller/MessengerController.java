@@ -38,13 +38,12 @@ public class MessengerController {
     @ResponseBody
     @RequestMapping("/chatListAll")
     public ResponseEntity<Map<String, Object>> chatListAll(HttpSession session) {
-        EmployeeDTO dto = (EmployeeDTO) session.getAttribute("employee");
-        List<ChatRoomListDTO> result = new ArrayList<>(messengerService.selectRoomListAll(dto.getId()));
-        Map<String, Object> data = new HashMap<>();
-        data.put("chatListAll", result);
-        return ResponseEntity.ok(data);
+            EmployeeDTO dto = (EmployeeDTO) session.getAttribute("employee");
+            List<ChatRoomListDTO> result = new ArrayList<>(messengerService.selectRoomListAll(dto.getId()));
+            Map<String, Object> data = new HashMap<>();
+            data.put("chatListAll", result);
+            return ResponseEntity.ok(data);
     }
-
     @RequestMapping("/list/{chattingRoomId}")
     public void list(@PathVariable String chattingRoomId, Model model) {
         // TODO: 채팅방의 모든 채팅 내역을 출력

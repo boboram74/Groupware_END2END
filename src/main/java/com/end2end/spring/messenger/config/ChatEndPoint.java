@@ -17,9 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatEndPoint {
 
     private MessengerService messengerService = SpringProvider.Spring.getBean(MessengerService.class);
-
     // 사용자 ID로 세션 매핑 (동시성 처리)
     private static final Map<String, Session> clientSessions = new ConcurrentHashMap<>();
+    // 사번 : {방번호: 안읽은 갯수}
+    private static final Map<String, Map<Integer, Integer>> alarmCounts = new ConcurrentHashMap<>();
 
     private HttpSession hSession = null;
     private EmployeeDTO dto = null;
@@ -32,6 +33,9 @@ public class ChatEndPoint {
         if (dto != null) {
 //            System.out.println("유저 추가됨 : " + dto.getName() + " session ID : " + session.getId());
             clientSessions.put(dto.getId(), session); // 사용자 ID로 세션 매핑
+            alarmCounts.putIfAbsent(dto.getId(), new ConcurrentHashMap<>());
+//            System.out.println("알람 Map 만들어짐" + alarmCounts.get(dto.getId()));
+            sendTotalAlarmCount(dto.getId());
         }
     }
 
@@ -40,12 +44,15 @@ public class ChatEndPoint {
         JsonObject parsedMessage = gson.fromJson(message, JsonObject.class);
 //        System.out.println(parsedMessage);
         String type = parsedMessage.has("type") ? parsedMessage.get("type").getAsString() : "";
+
         int roomId = 0;
         if (parsedMessage.has("roomId") && !parsedMessage.get("roomId").getAsString().trim().isEmpty()) {
             roomId = Integer.parseInt(parsedMessage.get("roomId").getAsString());
         }
+
         switch (type) {
             case "roomEnter": //방 입장
+                resetRoomAlarm(dto.getId(), roomId); // 해당 방 알람 초기화
                 loadAndSendChatHistory(parsedMessage, roomId);
                 break;
             case "newRoom": //새로운 방
@@ -58,7 +65,7 @@ public class ChatEndPoint {
                 processAndBroadcastMessage(parsedMessage, roomId);
                 break;
             default:
-                System.out.println("기본출력");
+//                System.out.println("기본출력");
         }
     }
 
@@ -70,7 +77,7 @@ public class ChatEndPoint {
         long num1 = Long.parseLong(id1);
         long num2 = Long.parseLong(id2);
         String roomName = (num1 < num2) ? id1 + "|" + id2 : id2 + "|" + id1;
-        int selectByName = messengerService.selectByName(roomName); // <- SELECT COUNT(*) FROM MEESAGE_ROOM WHERE NAME = #{}
+        int selectByName = messengerService.selectByName(roomName);
         if (selectByName == 0) {
             Map<String, Object> result = messengerService.createChatRoom(employeeId, dto.getId(), roomName);
             String newRoomId = result.get("messageRoomId").toString();
@@ -149,14 +156,19 @@ public class ChatEndPoint {
     // message
     public void processAndBroadcastMessage(JsonObject parsedMessage, int roomId) throws IOException {
         MessageUserDTO dto = messengerService.selectUserByEmployeeIdAndRoomId(parsedMessage.get("employeeId").getAsString(), roomId);
+        String senderEmployeeId = (dto != null) ? dto.getEmployeeId() : "unknown";
+        String senderName = (dto != null) ? dto.getName() : "unknown";
+
         MessageDTO messageDTO = MessageDTO.builder()
-                .employeeId(dto.getEmployeeId())
+                .employeeId(senderEmployeeId)
                 .messagerRoomId(roomId)
-                .messagerRoomuserId(dto.getId())
+                .messagerRoomuserId((dto != null) ? dto.getId() : 0)
                 .content(parsedMessage.get("message").getAsString())
-                .name(dto.getName())
+                .name(senderName)
                 .build();
         messengerService.insertMessage(messageDTO);
+
+        incrementAlarmCount(roomId, senderEmployeeId);
 
         List<MessageUserListDTO> dtos = messengerService.selectRoomById(roomId);
         for (MessageUserListDTO dto2 : dtos) {
@@ -168,9 +180,56 @@ public class ChatEndPoint {
         }
     }
 
+    private void incrementAlarmCount(int roomId, String senderEmployeeId) {
+        List<MessageUserListDTO> roomUsers = messengerService.selectRoomById(roomId);
+        for (MessageUserListDTO user : roomUsers) {
+            String employeeId = user.getEmployeeId();
+            if (!employeeId.equals(senderEmployeeId)) {
+                Map<Integer, Integer> userAlarms = alarmCounts.getOrDefault(employeeId, new ConcurrentHashMap<>());
+                int currentCount = userAlarms.getOrDefault(roomId, 0);
+                userAlarms.put(roomId, currentCount + 1);
+                alarmCounts.put(employeeId, userAlarms);
+                sendTotalAlarmCount(employeeId);
+            }
+        }
+    }
+
+    private void resetRoomAlarm(String employeeId, int roomId) {
+        Map<Integer, Integer> userAlarms = alarmCounts.get(employeeId);
+        if (userAlarms != null) {
+            userAlarms.put(roomId, 0);
+            sendTotalAlarmCount(employeeId);
+        }
+    }
+
+    private void sendTotalAlarmCount(String employeeId) {
+        Map<Integer, Integer> userAlarms = alarmCounts.getOrDefault(employeeId, new HashMap<>());
+        int totalAlarms = userAlarms.values().stream().mapToInt(Integer::intValue).sum();
+
+        JsonObject response = new JsonObject();
+        response.addProperty("type", "alarmCount");
+        response.addProperty("count", totalAlarms);
+
+        JsonObject roomAlarms = new JsonObject();
+        userAlarms.forEach((roomId, count) -> {
+            roomAlarms.addProperty(roomId.toString(), count);
+        });
+        response.add("roomAlarms", roomAlarms);
+
+
+        Session session = clientSessions.get(employeeId);
+        if (session != null && session.isOpen()) {
+            try {
+                session.getBasicRemote().sendText(gson.toJson(response));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @OnClose
     public void onClose(Session session) {
-        System.out.println("유저 나감 " + session.getId());
+        //System.out.println("유저 나감 " + session.getId());
         clientSessions.values().removeIf(s -> s.equals(session));
     }
 
@@ -179,5 +238,4 @@ public class ChatEndPoint {
         clientSessions.values().removeIf(s -> s.equals(session));
         throwable.printStackTrace();
     }
-
 }

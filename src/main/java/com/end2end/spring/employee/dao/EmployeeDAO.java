@@ -129,4 +129,26 @@ public class EmployeeDAO {
     public List<Map<String, Object>> getAttendanceStats() {
         return mybatis.selectList("employee.attendanceStats");
     }
+
+    public List<EmployeeDTO> selectFromTo(int start, int end) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("start", start);
+        param.put("end", end);
+
+        return mybatis.selectList("employee.selectFromTo", param);
+    }
+
+    public List<EmployeeDTO> searchContactList(String searchOption, String keyword) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("searchOption", searchOption);
+        param.put("keyword", keyword);
+        return mybatis.selectList("employee.searchContactList", param);
+    }
+
+    public List<EmployeeDTO> searchEmployeeList(String searchOption, String keyword) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("searchOption", searchOption);
+        param.put("keyword", keyword);
+        return mybatis.selectList("employee.searchEmployeeList", param);
+    }
 }

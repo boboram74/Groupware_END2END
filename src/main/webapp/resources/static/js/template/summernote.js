@@ -7,8 +7,7 @@ const summernoteSetting = (target) => {
         codeviewFilter: true,
         codeviewIframeFilter: true,
         placeholder : '내용을 입력하십시오',
-        height : target.height() - toolbarHeight,
-        minHeight : target.height() - toolbarHeight,
+        height : 500,
         lang : 'ko-KR',
         toolbar : [
             [ 'fontname', [ 'fontname' ] ],
@@ -104,7 +103,8 @@ function uploadImage(file, editor) {
         contentType : false,
         processData : false,
         beforeSend: function(xhr) {
-            xhr.setRequestHeader("Accept-Charset", "UTF-8");
+            // Accept-Charset 대신 Accept 헤더 사용
+            xhr.setRequestHeader("Accept", "text/plain;charset=UTF-8");
         },
         error : function(request, status, error) {
             console.log("code: " + request.status)
@@ -112,15 +112,7 @@ function uploadImage(file, editor) {
             console.log("error: " + error);
         }
     }).done(function(data) {
-        // 경로에서 파일명만 추출하여 디코딩
-        const path = data.split('/');
-        const fileName = decodeURIComponent(path.pop());
-        path.push(fileName);
-
-        console.log(fileName);
-        const decodedPath = path.join('/');
-
-        $(editor).summernote('insertImage', decodedPath);
+        $(editor).summernote('insertImage', data);
     });
 }
 

@@ -45,6 +45,19 @@
             TRUNC(endDate) BETWEEN #{startDate} AND #{endDate})
     </select>
 
+    <select id="countTodayScheduleByEmployeeId" resultType="Integer">
+        SELECT COUNT(*)
+        FROM SCHEDULE
+        JOIN CALENDAR
+            ON SCHEDULE.CALENDARID = CALENDAR.ID
+        JOIN CALENDAR_USER
+            ON CALENDAR.ID = CALENDAR_USER.CALENDARID
+        WHERE
+            EMPLOYEEID = #{employeeId}
+        AND
+            TRUNC(SYSDATE) BETWEEN TRUNC(STARTDATE) AND TRUNC(ENDDATE)
+    </select>
+
     <insert id="insert">
         INSERT INTO SCHEDULE(id, calendarId, title, content, startDate, endDate)
         VALUES (SCHEDULE_ID_SEQ.nextval, ${calendarId}, #{title}, #{content}, #{startDate}, #{endDate})

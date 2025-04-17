@@ -31,12 +31,12 @@
 
     <insert id="insert" parameterType="com.end2end.spring.board.dto.BoardDTO">
         insert into board (id, boardCtId, employeeId, title, content)
-        values (board_id_seq.nextval, #{boardCtId,jdbcType=INTEGER}, #{employeeId}, #{title}, #{content})
-
-        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
-            SELECT BOARD_ID_SEQ.currval FROM DUAL
-        </selectKey>
+        values (${id}, #{boardCtId,jdbcType=INTEGER}, #{employeeId}, #{title}, #{content})
     </insert>
+
+    <select id="selectNextVal" resultType="int">
+        SELECT BOARD_ID_SEQ.nextval FROM DUAL
+    </select>
 
     <update id="update" parameterType="com.end2end.spring.board.dto.BoardDTO">
         UPDATE board

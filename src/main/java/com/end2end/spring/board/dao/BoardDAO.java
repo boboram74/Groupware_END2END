@@ -54,4 +54,8 @@ public class BoardDAO {
     public void increaseViewCount(int id) {
         mybatis.update("board.increaseViewCount", id);
     }
+
+    public int selectNextVal() {
+        return mybatis.selectOne("board.selectNextVal");
+    }
 }

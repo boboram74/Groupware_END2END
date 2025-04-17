@@ -35,17 +35,19 @@ public class PageNaviUtil {
     }
 
     public PageNavi generate() {
-        return new PageNavi(getStartNavi(), getEndNavi(), !isFirst(), !isEnd());
+        return new PageNavi(page, getStartNavi(), getEndNavi(), !isFirst(), !isEnd());
     }
 
     @Data
     public static class PageNavi {
+        private int page;
         private int start;
         private int end;
         private boolean hasPrev;
         private boolean hasNext;
 
-        private PageNavi(int start, int end, boolean hasPrev, boolean hasNext) {
+        private PageNavi(int page, int start, int end, boolean hasPrev, boolean hasNext) {
+            this.page = page;
             this.start = start;
             this.end = end;
             this.hasPrev = hasPrev;

@@ -136,9 +136,7 @@
     <tr>
         <th>첨부파일</th>
         <td colspan="3">
-            <div class="fileUpload">
-                    <input type="file" name="file">
-            </div>
+            <jsp:include page="/WEB-INF/views/template/fileInput.jsp"/>
         </td>
     </tr>
     <tr>

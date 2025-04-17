@@ -4,10 +4,15 @@ import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.schedule.dao.ScheduleDAO;
 import com.end2end.spring.schedule.dto.ScheduleDTO;
 import com.end2end.spring.schedule.service.ScheduleService;
+import com.end2end.spring.util.EventDTO;
+import com.end2end.spring.util.HolidayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -15,12 +20,24 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired AlarmService alarmService;
 
     @Override
-    public List<ScheduleDTO> selectByEmployeeId(String employeeId) {
-        return List.of();
+    public List<EventDTO> selectByEmployeeId(String employeeId, LocalDate startDate, LocalDate endDate) throws IOException {
+        List<ScheduleDTO> scheduleDTOList = scheduleDAO.selectByEmployeeId(employeeId);
+
+        List<EventDTO> eventList = scheduleDTOList.stream()
+                .map(scheduleDTO ->
+                        EventDTO.convertFromSchedule(scheduleDTO, startDate, endDate))
+                .collect(Collectors.toList());
+
+        List<EventDTO> holidayList = HolidayUtil.getPeriodHolidayList(startDate, endDate).stream()
+                .map(EventDTO::convertFromHoliday)
+                .collect(Collectors.toList());
+        eventList.addAll(holidayList);
+
+        return eventList;
     }
 
     @Override
-    public List<ScheduleDTO> selectByEmployeeIdAndCalenderId(String employeeId, int calenderId) {
+    public List<EventDTO> selectByCalenderId(int calenderId) {
         return List.of();
     }
 
@@ -31,7 +48,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public ScheduleDTO selectById(int id) {
-        return null;
+        return scheduleDAO.selectById(id);
     }
 
     @Override
@@ -42,11 +59,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void update(ScheduleDTO dto) {
-
+        scheduleDAO.update(dto);
+        alarmService.sendScheduleUpdateAlarm(dto.getCalendarId());
     }
 
     @Override
     public void deleteById(int id) {
-
+        alarmService.sendScheduleDeleteAlarm(id);
+        scheduleDAO.deleteById(id);
     }
 }

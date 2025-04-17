@@ -61,8 +61,8 @@ public class MainController {
 		return "main/mypage";
 	}
 
-	@RequestMapping("/login/history/{page}")
-	public String toLoginHistory(HttpSession session, Model model, @PathVariable int page) {
+	@RequestMapping("/login/history")
+	public String toLoginHistory(HttpSession session, Model model, int page) {
 		EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
 
 		int totalLength = loginHistoryService.selectByEmployeeId(employee.getId()).size();
@@ -78,15 +78,21 @@ public class MainController {
 	}
 
 	@RequestMapping("/contact")
-	public String selectContactList(Model model) {
-		List<EmployeeDTO> contactList = employeeService.selectContactList();
-		model.addAttribute("contactList", contactList);
+	public String selectContactList(Model model, int page) {
+		List<EmployeeDTO> contactList = employeeService.selectAll();
+
+		PageNaviUtil.PageNavi pageNavi = new PageNaviUtil(page, contactList.size()).generate();
+		List<EmployeeDTO> employeeDTOList = employeeService.selectAll(page);
+
+		model.addAttribute("contactList", employeeDTOList);
+		model.addAttribute("pageNavi", pageNavi);
+
 		return "main/contact";
 	}
 
 	@RequestMapping("/contact/search")
-	public String searchContactList(Model model, String contact, String name) {
-		List<EmployeeDTO> contactList = employeeService.searchContactList();
+	public String searchContactList(Model model, String searchOption, String keyword) {
+		List<EmployeeDTO> contactList = employeeService.searchContactList(searchOption, keyword);
 		model.addAttribute("contactList", contactList);
 		return "main/contact";
 	}

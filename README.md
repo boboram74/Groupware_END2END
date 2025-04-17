@@ -2,7 +2,7 @@
 
 # [Spring Boot] GROUPWARE Project
 
-[![readme.md](https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white)]() [![release](https://img.shields.io/badge/release-v2.0.0-yellow?style=flat&logo=google-chrome&logoColor=white)]()  
+[![readme.md](https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white)]() [![release](https://img.shields.io/badge/release-v3.5.2-yellow?style=flat&logo=google-chrome&logoColor=white)]()  
 [![프로젝트 기간](https://img.shields.io/badge/프로젝트_기간-2025.03.27~2025.04.18-green?style=flat)]()
 
 ---
@@ -74,6 +74,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 ## 🛠️ ERD
 
 ![ERD](https://github.com/user-attachments/assets/ea32ae49-2aa5-4a7f-8a2e-817cec7832cd)
+
 [ERDCloud 링크](https://www.erdcloud.com/d/T4ZMac44Pooucd7WL)
 
 ---

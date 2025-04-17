@@ -865,7 +865,7 @@
 
                             const itemHtml = `
                          <div class="work-item" draggable="true"
-                          data-work-id="`+work.id+`"
+                          data-work-id="`+ work.id+`"
                             data-employee-id="`+work.employeeId+`"
                          onclick="openWorkModal(`+work.id+`, `+work.employeeId+`)">
 

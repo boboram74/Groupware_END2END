@@ -43,26 +43,26 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 ## ⚙ 기술 스택
 
 ### Back-end
-![SpringBoot](https://github.com/yewon-Noh/readme-template/blob/main/skills/SpringBoot.png?raw=true)
-![Java](https://github.com/yewon-Noh/readme-template/blob/main/skills/Java.png?raw=true)
-![MyBatis](https://github.com/yewon-Noh/readme-template/blob/main/skills/MyBatis.png?raw=true)
-![Oracle](https://github.com/yewon-Noh/readme-template/blob/main/skills/Oracle.png?raw=true)
+![SpringBoot](your-image-url)
+![Java](your-image-url)
+![MyBatis](your-image-url)
+![Oracle](your-image-url)
 
 ### Front-end
-![HTML/CSS](https://github.com/yewon-Noh/readme-template/blob/main/skills/HTMLCSS.png?raw=true)
-![JavaScript](https://github.com/yewon-Noh/readme-template/blob/main/skills/JavaScript.png?raw=true)
-![jQuery](https://github.com/yewon-Noh/readme-template/blob/main/skills/jQuery.png?raw=true)
-![JSP](https://github.com/yewon-Noh/readme-template/blob/main/skills/JSP.png?raw=true)
+![HTML/CSS](your-image-url)
+![JavaScript](your-image-url)
+![jQuery](your-image-url)
+![JSP](your-image-url)
 
 ### Infra
-![GoogleCloud](https://github.com/yewon-Noh/readme-template/blob/main/skills/GoogleCloud.png?raw=true)
-![Postfix](https://github.com/yewon-Noh/readme-template/blob/main/skills/Postfix.png?raw=true)
+![GoogleCloud](your-image-url)
+![Postfix](your-image-url)
 
 ### Tools
-![IntelliJ](https://github.com/yewon-Noh/readme-template/blob/main/skills/IntelliJ.png?raw=true)
-![Github](https://github.com/yewon-Noh/readme-template/blob/main/skills/Github.png?raw=true)
-![Git](https://github.com/yewon-Noh/readme-template/blob/main/skills/Git.png?raw=true)
-![Notion](https://github.com/yewon-Noh/readme-template/blob/main/skills/Notion.png?raw=true)
+![IntelliJ](your-image-url)
+![Github](your-image-url)
+![Git](your-image-url)
+![Notion](your-image-url)
 
 ---
 

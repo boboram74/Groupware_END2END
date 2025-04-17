@@ -9,11 +9,13 @@ import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.service.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -34,9 +36,11 @@ public class ApprovalController {
     private VacationService vacationService;
 
     @RequestMapping("/list")
-    public String toList(HttpSession session, Model model) {
+    public String toList(HttpServletRequest request,HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
+        String scpage = request.getParameter("cpage");
+        int cpage = (scpage == null) ? 1 : Integer.parseInt(scpage);
 
         String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
         boolean team = "경영팀".equals(departmentName);
@@ -54,7 +58,7 @@ public class ApprovalController {
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("formList", formList);
         model.addAttribute("team", team);
-
+        model.addAttribute("cpage", cpage);
         return "approval/approval-test";
     }
 
@@ -327,7 +331,70 @@ public class ApprovalController {
 
         return "approval/approval-test";
     }
+    @PostMapping("/tempSave")
+    @ResponseBody
+    public ResponseEntity<TempApprovalDTO> saveTempApproval(@ModelAttribute TempApprovalDTO dto) {
+        approvalService.saveTempApproval(dto);
+        System.out.println(dto);
+        return ResponseEntity.ok(dto);
+    }
 
+    @PostMapping("/insertImportant")
+    @ResponseBody
+    public void insertImportant(@RequestBody CheckImportantDTO dto, HttpSession session) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+
+        if (employee != null) {
+            dto.setEmployeeId(employee.getId());
+        } else {
+            throw new RuntimeException("세션에 employee 정보가 없습니다.");
+        }
+
+        System.out.println("Received data: " + dto);
+
+        approvalService.insertImportant(dto);
+    }
+    @GetMapping("/important")
+    public String listImportant(HttpSession session, Model model) {
+        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+        String employeeId = employeeDTO.getId();
+
+        String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+        boolean team = "경영팀".equals(departmentName);
+
+        List<Map<String, Object>> importantList = approvalService.importantlist(employeeId);
+        System.out.println("importantList: " + importantList);
+
+        List<Map<String, Object>> waitingList = new ArrayList<>();
+        List<Map<String, Object>> goingList = new ArrayList<>();
+        List<Map<String, Object>> completedList = new ArrayList<>();
+        List<Map<String, Object>> rejectList = new ArrayList<>();
+
+        for (Map<String, Object> approval : importantList) {
+            String state = (String) approval.get("STATE");
+            System.out.println("STATE: " + state);
+
+            if ("WAITING".equals(state)) {
+                waitingList.add(approval);
+            } else if ("ONGOING".equals(state)) {
+                goingList.add(approval);
+            } else if ("SUBMIT".equals(state)) {
+                completedList.add(approval);
+            } else if ("REJECT".equals(state)) {
+                rejectList.add(approval);
+            }
+        }
+
+        List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
+        model.addAttribute("waitingList", waitingList);
+        model.addAttribute("goingList", goingList);
+        model.addAttribute("completedList", completedList);
+        model.addAttribute("rejectList", rejectList);
+        model.addAttribute("team", team);
+        model.addAttribute("formList", formList);
+
+        return "/approval/important";
+    }
 
 
 }

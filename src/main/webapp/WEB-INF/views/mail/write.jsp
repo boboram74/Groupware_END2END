@@ -449,11 +449,11 @@
                 <span class="detail-menu-disc">받은 메일함</span>
                 <span class="detail-badge"><span id="receiveMailBox"></span></span>
             </li>
-            <li class="detail-menu-item" onclick="location.href='/mail/temp'">
-                <span class="material-icons">drafts</span>
-                <span>임시 저장함</span>
-                <span class="detail-badge">2</span>
-            </li>
+<%--            <li class="detail-menu-item" onclick="location.href='/mail/temp'">--%>
+<%--                <span class="material-icons">drafts</span>--%>
+<%--                <span>임시 저장함</span>--%>
+<%--                <span class="detail-badge">2</span>--%>
+<%--            </li>--%>
             <li class="detail-menu-item" onClick="location.href='/mail/trash'">
                 <span class="material-icons">delete</span>
                 <span>휴지통</span>
@@ -521,7 +521,6 @@ ${content}
                     </c:choose>
                     </div>
                     <div class="button-container">
-                        <button class="secondary" type="button">임시 저장</button>
                         <button class="primary" type="button" id="sendMail">보내기</button>
                     </div>
                 </div>

@@ -115,6 +115,35 @@ $(function () {
 
         });
     });
+    $("#searchBtn").on("click", function() {
+        const option = $("#searchOption").val().trim();
+        const keyword = $("#input").val().trim().toLowerCase();
+
+        if (!keyword) {
+            $("#mailBody tr").show();
+            return;
+        }
+
+        $("#mailBody tr").each(function() {
+            const $row = $(this);
+            let isMatch = false;
+            if (option === "받는 사람") {
+                const receiver = $row.find("td:eq(1)").text().toLowerCase();
+                isMatch = receiver.includes(keyword);
+            }
+            else if (option === "제목") {
+                const title = $row.find("td:eq(3)").text().toLowerCase();
+                isMatch = title.includes(keyword);
+            }
+            $row.toggle(isMatch);
+        });
+    });
+
+    $("#input").on("keypress", function(e) {
+        if (e.which === 13) {
+            $("#searchBtn").click();
+        }
+    });
 });
 
 $("#readBtn").on("click", function () {

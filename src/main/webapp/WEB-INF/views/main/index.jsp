@@ -230,8 +230,9 @@
         }
 
         function parseDate(dates) {
-            const parsedMonth = (dates.getMonth() + 1) < 10 ? '0' + (dates.getMonth() + 1) : (dates.getMonth() + 1);
-            return dates.getFullYear() + '-' + parsedMonth + '-' + dates.getDate();
+            const month = String(dates.getMonth() + 1).padStart(2, '0');
+            const date = String(dates.getDate()).padStart(2, '0');
+            return dates.getFullYear() + '-' + month + '-' + date;
         }
 
         function loadEvents(startDate, endDate, successCallback) {
@@ -259,13 +260,14 @@
                                     type: 'schedule'
                                 }
                             }
-                        }
-                        return {
-                            title: event.title,
-                            start: new Date(event.startDate),
-                            allDay: event.allDay,
-                            display: 'block',
-                            color: event.backgroundColor,
+                        } else if (event.eventName === 'holiday') {
+                            return {
+                                title: event.title,
+                                start: new Date(event.startDate),
+                                allDay: true,
+                                display: 'background',
+                                className: 'holiday',
+                            }
                         }
                     })
                     console.log(events);

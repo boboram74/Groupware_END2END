@@ -35,11 +35,11 @@
                 <span class="detail-menu-disc">받은 메일함</span>
                 <span class="detail-badge"><span id="receiveMailBox"></span></span>
             </li>
-            <li class="detail-menu-item" onclick="location.href='/mail/temp'">
-                <span class="material-icons">drafts</span>
-                <span>임시 저장함</span>
-                <span class="detail-badge">2</span>
-            </li>
+<%--            <li class="detail-menu-item" onclick="location.href='/mail/temp'">--%>
+<%--                <span class="material-icons">drafts</span>--%>
+<%--                <span>임시 저장함</span>--%>
+<%--                <span class="detail-badge">2</span>--%>
+<%--            </li>--%>
             <li class="detail-menu-item" onClick="location.href='/mail/trash'">
                 <span class="material-icons">delete</span>
                 <span>휴지통</span>
@@ -55,13 +55,12 @@
         <div class="search">
             <div>
                 <select id="searchOption">
-                    <option>보낸 사람 </option>
-                    <option>내용 </option>
                     <option>제목 </option>
+                    <option>받는 사람 </option>
                 </select>
             </div>
             <div class="searchInput">
-                <input id="input" type="text" name="keyword" placeholder="중요메일함">
+                <input id="input" type="text" name="keyword" placeholder="검색할 키워드 입력">
             </div>
             <div>
                 <button id="searchBtn"><span class="material-icons">search</span> 검색</button>

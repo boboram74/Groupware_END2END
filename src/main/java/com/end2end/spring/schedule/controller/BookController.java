@@ -24,7 +24,7 @@ public class BookController {
     @ResponseBody
     @RequestMapping("/detail/{id}")
     public BookDTO detail(@PathVariable int id) {
-        return new BookDTO();
+        return BookDTO.builder().build();
     }
 
     @RequestMapping("/insert")

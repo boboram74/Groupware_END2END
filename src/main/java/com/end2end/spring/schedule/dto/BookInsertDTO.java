@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BookInsertDTO {
     private int id;
+    private int calendarId;
     private String employeeId;
     private int targetId;
     private String targetType;

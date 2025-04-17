@@ -60,9 +60,7 @@
             ON BOOK.meetingRoomId = MEETING_ROOM.ID
             JOIN
                 SCHEDULE
-            ON
-                SCHEDULE.bookId = BOOK.id
-            ON BOOK.meetingRoomId = MEETING_ROOM.id
+            ON SCHEDULE.bookId = BOOK.id
 
             UNION ALL
 
@@ -78,9 +76,60 @@
             JOIN
                 SCHEDULE
             ON
-                SCHEDULE.bookId = BOOK.id
-            ON BOOK.meetingRoomId = MEETING_ROOM.id) A
+                SCHEDULE.bookId = BOOK.id) A
         WHERE A.employeeId = #{employeeId}
+    </select>
+
+    <select id="selectById" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT *
+        FROM (
+            SELECT
+                BOOK.id AS id, BOOK.employeeId AS employeeId,
+                SCHEDULE.startDate AS startDate, SCHEDULE.endDate AS endDate, SCHEDULE.regDate AS regDate,
+                meetingRoomId AS targetId, 'MEETING_ROOM' AS targetType, MEETING_ROOM.NAME AS targetName
+            FROM
+                BOOK
+            JOIN
+                MEETING_ROOM
+            ON BOOK.meetingRoomId = MEETING_ROOM.ID
+            JOIN
+                SCHEDULE
+            ON SCHEDULE.bookId = BOOK.id
+
+            UNION ALL
+
+            SELECT
+                BOOK.id AS id, BOOK.employeeId AS employeeId,
+                SCHEDULE.startDate AS startDate, SCHEDULE.endDate AS endDate, SCHEDULE.regDate AS regDate,
+                furnitureId AS targetId, 'FURNITURE' AS targetType, FURNITURE.NAME AS targetName
+            FROM
+                BOOK
+            JOIN
+                FURNITURE
+            ON BOOK.furnitureId = FURNITURE.ID
+            JOIN
+                SCHEDULE
+            ON
+                SCHEDULE.bookId = BOOK.id) A
+        WHERE A.id = ${id}
+    </select>
+
+    <select id="countReserved" resultType="Integer">
+        SELECT COUNT(*)
+        FROM SCHEDULE
+        JOIN BOOK
+        ON SCHEDULE.BOOKID = BOOK.ID
+        WHERE
+            SYSDATE BETWEEN STARTDATE AND ENDDATE
+        AND
+        <choose>
+            <when test="targetType.equals('MEETING_ROOM')">
+                meetingRoomId = ${targetId}
+            </when>
+            <otherwise>
+                furnitureId = ${targetId}
+            </otherwise>
+        </choose>
     </select>
 
     <insert id="insert">
@@ -98,6 +147,19 @@
             SELECT BOOK_ID_SEQ.currval FROM DUAL
         </selectKey>
     </insert>
+
+    <update id="update">
+        UPDATE BOOK SET
+        <choose>
+            <when test="targetType.equals('MEETING_ROOM')">
+                meetingRoomId = ${targetId}
+            </when>
+            <otherwise>
+                furnitureId = ${targetId}
+            </otherwise>
+        </choose>
+        WHERE id = ${id}
+    </update>
 
     <delete id="deleteById">
         DELETE FROM BOOK WHERE id = ${id}

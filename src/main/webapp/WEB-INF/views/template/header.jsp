@@ -61,7 +61,7 @@
         <span>Works</span>
       </div>
 
-      <div class="menu-item" onClick="location.href='/contact'">
+      <div class="menu-item" onClick="location.href='/contact?page=1'">
         <i class="material-icons">contacts</i>
         <span>주소록</span>
       </div>
@@ -136,7 +136,7 @@
         <ul class="full-menu-list">
           <li>
             <a href="/">
-              <i class="material-icons">list</i>
+              <i class="material-icons">home</i>
               <span>홈</span>
             </a>
           </li>
@@ -183,7 +183,7 @@
             </a>
           </li>
           <li>
-            <a href="/contact">
+            <a href="/contact?page=1">
               <i class="material-icons">contacts</i>
               <span>주소록</span>
             </a>
@@ -200,25 +200,9 @@
             <i class="material-icons">list</i>
             <span>메뉴</span>
           </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">dashboard</i>
-            <span>게시판</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">description</i>
-            <span>전자결재</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">mail</i>
-            <span>메일</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">schedule</i>
-            <span>근태관리</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">event_available</i>
-            <span>예약</span>
+          <a href="/" class="mobile-menu-item">
+            <i class="material-icons">home</i>
+            <span>홈</span>
           </a>
           <a href="#" class="mobile-menu-item mobile-chat-btn">
             <i class="material-icons">chat</i>
@@ -233,7 +217,7 @@
 
       <script>
         $(document).ready(function() {
-          const alarm = new WebSocket('ws://10.5.5.1/alarm');
+          const alarm = new WebSocket('ws://localhost/alarm');
 
           alarm.onopen = function() {
             console.log('알람 웹소켓 연결됨');
@@ -447,7 +431,7 @@
             } else if (id === 'logout') {
               window.location.href = '/employee/logout';
             } else if (id === 'login-history') {
-              window.location.href = '/login/history/1';
+              window.location.href = '/login/history?page=1';
             }
           });
 

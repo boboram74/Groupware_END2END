@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="schedule">
     <select id="selectByEmployeeId" resultType="com.end2end.spring.schedule.dto.ScheduleDTO">
-        SELECT SCHEDULE.*, CALENDAR.COLOR
+        SELECT SCHEDULE.*, CALENDAR.color AS color, CALENDAR.title AS calendarTitle
         FROM SCHEDULE
         JOIN CALENDAR
         ON SCHEDULE.CALENDARID = CALENDAR.ID
@@ -13,17 +13,20 @@
         WHERE employeeId = #{employeeId}
     </select>
 
-    <select id="selectByEmployeeIdAndCalenderId" resultType="com.end2end.spring.schedule.dto.ScheduleDTO">
-        SELECT SCHEDULE.*, CALENDAR.COLOR
+    <select id="selectByCalenderId" resultType="com.end2end.spring.schedule.dto.ScheduleDTO">
+        SELECT SCHEDULE.*, CALENDAR.color AS color, CALENDAR.title AS calendarTitle
         FROM SCHEDULE
         JOIN CALENDAR
         ON SCHEDULE.CALENDARID = CALENDAR.ID
-        JOIN CALENDAR_USER
-        ON CALENDAR.ID = CALENDAR_USER.CALENDARID
-        WHERE
-            employeeId = #{employeeId}
-        AND
-            CALENDAR.id = ${calendarId}
+        WHERE CALENDAR.id = ${calendarId}
+    </select>
+
+    <select id="selectById" resultType="com.end2end.spring.schedule.dto.ScheduleDTO">
+        SELECT SCHEDULE.*, CALENDAR.color AS color, CALENDAR.title AS calendarTitle
+        FROM SCHEDULE
+        JOIN CALENDAR
+        ON SCHEDULE.calendarId = CALENDAR.ID
+        WHERE SCHEDULE.id = ${id}
     </select>
 
     <select id="selectByEmployeeIdAndPrieod" resultType="com.end2end.spring.schedule.dto.ScheduleDTO">
@@ -48,7 +51,8 @@
     </insert>
 
     <update id="update">
-        UPDATE SCHEDULE SET #{title}, #{content}, #{startDate}, #{endDate} WHERE id = ${id}
+        UPDATE SCHEDULE SET title = #{title}, content = #{content}, startDate = #{startDate}, endDate = #{endDate}
+        WHERE id = ${id}
     </update>
 
     <delete id="deleteById">

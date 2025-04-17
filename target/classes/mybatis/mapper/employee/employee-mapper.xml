@@ -21,6 +21,21 @@
         ORDER BY e.name ASC
     </select>
 
+    <select id="selectFromTo" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT A.*
+        FROM (
+            SELECT
+                EMPLOYEE.*, DEPARTMENT.name AS departmentName, JOB.name AS jobName,
+                ROW_NUMBER() over (ORDER BY DEPARTMENTID DESC, JOBID, EMPLOYEE.NAME) AS RNUM
+            FROM EMPLOYEE
+            JOIN DEPARTMENT
+                ON EMPLOYEE.departmentId = DEPARTMENT.id
+            JOIN JOB
+                ON EMPLOYEE.jobId = JOB.id
+            WHERE resignDate IS NULL) A
+        WHERE A.RNUM BETWEEN ${start} AND ${end}
+    </select>
+
     <select id="selectAllDepartment" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
         SELECT * FROM DEPARTMENT
     </select>

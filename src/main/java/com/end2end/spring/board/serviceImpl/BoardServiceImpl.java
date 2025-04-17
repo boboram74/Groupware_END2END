@@ -7,9 +7,13 @@ import com.end2end.spring.board.dto.BoardDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
 import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
+import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,6 +27,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private BoardCategoryService boardCategoryService;
+
+    @Autowired private FileService fileService;
 
     @Override
     public List<BoardDTO> selectAll() {
@@ -50,13 +56,18 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDTO selectById(int id) {
-        // TODO: 해당 id의 게시글 조회
+        boardDAO.increaseViewCount(id);
         return boardDAO.selectById(id);
     }
 
     @Override
-    public void insert(BoardDTO dto) {
+    public void insert(MultipartFile[] files, BoardDTO dto) throws Exception {
          boardDAO.insert(dto);
+
+         FileDTO fileDTO = FileDTO.builder()
+                 .boardId(dto.getId())
+                 .build();
+         fileService.insert(files, fileDTO);
         // TODO: 게시글 입력
     }
 
@@ -85,5 +96,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardCategoryDTO selectCategoryById(int categoryId) {
         return  boardCategoryService.selectCategoryById(categoryId);
+    }
+
+    @Override
+    public List<BoardDTO> selectRecent() {
+        return boardDAO.selectRecent();
     }
 }

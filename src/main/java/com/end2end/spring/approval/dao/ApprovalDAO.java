@@ -108,4 +108,7 @@ public class ApprovalDAO {
     public List<Map<String, Object>> importantlist(String employeeId) {
         return mybatis.selectList("approval.importantlist", employeeId);
     }
+    public void removeImportant(CheckImportantDTO dto) {
+        mybatis.update("approval.removeImportant", dto);
+    }
 }

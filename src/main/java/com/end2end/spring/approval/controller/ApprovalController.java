@@ -350,8 +350,6 @@ public class ApprovalController {
             throw new RuntimeException("세션에 employee 정보가 없습니다.");
         }
 
-        System.out.println("Received data: " + dto);
-
         approvalService.insertImportant(dto);
     }
     @GetMapping("/important")
@@ -396,5 +394,24 @@ public class ApprovalController {
         return "/approval/important";
     }
 
-
+    @PostMapping("/removeImportant")
+    @ResponseBody
+    public String removeImportant(@RequestBody Map<String, String> requestData, HttpSession session) {
+        try {
+            String approvalId = requestData.get("approvalId");
+            EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+            String employeeId = employeeDTO.getId();
+            String leaderCheckYn = requestData.get("leaderCheckYn");
+            CheckImportantDTO dto = new CheckImportantDTO();
+            dto.setApprovalId(approvalId);
+            dto.setEmployeeId(employeeId);
+            dto.setLeaderCheckYn(leaderCheckYn);
+            System.out.println("취소"+dto);
+            approvalService.removeImportant(dto);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "failure";
+        }
+    }
 }

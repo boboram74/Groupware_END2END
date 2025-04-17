@@ -288,4 +288,11 @@ public class ApprovalServiceImpl implements ApprovalService {
     public List<Map<String, Object>> importantlist(String employeeId) {
         return approvalDAO.importantlist(employeeId);
     }
+
+    @Override
+    public void removeImportant(CheckImportantDTO dto){
+        if ("N".equals(dto.getLeaderCheckYn())) {
+         approvalDAO.removeImportant(dto);
+        }
+    }
 }

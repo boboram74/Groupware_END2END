@@ -126,15 +126,6 @@
 </div>
 <div class="mainContainer">
   <div class="mainBody">
-    <div class="search">
-      <div>
-        <select id="searchOption">
-          <option>보낸 사람 </option>
-          <option>내용 </option>
-          <option>제목 </option>
-        </select>
-      </div>
-    </div>
     <div class="button-container">
       <select class="apBtnNewDoc">
         <option>새 기안 쓰기</option>
@@ -142,7 +133,6 @@
           <option value="${form.id}">${form.name}</option>
         </c:forEach>
       </select>
-      <button class="secondary apBtnRefresh">상세 조회</button>
     </div>
     <div class="approval-list-wrapper">
       <div class="box surface-bright">
@@ -345,6 +335,7 @@
       }),
       success: function(response) {
         alert("중요 문서에서 취소되었습니다!");
+        location.reload();
       },
       error: function(xhr, status, error) {
         console.error('Error:', error);

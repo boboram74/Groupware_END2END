@@ -173,4 +173,9 @@
           AND i.leadercheckyn = 'Y'
         ORDER BY a.regdate DESC
     </select>
+
+    <update id="removeImportant" parameterType="com.end2end.spring.approval.dto.CheckImportantDTO">
+        update important_approval set leaderCheckYn = 'N'
+        WHERE approvalid = #{approvalId} AND employeeid = #{employeeId}
+    </update>
 </mapper>

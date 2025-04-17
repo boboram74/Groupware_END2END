@@ -36,7 +36,6 @@
         where id = #{esId}
     </update>
 
-    <!--  현재 로그인한 계정의 부서이메일 조회 -->
     <select id="selectDepartmentName" resultType="string">
         SELECT d.email
         FROM employee e
@@ -45,12 +44,10 @@
         WHERE e.id = #{employeeId}
     </select>
 
-    <!--  해당 부서의 메일 목록 1차 조회 -->
     <select id="selectDepartment" >
         SELECT * FROM email_address_user WHERE EMAILADDRESS = #{departName}
     </select>
 
-    <!--  해당 부서의 메일 목록 통합 조회 -->
     <select id="selectDepartEmail" resultType="com.end2end.spring.mail.dto.MailListDTO">
         SELECT e.id, e.SENDEREMAILADDRESS, e.TITLE, e.REGDATE
         FROM email e

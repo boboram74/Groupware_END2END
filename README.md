@@ -66,7 +66,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 ---
 
 ## 🏢 프로젝트 아키텍처
-![프로젝트 아키텍처](your-image-url)
+![프로젝트 아키텍처](https://github.com/user-attachments/assets/720468fb-3de7-4243-b616-fc55229958b7)
 
 ---
 

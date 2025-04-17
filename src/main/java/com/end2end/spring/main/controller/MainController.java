@@ -84,6 +84,13 @@ public class MainController {
 		return "main/contact";
 	}
 
+	@RequestMapping("/contact/search")
+	public String searchContactList(Model model, String contact, String name) {
+		List<EmployeeDTO> contactList = employeeService.searchContactList();
+		model.addAttribute("contactList", contactList);
+		return "main/contact";
+	}
+
 	@RequestMapping("/worktree")
 	public String toWorktree() {
 		// TODO: 조직도 페이지 출력

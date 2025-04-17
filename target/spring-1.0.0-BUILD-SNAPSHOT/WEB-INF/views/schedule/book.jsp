@@ -514,11 +514,17 @@
                     })
                 },
                 resourceLabelContent: function(arg) {
-                    return {
-                        html: "<div class=resource-title><div class='profile-img'></div><span>" + arg.resource.extendedProps.name + "</span></div>"
-                    }
+                    const div = $('<div class="resource-title">');
+                    const profileImg = $('<div class="profile-img">')
+                        .attr('style', 'background-image: url(' + arg.resource.extendedProps.img + ')');
+                    const nameSpan = $('<span>').text(arg.resource.extendedProps.name);
+
+                    div.append(profileImg)
+                        .append(nameSpan);
+
+                    return { domNodes: [div[0]] }
                 },
-                initialView: 'resourceTimelineWeek',
+                initialView: 'resourceTimeline',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
@@ -529,10 +535,10 @@
                     const endDate = info.end;
                     loadEvents(startDate, endDate, successCallback);
                 },
-                slotDuration: '24:00:00',     // 24시간(하루) 단위로 표시
-                duration: { days: 7 },        // 7일 표시
-                slotMinTime: '00:00:00',      // 시작 시간
-                slotMaxTime: '24:00:00',      // 종료 시간
+                slotDuration: '00:30:00', // 30분 단위로 시간 표시
+                slotMinTime: '09:00:00', // 시작 시간
+                slotMaxTime: '18:00:00', // 종료 시간
+                allDaySlot: false, // 종일 슬롯 숨기기
 
                 // 날짜 헤더 포맷 설정
                 views: {

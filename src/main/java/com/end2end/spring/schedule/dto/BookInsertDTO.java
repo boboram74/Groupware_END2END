@@ -5,24 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BookDTO {
+public class BookInsertDTO {
     private int id;
+    private int calendarId;
     private String employeeId;
-
     private int targetId;
     private String targetType;
-    private String targetName;
-
-    private Timestamp startDate;
-    private Timestamp endDate;
-    private Timestamp regDate;
-
-    private int furnitureId;
-    private int meetingRoomId;
+    private String startDate;
+    private String endDate;
 }

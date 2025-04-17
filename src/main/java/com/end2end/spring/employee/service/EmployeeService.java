@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface EmployeeService {
-    EmployeeDTO selectById(String id);
     List<EmployeeDTO> selectAll();
     EmployeeDetailDTO selectDetailById(String id);
     EmployeeDTO login(LoginDTO dto);

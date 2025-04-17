@@ -70,7 +70,6 @@ public class EmployeeController {
     @RequestMapping("/logout")
     public String logout(HttpSession session, HttpServletRequest request) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-
         session.invalidate();
 
         LoginHistoryDTO loginHistoryDTO = LoginHistoryDTO.builder()
@@ -79,20 +78,17 @@ public class EmployeeController {
                 .accessIp(SecurityUtil.getClientIp(request))
                 .build();
         loginHistoryService.insert(loginHistoryDTO);
-
         return "redirect:/";
     }
 
     @RequestMapping("/toChangePwForm")
     public String toChangePwForm() {
-        // TODO: 패스워드 변경 팝업창으로 이동
         return "/main/changePw";
     }
 
     @PostMapping("/pwVali")
     @ResponseBody
     public boolean pwVali(@RequestBody String currentPw) {
-        // TODO: 기존 패스워드 확인
         Map<String, Object> parsedCurrentPw = new Gson().fromJson(currentPw, Map.class);
         return employeeService.pwVali(SecurityUtil.hashPassword((String) parsedCurrentPw.get("currentPw")));
     }
@@ -100,22 +96,11 @@ public class EmployeeController {
     @RequestMapping("/changePw")
     @ResponseBody
     public ResponseEntity<String> changePw(String newPw, HttpSession session) {
-        // TODO: 패스워드 변경
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String id = employee.getId();
         employeeService.changePw(SecurityUtil.hashPassword(newPw),id);
         session.invalidate();
         return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
-    }
-
-    @RequestMapping("/{id}")
-    public void selectEmployee(@PathVariable String id) {
-        // TODO: 해당 id 사원의 데이터를 출력
-    }
-
-    @RequestMapping("/detail/{id}")
-    public void selectDetailEmployee(@PathVariable String id) {
-        // TODO: 해당 id 사원의 상세 데이터를 출력
     }
 
     @ResponseBody

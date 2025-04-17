@@ -23,7 +23,6 @@
     <!-- 프로젝트 모아보기-->
 
 
-
     <select id="selectByprojectId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
 
         SELECT EMPLOYEE.* FROM
@@ -38,7 +37,7 @@
 
     <update id="updateStatusByProjectId">
 
-        UPDATE project SET status = 'FINISH' WHERE id = #{id}
+        UPDATE project SET status = 'finish' WHERE id = #{projectId}
 
     </update>
 <!-- 프젝 상태 변환쿼리   -->
@@ -100,7 +99,9 @@
         SELECT * FROM project
         WHERE id = #{id}
     </select>
-
+<update id="hideById">
+    UPDATE project set hideYn = #{hideYn} WHERE id = #{projectId}
+</update>
 
     <!--제일 최근 등록된 프로젝트 찾기 -->
     <select id="findLatestProject" resultType="com.end2end.spring.works.dto.ProjectDTO">

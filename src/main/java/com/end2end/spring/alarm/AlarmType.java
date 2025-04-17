@@ -26,7 +26,8 @@ public enum AlarmType {
     CALENDAR_DELETE("event_busy", "달력이 삭제되었습니다.", "danger"),
     SCHEDULE_CREATE("event", "새로운 일정이 생성되었습니다.", "success"),
     SCHEDULE_UPDATE("update", "일정이 업데이트 되었습니다.", "warning"),
-    SCHEDULE_DELETE("event_busy", "일정이 삭제되었습니다.", "danger")
+    SCHEDULE_DELETE("event_busy", "일정이 삭제되었습니다.", "danger"),
+    PROJECT_COMPLETE("task", "프로젝트의 모든 작업이 종료되었습니다.", "success")
     ;
 
     private final String icons;

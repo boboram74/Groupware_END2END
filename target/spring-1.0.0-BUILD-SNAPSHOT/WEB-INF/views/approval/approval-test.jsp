@@ -171,7 +171,7 @@
                 <span class="material-icons">person</span>
                 <span>나의 전자결재</span>
             </li>
-            <li class="detail-menu-item">
+            <li class="detail-menu-item" onclick="location.href='/approval/important'">
                 <span class="material-icons">star</span>
                 <span>중요 문서함</span>
                 <span class="detail-badge"><span>1</span></span>
@@ -242,7 +242,7 @@
                                 <c:otherwise>
                                     <c:forEach var="i" items="${waitingList}">
                                         <tr>
-                                            <td class="apColStar">★</td>
+                                            <td class="apColStar" onclick="saveImportant('${i.ID}')" style="cursor:pointer;">★</td>
                                             <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                             <td class="apColStatus">결재 대기중</td>
                                             <td class="apColWriter writer-info">
@@ -285,7 +285,7 @@
                             <c:otherwise>
                                 <c:forEach var="i" items="${goingList}">
                                     <tr>
-                                        <td class="apColStar">★</td>
+                                        <td class="apColStar" onclick="saveImportant('${i.ID}')" style="cursor:pointer;">★</td>
                                         <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">결재 진행중</td>
                                         <td class="apColWriter writer-info">
@@ -328,7 +328,7 @@
                             <c:otherwise>
                                 <c:forEach var="i" items="${completedList}">
                                     <tr>
-                                        <td class="apColStar">★</td>
+                                        <td class="apColStar" onclick="saveImportant('${i.ID}')" style="cursor:pointer;">★</td>
                                         <td class="apColTitle" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">결재 완료</td>
                                         <td class="apColWriter writer-info">
@@ -371,7 +371,7 @@
                             <c:otherwise>
                                 <c:forEach var="i" items="${rejectList}">
                                     <tr>
-                                        <td class="apColStar">★</td>
+                                        <td class="apColStar" onclick="saveImportant('${i.ID}')" style="cursor:pointer;">★</td>
                                         <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
                                         <td class="apColStatus">반려</td>
                                         <td class="apColWriter writer-info">
@@ -488,5 +488,29 @@
             window.open(url, "new", "width=1000,height=1000");
         }
     });
+
+    function saveImportant(approvalId) {
+        console.log("Approval ID in JavaScript: " + approvalId);
+
+        const employeeId = '${employeeId}';
+
+        $.ajax({
+            url: '/approval/insertImportant',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                approvalId: approvalId,
+                employeeId: employeeId,
+                leaderCheckYn: 'Y'
+            }),
+            success: function(response) {
+                alert("중요 문서로 저장되었습니다!");
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert("저장 중 오류가 발생했습니다.");
+            }
+        });
+    }
 </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

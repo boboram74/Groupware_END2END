@@ -73,6 +73,15 @@ public class AlarmService {
         }
     }
 
+    public void sendProjectCompleteAlarm(int projectId) {
+        List<EmployeeDTO> projectUserList = projectUserDAO.selectByprojectId(projectId);
+
+        for (EmployeeDTO employeeDTO : projectUserList) {
+            send(AlarmDTO.of(AlarmType.PROJECT_COMPLETE, employeeDTO.getId(), "/project/detail/" + projectId),
+                    employeeDTO.getId());
+        }
+    }
+
     public void sendProjectWorkStateChangeAlarm(int projectWorkId) {
         ProjectWorkDTO projectWorkDTO = projectWorkDAO.selectByworksId(projectWorkId);
 

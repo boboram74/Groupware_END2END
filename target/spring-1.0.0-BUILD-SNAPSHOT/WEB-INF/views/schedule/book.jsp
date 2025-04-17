@@ -487,8 +487,6 @@
                         <input type="hidden" name="endDate" class="form-input">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="primary" style="display: none;" id="schedule-update-complete-btn">수정완료</button>
-                        <button type="button" class="secondary" style="display: none;" id="schedule-delete-btn">삭제</button>
                         <button type="submit" class="primary" id="schedule-input-btn">저장</button>
                         <button type="button" class="secondary" id="schedule-write-close-btn">취소</button>
                     </div>
@@ -808,27 +806,6 @@
                 }
             })
         })
-
-        $('#schedule-update-complete-btn').on('click', function() {
-            const formData = new FormData($('#scheduleWriteForm')[0]);
-
-            $.ajax({
-                url: '/schedule/update',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    alert("수정되었습니다.");
-                    location.reload();
-                },
-                errors: function(xhr, status, error) {
-                    console.log(xhr.status);
-                    console.log(xhr.responseText);
-                    console.log(error);
-                }
-            });
-        })
     </script>
     <script>
         $(document).ready(function() {
@@ -987,28 +964,7 @@
                     location.href = '/calendar/delete/' + $('#calendarWriteForm input[name=id]').val();
                 }
             })
-
-            function insertSelectEmployees(target, empId, empName, empDept) {
-
-                if(selectedEmployees.has(empId)) {
-                    selectedEmployees.delete(empId);
-                    target.removeClass('selected');
-                } else {
-                    selectedEmployees.set(empId, {
-                        id: empId,
-                        name: empName,
-                        department: empDept
-                    });
-                    target.addClass('selected');
-                }
-
-                console.log(target);
-                console.log(selectedEmployees);
-
-                renderSelectedEmployees();
-            }
-
-
+            
             $(document).on('click', '.open-write-schedule', function() {
                 $('#scheduleWriteModal').fadeIn(300);
             });

@@ -29,8 +29,8 @@ public class HRController {
 
     @RequestMapping("/list")
     public String toList(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
 
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         if (employee == null ||
                 (!"ADMIN".equalsIgnoreCase(employee.getRole()) &&
                         !"인사팀".equals(employee.getDepartmentName()))) {
@@ -38,7 +38,6 @@ public class HRController {
             redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
             return "redirect:/";
         }
-
         List<EmployeeDTO> list = employeeService.selectAll();
         model.addAttribute("employeeList", list);
         model.addAttribute("isNoAuthExist", employeeService.isNoAuthExist());
@@ -47,9 +46,24 @@ public class HRController {
 
 
     @RequestMapping("/list/search")
-    public String toListSearch(Model model) {
-        // TODO: 해당 검색 결과를 list.jsp에 출력
+    public String searchEmployeeList(Model model,String searchOption, String keyword) {
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return "redirect:/hr/list";
+        }
+
+        List<EmployeeDTO> list = employeeService.searchEmployeeList(searchOption, keyword);
+        model.addAttribute("employeeList", list);
         return "hr/list";
+    }
+
+    @RequestMapping("/contact/search")
+    public String searchContactList(Model model, String searchOption, String keyword) {
+
+        List<EmployeeDTO> contactList = employeeService.searchContactList(searchOption, keyword);
+        model.addAttribute("contactList", contactList);
+
+        return "main/contact";
     }
 
     @RequestMapping("/chart")
@@ -68,7 +82,7 @@ public class HRController {
 
     @RequestMapping("/write")
     public String toWrite(Model model) {
-        // TODO: 직원 추가 페이지로 이동
+
         List<DepartmentDTO> departmentList = employeeService. selectAllDepartment();
         List<JobDTO> jobList = employeeService.selectAllJob();
 
@@ -107,7 +121,6 @@ public class HRController {
     @RequestMapping("/update")
     public String update(HttpSession session, EmployeeDetailDTO dto, MultipartFile file) {
         employeeService.update(dto,file);
-
         String employeeId = dto.getId();
         session.setAttribute("employee", employeeService.selectById(employeeId));
         return "redirect:/mypage/" + employeeId;

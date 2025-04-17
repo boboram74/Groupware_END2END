@@ -72,9 +72,9 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 ---
 
 ## 🛠️ ERD
-![ERD](your-image-url)
 
-[ERDCloud 링크](https://www.erdcloud.com/d/your-link-here)
+![ERD](https://github.com/user-attachments/assets/ea32ae49-2aa5-4a7f-8a2e-817cec7832cd)
+[ERDCloud 링크](https://www.erdcloud.com/d/T4ZMac44Pooucd7WL)
 
 ---
 

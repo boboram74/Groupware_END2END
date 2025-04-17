@@ -346,8 +346,6 @@ public class ApprovalController {
 
         if (employee != null) {
             dto.setEmployeeId(employee.getId());
-        } else {
-            throw new RuntimeException("세션에 employee 정보가 없습니다.");
         }
 
         approvalService.insertImportant(dto);

@@ -2,6 +2,9 @@ package com.end2end.spring.approval.dao;
 
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.approval.dto.ApprovalFormDTO;
+import com.end2end.spring.approval.dto.CheckImportantDTO;
+import com.end2end.spring.approval.dto.TempApprovalDTO;
+import com.end2end.spring.mail.dto.ImportYnDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -92,5 +95,20 @@ public class ApprovalDAO {
 
     public List<Map<String, Object>> allApprovals() {
         return mybatis.selectList("approval.allApprovals");
+    }
+
+    public void saveTempApproval(TempApprovalDTO dto) {
+        mybatis.insert("approval.saveTempApproval", dto);
+    }
+
+    public void insertImportant(CheckImportantDTO dto) {
+        mybatis.insert("approval.insertImportant", dto);
+    }
+
+    public List<Map<String, Object>> importantlist(String employeeId) {
+        return mybatis.selectList("approval.importantlist", employeeId);
+    }
+    public void removeImportant(CheckImportantDTO dto) {
+        mybatis.update("approval.removeImportant", dto);
     }
 }

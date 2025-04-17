@@ -47,9 +47,17 @@ public class HRController {
 
 
     @RequestMapping("/list/search")
-    public String toListSearch(Model model) {
+    public String searchEmployeeList(Model model,String searchOption, String keyword) {
         // TODO: 해당 검색 결과를 list.jsp에 출력
+        List<EmployeeDTO> list = employeeService.searchEmployeeList(searchOption, keyword);
+        model.addAttribute("employeeList", list);
         return "hr/list";
+    }
+    @RequestMapping("/contact/search")
+    public String searchContactList(Model model, String searchOption, String keyword) {
+        List<EmployeeDTO> contactList = employeeService.searchContactList(searchOption, keyword);
+        model.addAttribute("contactList", contactList);
+        return "main/contact";
     }
 
     @RequestMapping("/chart")

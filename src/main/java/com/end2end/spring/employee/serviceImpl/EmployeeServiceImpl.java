@@ -235,4 +235,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDTO> searchContactList(String searchOption, String keyword) {
         return employeeDAO.searchContactList(searchOption, keyword);
     }
+
+    @Override
+    public List<EmployeeDTO> searchEmployeeList(String searchOption, String keyword) {
+        return employeeDAO.searchEmployeeList(searchOption, keyword);
+    }
 }

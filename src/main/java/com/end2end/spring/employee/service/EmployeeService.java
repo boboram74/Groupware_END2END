@@ -33,4 +33,5 @@ public interface EmployeeService {
     List<Map<String, Object>> getAttendanceStats();
     List<EmployeeDTO> selectAll(int page);
     List<EmployeeDTO> searchContactList(String searchOption, String keyword);
+    List<EmployeeDTO> searchEmployeeList(String searchOption, String keyword);
 }

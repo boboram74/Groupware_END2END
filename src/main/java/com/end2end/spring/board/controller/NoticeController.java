@@ -21,14 +21,14 @@ public class NoticeController {
 
     @RequestMapping("/list")
     public String toList(Model model, int page) {
-        model.addAttribute("noticeList", noticeService.selectAll(page));
+        model.addAttribute("boardList", noticeService.selectAll(page));
         model.addAttribute("noticeCategoryList", noticeCategoryService.selectAll());
 
         PageNaviUtil.PageNavi pageNavi =
                 new PageNaviUtil(page, noticeService.selectAll().size()).generate();
         model.addAttribute("pageNavi", pageNavi);
 
-        return "notice/list";
+        return "board/notice";
     }
 
     @RequestMapping("/list/{categoryId}")
@@ -39,7 +39,7 @@ public class NoticeController {
                 new PageNaviUtil(page, noticeService.selectByCategoryId(categoryId).size()).generate();
         model.addAttribute("pageNavi", pageNavi);
 
-        return "notice/list";
+        return "board/notice";
     }
 
     @RequestMapping("/detaile/{id}")
@@ -51,7 +51,7 @@ public class NoticeController {
     @RequestMapping("/insert")
     public String insert(NoticeDTO dto) {
         noticeService.insert(dto);
-        return "redirect:/notice/list";
+        return "redirect:/board/detail/" + dto.getId();
     }
 
     @RequestMapping("/update")

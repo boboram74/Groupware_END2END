@@ -330,7 +330,7 @@ public class ApprovalController {
         searchParams.put("employeeId", employeeId);
 
         List<Map<String, Object>> approvalList = approvalService.searchDetail(searchParams);
-
+        List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
         List<Map<String, Object>> waitingList = new ArrayList<>();
         List<Map<String, Object>> goingList = new ArrayList<>();
         List<Map<String, Object>> completedList = new ArrayList<>();
@@ -353,6 +353,7 @@ public class ApprovalController {
         model.addAttribute("completedList", completedList);
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("searchParams", searchParams);
+        model.addAttribute("formList", formList);
 
         return "approval/approval-test";
     }

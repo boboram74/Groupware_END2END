@@ -108,16 +108,22 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
 
     @ResponseBody
     @RequestMapping("/updateState")
-    public String updateState(int workItemId, String state) {
+    public int updateState(int workItemId, String state,int projectId) {
 
         // 클라이언트로부터 데이터 수신
 //    int workItemId = (int) data.get("workItemId");
 //    String state = (String) data.get("state");
         System.out.println("아이디값" + workItemId);
         System.out.println("상태값" + state);
-        wserv.updateState(state, workItemId);
+        System.out.println("프젝아이디값" + projectId);
+        return  wserv.updateState(state, workItemId,projectId);
+    }
 
-        return "SUCCESS";
+    @ResponseBody
+    @RequestMapping("/finish")
+    public void finish(int projectId) {
+
+        wserv.endworks(projectId);
     }
 
     @ResponseBody

@@ -103,9 +103,25 @@
         </form>
     </div>
 </div>
+<script>
 
+    $('#workForm').submit(function(event) {
+
+        const title = $('#title').val().trim();
+        const deadLine = $('#deadLine').val();
+        const content = $('#contents').val().trim();
+
+        if (!title || !deadLine || !content) {
+            alert("모든 필드를 입력해 주세요! 마감일과 제목을 설정해야 합니다.");
+            event.preventDefault();  // 여기 작동안함
+        }
+    });
+</script>
 <script src="/js/template/summernote.js" type="text/javascript"></script>
 <script src="/js/main/write.js" type="text/javascript" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- jQuery 라이브러리 추가 -->
+
+
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />

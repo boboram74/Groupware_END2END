@@ -107,6 +107,6 @@ public class MainController {
 
 	@RequestMapping("/test")
 	public String toTest() {
-		return "main/error";
+		return "works/test";
 	}
 }

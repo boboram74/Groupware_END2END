@@ -23,21 +23,15 @@
           <span>부서 관리</span>
         </li>
       </a>
-      <a href="/admin/approval-templates">
-        <li class="detail-menu-item">
-          <span class="material-icons">all_inbox</span>
-          <span>결재 문서 양식 설정</span>
-        </li>
-      </a>
       <a href="/admin/mail-setting">
         <li class="detail-menu-item">
-          <span class="material-icons">send</span>
+          <span class="material-icons">inbox_customize</span>
           <span>공용 메일 설정</span>
         </li>
       </a>
       <a href="/admin/setting">
         <li class="detail-menu-item">
-          <span class="material-icons">send</span>
+          <span class="material-icons">setting</span>
           <span>관리자 설정</span>
         </li>
       </a>

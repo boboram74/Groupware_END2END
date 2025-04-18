@@ -1,5 +1,7 @@
 package com.end2end.spring.admin.controller;
 
+import com.end2end.spring.employee.dto.DepartmentDTO;
+import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.mail.dto.AliasMappingDTO;
 import com.end2end.spring.mail.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class AdminController {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @RequestMapping
     public String admin() {
@@ -69,6 +74,13 @@ public class AdminController {
     }
 
     @ResponseBody
+    @RequestMapping("/api/department-delete")
+    public ResponseEntity<Void> deleteDepartment(@RequestParam("id") int id) {
+        employeeService.deleteByDepartmentId(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @ResponseBody
     @RequestMapping("/api/alies-mapping")
     public ResponseEntity<List<AliasMappingDTO>> aliesMapping() {
         List<AliasMappingDTO> result = mailService.selectByAliesMail();
@@ -96,6 +108,37 @@ public class AdminController {
         mailService.updateEmailSignature(body);
         return ResponseEntity.ok(Collections.singletonMap("status","OK"));
     }
+
+    @RequestMapping("/api/departmentList")
+    public ResponseEntity<List<DepartmentDTO>> departmentList() {
+        List<DepartmentDTO> result = employeeService.selectByDepartmentList();
+        return ResponseEntity.ok().body(result);
+    }
+
+    @RequestMapping("/updateDepartment")
+    public String updateDepartment(
+            @RequestParam("deptId")      List<Integer>   ids,
+            @RequestParam("deptName")    List<String> names,
+            @RequestParam("deptEmail")   List<String> emails) {
+        if (names.size() != emails.size() || ids.size() != names.size()) {
+            throw new IllegalArgumentException("요청 파라미터 개수가 일치하지 않습니다.");
+        }
+
+        List<DepartmentDTO> dtos = new ArrayList<>();
+        for (int i = 0; i < names.size(); i++) {
+            String name  = names.get(i).trim();
+            String email = emails.get(i).trim();
+            if (name.isEmpty()) continue;
+            DepartmentDTO dto = new DepartmentDTO();
+            dto.setId    ( ids.get(i));
+            dto.setName  ( name );
+            dto.setEmail ( email );
+            dtos.add(dto);
+        }
+        employeeService.saveAll(dtos);
+        return "redirect:/admin/department-setting";
+    }
+
 
     //관리자 설정
     @RequestMapping("/setting")

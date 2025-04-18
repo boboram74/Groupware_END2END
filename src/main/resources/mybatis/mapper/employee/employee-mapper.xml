@@ -370,4 +370,28 @@
         SELECT loginId FROM EMPLOYEE_DETAIL WHERE ID = #{value}
     </select>
 
+    <select id="selectByDepartmentList" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
+        select * from department
+    </select>
+
+    <insert id="insertDepartment">
+        INSERT INTO department (ID, NAME, EMAIL) VALUES
+        (DEPARTMENT_ID_SEQ.NEXTVAL,
+        #{name},
+        #{email} )
+    </insert>
+
+    <select id="existsById" resultType="int">
+        SELECT COUNT(*) FROM department WHERE id = #{id}
+    </select>
+
+    <update id="updateDepartment" parameterType="map">
+        update department set name = #{name}, email = #{email} where id = #{id}
+    </update>
+
+    <delete id="deleteByDepartmentId">
+        DELETE FROM department
+        WHERE id = #{value}
+    </delete>
+
 </mapper>

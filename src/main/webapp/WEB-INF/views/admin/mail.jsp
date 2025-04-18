@@ -23,21 +23,16 @@
                     <span>부서 관리</span>
                 </li>
             </a>
-            <a href="/admin/approval-templates">
-                <li class="detail-menu-item">
-                    <span class="material-icons">all_inbox</span>
-                    <span>결재 문서 양식 설정</span>
-                </li>
-            </a>
+
             <a href="/admin/mail-setting">
                 <li class="detail-menu-item">
-                    <span class="material-icons">send</span>
+                    <span class="material-icons">mail</span>
                     <span>공용 메일 설정</span>
                 </li>
             </a>
             <a href="/admin/setting">
                 <li class="detail-menu-item">
-                    <span class="material-icons">send</span>
+                    <span class="material-icons">manage_accounts</span>
                     <span>관리자 설정</span>
                 </li>
             </a>
@@ -51,15 +46,7 @@
 <div class="mainContainer">
     <div class="mainBody">
         <div class="box">
-            <div class="box-title">메일서버 용량</div>
-            <div class="box-content">
-                <div class="server-capacity">
-          <span class="usage-bar">
-            <span class="used"></span>
-          </span>
-                    <p></p>
-                </div>
-            </div>
+            <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744934825076&to=1744956425076&panelId=7"width="100%" height="100%" frameborder="0"></iframe>
         </div>
         <div class="box">
             <div class="box-title">메일 주소 설정</div>
@@ -156,7 +143,7 @@
             const alias = $row.find('input[name="aliases"]').val().trim();
             const recipients = $row.find('input[name="recipients"]').val().trim();
             if (!alias) return;
-            if (!confirm(alias + ' 별칭을 정말 삭제하시겠습니까?')) return;
+            if (!confirm(alias + ' 주의 : 별칭을 정말 삭제하시겠습니까? 해당 이메일을 사용하는 유저에게는 더이상 수신이 되지 않습니다.')) return;
             $.ajax({
                 url: '/admin/api/alies-delete',
                 method: 'POST',
@@ -175,6 +162,7 @@
             method: 'GET',
             dataType: 'json'
         }).done(function (resp) {
+            console.log(resp);
             const totalGb = parseInt(resp.size, 10);
             const pct = parseInt(resp.usePercent, 10);
             const usedGb = Math.round(totalGb * pct / 100);

@@ -41,6 +41,6 @@ public interface MailService {
 
     void updateAliasMappings(List<AliasMappingDTO> mappings);
     void deleteAliasMapping(String alias, List<String> recipients);
-
     String loadEmailSignature();
+    int updateEmailSignature(Map<String, String> body);
 }

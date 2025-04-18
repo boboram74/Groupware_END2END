@@ -99,6 +99,7 @@
         SELECT * FROM project
         WHERE id = #{id}
     </select>
+
 <update id="hideById">
     UPDATE project set hideYn = #{hideYn} WHERE id = #{projectId}
 </update>

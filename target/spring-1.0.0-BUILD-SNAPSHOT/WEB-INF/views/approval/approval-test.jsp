@@ -174,13 +174,13 @@
             <li class="detail-menu-item" onclick="location.href='/approval/important'">
                 <span class="material-icons">star</span>
                 <span>중요 문서함</span>
-                <span class="detail-badge"><span>1</span></span>
+                <span class="detail-badge"><span>${importantSize != null ? importantSize : 0}</span></span>
             </li>
             <c:if test="${team}">
             <li class="detail-menu-item" onclick="location.href='/approval/all'">
                 <span class="material-icons">description</span>
                 <span class="detail-menu-disc">모든 전자 결재함</span>
-                <span class="detail-badge"><span>1</span></span>
+                <span class="detail-badge"><span>${totalSize != null ? totalSize : 0}</span></span>
             </li>
             </c:if>
         </ul>
@@ -498,6 +498,7 @@
             }),
             success: function(response) {
                 alert("중요 문서로 저장되었습니다!");
+                location.reload();
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);

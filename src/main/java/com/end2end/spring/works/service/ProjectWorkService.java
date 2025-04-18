@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProjectWorkService {
     List<ProjectWorkDTO> selectAll(int id);
-
+    List<ProjectWorkDTO> selectAll();
     void insert(MultipartFile[] files, ProjectWorkDTO dto) throws Exception;
 
     ProjectWorkDTO update(ProjectWorkDTO dto) throws Exception;

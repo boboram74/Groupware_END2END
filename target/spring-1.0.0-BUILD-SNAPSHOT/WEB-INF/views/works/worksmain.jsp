@@ -540,8 +540,8 @@
     <div class="tableBox">
         <table class="table">
             <thead>
-            <tr id="changeRow-${list.id}"
-                class="${list.hideYn == 'Y'
+            <tr
+                    class="${list.hideYn == 'Y'
             ? (isTeamLeader ? 'hidden-project leader' : 'hidden-project staff')
             : ''}">
 
@@ -550,7 +550,7 @@
                 <th>프로젝트 기간</th>
                 <th>참여 인원</th>
                 <th>상태</th>
-                <c:if test="${!isTeamLeader}">
+                <c:if test="${isTeamLeader}">
                     <th>수정</th>
 
                     <th>숨김</th>
@@ -594,12 +594,12 @@
             ${list.status}
     </span>
                     </td>
-                    <c:if test="${!isTeamLeader}">
+                    <c:if test="${isTeamLeader}">
                         <td>
                             <button class="updateProjectBtn" onclick="openUpdateModal(${list.id})">수정</button>
                         </td>
                     </c:if>
-                    <c:if test="${!isTeamLeader}">
+                    <c:if test="${isTeamLeader}">
                         <td>
                             <c:if test="${list.status == 'finish'}">
                                 <div class="form-check form-switch">
@@ -611,7 +611,10 @@
                                     <input class="form-check-input hideSwitch"
                                            type="checkbox"
                                            id="hideSwitch-23"
-                                           data-project-id="23">
+                                           data-is-team-leader="${isTeamLeader}"
+                                           status="${list.status}"
+                                           hideYn="${list.hideYn}"
+                                           data-project-id="${list.id}">
 
                                     <label class="form-check-label" for="hideSwitch-${list.id}"></label>
                                 </div>
@@ -634,7 +637,7 @@
     <div class="modal-dialog">
 
         <div class="modal-content">
-            <c:if test="${employee.role!='TEAM_LEADER'}">
+            <c:if test="${employee.role='TEAM_LEADER'}">
                 <div class="modal-header">
                     <h5 class="modal-title">프로젝트 생성</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -830,12 +833,12 @@
     const departmentName = '${employee.departmentName}';
 
     function handleProjectClick(projectId) {
-        // if (departmentName !== '개발부서') {
-        //     alert('개발부서만 입장이 가능합니다.');
-        //     return;
-        // } else {
-        window.location.href = '/project/detail/' + projectId;
-        // }
+        if (departmentName !== '연구팀') {
+            alert('연구팀만 입장이 가능합니다.');
+            return;
+        } else {
+            window.location.href = '/project/detail/' + projectId;
+        }
     }
 
     function openProjectModal() {
@@ -980,7 +983,8 @@
     }
 
     $(document).ready(function () {
-        $('.hideSwitch').on('change', function () {
+
+            $('.hideSwitch').on('change', function () {
             const target = $(this);
             const projectId = target.data('project-id');
             const isChecked = target.prop('checked');
@@ -988,64 +992,81 @@
             console.log(row);
             console.log(isChecked);
             console.log(target);
+            const isTeamLeader = '${employee.role == "TEAM_LEADER"}';
+
+            if (isChecked) {
+            if (isTeamLeader === true || isTeamLeader === "true") {
+            row.css('opacity', '0.5').addClass("hidden-project");
+        } else {
+            row.hide();
+        }
+        } else {
+            row.removeClass("hidden-project").css("opacity", "1").show();
+        }
             $.ajax({
-                url: "/project/hide",
-                method: "POST",
-                data: {
-                    projectId: projectId,
-                    hideYn: isChecked ? 'Y' : 'N'
-                },
-                success: function () {
-                    if (isChecked) {
-                        if (isTeamLeader()) {
-                            row.removeClass("staff").addClass("leader hidden-project");
-                        } else {
-                            row.removeClass("leader").addClass("staff hidden-project");
-                        }
-                    } else {
-                        row.removeClass("hidden-project staff leader").css("opacity", "1").show();
-                    }
-                },
-                error: function () {
-                    alert("숨김 상태 변경 실패");
-                }
-            });
-        });
-    });
+            url: "/project/hide",
+            method: "POST",
+            data: {
+            projectId: projectId,
+            hideYn: isChecked ? 'true' : 'false'
+        },
+            success: function () {
+                alert("숨김처리되었습니다");
+        },
+            error: function () {
+            alert("숨김 상태 변경 실패");
+            // 실패 시 UI 복원
+            if (isChecked) {
+            row.css("opacity", "1").show();
+            target.prop('checked', false); // 체크 해제
+        } else {
+            if (isTeamLeader === true || isTeamLeader === "true") {
+            row.css('opacity', '0.5');
+            target.prop('checked', true); // 다시 체크
+        } else {
+            row.hide();
+            target.prop('checked', true); // 다시 체크
+        }
+        }
+        }
+        })
+        })
+            ;
+            })
 
-    function confirmSelectedMembers() {
-        $("#selectedMembers").html($("#selectedMembersList").html());
-        document.activeElement.blur();
-        $("#memberSearchModal").modal('hide');
-    }
+            function confirmSelectedMembers() {
+            $("#selectedMembers").html($("#selectedMembersList").html());
+            document.activeElement.blur();
+            $("#memberSearchModal").modal('hide');
+        }
 
-    function createProject(e) {
-        $('#projectForm').submit();
-    }
+            function createProject(e) {
+            $('#projectForm').submit();
+        }
 
-    function closeupdateModal() {
-        $('#updateModal').modal('hide');
-    }
+            function closeupdateModal() {
+            $('#updateModal').modal('hide');
+        }
 
-    function updateConfirmSelectedMembers() {
-        $("#updateMembers").html($("#updateSelectedMembersList").html());
-        document.activeElement.blur();
-        $("#updateMemberSearchModal").modal('hide');
+            function updateConfirmSelectedMembers() {
+            $("#updateMembers").html($("#updateSelectedMembersList").html());
+            document.activeElement.blur();
+            $("#updateMemberSearchModal").modal('hide');
 
-        function getSelectedMembers() {
+            function getSelectedMembers() {
             let updateSelectedMembers = [];
             $('#updateSelectedMembers .updateSelectedUser').each(function () {
-                const id = $(this).attr('data-id');
-                if (id) {
-                    updateSelectedMembers.push(id[1]);
-                }
-            });
+            const id = $(this).attr('data-id');
+            if (id) {
+            updateSelectedMembers.push(id[1]);
+        }
+        });
             return updateSelectedMembers;
         }
-    }
+        }
 
-    function addProjectToTable(response) {
-        const tableHtml = `
+            function addProjectToTable(response) {
+            const tableHtml = `
         <tr onClick="location.href='/works/work/${response.id}'">
             <td>${response.name}</td>
             <td>${response.regDate}</td>
@@ -1056,8 +1077,8 @@
             <button class="deleteProjectBtn" onClick="deleteProject(${response.id})">삭제</button>
         </tr>
     `;
-        $('.table tbody').append(tableHtml);
-    }
+            $('.table tbody').append(tableHtml);
+        }
 
 </script>
 

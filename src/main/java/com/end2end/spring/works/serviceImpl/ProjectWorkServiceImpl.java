@@ -30,7 +30,10 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
         return dao.selectAll(id)  ;
     }
 
-
+    @Override
+    public List<ProjectWorkDTO> selectAll() {
+        return dao.selectAll()  ;
+    }
     @Override
     public void insert(MultipartFile[] files, ProjectWorkDTO dto) throws Exception {
        //게시물 등록

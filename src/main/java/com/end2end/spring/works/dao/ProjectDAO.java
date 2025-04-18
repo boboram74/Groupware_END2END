@@ -64,10 +64,11 @@ public void endworks(int projectId){
  }
 
 
-    public int hideById(int projectId,String hideYn) {
+    public int hideById(int projectId,String convertedHideYn) {
         Map<String, Object> params = new HashMap<>();
         params.put("projectId", projectId);
-        params.put("hideYn", hideYn);
+        params.put("hideYn",  convertedHideYn);
+        System.out.println("dao"+params);
     return mybatis.update("project.hideById",params);
     }
 }

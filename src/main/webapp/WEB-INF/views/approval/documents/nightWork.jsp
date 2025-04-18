@@ -150,22 +150,24 @@
         function calculateHours() {
             const startTime = $('#startTime').val();
             const endTime = $('#endTime').val();
+
             if (startTime && endTime) {
-                const start = new Date(`2000-01-01T${startTime}:00`);
-                const end = new Date(`2000-01-01T${endTime}:00`);
+                const start = new Date("2000-01-01T" + startTime + ":00");
+                let end = new Date("2000-01-01T" + endTime + ":00");
 
-                if (end > start) {
-                    const diff = (end - start) / (1000 * 60 * 60);
-                    $('#totalHours').text(`총 연장근무 시간: ${diff.toFixed(1)}시간`);
-
-                    $('<input>', {
-                        type: 'hidden',
-                        name: 'overtimeHours',
-                        value: diff.toFixed(1)
-                    }).insertAfter('#totalHours');
-                } else {
-                    $('#totalHours').text('종료 시간은 시작 시간보다 나중이어야 합니다.');
+                if (end <= start) {
+                    end.setDate(end.getDate() + 1);
                 }
+
+                const diff = (end - start) / (1000 * 60 * 60);
+                $('#totalHours').text("총 연장근무 시간: " + diff.toFixed(1) + "시간");
+
+                $('input[name="overtimeHours"]').remove();
+                $('<input>', {
+                    type: 'hidden',
+                    name: 'overtimeHours',
+                    value: diff.toFixed(1)
+                }).insertAfter('#totalHours');
             }
         }
 

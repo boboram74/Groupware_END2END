@@ -23,6 +23,11 @@ public class ProjectWorkDAO {
         return mybatis.selectList("works.selectAll", id);
     }
 
+    public List<ProjectWorkDTO> selectAll() {
+
+        return mybatis.selectList("works.selectAllProjectWork");
+    }
+
     public int getProjectId() {
         return mybatis.selectOne("works.getProjectId");
     }

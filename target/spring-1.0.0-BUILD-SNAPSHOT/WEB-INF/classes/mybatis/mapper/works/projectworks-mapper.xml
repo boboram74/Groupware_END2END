@@ -101,7 +101,7 @@
     </select>
 
 <update id="hideById">
-    UPDATE project set hideYn = #{hideYn} WHERE id = #{projectId}
+    UPDATE project set hideYn = #{hideYn} WHERE id = ${projectId}
 </update>
 
     <!--제일 최근 등록된 프로젝트 찾기 -->

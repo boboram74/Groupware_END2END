@@ -68,25 +68,53 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <a href="/board/list">
-                <li class="detail-menu-item">
-                    <span class="material-icons">notifications</span>
-                    <span> 게시판</span>
-                    <%--                <span class="detail-badge">5</span>--%>
-                </li>
-            </a>
-
-            <a href="/board/write">
-                <li class="detail-menu-item" id="create-category">
-                    <span class="material-icons">create</span>
-                    <span>게시물 작성하기</span>
-                </li>
-            </a>
+            <li class="detail-menu-item ${active eq 'notice' ? 'active' : ''}" onClick="location.href='/notice/list?page=1'">
+                <span class="material-icons">notifications</span>
+                <span>공지 게시판</span>
+                <span class="detail-badge">5</span>
+            </li>
+            <li class="detail-menu-item ${empty active ? 'active' : ''}" onClick="location.href='/board/list'">
+                <span class="material-icons">bookmark</span>
+                <span class="detail-menu-disc">전사 게시판</span>
+                <span class="detail-badge">12</span>
+            </li>
+            <li class="detail-menu-item">
+                <span class="material-icons">folder</span>
+                <span>자료실</span>
+            </li>
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>
         </button>
     </div>
+</div>
+<div id="category-modal" class="category-modal">
+    <form action="/board/category/insert" method="post">
+        <div class="modal-content">
+            <h3>게시판 만들기</h3>
+            <label for="categoryName">카테고리 이름:</label>
+            <input type="text" id="categoryName" name="name" required>
+
+            <label for="categorySelect">분류선택:</label>
+            <select name="category" id="categorySelect" required>
+                <option VALUE="">분류</option>
+                <option value="PUBLIC">공공게시판</option>
+                <option value="GOURP">그룹게시판</option>
+            </select>
+
+            <c:forEach var="b" items="${boardCategoryList}">
+                <li class="detail-menu-item">
+                    <span class="material-icons">bookmark</span>
+                    <span class="detail-menu-disc">${b.name}</span>
+                    <span class="detail-badge">12</span>
+                </li>
+            </c:forEach>
+            <div class="button-area">
+                <button type="submit" class="saveBtn">저장</button>
+                <button type="button" class="canBtn" id="cancel-btn">취소</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 

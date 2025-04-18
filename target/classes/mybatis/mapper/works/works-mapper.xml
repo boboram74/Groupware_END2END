@@ -43,6 +43,22 @@
     </select>
 
 
+    <update id="updateState" parameterType="java.util.Map">
+        update project_work set
+        state=#{state} where id =#{workId}
+    </update>
+    <select id="countFinishWorksByProjectId" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM project_work
+        WHERE projectId = #{projectId}
+        AND state = 'FINISH'
+    </select>
+
+    <select id="countTotalWorksByProjectId" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM project_work
+        WHERE projectId = #{projectId}
+    </select>
 
 
     <delete id="deleteById">
@@ -90,6 +106,11 @@
         AND state = 'FINISH'
     </select>
 
+
+
+
+
+
     <select id="countTotalWorks" resultType="int">
         SELECT COUNT(*)
         FROM PROJECT_WORK
@@ -133,7 +154,7 @@
         type = #{type, jdbcType=VARCHAR},
         priority = #{priority, jdbcType=VARCHAR},
         deadLine = #{deadLine,jdbcType=DATE},
-        state = #{state, jdbcType=VARCHAR},
+
         content = #{content, jdbcType=VARCHAR}
         WHERE id = ${id}
     </update>
@@ -141,10 +162,6 @@
 
 
 
-    <update id="updateState" parameterType="java.util.Map">
-        update project_work set
-        state=#{state} where id =#{workId}
-    </update>
 
 
     <select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">

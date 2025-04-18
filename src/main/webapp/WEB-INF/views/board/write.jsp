@@ -107,17 +107,7 @@
 <form action="/board/insert" method="post" enctype="multipart/form-data">
 <table>
     <tr>
-        <th>종류</th>
-        <td>
-            <div class="checkboxArea">
-                <select id="searchOption" name="boardCtId">
-                    <option value="1">공지 게시판</option>
-                    <option value="2">중요 게시판</option>
-                    <option value="3">전사 게시판</option>
-                    <option value="4">그룹 게시판</option>
-                </select>
-            </div>
-        </td>
+
 
         <th>등록일</th>
         <td>

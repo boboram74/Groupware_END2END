@@ -177,13 +177,6 @@
     }
 
 </style>
-<div class="content">
-
-</div>
-<div class="button-container">
-    <button class="extended-button">연장근무 신청</button>
-    <button class="vacation-button">휴가 신청</button>
-</div>
 <table>
     <tr>
         <td class="label">글유형</td>
@@ -194,41 +187,54 @@
     <tr>
         <td class="label">제목</td>
         <td class="contents">${board.title}</td>
-        <td class="meta">조회</td>
-        <td class="date">${board.viewCount}</td>
+        <c:if test="${empty active}">
+            <td class="meta">조회</td>
+            <td class="date">${board.viewCount}</td>
+        </c:if>
     </tr>
     <tr>
-        <td class="label">작성자</td>
-        <td colspan="3">${board.employeeName}</td>
+        <c:if test="${empty active}">
+            <td class="label">작성자</td>
+            <td colspan="3">${board.employeeName}</td>
+        </c:if>
     </tr>
     <tr>
         <td class="label">내용</td>
         <td colspan="3">${board.content}</td>
     </tr>
-    <c:forEach var="file" items="${fileList}">
-        <tr>
-            <td class="label">첨부파일</td>
-            <td colspan="3">
-                <c:forEach var="file" items="${fileList}">
-                    <a href="/file/download?path=${file.path}">${file.originFileName}</a>
-                </c:forEach>
-            </td>
-        </tr>
-    </c:forEach>
+    <tr>
+        <td class="label">첨부파일</td>
+        <td colspan="3">
+            <c:forEach var="file" items="${fileList}">
+                <a href="/file/download?path=${file.path}">${file.originFileName}</a>
+            </c:forEach>
+        </td>
+    </tr>
 </table>
 <div class="btnGroup">
     <a href="/board/list">
         <button class="backBtn">목록</button>
     </a>
-    <c:if test="${not empty employee and employee.id eq board.employeeId}">
-        <a href="/board/write/update?id=${board.id}">
-            <button type="button" class="editBtn">수정</button>
-        </a>
-        <form action="/board/delete" method="post">
-            <input type="hidden" name="id" value="${board.id}"/>
-            <button type="submit" class="deleteBtn">삭제</button>
-        </form>
-    </c:if>
+    <c:choose>
+        <c:when test="${empty active}">
+            <c:if test="${not empty employee and employee.id eq board.employeeId}">
+                <a href="/board/write/update?id=${board.id}">
+                    <button type="button" class="editBtn">수정</button>
+                </a>
+                <form action="/board/delete" method="post">
+                    <input type="hidden" name="id" value="${board.id}"/>
+                    <button type="submit" class="deleteBtn">삭제</button>
+                </form>
+            </c:if>
+        </c:when>
+        <c:otherwise>
+            <c:if test="${employee.role eq 'ADMIN'}">
+                <button type="button" class="editBtn primary">수정</button>
+                <button type="button" class="deleteBtn secondary"
+                        onclick="location.href='/notice/delete/${board.id}'">삭제</button>
+            </c:if>
+        </c:otherwise>
+    </c:choose>
 </div>
 
 <hr>

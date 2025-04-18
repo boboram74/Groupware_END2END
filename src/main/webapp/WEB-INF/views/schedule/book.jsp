@@ -354,7 +354,7 @@
     input[type="date"],
     select {
         padding: 8px 12px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--md-sys-color-outline-variant);
         border-radius: 4px;
         font-size: 14px;
     }
@@ -362,8 +362,7 @@
     input[type="date"]:focus,
     select:focus {
         outline: none;
-        border-color: #4dabf7;
-        box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+        border-color: var(--md-sys-color-primary);
     }
 </style>
 <div class="mainHeader surface-bright">
@@ -411,8 +410,8 @@
             </div>
         </div>
         <div class="button-container">
-            <button class="primary insert-schedule open-write-schedule">예약하기</button>
-            <button class="secondary open-list-calendar">예약 변경</button>
+            <button class="primary insert-schedule open-write-schedule">예약 하기</button>
+            <button class="secondary open-list-calendar">사용 완료</button>
         </div>
         <div class="calender-container">
             <div id="calendar"></div>
@@ -487,8 +486,6 @@
                         <input type="hidden" name="endDate" class="form-input">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="primary" style="display: none;" id="schedule-update-complete-btn">수정완료</button>
-                        <button type="button" class="secondary" style="display: none;" id="schedule-delete-btn">삭제</button>
                         <button type="submit" class="primary" id="schedule-input-btn">저장</button>
                         <button type="button" class="secondary" id="schedule-write-close-btn">취소</button>
                     </div>
@@ -536,37 +533,6 @@
                 <div class="modal-footer">
                     <button type="button" class="primary" id="editCalendarBtn">수정</button>
                     <button type="button" class="secondary close-modal">닫기</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 상세 정보 모달 -->
-    <div class="detail-modal" id="eventDetailModal" style="display: none;">
-        <div class="modal-container box surface-bright">
-            <div class="modal-header box-title">
-                <h2>일정 상세 정보</h2>
-            </div>
-            <div class="box-content">
-                <div class="form-group">
-                    <label>제목</label>
-                    <div id="detail-title"></div>
-                </div>
-                <div class="form-group">
-                    <label>시작일</label>
-                    <div id="detail-start"></div>
-                </div>
-                <div class="form-group">
-                    <label>종료일</label>
-                    <div id="detail-end"></div>
-                </div>
-                <div class="form-group">
-                    <label>설명</label>
-                    <div id="detail-content"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="primary" id="schedule-detail-update">수정</button>
-                    <button type="button" class="secondary" id="schedule-detail-close">닫기</button>
                 </div>
             </div>
         </div>
@@ -808,27 +774,6 @@
                 }
             })
         })
-
-        $('#schedule-update-complete-btn').on('click', function() {
-            const formData = new FormData($('#scheduleWriteForm')[0]);
-
-            $.ajax({
-                url: '/schedule/update',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    alert("수정되었습니다.");
-                    location.reload();
-                },
-                errors: function(xhr, status, error) {
-                    console.log(xhr.status);
-                    console.log(xhr.responseText);
-                    console.log(error);
-                }
-            });
-        })
     </script>
     <script>
         $(document).ready(function() {
@@ -866,15 +811,7 @@
     <script>
         $(document).ready(function() {
             $('#schedule-write-close-btn').on('click', function() {
-                $('#schedule input').val();
-                $('#schedule textarea').val('');
-
-                $('#schedule-update-complete-btn').hide();
-                $('#schedule-delete-btn').hide();
-                $('#schedule-input-btn').show();
-
                 $('#scheduleWriteModal').fadeOut(300);
-                $('#eventDetailModal').fadeIn(300);
             })
 
             // 모달 열기
@@ -888,126 +825,11 @@
                 $('#listCalendarModal').hide();
             });
 
-            // 캘린더 선택 시 정보 표시
-            $('#calendar-select').change(function() {
-                const selectedId = $(this).val();
-
-                if (!selectedId) {
-                    $('#calendar-info').hide();
-                    return;
-                }
-
-                $.ajax({
-                    url: '/calendar/detail/' + selectedId,
-                    method: 'GET',
-                    error : function(request, status, error) {
-                        console.log("code: " + request.status)
-                        console.log("message: " + request.responseText)
-                        console.log("error: " + error);
-                    },
-                    success: function(resp) {
-                        console.log(resp);
-                        const calendar = resp.calendar;
-                        const members = resp.members;
-
-                        console.log(calendar);
-                        console.log(members);
-
-                        $('#cal-name').val(calendar.title);
-                        $('#cal-color').css('background-color', calendar.color);
-
-                        // 공유 멤버 표시
-                        const $members = $('#cal-members');
-                        $members.empty();
-                        members.forEach(member => {
-                            $members.append($('<div class="selected-employee-tag">')
-                                .append($('<span>').text(member.name + " " + member.departmentName)));
-                        });
-
-                        $('#calendar-info').show();
-
-                        $('#editCalendarBtn').click(function() {
-                            openUpdateCalendarModal(resp);
-                        })
-                    }
-                });
-            });
-
-            function openUpdateCalendarModal(resp) {
-                $('#listCalendarModal').hide();
-
-                const calendar = resp.calendar;
-                const members = resp.members;
-
-                for (let i = 0; i < members.length; i++) {
-                    const member = members[i];
-                    insertSelectEmployees(
-                        $('#calendarWriteForm .calendar-employee-item[data-item' + member.id +']'),
-                        Number(member.id), member.name + " " + member.jobName, member.departmentName);
-                }
-
-                $('#calendarWriteForm input[name=id]').val(calendar.id);
-                $('#calendarWriteForm input[name=title]').val(calendar.title);
-                $('#calendarWriteForm input[value="' + calendar.color + '"]').attr('checked', true);
-
-                $('.calendar-write-form').show();
-                $('#calendar-update-complete-btn').show();
-                $('#calendar-delete-btn').show();
-                $('#calendar-insert-btn').hide();
-
-                $('.calendar-write-form .box-title>h2').html('캘린더 변경');
-            }
-
-            $('#calendar-update-complete-btn').on('click', function() {
-                const formData = new FormData($('#calendarWriteForm')[0]);
-
-                for (const [key, value] of formData.entries()) {
-                    console.log(key, value);
-                }
-
-                $.ajax({
-                    url: '/calendar/update',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    error : function(request, status, error) {
-                        console.log("code: " + request.status)
-                        console.log("message: " + request.responseText)
-                        console.log("error: " + error);
-                    }
-                }).done(function() {
-                    alert("수정되었습니다.")
-                    location.reload();
-                })
-            })
-
             $('#calendar-delete-btn').on('click', function() {
                 if(confirm("정말 삭제하시겠습니까?")) {
                     location.href = '/calendar/delete/' + $('#calendarWriteForm input[name=id]').val();
                 }
             })
-
-            function insertSelectEmployees(target, empId, empName, empDept) {
-
-                if(selectedEmployees.has(empId)) {
-                    selectedEmployees.delete(empId);
-                    target.removeClass('selected');
-                } else {
-                    selectedEmployees.set(empId, {
-                        id: empId,
-                        name: empName,
-                        department: empDept
-                    });
-                    target.addClass('selected');
-                }
-
-                console.log(target);
-                console.log(selectedEmployees);
-
-                renderSelectedEmployees();
-            }
-
 
             $(document).on('click', '.open-write-schedule', function() {
                 $('#scheduleWriteModal').fadeIn(300);

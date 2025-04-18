@@ -49,11 +49,6 @@
     }
 </style>
 <body>
-
-</body>
-</html>
-
-<body>
 <input type="hidden" name="approvalFormId" value="4" />
 <div class="container" type="overtime">
     <table>
@@ -137,7 +132,7 @@
             <input type="text" id="title" name="title" placeholder="제목을 입력하세요">
         </div>
         <div class="contentsBox">
-            <textarea id="contents" placeholder="연장근무 사유와 세부사항을 입력하세요"></textarea>
+            <textarea id="contents" name="contents" placeholder="연장근무 사유와 세부사항을 입력하세요"></textarea>
         </div>
         <div class="signInform" id="signButtons">
             <div class="fileUpload">
@@ -150,20 +145,11 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        const now = new Date();
-        const formattedDate = now.getFullYear() + '-' +
-            ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
-            ('0' + now.getDate()).slice(-2);
-
-        $('.date').text(formattedDate);
-        $('#workDate').val(formattedDate);
-
+    $(document).ready(function () {
 
         function calculateHours() {
             const startTime = $('#startTime').val();
             const endTime = $('#endTime').val();
-
             if (startTime && endTime) {
                 const start = new Date(`2000-01-01T${startTime}:00`);
                 const end = new Date(`2000-01-01T${endTime}:00`);

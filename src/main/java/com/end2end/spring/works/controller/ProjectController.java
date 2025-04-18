@@ -33,30 +33,28 @@ public class ProjectController {
 
         List<ProjectSelectDTO> projects = projectService.selectAllProject();
 
-
-//        if (isProjectFinish) {
             for (ProjectSelectDTO dto : projects) {
                 int id = dto.getId();
                 List<ProjectWorkDTO> list = wserv.selectAll(id);
-                boolean isProjectFinish = list.stream()
-                        .allMatch(dtos -> "FINISH".equals(dtos.getState()));
-                if (dto.getId() == id) {
-                    dto.setStatus("FINISH");
-                    break;
-                }
+
                 System.out.println("nearDeadline: " + dto.getNearDeadline());
             }
-//        }
 
-        model.addAttribute("isTeamLeader", "TEAM_LEADER".equals(EmployeeDTO.getRole()));
+        model.addAttribute("isTeamLeader",
+                "TEAM_LEADER".equals(EmployeeDTO.getRole()) && "개발부서".equals(EmployeeDTO.getDepartmentName()));
+
         model.addAttribute("projects", projects);
         model.addAttribute("employee", EmployeeDTO);
 
         return "works/worksmain";
     }
-
-
-
+@ResponseBody
+@RequestMapping("/hide")
+public String hide(int projectId,String hideYn) {
+        System.out.println("프젝아이디"+projectId+hideYn);
+    projectService.hideById(projectId,hideYn);
+    return "SUCCESS";
+}
     @RequestMapping("/insert")
     public String insert(@ModelAttribute ProjectInsertDTO dto) {
             projectService.insert(dto);
@@ -73,13 +71,14 @@ public class ProjectController {
 
     @RequestMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model, HttpSession session) {
-        EmployeeDTO EmployeeDTO = (EmployeeDTO) session.getAttribute("employee");
+        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
         ProjectDTO project = projectService.selectById(id);
         List<ProjectWorkDTO> list = wserv.selectAll(id);
+
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
         model.addAttribute("works", list);
-System.out.println("프젝컨트롤러"+list);
+
         return "works/detailpage";
     }
 
@@ -89,10 +88,11 @@ System.out.println("프젝컨트롤러"+list);
         ProjectDTO project = projectService.selectById(id);
 
         List<ProjectWorkDTO> list = wserv.selectAll(id);
+        model.addAttribute("employee", EmployeeDTO);
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
         model.addAttribute("works", list);
-        System.out.println("프젝컨트롤러"+list);
+
         return "works/detailpage";
     }
 

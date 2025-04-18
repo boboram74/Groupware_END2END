@@ -725,9 +725,9 @@ header .logo {
         display: none;
     }
 
-    .boxContents {
-        display: grid;
-        grid-template-columns: 1fr 2fr; /* 1:2 비율로 설정 */
+    /*.boxContents {*/
+    /*    display: grid;*/
+    /*    grid-template-columns: 1fr 2fr; !* 1:2 비율로 설정 *!*/
         gap: 20px;
     }
 

@@ -8,6 +8,7 @@ import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -297,5 +298,69 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendMailAlarm(int mailId) {
         alarmService.sendMailAlarm(mailId);
+    }
+
+    @Override
+    public List<AliasMappingDTO> selectByAliesMail() {
+        return mailDAO.selectByAliesMail();
+    }
+
+    @Override
+    @Transactional
+    public void updateAliasMappings(List<AliasMappingDTO> mappings) {
+        for (AliasMappingDTO dto : mappings) {
+            String alias    = dto.getAliasAddress();
+            String aliasNm  = dto.getAliasName();
+            int exists   = mailDAO.aliasExists(alias);
+            if (exists == 0) {
+                String localPart = alias.contains("@")
+                        ? alias.substring(0, alias.indexOf("@"))
+                        : alias;
+                RestTemplate rt = new RestTemplate();
+                String url = "http://34.70.179.192/mail/employee";
+                Map<String,String> body = Map.of("name", localPart, "password", localPart);
+                rt.postForObject(url, body, String.class);
+                mailDAO.insertAlias(alias, aliasNm);
+            }
+            mailDAO.deleteRecipientsByAlias(alias);
+            for (String raw : dto.getRecipientList().split(",")) {
+                String email = raw.trim();
+                if (email.isEmpty()) continue;
+                String empId = mailDAO.findEmployeeIdByEmail(email);
+                if (empId != null) {
+                    mailDAO.insertAliasUser(alias, empId);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void deleteAliasMapping(String alias, List<String> recipients) {
+        for (String recipientEmail : recipients) {
+            String employeeId = mailDAO.findEmployeeIdByEmail(recipientEmail);
+            if (employeeId != null) {
+                mailDAO.deleteAliasUser(alias, employeeId);
+            }
+        }
+        int remaining = mailDAO.countRecipientsByAlias(alias);
+        if (remaining == 0) {
+            String localPart = alias.contains("@")
+                    ? alias.substring(0, alias.indexOf("@"))
+                    : alias;
+            RestTemplate rt = new RestTemplate();
+            String url = "http://34.70.179.192/mail/employee?employee=" + localPart;
+            rt.delete(url);
+            mailDAO.deleteAlias(alias);
+        }
+    }
+
+    @Override
+    public String loadEmailSignature() {
+        return mailDAO.loadEmailSignature();
+    }
+
+    @Override
+    public int updateEmailSignature(Map<String, String> body) {
+        return mailDAO.updateEmailSignature(body);
     }
 }

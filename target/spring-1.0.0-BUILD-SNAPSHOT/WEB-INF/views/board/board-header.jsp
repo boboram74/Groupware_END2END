@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
@@ -63,12 +64,12 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item" onClick="location.href='/notice/list?page=1'">
+            <li class="detail-menu-item ${active eq 'notice' ? 'active' : ''}" onClick="location.href='/notice/list?page=1'">
                 <span class="material-icons">notifications</span>
                 <span>공지 게시판</span>
                 <span class="detail-badge">5</span>
             </li>
-            <li class="detail-menu-item" onClick="location.href='/board/list'">
+            <li class="detail-menu-item ${empty active ? 'active' : ''}" onClick="location.href='/board/list'">
                 <span class="material-icons">bookmark</span>
                 <span class="detail-menu-disc">전사 게시판</span>
                 <span class="detail-badge">12</span>

@@ -32,6 +32,8 @@ public class NoticeController {
                 new PageNaviUtil(page, noticeService.selectAll().size()).generate();
         model.addAttribute("pageNavi", pageNavi);
 
+        model.addAttribute("active", "notice");
+
         return "board/notice";
     }
 
@@ -49,6 +51,7 @@ public class NoticeController {
         model.addAttribute("pageNavi", pageNavi);
 
         model.addAttribute("noticeCategory", noticeCategoryService.selectById(categoryId));
+        model.addAttribute("active", "notice");
 
         return "board/notice";
     }
@@ -61,6 +64,7 @@ public class NoticeController {
                 .noticeId(id)
                 .build();
         model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+        model.addAttribute("active", "notice");
 
         return "board/detail";
     }

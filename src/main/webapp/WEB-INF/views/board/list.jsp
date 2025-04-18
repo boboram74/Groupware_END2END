@@ -94,7 +94,7 @@
 <div class="button-container">
 
     <a href="/board/write">
-        <button id="writeBtn" class="vacation-button" style="width:80px; height:30px;">글쓰기</button>
+        <button id="writeBtn" class="primary">글쓰기</button>
     </a>
 
 </div>

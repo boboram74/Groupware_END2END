@@ -22,7 +22,6 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     ProjectDAO pdao;
     @Autowired
     FileService fileService;
-
     @Autowired
     private AlarmService alarmService;
 
@@ -64,8 +63,8 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
         System.out.println("여기 서비스 수정확인1");
         dao.update(dto);
         System.out.println("여기 서비스 수정확인2");
-//        alarmService.sendProjectAlarm(
-//                AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
+        alarmService.sendProjectAlarm(
+                AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
 
         return dto;
     }

@@ -4,7 +4,6 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.messenger.config.WebSocketConfig;
 import com.google.common.collect.EvictingQueue;
 import com.google.gson.Gson;
-import org.apache.ibatis.jdbc.Null;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
@@ -17,12 +16,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AlarmEndPoint {
     private static final Gson g = new Gson();
 
-    private static final Map<String, Session> clients = new ConcurrentHashMap<>();
-    private static final Map<String, EvictingQueue<AlarmDTO>> alarmQueues = new ConcurrentHashMap<>();
+    private static final Map<String, Session> clients = new ConcurrentHashMap<>();  // 로그인한 사람의 session 보관
+    private static final Map<String, EvictingQueue<AlarmDTO>> alarmQueues = new ConcurrentHashMap<>();  // 알람 리스트 보관
 
-    private static long id = 0L;
+    private static long id = 0L;  // 알람 고유 id
 
-    private static EvictingQueue<AlarmDTO> getOrCreateQueue(String employeeId) {
+    private static EvictingQueue<AlarmDTO> getOrCreateQueue(String employeeId) {  // 알람 리스트 반환
         return alarmQueues.computeIfAbsent(employeeId, k -> EvictingQueue.create(20));
     }
 

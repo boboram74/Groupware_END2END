@@ -177,6 +177,10 @@
         height: 100%;
     }
 
+    .board-content>td {
+        min-height: 500px;
+    }
+
 </style>
 <div class="content">
 
@@ -185,18 +189,34 @@
 <table>
 
     <tr>
-        <td class="label">제목</td>
-        <td class="contents">${board.title}</td>
-        <td class="meta">조회</td>
-        <td class="date">${board.viewCount}</td>
+        <c:choose>
+            <c:when test="${empty active}">
+                <td class="label">제목</td>
+                <td class="contents">${board.title}</td>
+                <td class="meta">조회</td>
+                <td class="date">${board.viewCount}</td>
+            </c:when>
+            <c:otherwise>
+                <td class="label">제목</td>
+                <td class="contents">${board.title}</td>
+                <td class="meta">분류</td>
+                <td class="date">${board.noticeCtName}</td>
+            </c:otherwise>
+        </c:choose>
     </tr>
     <tr>
         <td class="label">작성자</td>
-        <td colspan="3">${board.employeeName}</td>
+        <c:choose>
+            <c:when test="${empty active}">
+                <td colspan="3">${board.employeeName}</td>
+            </c:when>
+            <c:otherwise>
+                <td colspan="3">관리자</td>
+            </c:otherwise>
+        </c:choose>
     </tr>
-    <tr>
-        <td class="label">내용</td>
-        <td colspan="3">${board.content}</td>
+    <tr class="board-content">
+        <td colspan="4">${board.content}</td>
     </tr>
     <c:forEach var="file" items="${fileList}">
         <tr>
@@ -210,9 +230,7 @@
     </c:forEach>
 </table>
 <div class="btnGroup">
-    <a href="/board/list">
-        <button class="backBtn">목록</button>
-    </a>
+    <button class="backBtn" onclick="window.history.back()">목록</button>
     <c:if test="${not empty employee and employee.id eq board.employeeId}">
         <a href="/board/write/update?id=${board.id}">
             <button type="button" class="editBtn">수정</button>
@@ -227,7 +245,6 @@
 <hr>
 
 <input type="hidden" id="loginUserId" value="${employee.id}"/>
-
 
 <form id="replyForm" enctype="multipart/form-data">
     <div class="replyContainer">
@@ -247,15 +264,8 @@
     </div>
 </form>
 
-<hr>
-
 <h3>댓글</h3>
-
-
-<div class="replyListContainer">
-
-</div>
-
+<div class="replyListContainer"></div>
 
 <script>
     const button = document.querySelector("#emojiBtn");
@@ -444,8 +454,5 @@
 
 
 </script>
-
-
-
 <script src="/js/main/contact.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/board/board-footer.jsp"/>

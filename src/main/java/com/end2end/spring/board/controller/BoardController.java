@@ -149,7 +149,9 @@ public class BoardController {
         }
 
         dto.setEmployeeId(employee.getId()); // 작성자 ID 설정
+        dto.setBoardCtId(1);
         boardService.insert(files, dto);
+
         return "redirect:/board/list";
     }
 

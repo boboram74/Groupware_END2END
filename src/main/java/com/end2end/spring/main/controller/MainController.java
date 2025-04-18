@@ -49,7 +49,7 @@ public class MainController {
 		if (loginUser == null) {
 			return "redirect:/";
 		}
-		// 만약 로그인한 사용자가 자신의 마이페이지가 아니면서 HR 권한이 없는 경우
+
 		if (!loginUser.getId().equals(employeeId)
 			&& !loginUser.getDepartmentName().equals("인사팀")
 			&& !loginUser.getRole().equals("ADMIN")) {
@@ -94,24 +94,19 @@ public class MainController {
 		return "main/contact";
 	}
 
-	@RequestMapping("/worktree")
-	public String toWorktree() {
-		// TODO: 조직도 페이지 출력
-		return "main/worktree";
-	}
-
-	@ResponseBody
-	@RequestMapping("/holiday")
-	public List<HolidayUtil.HolidayDTO> getHoliday(String year, String month) {
-		try {
-			return HolidayUtil.generateHolidayList(year, month);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+	@RequestMapping("/contact/search")
+	public String searchContactList(Model model, String searchOption, String keyword) {
+		if (keyword == null || keyword.trim().isEmpty()) {
+			return "redirect:/contact?page=1";
 		}
+
+		List<EmployeeDTO> contactList = employeeService.searchContactList(searchOption, keyword);
+		model.addAttribute("contactList", contactList);
+		return "main/contact";
 	}
 
 	@RequestMapping("/test")
 	public String toTest() {
-		return "/template/exam";
+		return "works/test";
 	}
 }

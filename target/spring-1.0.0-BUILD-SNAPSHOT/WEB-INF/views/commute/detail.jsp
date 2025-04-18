@@ -441,7 +441,11 @@
         });
 
         function parseDate(dates) {
-            return dates.getFullYear() + '-' + (dates.getMonth() + 1) + '-' + dates.getDate();
+            const month = String(dates.getMonth() + 1).padStart(2, '0');
+            const date = String(dates.getDate()).padStart(2, '0');
+
+            console.log(month + '-' + date);
+            return dates.getFullYear() + '-' + month + '-' + date;
         }
 
         function loadEvents(startDate, endDate, successCallback) {

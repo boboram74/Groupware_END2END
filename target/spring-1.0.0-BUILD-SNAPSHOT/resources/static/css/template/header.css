@@ -725,9 +725,9 @@ header .logo {
         display: none;
     }
 
-    .boxContents {
-        display: grid;
-        grid-template-columns: 1fr 2fr; /* 1:2 비율로 설정 */
+    /*.boxContents {*/
+    /*    display: grid;*/
+    /*    grid-template-columns: 1fr 2fr; !* 1:2 비율로 설정 *!*/
         gap: 20px;
     }
 
@@ -777,3 +777,22 @@ header .logo {
         justify-content: center;
     }
 }
+
+/* 휴일 배경 스타일 */
+.holiday {
+    background-color: rgba(255, 0, 0, 0.1) !important;
+    border: none !important;
+}
+
+/* 이벤트 스타일 */
+.fc-event {
+    border: none;
+    padding: 2px;
+}
+
+/* 배경 이벤트 스타일 */
+.fc-bg-event {
+    background-color: rgba(255, 0, 0, 0.1) !important;
+    opacity: 1 !important;
+}
+

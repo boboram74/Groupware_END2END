@@ -26,9 +26,10 @@
 
 <div class="mainContainer">
     <div class="mainBody">
+        <form action="/contact/search" method="post" id="searchForm">
         <div class="search">
             <div>
-                <select id="searchOption">
+                <select name="searchOption" id="searchOption">
                     <option>이름</option>
                     <option>연락처</option>
                 </select>
@@ -40,6 +41,8 @@
                 <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
             </div>
         </div>
+        </form>
+
         <div class="bord-table-container">
             <table class="board-table">
                 <thead>

@@ -45,6 +45,10 @@
             TRUNC(endDate) BETWEEN #{startDate} AND #{endDate})
     </select>
 
+    <select id="selectByBookId">
+        SELECT * FROM SCHEDULE WHERE bookId = ${bookId}
+    </select>
+
     <select id="countTodayScheduleByEmployeeId" resultType="Integer">
         SELECT COUNT(*)
         FROM SCHEDULE
@@ -61,6 +65,11 @@
     <insert id="insert">
         INSERT INTO SCHEDULE(id, calendarId, title, content, startDate, endDate)
         VALUES (SCHEDULE_ID_SEQ.nextval, ${calendarId}, #{title}, #{content}, #{startDate}, #{endDate})
+    </insert>
+
+    <insert id = "insertWithBookId">
+        INSERT INTO SCHEDULE(id, calendarId, bookId, title, content, startDate, endDate)
+        VALUES (SCHEDULE_ID_SEQ.nextval, ${calendarId}, ${bookId}, #{title}, #{content}, #{startDate}, #{endDate})
     </insert>
 
     <update id="update">

@@ -57,9 +57,43 @@
     <form action="/approval/insert" id="form">
      <jsp:include page="${dto.form}" />
     </form>
-
+    <button type="button" id="saveTempBtn">임시저장</button>
 <script type="text/javascript" src="/js/template/summernote.js"></script>
     <script>
+        $('#saveTempBtn').on('click', function () {
+            const employeeId = $('#employeeId').val() || '';
+            const approvalFormId = $('#approvalFormId').val() || '';
+            const departmentId = $('#departmentId').val() || '';
+
+            const formData = new FormData();
+            formData.append('employeeId', employeeId);
+            formData.append('approvalFormId', approvalFormId);
+            formData.append('departmentId', departmentId);
+            formData.append('title', $('#title').val());
+            formData.append('content', $('#contents').val());
+
+            console.log(employeeId);
+            console.log(departmentId);
+            console.log(approvalFormId);
+            console.log( formData.append('title', $('#title').val()));
+            $.ajax({
+                url: '/approval/tempSave',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    alert('임시저장 완료');
+                },
+                error: function (request, status, error) {
+                    console.log("code: " + request.status);
+                    console.log("message: " + request.responseText);
+                    console.log("error: " + error);
+                    alert('저장 실패');
+                }
+            });
+        });
+
         window.onload = function() {
             const date = new Date();
             $('.date').html(date.toLocaleDateString());

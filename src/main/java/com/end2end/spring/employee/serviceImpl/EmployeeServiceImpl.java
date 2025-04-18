@@ -30,7 +30,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO selectById(String id) {
-        // TODO: 해당 id의 사원 출력
         return null;
     }
 
@@ -46,7 +45,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO login(LoginDTO dto) {
         String password = SecurityUtil.hashPassword(dto.getPassword());
         dto.setPassword(password);
-        System.out.println(password);
         return employeeDAO.login(dto);
     }
 
@@ -130,9 +128,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     public void update(EmployeeDetailDTO dto, MultipartFile file) {
-        // TODO: 사원 수정
         EmployeeDTO employeeDTO = EmployeeDTO.builder()
-                .id(dto.getId()) // 업데이트 대상 사원 식별 (DTO에 employeeId 포함)
+                .id(dto.getId())
                 .departmentId(dto.getDepartmentId())
                 .jobId(dto.getJobId())
                 .name(dto.getName())
@@ -192,19 +189,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Map<String, List<Integer>> getMonthlyLineData() {
         List<Map<String, Object>> rawList = employeeDAO.getMonthlyStats();
 
-        // 초기화: 12개월 모두 0으로 채움
         Map<String, List<Integer>> result = new HashMap<>();
         result.put("join", new ArrayList<>(Collections.nCopies(12, 0)));
         result.put("resign", new ArrayList<>(Collections.nCopies(12, 0)));
 
         for (Map<String, Object> row : rawList) {
-            String type = (String) row.get("TYPE"); // join 또는 resign
-            int month = Integer.parseInt((String) row.get("MONTH")); // '01' → 1
+            String type = (String) row.get("TYPE");
+            int month = Integer.parseInt((String) row.get("MONTH"));
             int count = ((Number) row.get("COUNT")).intValue();
 
-            result.get(type).set(month - 1, count); // 0-based index
+            result.get(type).set(month - 1, count);
         }
-
         return result;
     }
 
@@ -227,7 +222,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDTO> selectAll(int page) {
         int start = (page - 1) * Statics.recordCountPerPage;
         int end = Math.min(page * Statics.recordCountPerPage, employeeDAO.selectAll().size());
-
         return employeeDAO.selectFromTo(start, end);
+    }
+
+    @Override
+    public List<EmployeeDTO> searchContactList(String searchOption, String keyword) {
+        return employeeDAO.searchContactList(searchOption, keyword);
+    }
+
+    @Override
+    public List<EmployeeDTO> searchEmployeeList(String searchOption, String keyword) {
+        return employeeDAO.searchEmployeeList(searchOption, keyword);
     }
 }

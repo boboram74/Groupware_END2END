@@ -4,11 +4,11 @@ import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.board.dao.BoardDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.MailURLDTO;
 import com.end2end.spring.schedule.dao.CalendarUserDAO;
 import com.end2end.spring.schedule.dao.ScheduleDAO;
-import com.end2end.spring.schedule.dto.CalendarDTO;
 import com.end2end.spring.schedule.dto.CalendarUserDTO;
 import com.end2end.spring.schedule.dto.ScheduleDTO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
@@ -17,11 +17,13 @@ import com.end2end.spring.works.dto.ProjectWorkDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Service
 public class AlarmService {
+    @Autowired private EmployeeService employeeService;
     @Autowired private MailDAO mailDAO;
     @Autowired private ApprovalDAO approvalDAO;
     @Autowired private ProjectWorkDAO projectWorkDAO;
@@ -31,7 +33,7 @@ public class AlarmService {
     @Autowired private BoardDAO boardDAO;
 
     public void sendNewLoginIpAlarm(String employeeId) {
-        send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
+        send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history?page=1"), employeeId);
     }
 
     public void sendMailAlarm(int emailId) {
@@ -40,6 +42,15 @@ public class AlarmService {
         for(MailURLDTO dto : mailURLDTO) {
             String url = String.format("/mail/%d/%d", dto.getId(), dto.getEmailStateId());
             send(AlarmDTO.of(AlarmType.GET_EMAIL, dto.getEmployeeId(), url), dto.getEmployeeId());
+        }
+    }
+
+    public void sendNoticeIsCreateAlarm(int id) {
+        List<EmployeeDTO> employeeDTOList = employeeService.selectAll();
+
+        for (EmployeeDTO employeeDTO : employeeDTOList) {
+            send(AlarmDTO.of(AlarmType.NOTICE_INSERT, employeeDTO.getId(), "/notice/detail/" + id),
+                    employeeDTO.getId());
         }
     }
 
@@ -70,6 +81,15 @@ public class AlarmService {
 
         for (EmployeeDTO employeeDTO : projectUserList) {
             send(AlarmDTO.of(alarmType, employeeDTO.getId(), url), employeeDTO.getId());
+        }
+    }
+
+    public void sendProjectCompleteAlarm(int projectId) {
+        List<EmployeeDTO> projectUserList = projectUserDAO.selectByprojectId(projectId);
+
+        for (EmployeeDTO employeeDTO : projectUserList) {
+            send(AlarmDTO.of(AlarmType.PROJECT_COMPLETE, employeeDTO.getId(), "/project/detail/" + projectId),
+                    employeeDTO.getId());
         }
     }
 
@@ -139,10 +159,13 @@ public class AlarmService {
         send(AlarmDTO.of(AlarmType.GET_REPLY, employeeId, "/board/detail/" + boardId), employeeId);
     }
 
-    private void send(AlarmDTO dto, String employeeId) {
+    private void send(AlarmDTO dto, String employeeId)  {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         dto.setSendTime(timestamp);
-
-        AlarmEndPoint.sendMessage(dto, employeeId);
+        try {
+            AlarmEndPoint.sendMessage(dto, employeeId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

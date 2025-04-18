@@ -2,19 +2,28 @@ const dropArea = document.getElementById("dropArea");
 const fileInput = document.getElementById("fileInput");
 const fileInfo = document.querySelector(".file-info");
 const fileSizeEl = document.querySelector(".fileSize");
+let defaultSignature = "";
 
 $("#sendMail").on("click", function () {
     let sender = $("#sender").val();
     let receiveMail = $("#receiveMail").val();
     let inputTitle = $("#inputTitle").val();
     let contents = $("#mailContent").val();
-    console.log(sender + "발신자");
+
+    if ($(this).prop("disabled")) {
+        return;
+    }
+    $(this).prop("disabled", true).text("전송중...");
+
+    let fullContents = contents
+        + "\n\n"
+        + defaultSignature;
 
     let mail = {
         from: sender,
         to: receiveMail,
         subject: inputTitle,
-        text: contents
+        text: fullContents
     };
     let formData = new FormData();
     formData.append("email", JSON.stringify(mail));
@@ -93,3 +102,14 @@ function handleFiles(files) {
         fileSizeEl.textContent = "0/30 MB";
     }
 }
+
+$(document).ready(function () {
+    $.ajax({
+        url: '/admin/api/loadEmailSignature',
+        method: 'GET',
+        dataType: 'text'
+    }).done(function (resp) {
+        defaultSignature = resp.trim();
+    });
+
+});

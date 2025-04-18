@@ -7,15 +7,30 @@ import java.util.List;
 
 public interface ProjectWorkService {
     List<ProjectWorkDTO> selectAll(int id);
+
     void insert(MultipartFile[] files, ProjectWorkDTO dto) throws Exception;
+
     ProjectWorkDTO update(ProjectWorkDTO dto) throws Exception;
+
     void deleteById(int workId);
+
     void toggleState(int id);
+
     String selectByProjectIdAndEmployeeId(int projectId, String employeeId);
-    void updateState(String state, int workItemId);
+
+    int updateState(String state, int workItemId, int projectId);
+
     ProjectWorkDTO selectByworksId(int id);
+
+    void endworks(int projectId);
     int getChartDataCount(int selectedId);
+
     int countByState(int selectedId, String state);
+
     int countByType(int selectedId, String type);
-    List<ProjectWorkDTO> searchBynameAndTitle(String keyword,int projectId, String searchOption);
+
+    List<ProjectWorkDTO> searchBynameAndTitle(String keyword, int projectId, String searchOption);
+
+
+
 }

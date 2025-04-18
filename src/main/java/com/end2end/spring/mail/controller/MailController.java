@@ -199,8 +199,8 @@ public class MailController {
 
     @ResponseBody
     @RequestMapping("/alarm")
-    public void sendAlarm(int mailId) {
-       System.out.println("emilId: " + mailId);
+    public ResponseEntity<Void> sendAlarm(int mailId) {
        mailService.sendMailAlarm(mailId);
+       return ResponseEntity.ok().build();
     }
 }

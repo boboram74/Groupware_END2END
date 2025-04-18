@@ -58,6 +58,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         return approvalDAO.search(state, employeeId, keyword);
     }
 
+
     @Override
     public List<ApprovalDTO> search(String employeeId) {
         // TODO: 해당 id의 사원이 볼 수 있는 검색 결과 내용의 결재 리스트 출력
@@ -120,7 +121,7 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .type(dto.getVacationType())
                     .build();
             vacationService.insert(vacationDTO);
-        } else if (formDTO.getName().contains("연장 근무")) {  // 연장 근무라면 연장 근무 추가
+        } else if (formDTO.getName().contains("연장근무")) {  // 연장 근무라면 연장 근무 추가
             ExtendedCommuteDTO extendedCommuteDTO = ExtendedCommuteDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(dto.getEmployeeId())
@@ -267,5 +268,31 @@ public class ApprovalServiceImpl implements ApprovalService {
         }
 
         return allApproval;
+    }
+    @Override
+    public void saveTempApproval(TempApprovalDTO dto) {
+        approvalDAO.saveTempApproval(dto);
+    }
+
+    @Override
+    public void insertImportant(CheckImportantDTO dto){
+        CheckImportantDTO importantDTO = CheckImportantDTO.builder()
+                .approvalId(dto.getApprovalId())
+                .employeeId(dto.getEmployeeId())
+                .leaderCheckYn(dto.getLeaderCheckYn())
+                .build();
+        approvalDAO.insertImportant(dto);
+    }
+
+    @Override
+    public List<Map<String, Object>> importantlist(String employeeId) {
+        return approvalDAO.importantlist(employeeId);
+    }
+
+    @Override
+    public void removeImportant(CheckImportantDTO dto){
+        if ("N".equals(dto.getLeaderCheckYn())) {
+         approvalDAO.removeImportant(dto);
+        }
     }
 }

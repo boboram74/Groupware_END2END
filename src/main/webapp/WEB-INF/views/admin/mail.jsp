@@ -104,10 +104,7 @@
                     <label for="defaultSignature">발신 서명</label>
                     <textarea id="defaultSignature"
                               name="defaultSignature"
-                              rows="4">
-─────────────────
-END2END | www.end2end.site | 010-8000-2192
-Copyright © END2END All rights reserved.</textarea>
+                              rows="4"></textarea>
                 </div>
                 <div class="button-container">
                     <button type="button" class="secondary" id="saveSignature">저장</button>
@@ -172,7 +169,6 @@ Copyright © END2END All rights reserved.</textarea>
             });
         });
     });
-
     function loadServerCapacity() {
         $.ajax({
             url: 'http://34.70.179.192/mail/storage',
@@ -222,7 +218,7 @@ Copyright © END2END All rights reserved.</textarea>
         $.ajax({
             url: '/admin/api/loadEmailSignature',
         }).done(function (resp) {
-            console.log(resp);
+            $("#defaultSignature").val(resp);
         });
     }
 
@@ -274,6 +270,20 @@ Copyright © END2END All rights reserved.</textarea>
             }
         });
         if (!valid) e.preventDefault();
+    });
+
+    $('#saveSignature').on('click', function () {
+        const newSignature = $('#defaultSignature').val();
+        $.ajax({
+            url: '/admin/api/saveEmailSignature',
+            method: 'POST',
+            contentType: 'application/json; charset=UTF-8',
+            data: JSON.stringify({ signature: newSignature }),
+            dataType: 'json'
+        }).done(function () {
+            alert('서명이 저장되었습니다.');
+            location.reload();
+        });
     });
 </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

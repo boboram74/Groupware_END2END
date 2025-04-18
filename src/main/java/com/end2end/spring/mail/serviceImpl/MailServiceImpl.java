@@ -358,4 +358,9 @@ public class MailServiceImpl implements MailService {
     public String loadEmailSignature() {
         return mailDAO.loadEmailSignature();
     }
+
+    @Override
+    public int updateEmailSignature(Map<String, String> body) {
+        return mailDAO.updateEmailSignature(body);
+    }
 }

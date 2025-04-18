@@ -5,13 +5,12 @@ import com.end2end.spring.mail.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RequestMapping("/admin")
 @Controller
@@ -43,29 +42,6 @@ public class AdminController {
         return "admin/mail";
     }
 
-    @ResponseBody
-    @RequestMapping("/api/alies-mapping")
-    public ResponseEntity<List<AliasMappingDTO>> aliesMapping() {
-        List<AliasMappingDTO> result = mailService.selectByAliesMail();
-        return ResponseEntity.ok().body(result);
-    }
-
-    @RequestMapping("/api/alies-delete")
-    public ResponseEntity<Void> aliesDelete(
-            @RequestParam("alias") String alias,
-            @RequestParam("recipients") String recipientsCsv) {
-        List<String> recipients = Arrays.asList(recipientsCsv.split(","));
-        mailService.deleteAliasMapping(alias, recipients);
-        return ResponseEntity.ok().build();
-    }
-
-    @RequestMapping("/api/loadEmailSignature")
-    public ResponseEntity<String> loadEmailSignature() {
-        String signature = mailService.loadEmailSignature();
-        System.out.println(signature);
-        return ResponseEntity.ok().body(signature);
-    }
-
     @RequestMapping("/mailAliesUpdate")
     public String mailAliesUpdate(
             @RequestParam("aliases") List<String> aliases,
@@ -92,9 +68,39 @@ public class AdminController {
         return "redirect:/admin/mail-setting";
     }
 
+    @ResponseBody
+    @RequestMapping("/api/alies-mapping")
+    public ResponseEntity<List<AliasMappingDTO>> aliesMapping() {
+        List<AliasMappingDTO> result = mailService.selectByAliesMail();
+        return ResponseEntity.ok().body(result);
+    }
+
+    @RequestMapping("/api/alies-delete")
+    public ResponseEntity<Void> aliesDelete(
+            @RequestParam("alias") String alias,
+            @RequestParam("recipients") String recipientsCsv) {
+        List<String> recipients = Arrays.asList(recipientsCsv.split(","));
+        mailService.deleteAliasMapping(alias, recipients);
+        return ResponseEntity.ok().build();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/api/loadEmailSignature", produces = "text/plain; charset=UTF-8")
+    public ResponseEntity<String> loadEmailSignature() {
+        String signature = mailService.loadEmailSignature();
+        return ResponseEntity.ok().body(signature);
+    }
+
+    @RequestMapping("/api/saveEmailSignature")
+    public ResponseEntity<Map<String,String>> updateEmailSignature(@RequestBody Map<String, String> body) {
+        mailService.updateEmailSignature(body);
+        return ResponseEntity.ok(Collections.singletonMap("status","OK"));
+    }
+
     //관리자 설정
     @RequestMapping("/setting")
     public String setting() {
         return "admin/setting";
     }
+
 }

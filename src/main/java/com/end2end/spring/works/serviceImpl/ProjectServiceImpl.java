@@ -135,11 +135,17 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.update(dto);
         return dto;
     }
-@Override
-public int hideById(int projectId, String hideYn){
-        System.out.println("서비스");
-      return  projectDao.hideById(projectId,hideYn);
-}
+    public int hideById(int projectId, String hideYn) {
+        System.out.println("Original hideYn: " + hideYn);
+
+        // 변환 처리
+        String convertedHideYn = "false".equalsIgnoreCase(hideYn) ? "N" : "Y";
+
+        System.out.println("after hideYn: " + convertedHideYn);
+
+        return projectDao.hideById(projectId, convertedHideYn);
+    }
+
 
     @Override
     public void updateProjectUser(int projectId, List<String> employeeId) {

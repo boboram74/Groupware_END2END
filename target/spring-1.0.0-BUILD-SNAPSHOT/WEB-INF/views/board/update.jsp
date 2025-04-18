@@ -110,25 +110,12 @@
         font-size: 14px;
     }
 </style>
-<div class="button-container">
-    <button class="extended-button">연장근무 신청</button>
-    <button class="vacation-button">휴가 신청</button>
-    <button class="vacation-list-button">휴가 조회</button>
-</div>
+
 <div class="search">
     <div>
-        <select id="searchOption">
-            <option>선택</option>
-            <option>선택</option>
-            <option>선택</option>
-        </select>
+
     </div>
-    <div class="searchInput">
-        <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-    </div>
-    <div>
-        <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
-    </div>
+
 </div>
 <div class="content">
 </div>
@@ -136,12 +123,9 @@
     <form action="/board/update" method="post">
     <table class="form-table">
         <tr>
-            <th>공지글</th>
+
             <td>
-                <div class="checkbox-container">
-                    <input type="checkbox" id="isNotice" class="form-checkbox" checked>
-                    <label for="isNotice">설정</label>
-                </div>
+
             </td>
             <th>등록일</th>
             <td><span class="date-field"></span>

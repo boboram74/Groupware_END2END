@@ -21,7 +21,20 @@
     </select>
     <!-- 프로젝트 진행중 보고된 게시물 모아보기-->
 
+    <select id="selectAllProjectWork" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        SELECT
+        pw.*,
+        pu.employeeId AS employeeId,
+        e.name AS employeeName,
+        d.name AS departmentName,
+        j.name AS jobName
+        FROM project_work pw
+        JOIN project_user pu ON pu.id = pw.projectUserId
+        JOIN employee e ON pu.employeeId = e.id
+        JOIN job j ON j.id = e.jobId
+        JOIN department d ON e.jobId = d.id
 
+    </select>
     <select id="searchWorkList" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
         SELECT
         pw.title,

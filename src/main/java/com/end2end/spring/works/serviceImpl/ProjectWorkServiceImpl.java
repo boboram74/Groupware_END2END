@@ -30,7 +30,10 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
         return dao.selectAll(id)  ;
     }
 
-
+    @Override
+    public List<ProjectWorkDTO> selectAll() {
+        return dao.selectAll()  ;
+    }
     @Override
     public void insert(MultipartFile[] files, ProjectWorkDTO dto) throws Exception {
        //게시물 등록
@@ -111,16 +114,19 @@ public void endworks(int projectId){
     @Override
     public int updateState(String state, int workItemId, int projectId) {
         dao.updateState(state,workItemId);
-        alarmService.sendProjectWorkStateChangeAlarm(workItemId);
         int total = dao.countTotalWorksByProjectId(projectId);
         int finished = dao.countFinishWorksByProjectId(projectId);
 
-        if(finished == 0) {
+        int result = (total == finished) ? 0 : 1;
+
+        if(result == 0) {
             alarmService.sendProjectCompleteAlarm(projectId);
+        } else {
+            alarmService.sendProjectWorkStateChangeAlarm(workItemId);
         }
 
         // 4. 모두 FINISH 상태면 0, 아니면 1 반환
-        return (total == finished) ? 0 : 1;
+        return result;
     }
 
     @Override

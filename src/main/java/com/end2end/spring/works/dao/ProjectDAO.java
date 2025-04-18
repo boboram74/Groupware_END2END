@@ -8,7 +8,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProjectDAO {
@@ -42,7 +44,9 @@ public class ProjectDAO {
 public void update(ProjectInsertDTO dto) {
     mybatis.update("project.updateById", dto);
 }
-
+public void endworks(int projectId){
+    mybatis.update("project.updateStatusByProjectId",projectId);
+}
 
     public ProjectDTO findLatestProject(){
        return mybatis.selectOne("project.findLatestProject");
@@ -60,4 +64,10 @@ public void update(ProjectInsertDTO dto) {
  }
 
 
+    public int hideById(int projectId,String hideYn) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("projectId", projectId);
+        params.put("hideYn", hideYn);
+    return mybatis.update("project.hideById",params);
+    }
 }

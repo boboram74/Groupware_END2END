@@ -135,7 +135,11 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.update(dto);
         return dto;
     }
-
+@Override
+public int hideById(int projectId, String hideYn){
+        System.out.println("서비스");
+      return  projectDao.hideById(projectId,hideYn);
+}
 
     @Override
     public void updateProjectUser(int projectId, List<String> employeeId) {
@@ -186,7 +190,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<EmployeeDTO> selectByUser(String name) {
         // TODO: 이름으로 검색
         String target = "%" + name + "%";
-
+System.out.println("selectByUser"+target);
         return projectDao.selectByUser(target);
     }
 

@@ -26,6 +26,7 @@ public class ProjectWorkDTO {
     private Timestamp finishDate;
     private Date deadLine;
     private Timestamp regDate;
+    private int workCount;
 
 
 }

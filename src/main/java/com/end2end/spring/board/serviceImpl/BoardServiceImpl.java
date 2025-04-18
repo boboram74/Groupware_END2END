@@ -29,7 +29,8 @@ public class BoardServiceImpl implements BoardService {
     @Autowired
     private BoardCategoryService boardCategoryService;
 
-    @Autowired private FileService fileService;
+    @Autowired
+    private FileService fileService;
 
     @Override
     public List<BoardDTO> selectAll() {
@@ -40,7 +41,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<BoardDTO> selectByCategoryId(int categoryId, String employeeId) {
         // TODO: 카테고리 번호의 모든 게시글 조회
-        return boardDAO.selectByCategoryId(categoryId,employeeId);
+        return boardDAO.selectByCategoryId(categoryId, employeeId);
     }
 
     @Override
@@ -50,9 +51,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardDTO> search() {
-        // TODO: 검색한 모든 게시글 조회
-        return null;
+    public List<BoardDTO> search(String option, String keyword) {
+        return boardDAO.search(option,keyword);
     }
 
     @Override
@@ -66,12 +66,12 @@ public class BoardServiceImpl implements BoardService {
         int id = boardDAO.selectNextVal();
         dto.setId(id);
 
-         boardDAO.insert(dto);
+        boardDAO.insert(dto);
 
-         FileDTO fileDTO = FileDTO.builder()
-                 .boardId(dto.getId())
-                 .build();
-         fileService.insert(files, fileDTO);
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(dto.getId())
+                .build();
+        fileService.insert(files, fileDTO);
         // TODO: 게시글 입력
     }
 
@@ -92,10 +92,6 @@ public class BoardServiceImpl implements BoardService {
         // TODO: 해당 id의 게시글 삭제
     }
 
-    @Override
-    public void complaint(ComplaintDTO dto) {
-        // TODO: 게시글 신고 (insert)
-    }
 
     @Override
     public void insertCategory(BoardCategoryDTO dto) {
@@ -104,7 +100,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardCategoryDTO selectCategoryById(int categoryId) {
-        return  boardCategoryService.selectCategoryById(categoryId);
+        return boardCategoryService.selectCategoryById(categoryId);
     }
 
     @Override

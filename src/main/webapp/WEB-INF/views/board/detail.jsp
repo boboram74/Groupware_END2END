@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
 <style>
     table {
         width: 100%;
@@ -103,7 +104,7 @@
 
     .addBtn button {
         width: 100%;
-        height: 100%;
+        height: 50%;
     }
 
     .replyList {
@@ -158,7 +159,7 @@
 
     .reReply {
         width: 100%;
-        height: 50%;
+        height: 100%;
     }
 
     .reReply button {
@@ -180,17 +181,9 @@
 <div class="content">
 
 </div>
-<div class="button-container">
-    <button class="extended-button">연장근무 신청</button>
-    <button class="vacation-button">휴가 신청</button>
-</div>
+
 <table>
-    <tr>
-        <td class="label">글유형</td>
-        <td class="contents">공지</td>
-        <td class="meta">등록일</td>
-        <td class="date">${board.regDate}</td>
-    </tr>
+
     <tr>
         <td class="label">제목</td>
         <td class="contents">${board.title}</td>
@@ -240,10 +233,15 @@
     <div class="replyContainer">
         <div class="addReply">
             <div class="addInput">
-                <input type="text" id="content" placeholder="댓글 입력"></input>
+                <input type="text" id="content" placeholder="댓글 입력">
             </div>
             <div class="addBtn">
-                <button type="submit" id="addButton">등록</button>
+                <button id="addButton">등록</button>
+                <button class="button" type="button" id="emojiBtn">😀</button>
+            </div>
+            <div class="emoticons">
+                <div class="emoticon">
+                </div>
             </div>
         </div>
     </div>
@@ -260,6 +258,37 @@
 
 
 <script>
+    const button = document.querySelector("#emojiBtn");
+    const picker = new EmojiButton({
+        i18n: {
+            search: 'Search emojis...',
+            categories: {
+                recents: 'Recent Emojis',
+                smileys: 'Smileys & Emotion',
+                people: 'People & Body',
+                animals: 'Animals & Nature',
+                food: 'Food & Drink',
+                activities: 'Activities',
+                travel: 'Travel & Places',
+                objects: 'Objects',
+                flags: 'Flags'
+            },
+            notFound: 'No emojis found'
+        },
+        showSearch: false,
+        autoFocusSearch: false,
+        position: 'bottom-start'
+    });
+
+    button.addEventListener('click', () => {
+        picker.togglePicker(button);
+    });
+
+    picker.on('emoji', emoji => {
+        const text_box = document.querySelector('#content');
+        text_box.value += emoji;
+    });
+
     $(".deleteBtn").on("click", function (e) {
         if (!confirm("정말 삭제하시겠습니까?")) {
             e.preventDefault();
@@ -279,7 +308,7 @@
         console.log("로그인된 사용자 employeeId:", employeeId);
         console.log("댓글 작성자 employeeId:", replyEmployeeId);
 
-        if(employeeId !== replyEmployeeId){
+        if (employeeId !== replyEmployeeId) {
             alert("다른 게시물은 삭제 할 수 없습니다.");
         }
 
@@ -291,9 +320,9 @@
                     response = JSON.parse(response)
                     console.log("댓글삭제", response);
 
-                    if(response){
+                    if (response) {
                         loadReplies(); // 댓글 다시 불러오기
-                    }else{
+                    } else {
                         alert("삭제 실패했습니다.");
                     }
                 },
@@ -375,10 +404,6 @@
                                     $('<div class="reReply">')
                                         .append($('<button>').addClass('deleteReplyBtn').text('삭제').attr('data-id', reply.id).attr('data-employee-id', reply.employeeId))
                                 )
-                                .append(
-                                    $('<div class="report">')
-                                        .append($('<button>').text('따봉').attr('data-id', reply.id))
-                                )
                         );
                     $('.replyListContainer').append($replyDiv);
                 });
@@ -387,7 +412,6 @@
                 console.log("실패");
             }
         });
-
 
 
     };
@@ -419,8 +443,8 @@
     <%--});--%>
 
 
-
 </script>
+
 
 
 <script src="/js/main/contact.js" type="text/javascript"></script>

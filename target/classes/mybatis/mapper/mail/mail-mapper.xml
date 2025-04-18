@@ -433,7 +433,11 @@
     </delete>
 
     <select id="loadEmailSignature" resultType="string">
-        select * from mail_signature
+        select content from mail_signature
     </select>
+
+    <update id="updateEmailSignature" parameterType="map">
+        UPDATE mail_signature SET content = #{signature}
+    </update>
 
 </mapper>

@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/template/exam.css" />
+
 <style>
   .approval-list-wrapper {
     display: flex;
@@ -109,13 +110,13 @@
       <li class="detail-menu-item" onclick="location.href='/approval/important'">
         <span class="material-icons">star</span>
         <span>중요 문서함</span>
-        <span class="detail-badge"><span>1</span></span>
+        <span class="detail-badge"><span>${importantSize != null ? importantSize : 0}</span></span>
       </li>
       <c:if test="${team}">
         <li class="detail-menu-item" onclick="location.href='/approval/all'">
           <span class="material-icons">description</span>
           <span class="detail-menu-disc">모든 전자 결재함</span>
-          <span class="detail-badge"><span>1</span></span>
+          <span class="detail-badge"><span>${totalSize != null ? totalSize : 0}</span></span>
         </li>
       </c:if>
     </ul>

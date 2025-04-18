@@ -17,4 +17,6 @@ public class ReplyDTO {
     private String employeeId;
     private String content;
     private Timestamp regDate;
+    private String employeeName;
+    private String profileImg;
 }

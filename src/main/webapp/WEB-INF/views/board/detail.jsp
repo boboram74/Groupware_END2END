@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
 <style>
     table {
         width: 100%;
@@ -103,7 +104,7 @@
 
     .addBtn button {
         width: 100%;
-        height: 100%;
+        height: 50%;
     }
 
     .replyList {
@@ -158,7 +159,7 @@
 
     .reReply {
         width: 100%;
-        height: 50%;
+        height: 100%;
     }
 
     .reReply button {
@@ -177,64 +178,50 @@
     }
 
 </style>
+<div class="content">
+
+</div>
+
 <table>
-    <tr>
-        <td class="label">글유형</td>
-        <td class="contents">공지</td>
-        <td class="meta">등록일</td>
-        <td class="date">${board.regDate}</td>
-    </tr>
+
     <tr>
         <td class="label">제목</td>
         <td class="contents">${board.title}</td>
-        <c:if test="${empty active}">
-            <td class="meta">조회</td>
-            <td class="date">${board.viewCount}</td>
-        </c:if>
+        <td class="meta">조회</td>
+        <td class="date">${board.viewCount}</td>
     </tr>
     <tr>
-        <c:if test="${empty active}">
-            <td class="label">작성자</td>
-            <td colspan="3">${board.employeeName}</td>
-        </c:if>
+        <td class="label">작성자</td>
+        <td colspan="3">${board.employeeName}</td>
     </tr>
     <tr>
         <td class="label">내용</td>
         <td colspan="3">${board.content}</td>
     </tr>
-    <tr>
-        <td class="label">첨부파일</td>
-        <td colspan="3">
-            <c:forEach var="file" items="${fileList}">
-                <a href="/file/download?path=${file.path}">${file.originFileName}</a>
-            </c:forEach>
-        </td>
-    </tr>
+    <c:forEach var="file" items="${fileList}">
+        <tr>
+            <td class="label">첨부파일</td>
+            <td colspan="3">
+                <c:forEach var="file" items="${fileList}">
+                    <a href="/file/download?path=${file.path}">${file.originFileName}</a>
+                </c:forEach>
+            </td>
+        </tr>
+    </c:forEach>
 </table>
 <div class="btnGroup">
     <a href="/board/list">
         <button class="backBtn">목록</button>
     </a>
-    <c:choose>
-        <c:when test="${empty active}">
-            <c:if test="${not empty employee and employee.id eq board.employeeId}">
-                <a href="/board/write/update?id=${board.id}">
-                    <button type="button" class="editBtn">수정</button>
-                </a>
-                <form action="/board/delete" method="post">
-                    <input type="hidden" name="id" value="${board.id}"/>
-                    <button type="submit" class="deleteBtn">삭제</button>
-                </form>
-            </c:if>
-        </c:when>
-        <c:otherwise>
-            <c:if test="${employee.role eq 'ADMIN'}">
-                <button type="button" class="editBtn primary">수정</button>
-                <button type="button" class="deleteBtn secondary"
-                        onclick="location.href='/notice/delete/${board.id}'">삭제</button>
-            </c:if>
-        </c:otherwise>
-    </c:choose>
+    <c:if test="${not empty employee and employee.id eq board.employeeId}">
+        <a href="/board/write/update?id=${board.id}">
+            <button type="button" class="editBtn">수정</button>
+        </a>
+        <form action="/board/delete" method="post">
+            <input type="hidden" name="id" value="${board.id}"/>
+            <button type="submit" class="deleteBtn">삭제</button>
+        </form>
+    </c:if>
 </div>
 
 <hr>
@@ -246,10 +233,15 @@
     <div class="replyContainer">
         <div class="addReply">
             <div class="addInput">
-                <input type="text" id="content" placeholder="댓글 입력"></input>
+                <input type="text" id="content" placeholder="댓글 입력">
             </div>
             <div class="addBtn">
-                <button type="submit" id="addButton">등록</button>
+                <button id="addButton">등록</button>
+                <button class="button" type="button" id="emojiBtn">😀</button>
+            </div>
+            <div class="emoticons">
+                <div class="emoticon">
+                </div>
             </div>
         </div>
     </div>
@@ -266,6 +258,37 @@
 
 
 <script>
+    const button = document.querySelector("#emojiBtn");
+    const picker = new EmojiButton({
+        i18n: {
+            search: 'Search emojis...',
+            categories: {
+                recents: 'Recent Emojis',
+                smileys: 'Smileys & Emotion',
+                people: 'People & Body',
+                animals: 'Animals & Nature',
+                food: 'Food & Drink',
+                activities: 'Activities',
+                travel: 'Travel & Places',
+                objects: 'Objects',
+                flags: 'Flags'
+            },
+            notFound: 'No emojis found'
+        },
+        showSearch: false,
+        autoFocusSearch: false,
+        position: 'bottom-start'
+    });
+
+    button.addEventListener('click', () => {
+        picker.togglePicker(button);
+    });
+
+    picker.on('emoji', emoji => {
+        const text_box = document.querySelector('#content');
+        text_box.value += emoji;
+    });
+
     $(".deleteBtn").on("click", function (e) {
         if (!confirm("정말 삭제하시겠습니까?")) {
             e.preventDefault();
@@ -285,6 +308,9 @@
         console.log("로그인된 사용자 employeeId:", employeeId);
         console.log("댓글 작성자 employeeId:", replyEmployeeId);
 
+        if (employeeId !== replyEmployeeId) {
+            alert("다른 게시물은 삭제 할 수 없습니다.");
+        }
 
         if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {
             $.ajax({
@@ -293,9 +319,10 @@
                 success: function (response) {
                     response = JSON.parse(response)
                     console.log("댓글삭제", response);
-                    if(response){
+
+                    if (response) {
                         loadReplies(); // 댓글 다시 불러오기
-                    }else{
+                    } else {
                         alert("삭제 실패했습니다.");
                     }
                 },
@@ -303,8 +330,6 @@
                     console.log("댓글 삭제 실패");
                 }
             });
-        } else {
-            alert("댓글을 작성한 사람만 삭제할 수 있습니다.");
         }
     });
 
@@ -343,24 +368,28 @@
 
     const loadReplies = () => {
         const boardId = '${board.id}';
+        console.log(boardId);
+
         $.ajax({
             type: "get",
             url: "/reply/list",
             data: {boardId: boardId},
-            dataType: "json",
             success: function (replyList) {
                 $(".replyListContainer").empty();
+                console.log(replyList);
 
                 replyList.forEach(reply => {
+                    console.log(reply.regDate);
                     const $replyDiv = $('<div class="replyList">')
-                        .append($('<div class="profile">'))
+                        .append(
+                            $('<div class="profile" style="background-image: url(' + reply.profileImg + ')">'))
                         .append(
                             $('<div class="replyWrite">')
                                 .append(
                                     $('<div class="writerSysdate">')
                                         .append(
                                             $('<div class="realContents">')
-                                                .append($('<input type="text" readonly>').val(reply.employeeId))
+                                                .append($('<input type="text" readonly>').val(reply.employeeName))
                                                 .append($('<input type="text" readonly>').val(reply.regDate))
                                         )
                                 )
@@ -375,10 +404,6 @@
                                     $('<div class="reReply">')
                                         .append($('<button>').addClass('deleteReplyBtn').text('삭제').attr('data-id', reply.id).attr('data-employee-id', reply.employeeId))
                                 )
-                                .append(
-                                    $('<div class="report">')
-                                        .append($('<button>').text('수정').attr('data-id', reply.id))
-                                )
                         );
                     $('.replyListContainer').append($replyDiv);
                 });
@@ -387,7 +412,6 @@
                 console.log("실패");
             }
         });
-
 
 
     };
@@ -419,8 +443,8 @@
     <%--});--%>
 
 
-
 </script>
+
 
 
 <script src="/js/main/contact.js" type="text/javascript"></script>

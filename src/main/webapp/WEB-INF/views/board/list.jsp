@@ -9,7 +9,6 @@
         font-size: 14px;
     }
 
-    /* 테이블 헤더 스타일 */
     .board-table thead th {
         background-color: #5a6673;
         color: white;
@@ -18,17 +17,16 @@
         border: 1px solid #4a5568;
     }
 
-    /* 첫번째 열(체크박스) 스타일 */
     .board-table th:first-child,
     .board-table td:first-child {
-        width: 30px;
+        width: 80px;
         text-align: center;
     }
 
     /* 번호 열 스타일 */
     .board-table th:nth-child(2),
     .board-table td:nth-child(2) {
-        width: 50px;
+        width: 800px;
         text-align: center;
     }
 
@@ -36,7 +34,7 @@
     .board-table th:nth-child(3),
     .board-table td:nth-child(3) {
         width: auto;
-        text-align: left;
+        text-align: center;
     }
 
     /* 작성자 열 스타일 */
@@ -94,24 +92,26 @@
 
 </style>
 <div class="button-container">
-    <button class="extended-button" style="width:100px;">연장근무 신청</button>
-    <a href="/board/write"><button id="writeBtn" class="vacation-button"  style="width:80px; height:30px;">글쓰기</button></a>
-    <button class="vacation-list-button" style="width:70px;">휴가 조회</button>
+
+    <a href="/board/write">
+        <button id="writeBtn" class="vacation-button" style="width:80px; height:30px;">글쓰기</button>
+    </a>
+
 </div>
+<form action="/board/search" method="get" class="searchForm">
 <div class="search">
     <div>
-        <select id="searchOption">
-            <option>전체검색</option>
-            <option>작성자</option>
-            <option>제목</option>
-        </select>
+            <select id="searchOption" name="option">
+                <option value="writer">작성자</option>
+                <option value="title">제목</option>
+            </select>
     </div>
-    <div class="searchInput">
-        <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-    </div>
-    <div>
-        <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
-    </div>
+        <div class="search">
+            <input id="input" type="text" name="keyword" placeholder="검색어 입력">
+
+            <button id="searchBtn" type="submit"><span class="material-icons">search</span> 검색</button>
+        </div>
+    </form>
 </div>
 <table class="board-table">
     <thead>
@@ -119,7 +119,6 @@
         <h1>목록</h1>
     </tr>
     <tr>
-        <th><input type="checkbox"></th>
         <th>번호</th>
         <th>제목</th>
         <th>작성자</th>
@@ -130,11 +129,9 @@
     <tbody>
     <c:forEach var="board" items="${boardList}">
         <tr>
-            <td><input type="checkbox"></td>
             <td>${board.id}</td>
-            <td>
-                <a href ="/board/detail/${board.id}">${board.title}</a></td>
-            <td>${board.employeeId}</td>
+            <td><a href="/board/detail/${board.id}">${board.title}</a></td>
+            <td>${board.employeeName}</td>
             <td>${board.regDate}</td>
             <td>${board.viewCount}</td>
         </tr>
@@ -144,7 +141,4 @@
     </tbody>
 </table>
 
-
-
-<script src="/js/main/contact.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/board/board-footer.jsp"/>

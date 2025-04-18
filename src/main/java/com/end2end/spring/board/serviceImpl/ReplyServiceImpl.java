@@ -7,7 +7,10 @@ import com.end2end.spring.board.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ReplyServiceImpl implements ReplyService {
@@ -20,8 +23,6 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public List<ReplyDTO> selectByBoardId(int boardId) {
         return replyDAO.selectByBoardId(boardId);
-        // TODO: 게시글 id의 모든 댓글 조회
-
     }
 
     @Override

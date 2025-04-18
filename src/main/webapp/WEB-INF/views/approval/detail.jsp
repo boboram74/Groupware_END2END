@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="/css/approval/draft.css">
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <style>
     .modal {
         position: fixed;
@@ -47,6 +48,9 @@
         background-color: #f0f0f0;
         text-align: left;
     }
+    .fileBox{
+        border: 1px solid black;
+    }
 </style>
 <div class="container">
 
@@ -83,7 +87,7 @@
                                 <span class="approverStatus" id="approverStatus${approver['ID']} ${approver["SUBMITYN"] eq 'Y' ? 'done' : 'N'}">
                                     <c:choose>
                                         <c:when test="${approver['SUBMITYN'] eq 'Y'}">승인</c:when>
-                                        <c:otherwise>대기</c:otherwise>
+                                        <c:otherwise>반려</c:otherwise>
                                     </c:choose>
                                 </span>
                             </div>
@@ -92,7 +96,7 @@
                             </c:if>
                         </div>
 
-                        <c:if test="${approver['EMPLOYEEID'] eq employee.id and (empty approver['SUBMITYN'] or approver['SUBMITYN'] eq 'N')}">
+                        <c:if test="${approver['EMPLOYEEID'] eq employee.id and (empty approver['SUBMITYN'])}">
                             <form action="/approval/submit/approve/${approval.ID}" method="post" style="display:inline;">
                                 <input type="hidden" name="approvalId" value="${approval.ID}" />
                                 <input type="hidden" name="approverId" value="${approver['ID']}" />
@@ -101,7 +105,7 @@
                             <form action="/approval/reject" method="post" style="display:inline;">
                                 <input type="hidden" name="approvalId" value="${approval.ID}" />
                                 <input type="hidden" name="approverId" value="${approver['ID']}" />
-                                <button type="submit" class="rejectBtn">반려</button>
+                                <button type="button" class="rejectBtn">반려</button>
                             </form>
                         </c:if>
                     </div>
@@ -181,6 +185,16 @@
         </div>
         <div class="contentsBox">
             ${approval.CONTENT}
+        </div>
+        <div class="fileBox">
+        <c:forEach var="file" items="${fileList}">
+            <tr>
+                <td class="label">첨부파일</td>
+                <td colspan="3">
+                    <a href="/file/download?path=${file.path}">${file.originFileName}</a>
+                </td>
+            </tr>
+        </c:forEach>
         </div>
     </div>
 

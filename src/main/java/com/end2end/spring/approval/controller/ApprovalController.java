@@ -68,10 +68,16 @@ public class ApprovalController {
         String employeeId = employee.getId();
 
         Map<String, List<Map<String, Object>>> approvalByState = approvalService.allApprovals();
-        System.out.println("approvalByState: " + approvalByState);
+
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
+
+        String userRole = employee.getDepartmentName();
+        System.out.println("userRole: " + userRole);
+        boolean isAdmin = "경영팀".equals(userRole);
+        System.out.println("isAdmin: " + isAdmin);
         String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
-        boolean team = "경영팀".equals(departmentName);
+        boolean team = "경영팀".equals(departmentName) || isAdmin;
+        System.out.println("team : "+team);
 
         model.addAttribute("waitingList", approvalByState.get("WAITING"));
         model.addAttribute("goingList", approvalByState.get("ONGOING"));
@@ -144,6 +150,16 @@ public class ApprovalController {
     public String toDetail(Model model, @PathVariable String id, HttpSession session) {
         try {
             EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+            String employeeId = employee.getId();
+
+            String userRole = employee.getDepartmentName();
+            System.out.println("userRole: " + userRole);
+            boolean isAdmin = "경영팀".equals(userRole);
+            System.out.println("isAdmin: " + isAdmin);
+            String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+            boolean team = "경영팀".equals(departmentName) || isAdmin;
+            System.out.println("team : "+team);
+
             if (employee == null) {
                 return "redirect:/login";
             }
@@ -161,8 +177,7 @@ public class ApprovalController {
                 System.out.println(vacationDTO);
                 model.addAttribute("vacationDTO", vacationDTO);
             }
-            boolean isManagementDept = "경영팀".equals(employee.getDepartmentName());
-            if(isManagementDept) {
+            if(team) {
                 model.addAttribute("approval", approval);
                 model.addAttribute("nextId", nextId);
                 model.addAttribute("approvers", approvers);
@@ -186,8 +201,6 @@ public class ApprovalController {
             return "error/500";
         }
     }
-
-
 
     @ResponseBody
     @RequestMapping("/insert")

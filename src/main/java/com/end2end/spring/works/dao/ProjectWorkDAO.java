@@ -55,6 +55,13 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword,int projectId, S
     return mybatis.selectList("searchWorkList",params);
 }
 
+public int countTotalWorksByProjectId(int projectId) {
+        return mybatis.selectOne("works.countTotalWorksByProjectId", projectId);
+}
+    public int countFinishWorksByProjectId(int projectId) {
+        return mybatis.selectOne("works.countFinishWorksByProjectId", projectId);
+    }
+
     public void updateState(String state, int workItemId) {
 
         Map<String, Object> params = new HashMap<>();
@@ -90,11 +97,7 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword,int projectId, S
     }
 
     public int countByType(int selectedId, String type) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("type",type);
-        params.put("selectedId", selectedId);
-        return mybatis.selectOne("works.countByType", params);
-
+        return 0;
     }
 public int countTotalWorks(int selectedId) {
         return mybatis.selectOne("works.countTotalWorks", selectedId);
@@ -104,4 +107,6 @@ public int countTotalWorks(int selectedId) {
     }
 
 
+    public void endworks(int projectId) {
+    }
 }

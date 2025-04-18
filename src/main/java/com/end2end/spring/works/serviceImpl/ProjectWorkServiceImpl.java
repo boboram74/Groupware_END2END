@@ -4,6 +4,7 @@ import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.alarm.AlarmType;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.works.dao.ProjectDAO;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
@@ -17,7 +18,8 @@ import java.util.List;
 public class ProjectWorkServiceImpl implements ProjectWorkService {
     @Autowired
     ProjectWorkDAO dao;
-
+    @Autowired
+    ProjectDAO pdao;
     @Autowired
     FileService fileService;
 
@@ -61,7 +63,7 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     public ProjectWorkDTO update(ProjectWorkDTO dto) {
         System.out.println("여기 서비스 수정확인1");
         dao.update(dto);
-System.out.println("여기 서비스 수정확인2");
+        System.out.println("여기 서비스 수정확인2");
 //        alarmService.sendProjectAlarm(
 //                AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
 
@@ -102,10 +104,20 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, int projectId, 
 //
 //    }
 
+@Override
+public void endworks(int projectId){
+        pdao.endworks(projectId);
+}
+
     @Override
-    public void updateState(String state, int workItemId) {
+    public int updateState(String state, int workItemId, int projectId) {
         dao.updateState(state,workItemId);
         alarmService.sendProjectWorkStateChangeAlarm(workItemId);
+        int total = dao.countTotalWorksByProjectId(projectId);
+        int finished = dao.countFinishWorksByProjectId(projectId);
+
+        // 4. 모두 FINISH 상태면 0, 아니면 1 반환
+        return (total == finished) ? 0 : 1;
     }
 
     @Override

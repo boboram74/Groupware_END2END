@@ -5,8 +5,10 @@ import com.end2end.spring.approval.service.ApprovalFormService;
 import com.end2end.spring.commute.dto.VacationDTO;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.file.dao.FileDAO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.service.ApprovalService;
+import com.end2end.spring.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,7 @@ public class ApprovalController {
 
     @Autowired
     private VacationService vacationService;
+    @Autowired private FileService fileService;
 
     @RequestMapping("/list")
     public String toList(HttpServletRequest request,HttpSession session, Model model) {
@@ -68,10 +71,16 @@ public class ApprovalController {
         String employeeId = employee.getId();
 
         Map<String, List<Map<String, Object>>> approvalByState = approvalService.allApprovals();
-        System.out.println("approvalByState: " + approvalByState);
+
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
+
+        String userRole = employee.getDepartmentName();
+        System.out.println("userRole: " + userRole);
+        boolean isAdmin = "경영팀".equals(userRole);
+        System.out.println("isAdmin: " + isAdmin);
         String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
-        boolean team = "경영팀".equals(departmentName);
+        boolean team = "경영팀".equals(departmentName) || isAdmin;
+        System.out.println("team : "+team);
 
         model.addAttribute("waitingList", approvalByState.get("WAITING"));
         model.addAttribute("goingList", approvalByState.get("ONGOING"));
@@ -144,6 +153,22 @@ public class ApprovalController {
     public String toDetail(Model model, @PathVariable String id, HttpSession session) {
         try {
             EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+            String employeeId = employee.getId();
+
+            System.out.println("id : "+id);
+            String userRole = employee.getDepartmentName();
+            System.out.println("userRole: " + userRole);
+            boolean isAdmin = "경영팀".equals(userRole);
+            System.out.println("isAdmin: " + isAdmin);
+            String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+            boolean team = "경영팀".equals(departmentName) || isAdmin;
+            System.out.println("team : "+team);
+            FileDTO fileDTO = FileDTO.builder()
+                    .approvalId(id)
+                    .build();
+            model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+            System.out.println(fileService.selectByParentsId(fileDTO));
+
             if (employee == null) {
                 return "redirect:/login";
             }
@@ -156,13 +181,13 @@ public class ApprovalController {
             ApprovalFormDTO approvalFormDTO = approvalFormService.selectByFormName(formName);
             List<ApproverDTO> nextId = approvalService.nextId(id);
             List<Map<String, Object>> approvers = approvalService.selectApproversList(id);
+
             if ("휴가계".equals(approval.get("FORMNAME"))) {
                 VacationDTO vacationDTO = vacationService.getVacationByApprovalId(id);
                 System.out.println(vacationDTO);
                 model.addAttribute("vacationDTO", vacationDTO);
             }
-            boolean isManagementDept = "경영팀".equals(employee.getDepartmentName());
-            if(isManagementDept) {
+            if(team) {
                 model.addAttribute("approval", approval);
                 model.addAttribute("nextId", nextId);
                 model.addAttribute("approvers", approvers);
@@ -178,7 +203,6 @@ public class ApprovalController {
             model.addAttribute("approvers", approvers);
             model.addAttribute("employee", employee);
             model.addAttribute("approvalFormDTO", approvalFormDTO);
-
             return "approval/detail";
         } catch (Exception e) {
             e.printStackTrace();
@@ -186,8 +210,6 @@ public class ApprovalController {
             return "error/500";
         }
     }
-
-
 
     @ResponseBody
     @RequestMapping("/insert")
@@ -330,13 +352,6 @@ public class ApprovalController {
         model.addAttribute("searchParams", searchParams);
 
         return "approval/approval-test";
-    }
-    @PostMapping("/tempSave")
-    @ResponseBody
-    public ResponseEntity<TempApprovalDTO> saveTempApproval(@ModelAttribute TempApprovalDTO dto) {
-        approvalService.saveTempApproval(dto);
-        System.out.println(dto);
-        return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/insertImportant")

@@ -96,11 +96,6 @@ public class ApprovalDAO {
     public List<Map<String, Object>> allApprovals() {
         return mybatis.selectList("approval.allApprovals");
     }
-
-    public void saveTempApproval(TempApprovalDTO dto) {
-        mybatis.insert("approval.saveTempApproval", dto);
-    }
-
     public void insertImportant(CheckImportantDTO dto) {
         mybatis.insert("approval.insertImportant", dto);
     }

@@ -50,9 +50,6 @@ public interface ApprovalService {
 
     Map<String, List<Map<String, Object>>> SearchallApprovals(String keyword);
 
-
-    void saveTempApproval(TempApprovalDTO dto);
-
     void insertImportant(CheckImportantDTO dto);
 
 

@@ -331,13 +331,6 @@ public class ApprovalController {
 
         return "approval/approval-test";
     }
-    @PostMapping("/tempSave")
-    @ResponseBody
-    public ResponseEntity<TempApprovalDTO> saveTempApproval(@ModelAttribute TempApprovalDTO dto) {
-        approvalService.saveTempApproval(dto);
-        System.out.println(dto);
-        return ResponseEntity.ok(dto);
-    }
 
     @PostMapping("/insertImportant")
     @ResponseBody

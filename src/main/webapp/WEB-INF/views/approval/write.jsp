@@ -57,7 +57,6 @@
     <form action="/approval/insert" id="form">
      <jsp:include page="${dto.form}" />
     </form>
-    <button type="button" id="saveTempBtn">임시저장</button>
 <script type="text/javascript" src="/js/template/summernote.js"></script>
     <script>
         window.onload = function() {

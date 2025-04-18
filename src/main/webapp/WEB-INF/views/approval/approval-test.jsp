@@ -174,13 +174,13 @@
             <li class="detail-menu-item" onclick="location.href='/approval/important'">
                 <span class="material-icons">star</span>
                 <span>중요 문서함</span>
-                <span class="detail-badge"><span>1</span></span>
+                <span class="detail-badge"><span>${importantSize != null ? importantSize : 0}</span></span>
             </li>
             <c:if test="${team}">
             <li class="detail-menu-item" onclick="location.href='/approval/all'">
                 <span class="material-icons">description</span>
                 <span class="detail-menu-disc">모든 전자 결재함</span>
-                <span class="detail-badge"><span>1</span></span>
+                <span class="detail-badge"><span>${totalSize != null ? totalSize : 0}</span></span>
             </li>
             </c:if>
         </ul>
@@ -192,13 +192,6 @@
 <div class="mainContainer">
     <div class="mainBody">
         <div class="search">
-            <div>
-                <select id="searchOption">
-                    <option>보낸 사람 </option>
-                    <option>내용 </option>
-                    <option>제목 </option>
-                </select>
-            </div>
             <div class="searchInput">
                 <form action="/approval/search/" method="get" class="searchForm">
                     <input type="text" name="keyword" placeholder="문서종류,기안자,제목" class="searchInput" />
@@ -505,6 +498,7 @@
             }),
             success: function(response) {
                 alert("중요 문서로 저장되었습니다!");
+                location.reload();
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);

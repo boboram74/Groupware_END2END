@@ -269,10 +269,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         return allApproval;
     }
-    @Override
-    public void saveTempApproval(TempApprovalDTO dto) {
-        approvalDAO.saveTempApproval(dto);
-    }
 
     @Override
     public void insertImportant(CheckImportantDTO dto){

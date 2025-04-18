@@ -91,6 +91,13 @@ public class BoardController {
         return "/board/list";
     }
 
+    @RequestMapping("/search")
+    public String toSearch(Model model,String option,String keyword) {
+    List<BoardDTO> result = boardService.search(option,keyword);
+    model.addAttribute("boardList", result);
+    return "/board/list";
+    }
+
     @RequestMapping("/write")
     public String toWrite(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
@@ -124,7 +131,7 @@ public class BoardController {
                 .build();
         model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
 
-        return "/board/detail";
+        return "board/detail";
     }
 
     @RequestMapping("/category")

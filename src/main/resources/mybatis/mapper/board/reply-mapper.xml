@@ -13,10 +13,18 @@
     </insert>
 
     <select id="selectByBoardId" resultType="com.end2end.spring.board.dto.ReplyDTO">
-        select id, boardId, employeeId, content, regDate
-        from reply
-        where boardId = #{boardId}
-        order by regDate desc
+        select
+            r.id,
+            r.boardId,
+            r.employeeId,
+            r.content,
+            r.regDate,
+            e.name as employeeName,
+            e.profileImg
+        from reply r
+        join employee e on r.employeeId = e.id
+        where r.boardId = #{boardId}
+        order by r.regDate desc
     </select>
 
     <delete id="deleteById" >
@@ -28,4 +36,5 @@
         FROM reply
         WHERE id = #{id}
     </select>
+
 </mapper>

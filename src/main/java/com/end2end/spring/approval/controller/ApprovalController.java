@@ -5,8 +5,10 @@ import com.end2end.spring.approval.service.ApprovalFormService;
 import com.end2end.spring.commute.dto.VacationDTO;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.file.dao.FileDAO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.service.ApprovalService;
+import com.end2end.spring.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,7 @@ public class ApprovalController {
 
     @Autowired
     private VacationService vacationService;
+    @Autowired private FileService fileService;
 
     @RequestMapping("/list")
     public String toList(HttpServletRequest request,HttpSession session, Model model) {
@@ -50,7 +53,14 @@ public class ApprovalController {
         List<Map<String, Object>> goingList = approvalService.selectByState("ONGOING", employeeId);
         List<Map<String, Object>> rejectList = approvalService.selectByState("REJECT", employeeId);
         List<Map<String, Object>> completedList = approvalService.selectByState("SUBMIT", employeeId);
+        Map<String, List<Map<String, Object>>> approvalByState = approvalService.allApprovals();
 
+        List<Map<String, Object>> importantList = approvalService.importantlist(employeeId);
+
+        int totalSize = 0;
+        for (List<Map<String, Object>> approvalList : approvalByState.values()) {
+            totalSize += approvalList.size();
+        }
 
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
@@ -59,6 +69,9 @@ public class ApprovalController {
         model.addAttribute("formList", formList);
         model.addAttribute("team", team);
         model.addAttribute("cpage", cpage);
+        model.addAttribute("importantSize", importantList.size());
+        model.addAttribute("totalSize", totalSize);
+
         return "approval/approval-test";
     }
 
@@ -68,10 +81,19 @@ public class ApprovalController {
         String employeeId = employee.getId();
 
         Map<String, List<Map<String, Object>>> approvalByState = approvalService.allApprovals();
-        System.out.println("approvalByState: " + approvalByState);
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
+
+        int totalSize = 0;
+        for (List<Map<String, Object>> approvalList : approvalByState.values()) {
+            totalSize += approvalList.size();
+        }
+        System.out.println("totalSize: " + totalSize);
+        String userRole = employee.getDepartmentName();
+        boolean isAdmin = "경영팀".equals(userRole);
         String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
-        boolean team = "경영팀".equals(departmentName);
+        boolean team = "경영팀".equals(departmentName) || isAdmin;
+
+        List<Map<String, Object>> importantList = approvalService.importantlist(employeeId);
 
         model.addAttribute("waitingList", approvalByState.get("WAITING"));
         model.addAttribute("goingList", approvalByState.get("ONGOING"));
@@ -80,6 +102,8 @@ public class ApprovalController {
         model.addAttribute("formList", formList);
         model.addAttribute("isAll", true);
         model.addAttribute("team", team);
+        model.addAttribute("importantSize", importantList.size());
+        model.addAttribute("totalSize", totalSize);
 
         return "approval/approval-test";
     }
@@ -136,7 +160,6 @@ public class ApprovalController {
         model.addAttribute("totalVacationDate", (int) vacationService.sumTotalVacationDates(employee.getId()));
         model.addAttribute("isAbleHalf", isAbleHalf);
 
-        System.out.println(id);
         return "approval/write";
     }
 
@@ -144,6 +167,19 @@ public class ApprovalController {
     public String toDetail(Model model, @PathVariable String id, HttpSession session) {
         try {
             EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+            String employeeId = employee.getId();
+
+            String userRole = employee.getDepartmentName();
+
+            boolean isAdmin = "경영팀".equals(userRole);
+
+            String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+            boolean team = "경영팀".equals(departmentName) || isAdmin;
+            FileDTO fileDTO = FileDTO.builder()
+                    .approvalId(id)
+                    .build();
+            model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+
             if (employee == null) {
                 return "redirect:/login";
             }
@@ -156,13 +192,12 @@ public class ApprovalController {
             ApprovalFormDTO approvalFormDTO = approvalFormService.selectByFormName(formName);
             List<ApproverDTO> nextId = approvalService.nextId(id);
             List<Map<String, Object>> approvers = approvalService.selectApproversList(id);
+
             if ("휴가계".equals(approval.get("FORMNAME"))) {
                 VacationDTO vacationDTO = vacationService.getVacationByApprovalId(id);
-                System.out.println(vacationDTO);
                 model.addAttribute("vacationDTO", vacationDTO);
             }
-            boolean isManagementDept = "경영팀".equals(employee.getDepartmentName());
-            if(isManagementDept) {
+            if(team) {
                 model.addAttribute("approval", approval);
                 model.addAttribute("nextId", nextId);
                 model.addAttribute("approvers", approvers);
@@ -178,7 +213,6 @@ public class ApprovalController {
             model.addAttribute("approvers", approvers);
             model.addAttribute("employee", employee);
             model.addAttribute("approvalFormDTO", approvalFormDTO);
-
             return "approval/detail";
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,13 +221,9 @@ public class ApprovalController {
         }
     }
 
-
-
     @ResponseBody
     @RequestMapping("/insert")
     public void insert(MultipartFile[] files, ApprovalInsertDTO dto, HttpSession session, Model model) {
-        System.out.println("Approver ID 리스트: " + dto.getApproverId());
-        System.out.println("Approver ID 리스트: " + dto.getApprovalFormId());
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         dto.setEmployeeId(employee.getId());
 
@@ -243,14 +273,10 @@ public class ApprovalController {
 
     @RequestMapping("/search")
     public String search(HttpSession session, String keyword, Model model) {
-        System.out.println("도착2");
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
         String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
         boolean team = "경영팀".equals(departmentName);
-        System.out.println(team);
-        System.out.println(employeeId);
-
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
 
         List<Map<String, Object>> waitingList;
@@ -271,6 +297,14 @@ public class ApprovalController {
             completedList = approvalService.search("SUBMIT", employeeId, keyword);
         }
 
+        Map<String, List<Map<String, Object>>> approvalByState = approvalService.allApprovals();
+        int totalSize = 0;
+        for (List<Map<String, Object>> approvalList : approvalByState.values()) {
+            totalSize += approvalList.size();
+        }
+
+        List<Map<String, Object>> importantList = approvalService.importantlist(employeeId);
+
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);
@@ -278,26 +312,24 @@ public class ApprovalController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("formList", formList);
         model.addAttribute("team", team);
+        model.addAttribute("importantSize", importantList.size());
+        model.addAttribute("totalSize", totalSize);
 
         return "approval/approval-test";
     }
 
     @GetMapping("/searchDetail")
     public String searchDetail(@RequestParam Map<String, Object> searchParams, HttpSession session, Model model) {
-        System.out.println("도착");
 
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         if (employee == null) {
             return "redirect:/login";
         }
         String employeeId = employee.getId();
-        System.out.println("employeeId: " + employeeId);
 
         searchParams.put("employeeId", employeeId);
-        System.out.println("searchParams: " + searchParams);
 
         List<Map<String, Object>> approvalList = approvalService.searchDetail(searchParams);
-        System.out.println("approvalList: " + approvalList);
 
         List<Map<String, Object>> waitingList = new ArrayList<>();
         List<Map<String, Object>> goingList = new ArrayList<>();
@@ -306,7 +338,6 @@ public class ApprovalController {
 
         for (Map<String, Object> approval : approvalList) {
             String STATE = (String) approval.get("STATE");
-            System.out.println("STATE: " + STATE);
             if ("WAITING".equals(STATE)) {
                 waitingList.add(approval);
             } else if ("ONGOING".equals(STATE)) {
@@ -317,12 +348,6 @@ public class ApprovalController {
                 rejectList.add(approval);
             }
         }
-        System.out.println("waitingList: " + waitingList);
-        System.out.println("goingList: " + goingList);
-        System.out.println("completedList: " + completedList);
-        System.out.println("rejectList: " + rejectList);
-
-
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
         model.addAttribute("completedList", completedList);
@@ -330,13 +355,6 @@ public class ApprovalController {
         model.addAttribute("searchParams", searchParams);
 
         return "approval/approval-test";
-    }
-    @PostMapping("/tempSave")
-    @ResponseBody
-    public ResponseEntity<TempApprovalDTO> saveTempApproval(@ModelAttribute TempApprovalDTO dto) {
-        approvalService.saveTempApproval(dto);
-        System.out.println(dto);
-        return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/insertImportant")
@@ -359,8 +377,8 @@ public class ApprovalController {
         boolean team = "경영팀".equals(departmentName);
 
         List<Map<String, Object>> importantList = approvalService.importantlist(employeeId);
-        System.out.println("importantList: " + importantList);
-
+        Map<String, List<Map<String, Object>>> approvalByState = approvalService.allApprovals();
+        System.out.println("approvalByState.size :"+approvalByState.size());
         List<Map<String, Object>> waitingList = new ArrayList<>();
         List<Map<String, Object>> goingList = new ArrayList<>();
         List<Map<String, Object>> completedList = new ArrayList<>();
@@ -368,8 +386,6 @@ public class ApprovalController {
 
         for (Map<String, Object> approval : importantList) {
             String state = (String) approval.get("STATE");
-            System.out.println("STATE: " + state);
-
             if ("WAITING".equals(state)) {
                 waitingList.add(approval);
             } else if ("ONGOING".equals(state)) {
@@ -381,6 +397,12 @@ public class ApprovalController {
             }
         }
 
+
+        int totalSize = 0;
+        for (List<Map<String, Object>> approvalList : approvalByState.values()) {
+            totalSize += approvalList.size();
+        }
+
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
         model.addAttribute("waitingList", waitingList);
         model.addAttribute("goingList", goingList);
@@ -388,6 +410,8 @@ public class ApprovalController {
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("team", team);
         model.addAttribute("formList", formList);
+        model.addAttribute("importantSize", importantList.size());
+        model.addAttribute("totalSize",totalSize);
 
         return "/approval/important";
     }
@@ -404,7 +428,6 @@ public class ApprovalController {
             dto.setApprovalId(approvalId);
             dto.setEmployeeId(employeeId);
             dto.setLeaderCheckYn(leaderCheckYn);
-            System.out.println("취소"+dto);
             approvalService.removeImportant(dto);
             return "success";
         } catch (Exception e) {

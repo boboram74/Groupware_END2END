@@ -151,23 +151,35 @@
             const startTime = $('#startTime').val();
             const endTime = $('#endTime').val();
             if (startTime && endTime) {
-                const start = new Date(`2000-01-01T${startTime}:00`);
-                const end = new Date(`2000-01-01T${endTime}:00`);
+                const start = Date.parse('2000-01-01T' + startTime + ':00');
+                const end = Date.parse('2000-01-01T' + endTime + ':00');
+                console.log('startTime:', startTime);
+                console.log('endTime:', endTime);
+                console.log('start:', start);
+                console.log('end:', end);
 
-                if (end > start) {
-                    const diff = (end - start) / (1000 * 60 * 60);
-                    $('#totalHours').text(`총 연장근무 시간: ${diff.toFixed(1)}시간`);
+                if (!isNaN(start) && !isNaN(end)) {
+                    if (end > start) {
+                        const diff = (end - start) / (1000 * 60 * 60);
+                        const hours = diff.toFixed(1);
 
-                    $('<input>', {
-                        type: 'hidden',
-                        name: 'overtimeHours',
-                        value: diff.toFixed(1)
-                    }).insertAfter('#totalHours');
+                        $('#totalHours').text('총 연장근무 시간: ' + hours + '시간');
+
+                        $('input[name="overtimeHours"]').remove();
+                        $('<input>', {
+                            type: 'hidden',
+                            name: 'overtimeHours',
+                            value: hours
+                        }).insertAfter('#totalHours');
+                    } else {
+                        $('#totalHours').text('종료 시간은 시작 시간보다 나중이어야 합니다.');
+                    }
                 } else {
-                    $('#totalHours').text('종료 시간은 시작 시간보다 나중이어야 합니다.');
+                    $('#totalHours').text('시간 정보를 제대로 불러오지 못했습니다.');
                 }
             }
         }
+
 
         $('#startTime, #endTime').on('change', calculateHours);
     });

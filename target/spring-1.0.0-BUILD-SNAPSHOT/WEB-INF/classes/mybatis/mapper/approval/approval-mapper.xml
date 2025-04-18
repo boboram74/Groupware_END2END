@@ -132,18 +132,6 @@
         ORDER BY a.regdate DESC
     </select>
 
-    <insert id="saveTempApproval">
-        INSERT INTO APPROVAL_TEMP (
-        ID,
-        EMPLOYEEID,
-        APPROVALFORMID,
-        DEPARTMENTID,
-        TITLE,
-        CONTENT,
-        REGDATE
-        ) VALUES (APPROVAL_TEMP_ID_SEQ.NEXTVAL,#{employeeId},#{approvalFormId},#{departmentId},#{title},#{content},SYSDATE)
-    </insert>
-
     <insert id="insertImportant" parameterType="com.end2end.spring.approval.dto.CheckImportantDTO">
         insert into important_approval (
         id, employeeid, approvalid, leadercheckyn, regdate

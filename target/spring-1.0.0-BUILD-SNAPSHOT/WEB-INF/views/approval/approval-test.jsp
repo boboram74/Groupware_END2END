@@ -192,13 +192,6 @@
 <div class="mainContainer">
     <div class="mainBody">
         <div class="search">
-            <div>
-                <select id="searchOption">
-                    <option>보낸 사람 </option>
-                    <option>내용 </option>
-                    <option>제목 </option>
-                </select>
-            </div>
             <div class="searchInput">
                 <form action="/approval/search/" method="get" class="searchForm">
                     <input type="text" name="keyword" placeholder="문서종류,기안자,제목" class="searchInput" />

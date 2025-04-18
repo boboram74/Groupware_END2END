@@ -38,7 +38,7 @@ public class Scheduler {
         vacationService.insertUsableVacation();
     }
 
-    @Scheduled(cron="0 0 9 * * ?")
+    @Scheduled(cron="30 45 14 * * ?")
     public void sendDeadLineAlarm() {
         List<ProjectSelectDTO> projectDTOList = projectService.selectAllProject();
 

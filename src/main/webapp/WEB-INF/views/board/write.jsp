@@ -82,6 +82,7 @@
         background-color: white;
         color: #333;
     }
+
     /* 파일 첨부 관련 스타일 */
     .fileUpload {
         padding: 10px 0;
@@ -96,7 +97,8 @@
         cursor: pointer;
         margin-right: 10px;
     }
-    #searchOption{
+
+    #searchOption {
         width: 120px;
         height: 30px;
         border-radius: 5px;
@@ -105,52 +107,57 @@
 <div class="content">
 </div>
 <form action="/board/insert" method="post" enctype="multipart/form-data">
-<table>
-    <tr>
+    <table>
+        <tr>
 
 
-        <th>등록일</th>
-        <td>
-            <div class="date">등록일</div>
-        </td>
-    </tr>
-    <tr>
-        <th>제목 <span class="required">*</span></th>
-        <td colspan="3">
-            <input type="text" name="title">
-        </td>
-    </tr>
-    <tr>
-        <th>이름 <span class="required">*</span></th>
-        <td colspan="3">
-            <input type="text" name="employeeId" value="${employee.id}" />
-        </td>
-    </tr>
-    <tr>
-        <th>첨부파일</th>
-        <td colspan="3">
-            <jsp:include page="/WEB-INF/views/template/fileInput.jsp"/>
-        </td>
-    </tr>
-    <tr>
-        <th>내용 <span class="required">*</span></th>
-        <td colspan="3">
-            <input type="text" id="content" name="content">
-        </td>
-    </tr>
-</table>
-<%--    <input type="hidden" name="employeeId" value="${employee.employeeId}">--%>
-<%--    <input type="hidden" name="id" value="자동으로 설정">--%>
+            <th>등록일</th>
+            <td>
+                <div class="date">${board.regDate}</div>
+            </td>
+        </tr>
+        <tr>
+            <th>제목 <span class="required">*</span></th>
+            <td colspan="3">
+                <input type="text" name="title">
+            </td>
+        </tr>
+        <tr>
+            <th>이름 <span class="required">*</span></th>
+            <td colspan="3">
+                ${employeeDTO.name}
+            </td>
+        </tr>
+        <tr>
+            <th>첨부파일</th>
+            <td colspan="3">
+                <jsp:include page="/WEB-INF/views/template/fileInput.jsp"/>
+            </td>
+        </tr>
+        <tr>
+            <th>내용 <span class="required">*</span></th>
+            <td colspan="3">
+                <input type="text" id="content" name="content">
+            </td>
+        </tr>
+    </table>
+    <%--    <input type="hidden" name="employeeId" value="${employee.employeeId}">--%>
+    <%--    <input type="hidden" name="id" value="자동으로 설정">--%>
 
-<div class="button-area">
-    <button class="saveBtn">저장</button>
-    <a href="/board/list">
-    <button type="button" class="canBtn">취소</button>
-    </a>
-</div>
+    <div class="button-area">
+        <button class="saveBtn">저장</button>
+        <a href="/board/list">
+            <button type="button" class="canBtn">취소</button>
+        </a>
+    </div>
 </form>
 <script type="text/javascript" src="/js/template/summernote.js"></script>
 <script>
+    window.onload = function () {
+        const date = new date();
+        $('.date').html(date.toLocaleString());
+    }
+
     $(document).ready(function () {
         $('#content').summernote(summernoteSetting($('#content')));
 

@@ -101,6 +101,7 @@ public class BoardController {
     @RequestMapping("/write")
     public String toWrite(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        System.out.println(employee);
         if (employee == null) {
             return "redirect:/login"; // 세션이 없으면 로그인 페이지로 리다이렉트
         }
@@ -108,6 +109,7 @@ public class BoardController {
         // 게시판 카테고리 목록을 모델에 추가
         List<BoardCategoryDTO> categoryList = boardCategoryService.selectAll();
         model.addAttribute("employeeDTO", employee);
+        System.out.println(categoryList);
         model.addAttribute("categoryList", categoryList);
 
         // TODO: 게시글 입력 폼으로 이동

@@ -33,7 +33,8 @@ public class NoticeController {
 
     @RequestMapping("/list/{categoryId}")
     public String toList(@PathVariable int categoryId, int page, Model model) {
-        model.addAttribute("noticeList", noticeService.selectByCategoryId(categoryId));
+        model.addAttribute("boardList", noticeService.selectByCategoryId(categoryId));
+        model.addAttribute("noticeCategory", noticeCategoryService.selectById(categoryId));
 
         PageNaviUtil.PageNavi pageNavi =
                 new PageNaviUtil(page, noticeService.selectByCategoryId(categoryId).size()).generate();

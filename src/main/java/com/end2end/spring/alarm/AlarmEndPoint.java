@@ -27,7 +27,7 @@ public class AlarmEndPoint {
     }
 
     @OnOpen
-    public void onOpen(Session session, EndpointConfig config) {
+    public void onOpen(Session session, EndpointConfig config) throws IOException {
         HttpSession hSession = (HttpSession) config.getUserProperties().get("hSession");
         EmployeeDTO employee = (EmployeeDTO) hSession.getAttribute("employee");
         System.out.println("onOpen : " + employee.getId());
@@ -37,10 +37,7 @@ public class AlarmEndPoint {
             EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employee.getId());
 
             clients.get(employee.getId()).getBasicRemote().sendText(g.toJson(queue));
-        } catch (NullPointerException ignored) {
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (NullPointerException ignored) {} // 로그인 하지 않은 사원은 무시
     }
 
     @OnClose
@@ -48,16 +45,13 @@ public class AlarmEndPoint {
         clients.values().removeIf(s -> s.equals(session));
     }
 
-    public static void sendMessage(AlarmDTO dto, String employeeId) {
+    public static void sendMessage(AlarmDTO dto, String employeeId) throws IOException{
         EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employeeId);
         queue.add(dto);
 
         try {
             clients.get(employeeId).getBasicRemote().sendText(g.toJson(queue));
-        } catch (NullPointerException ignore) { // 현재 로그인 안한 사원에게는 딱히 안줘도 됨
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (NullPointerException ignored) {} // 로그인 하지 않은 사원은 무시
     }
 
     @OnMessage

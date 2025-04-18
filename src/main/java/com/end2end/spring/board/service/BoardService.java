@@ -14,12 +14,12 @@ public interface BoardService {
     List<BoardDTO> selectAll();
     List<BoardDTO> selectByCategoryId(int categoryId, String employeeId);
     List<BoardDTO> selectImportant(String employeeId);
-    List<BoardDTO> search();
+    List<BoardDTO> search(String option, String keyword);
     BoardDTO selectById(int id);
     void insert(MultipartFile[] files, BoardDTO dto) throws Exception;
     void update(BoardDTO dto);
     int deleteById(int id);
-    void complaint(ComplaintDTO dto);
+
     void insertCategory(BoardCategoryDTO dto);
     BoardCategoryDTO selectCategoryById(int categoryId);
     List<BoardDTO> selectRecent();

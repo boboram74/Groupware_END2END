@@ -22,7 +22,6 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     ProjectDAO pdao;
     @Autowired
     FileService fileService;
-
     @Autowired
     private AlarmService alarmService;
 
@@ -64,8 +63,8 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
         System.out.println("여기 서비스 수정확인1");
         dao.update(dto);
         System.out.println("여기 서비스 수정확인2");
-//        alarmService.sendProjectAlarm(
-//                AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
+        alarmService.sendProjectAlarm(
+                AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
 
         return dto;
     }
@@ -115,6 +114,10 @@ public void endworks(int projectId){
         alarmService.sendProjectWorkStateChangeAlarm(workItemId);
         int total = dao.countTotalWorksByProjectId(projectId);
         int finished = dao.countFinishWorksByProjectId(projectId);
+
+        if(finished == 0) {
+            alarmService.sendProjectCompleteAlarm(projectId);
+        }
 
         // 4. 모두 FINISH 상태면 0, 아니면 1 반환
         return (total == finished) ? 0 : 1;

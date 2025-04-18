@@ -104,26 +104,22 @@
 </style>
 <div class="content">
 </div>
-<form action="/board/insert" method="post" enctype="multipart/form-data">
+<form action="${empty action ? '/board/insert' : action}" method="post" enctype="multipart/form-data">
 <table>
-    <tr>
-        <th>종류</th>
-        <td>
-            <div class="checkboxArea">
-                <select id="searchOption" name="boardCtId">
-                    <option value="1">공지 게시판</option>
-                    <option value="2">중요 게시판</option>
-                    <option value="3">전사 게시판</option>
-                    <option value="4">그룹 게시판</option>
-                </select>
-            </div>
-        </td>
-
-        <th>등록일</th>
-        <td>
-            <div class="date">등록일</div>
-        </td>
-    </tr>
+    <c:if test="${not empty action}">
+        <tr>
+            <th>종류</th>
+            <td colspan="3">
+                <div class="checkboxArea">
+                    <select id="searchOption" name="noticeCtId">
+                        <c:forEach items="${noticeCategoryList}" var="noticeCt">
+                            <option value="${noticeCt.id}">${noticeCt.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </c:if>
     <tr>
         <th>제목 <span class="required">*</span></th>
         <td colspan="3">
@@ -133,7 +129,15 @@
     <tr>
         <th>이름 <span class="required">*</span></th>
         <td colspan="3">
-            <input type="text" name="employeeId" value="${employee.id}" />
+            <c:choose>
+                <c:when test="${action != null}">
+                    <input type="text" readonly value="관리자" disabled/>
+                </c:when>
+                <c:otherwise>
+                    <input type="text" value="${employee.name}" disabled/>
+                    <input type="hidden" name="employeeId" value="${employee.id}" />
+                </c:otherwise>
+            </c:choose>
         </td>
     </tr>
     <tr>

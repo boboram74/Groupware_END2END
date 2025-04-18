@@ -1,13 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--<jsp:include page="/WEB-INF/views/template/header.jsp"/>--%>
-<html lang="ko">
+<html lang="ko" class="light">
 <head>
+    <link rel="stylesheet" href="/css/color/newColor.css">
     <link rel="stylesheet" href="/css/hr/write.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>사원 등록</title>
@@ -42,7 +41,7 @@
                         <div class="input-with-btn">
                             <input type="text" id="id" name="loginId"
                                    placeholder="6~20자 영문 소문자·숫자 조합">
-                            <button type="button" id="idCheckBtn">중복 체크</button>
+                            <button type="button" class="primary" id="idCheckBtn">중복 체크</button>
                         </div>
                         <div id="resultId" class="validation-msg"></div>
                     </div>
@@ -52,7 +51,7 @@
                                placeholder="8자 이상 영문 소문자·숫자 조합">
                         <div id="resultPw" class="validation-msg"></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group repw">
                         <label>패스워드 확인</label>
                         <input type="password" placeholder="위와 동일하게 입력">
                         <div id="resultRePw" class="validation-msg"></div>
@@ -81,7 +80,7 @@
                         <label>우편번호</label>
                         <div class="input-with-btn">
                             <input type="text" id="postcode" name="postCode" readonly placeholder="우편번호">
-                            <button type="button" class="postBtn" id="postBtn">검색</button>
+                            <button type="button" class="postBtn primary" id="postBtn">검색</button>
                         </div>
                     </div>
                     <div class="form-group">

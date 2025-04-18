@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
@@ -63,33 +64,19 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detail-menu-item">
+            <li class="detail-menu-item ${active eq 'notice' ? 'active' : ''}" onClick="location.href='/notice/list?page=1'">
                 <span class="material-icons">notifications</span>
                 <span>공지 게시판</span>
                 <span class="detail-badge">5</span>
             </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">star</span>
-                <span>중요 게시판</span>
-                <span class="detail-badge">32</span>
-            </li>
-            <li class="detail-menu-item">
+            <li class="detail-menu-item ${empty active ? 'active' : ''}" onClick="location.href='/board/list'">
                 <span class="material-icons">bookmark</span>
                 <span class="detail-menu-disc">전사 게시판</span>
                 <span class="detail-badge">12</span>
             </li>
             <li class="detail-menu-item">
-                <span class="material-icons">person</span>
-                <span>그룹 게시판</span>
-                <span class="detail-badge">2</span>
-            </li>
-            <li class="detail-menu-item">
                 <span class="material-icons">folder</span>
                 <span>자료실</span>
-            </li>
-            <li class="detail-menu-item" id="create-category">
-                <span class="material-icons">create</span>
-                <span>게시판 만들기</span>
             </li>
         </ul>
         <button class="detail-modal-close">

@@ -4,7 +4,6 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.messenger.config.WebSocketConfig;
 import com.google.common.collect.EvictingQueue;
 import com.google.gson.Gson;
-import org.apache.ibatis.jdbc.Null;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
@@ -17,17 +16,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AlarmEndPoint {
     private static final Gson g = new Gson();
 
-    private static final Map<String, Session> clients = new ConcurrentHashMap<>();
-    private static final Map<String, EvictingQueue<AlarmDTO>> alarmQueues = new ConcurrentHashMap<>();
+    private static final Map<String, Session> clients = new ConcurrentHashMap<>();  // 로그인한 사람의 session 보관
+    private static final Map<String, EvictingQueue<AlarmDTO>> alarmQueues = new ConcurrentHashMap<>();  // 알람 리스트 보관
 
-    private static long id = 0L;
+    private static long id = 0L;  // 알람 고유 id
 
-    private static EvictingQueue<AlarmDTO> getOrCreateQueue(String employeeId) {
+    private static EvictingQueue<AlarmDTO> getOrCreateQueue(String employeeId) {  // 알람 리스트 반환
         return alarmQueues.computeIfAbsent(employeeId, k -> EvictingQueue.create(20));
     }
 
     @OnOpen
-    public void onOpen(Session session, EndpointConfig config) {
+    public void onOpen(Session session, EndpointConfig config) throws IOException {
         HttpSession hSession = (HttpSession) config.getUserProperties().get("hSession");
         EmployeeDTO employee = (EmployeeDTO) hSession.getAttribute("employee");
         System.out.println("onOpen : " + employee.getId());
@@ -37,10 +36,7 @@ public class AlarmEndPoint {
             EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employee.getId());
 
             clients.get(employee.getId()).getBasicRemote().sendText(g.toJson(queue));
-        } catch (NullPointerException ignored) {
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (NullPointerException ignored) {} // 로그인 하지 않은 사원은 무시
     }
 
     @OnClose
@@ -48,16 +44,13 @@ public class AlarmEndPoint {
         clients.values().removeIf(s -> s.equals(session));
     }
 
-    public static void sendMessage(AlarmDTO dto, String employeeId) {
+    public static void sendMessage(AlarmDTO dto, String employeeId) throws IOException{
         EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employeeId);
         queue.add(dto);
 
         try {
             clients.get(employeeId).getBasicRemote().sendText(g.toJson(queue));
-        } catch (NullPointerException ignore) { // 현재 로그인 안한 사원에게는 딱히 안줘도 됨
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (NullPointerException ignored) {} // 로그인 하지 않은 사원은 무시
     }
 
     @OnMessage

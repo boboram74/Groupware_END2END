@@ -23,6 +23,42 @@
         ORDER BY B.ID DESC
     </select>
 
+
+<!--    <select id="search" parameterType="map" resultType="com.end2end.spring.board.dto.BoardDTO">-->
+<!--        SELECT * FROM board-->
+<!--        <where>-->
+<!--            <choose>-->
+<!--                <when test="option.equals('title')">-->
+<!--                    title LIKE CONCAT('%', #{keyword}, '%')-->
+<!--                </when>-->
+<!--                <when test="option.equals('writer')">-->
+<!--                    writer LIKE CONCAT('%', #{keyword}, '%')-->
+<!--                </when>-->
+<!--            </choose>-->
+<!--        </where>-->
+<!--        ORDER BY created_at DESC-->
+<!--    </select>-->
+
+    <select id="search" parameterType="map" resultType="com.end2end.spring.board.dto.BoardDTO">
+        SELECT e.name as employeeName , b.*
+        FROM board b
+            join employee e
+            on b.EMPLOYEEID = e.id
+        <where>
+            <choose>
+                <when test="option == 'title'">
+                    title LIKE '%' || #{keyword} || '%'
+                </when>
+                <when test="option == 'writer'">
+                    e.name LIKE '%' || #{keyword} || '%'
+                </when>
+            </choose>
+        </where>
+        ORDER BY regDate DESC
+    </select>
+
+
+
     <delete id="deleteById">
         delete from board where id = #{id}
     </delete>

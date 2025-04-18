@@ -68,28 +68,21 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <a href="/board/list">
-                <li class="detail-menu-item">
-                    <span class="material-icons">notifications</span>
-                    <span> 게시판</span>
-                    <%--                <span class="detail-badge">5</span>--%>
-                </li>
-            </a>
-
-            <a href="/board/write">
-                <li class="detail-menu-item" id="create-category">
-                    <span class="material-icons">create</span>
-                    <span>게시물 작성하기</span>
-                </li>
-            </a>
+            <li class="detail-menu-item ${active eq 'notice' ? 'active' : ''}" onClick="location.href='/notice/list?page=1'">
+                <span class="material-icons">notifications</span>
+                <span>공지 게시판</span>
+                <span class="detail-badge">5</span>
+            </li>
+            <li class="detail-menu-item ${empty active ? 'active' : ''}" onClick="location.href='/board/list'">
+                <span class="material-icons">bookmark</span>
+                <span class="detail-menu-disc">전사 게시판</span>
+                <span class="detail-badge">12</span>
+            </li>
         </ul>
         <button class="detail-modal-close">
             <span class="material-icons">close</span>
         </button>
     </div>
-</div>
-
-
 </div>
 <div class="mainContainer">
     <div class="mainBody">

@@ -73,6 +73,7 @@ public class NoticeController {
     public String toWrite(Model model) {
         model.addAttribute("noticeCategoryList", noticeCategoryService.selectAll());
         model.addAttribute("action", "/notice/insert");
+        model.addAttribute("active", "write");
 
         return "board/write";
     }

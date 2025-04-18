@@ -5,8 +5,10 @@ import com.end2end.spring.approval.service.ApprovalFormService;
 import com.end2end.spring.commute.dto.VacationDTO;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.file.dao.FileDAO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.service.ApprovalService;
+import com.end2end.spring.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,7 @@ public class ApprovalController {
 
     @Autowired
     private VacationService vacationService;
+    @Autowired private FileService fileService;
 
     @RequestMapping("/list")
     public String toList(HttpServletRequest request,HttpSession session, Model model) {
@@ -152,6 +155,7 @@ public class ApprovalController {
             EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
             String employeeId = employee.getId();
 
+            System.out.println("id : "+id);
             String userRole = employee.getDepartmentName();
             System.out.println("userRole: " + userRole);
             boolean isAdmin = "경영팀".equals(userRole);
@@ -159,6 +163,11 @@ public class ApprovalController {
             String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
             boolean team = "경영팀".equals(departmentName) || isAdmin;
             System.out.println("team : "+team);
+            FileDTO fileDTO = FileDTO.builder()
+                    .approvalId(id)
+                    .build();
+            model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+            System.out.println(fileService.selectByParentsId(fileDTO));
 
             if (employee == null) {
                 return "redirect:/login";
@@ -172,6 +181,7 @@ public class ApprovalController {
             ApprovalFormDTO approvalFormDTO = approvalFormService.selectByFormName(formName);
             List<ApproverDTO> nextId = approvalService.nextId(id);
             List<Map<String, Object>> approvers = approvalService.selectApproversList(id);
+
             if ("휴가계".equals(approval.get("FORMNAME"))) {
                 VacationDTO vacationDTO = vacationService.getVacationByApprovalId(id);
                 System.out.println(vacationDTO);
@@ -193,7 +203,6 @@ public class ApprovalController {
             model.addAttribute("approvers", approvers);
             model.addAttribute("employee", employee);
             model.addAttribute("approvalFormDTO", approvalFormDTO);
-
             return "approval/detail";
         } catch (Exception e) {
             e.printStackTrace();

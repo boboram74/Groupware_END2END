@@ -50,36 +50,51 @@
 
 <div class="mainContainer">
   <div class="mainBody">
-    <div class="search">
-      <div>
-        <select id="searchOption">
-          <option>선택</option>
-          <option>선택</option>
-          <option>선택</option>
-        </select>
+    <h1>웹서버 모니터링</h1>
+    <div class="iframe-grid">
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=2&from=now-30m&to=now&theme=light"></iframe>
       </div>
-      <div class="searchInput">
-        <input id="input" type="text" name="keyword" placeholder="검색어 입력">
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=1&from=now-30m&to=now&theme=light"></iframe>
       </div>
-      <div>
-        <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=4&from=now-30m&to=now&theme=light"></iframe>
+      </div>
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=3&from=now-30m&to=now&theme=light"></iframe>
+      </div>
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/ec9bb9-ec849c-ebb284?from=1744950629114&to=1744954229115&orgId=1&panelId=5"></iframe>
+      </div>
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/ec9bb9-ec849c-ebb284?from=1744950681989&to=1744954281989&orgId=1&panelId=6"></iframe>
       </div>
     </div>
-    <div class="content">
-      출력 공간(높이 주지말고 컨텐츠 내용에 따라 유동적으로 증가하게 두세요)
+
+    <h1>메일서버 모니터링</h1>
+    <div class="iframe-grid">
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744930921473&to=1744952521473&panelId=1"></iframe>
+      </div>
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744930944548&to=1744952544548&panelId=2"></iframe>
+      </div>
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744930958420&to=1744952558420&panelId=3"></iframe>
+      </div>
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744930973543&to=1744952573543&panelId=4"></iframe>
+      </div>
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744932910271&to=1744954510271&panelId=5"></iframe>
+      </div>
+      <div class="iframe-card">
+        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744932951351&to=1744954551351&panelId=6"></iframe>
+      </div>
     </div>
-    <!-- 배경색 hover 효과 -->
-    <button class="primary primary-hover">호버 효과가 있는 기본 버튼</button>
-    <div class="primary-container primary-container-hover">호버 효과가 있는 컨테이너</div>
-
-    <!-- 텍스트 hover 효과 -->
-    <a class="primary-text primary-text-hover">호버 효과가 있는 링크</a>
-
-    <!-- 여러 효과 조합 -->
-    <button class="secondary secondary-hover">
-      <span class="primary-text primary-text-hover">혼합된 호버 효과</span>
-    </button>
   </div>
+
   <script>
     $(document).ready(function() {
       $('.detail-menu-item').on('click', function() {

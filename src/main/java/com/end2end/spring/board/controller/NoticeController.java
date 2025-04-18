@@ -86,13 +86,13 @@ public class NoticeController {
     @RequestMapping("/update")
     public String update(NoticeDTO dto) {
         noticeService.update(dto);
-        return "redirect:/notice/list";
+        return "redirect:/notice/detail/" + dto.getId();
     }
 
     @RequestMapping("/delete/{id}")
     public String deleteById(@PathVariable int id) {
         noticeService.deleteById(id);
-        return "redirect:/notice/list";
+        return "redirect:/notice/list?page=1";
     }
 
     @ResponseBody

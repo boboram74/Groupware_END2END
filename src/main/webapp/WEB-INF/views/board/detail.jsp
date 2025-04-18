@@ -230,7 +230,8 @@
         <c:otherwise>
             <c:if test="${employee.role eq 'ADMIN'}">
                 <button type="button" class="editBtn primary">수정</button>
-                <button type="button" class="deleteBtn secondary">삭제</button>
+                <button type="button" class="deleteBtn secondary"
+                        onclick="location.href='/notice/delete/${board.id}'">삭제</button>
             </c:if>
         </c:otherwise>
     </c:choose>

@@ -1,19 +1,24 @@
 package com.end2end.spring.board.serviceImpl;
 
+import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.board.dao.NoticeDAO;
 import com.end2end.spring.board.dto.NoticeDTO;
 import com.end2end.spring.board.service.NoticeService;
+import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
 public class NoticeServiceImpl implements NoticeService {
     @Autowired private NoticeDAO noticeDAO;
-
+    @Autowired private FileService fileService;
+    @Autowired private AlarmService alarmService;
 
     @Override
     public List<NoticeDTO> selectAll() {
@@ -48,8 +53,14 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Transactional
     @Override
-    public void insert(NoticeDTO dto) {
+    public void insert(MultipartFile[] files, NoticeDTO dto) throws Exception {
+        FileDTO fileDTO = FileDTO.builder()
+                .noticeId(dto.getId())
+                .build();
+        fileService.insert(files, fileDTO);
         noticeDAO.insert(dto);
+
+        alarmService.sendNoticeIsCreateAlarm(dto.getId());
     }
 
     @Transactional

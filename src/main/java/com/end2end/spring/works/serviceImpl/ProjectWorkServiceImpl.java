@@ -116,6 +116,10 @@ public void endworks(int projectId){
         int total = dao.countTotalWorksByProjectId(projectId);
         int finished = dao.countFinishWorksByProjectId(projectId);
 
+        if(finished == 0) {
+            alarmService.sendProjectCompleteAlarm(projectId);
+        }
+
         // 4. 모두 FINISH 상태면 0, 아니면 1 반환
         return (total == finished) ? 0 : 1;
     }

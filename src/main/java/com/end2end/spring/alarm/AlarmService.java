@@ -4,6 +4,7 @@ import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dto.ApprovalDTO;
 import com.end2end.spring.board.dao.BoardDAO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.MailURLDTO;
 import com.end2end.spring.schedule.dao.CalendarUserDAO;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Service
 public class AlarmService {
+    @Autowired private EmployeeService employeeService;
     @Autowired private MailDAO mailDAO;
     @Autowired private ApprovalDAO approvalDAO;
     @Autowired private ProjectWorkDAO projectWorkDAO;
@@ -40,6 +42,15 @@ public class AlarmService {
         for(MailURLDTO dto : mailURLDTO) {
             String url = String.format("/mail/%d/%d", dto.getId(), dto.getEmailStateId());
             send(AlarmDTO.of(AlarmType.GET_EMAIL, dto.getEmployeeId(), url), dto.getEmployeeId());
+        }
+    }
+
+    public void sendNoticeIsCreateAlarm(int id) {
+        List<EmployeeDTO> employeeDTOList = employeeService.selectAll();
+
+        for (EmployeeDTO employeeDTO : employeeDTOList) {
+            send(AlarmDTO.of(AlarmType.NOTICE_INSERT, employeeDTO.getId(), "/notice/detail/" + id),
+                    employeeDTO.getId());
         }
     }
 

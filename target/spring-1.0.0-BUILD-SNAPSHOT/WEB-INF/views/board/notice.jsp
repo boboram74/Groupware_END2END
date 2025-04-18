@@ -3,14 +3,22 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
 <div class="button-container">
+  <div>
+    <select id="category-select" onChange="location.href='/notice/list/' + this.value + '?page=1'">
+      <option value="0" ${empty noticeCategory ? 'selected' : ''}>선택하십시오</option>
+      <c:forEach items="${noticeCategoryList}" var="item">
+        <option value="${item.id}" ${item.id eq noticeCategory.id ? 'selected' : ''}>${item.name}</option>
+      </c:forEach>
+    </select>
+  </div>
   <c:if test="${employee.role eq 'ADMIN'}">
-    <button id="writeBtn" class="primary" onclick="location.href='/board/write'">글쓰기</button>
+    <button id="writeBtn" class="primary" onclick="location.href='/notice/write'">글쓰기</button>
   </c:if>
 </div>
 <div class="search">
   <div>
     <select id="searchOption">
-      <option>선택</option>
+      <optio>선택</optio>
       <option>선택</option>
       <option>선택</option>
     </select>
@@ -19,7 +27,7 @@
     <input id="input" type="text" name="keyword" placeholder="검색어 입력">
   </div>
   <div>
-      <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
+    <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
   </div>
 </div>
 <div class="box surface-bright">
@@ -48,7 +56,7 @@
         <tr>
           <td>${item.id}</td>
           <td>${item.noticeCtName}</td>
-          <td> ${item.title}</td>
+          <td onclick="location.href='/notice/detail/${item.id}'"> ${item.title}</td>
           <td><fmt:formatDate value="${item.regDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
         </tr>
       </c:forEach>

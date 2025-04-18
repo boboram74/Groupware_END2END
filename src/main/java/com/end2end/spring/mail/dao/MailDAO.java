@@ -127,4 +127,53 @@ public class MailDAO {
     public List<MailURLDTO> selectMailURLById(int id) {
         return mybatis.selectList("mail.selectMailURLById", id);
     }
+
+    public List<AliasMappingDTO> selectByAliesMail() {
+        return mybatis.selectList("mail.selectByAliesMail");
+    }
+
+    public void deleteRecipientsByAlias(String alias) {
+        mybatis.delete("mail.deleteRecipientsByAlias", alias);
+    }
+
+    public String findEmployeeIdByEmail(String email) {
+        return mybatis.selectOne("mail.findEmployeeIdByEmail", email);
+    }
+
+    public void insertAliasUser(String alias, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("employeeId", employeeId);
+        param.put("alias", alias);
+        mybatis.insert("mail.insertAliasUser", param);
+    }
+
+    public int aliasExists(String alias) {
+        return mybatis.selectOne("mail.aliasExists", alias);
+    }
+
+    public void insertAlias(String alias, String aliasNm) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("alias", alias);
+        param.put("aliasNm", aliasNm);
+        mybatis.insert("mail.insertAlias", param);
+    }
+
+    public void deleteAliasUser(String alias, String employeeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("employeeId", employeeId);
+        param.put("alias", alias);
+        mybatis.delete("mail.deleteAliasUser", param);
+    }
+
+    public int countRecipientsByAlias(String alias) {
+        return mybatis.selectOne("mail.countRecipientsByAlias", alias);
+    }
+
+    public void deleteAlias(String alias) {
+        mybatis.delete("mail.deleteAlias", alias);
+    }
+
+    public String loadEmailSignature() {
+        return mybatis.selectOne("mail.loadEmailSignature");
+    }
 }

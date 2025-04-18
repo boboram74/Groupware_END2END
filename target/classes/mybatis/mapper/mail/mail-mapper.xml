@@ -36,7 +36,6 @@
         where id = #{esId}
     </update>
 
-    <!--  현재 로그인한 계정의 부서이메일 조회 -->
     <select id="selectDepartmentName" resultType="string">
         SELECT d.email
         FROM employee e
@@ -45,12 +44,10 @@
         WHERE e.id = #{employeeId}
     </select>
 
-    <!--  해당 부서의 메일 목록 1차 조회 -->
     <select id="selectDepartment" >
         SELECT * FROM email_address_user WHERE EMAILADDRESS = #{departName}
     </select>
 
-    <!--  해당 부서의 메일 목록 통합 조회 -->
     <select id="selectDepartEmail" resultType="com.end2end.spring.mail.dto.MailListDTO">
         SELECT e.id, e.SENDEREMAILADDRESS, e.TITLE, e.REGDATE
         FROM email e
@@ -373,4 +370,70 @@
         ON EMAILUSERID = EMAIL_ADDRESS_USER.ID
         WHERE EMAIL.ID = #{id}
     </select>
+
+    <select id="selectByAliesMail" parameterType="map" resultType="com.end2end.spring.mail.dto.AliasMappingDTO">
+        SELECT
+        ea.EMAILADDRESS        AS alias_address,
+        ea.NAME                AS alias_name,
+        LISTAGG(e.EMAIL, ',')
+        WITHIN GROUP (ORDER BY e.EMAIL) AS recipient_list
+        FROM email_address ea
+        LEFT JOIN email_address_user eau
+        ON ea.EMAILADDRESS = eau.EMAILADDRESS
+        LEFT JOIN employee e
+        ON eau.EMPLOYEEID = e.ID
+        GROUP BY
+        ea.EMAILADDRESS,
+        ea.NAME
+        HAVING
+        COUNT(e.EMAIL) > 1
+        ORDER BY
+        MAX(ea.REGDATE) asc
+    </select>
+
+    <delete id="deleteRecipientsByAlias" parameterType="string">
+        DELETE FROM email_address_user
+        WHERE EMAILADDRESS = #{alias}
+    </delete>
+
+    <select id="findEmployeeIdByEmail" parameterType="string" resultType="string">
+        SELECT ID
+        FROM employee
+        WHERE EMAIL = #{email}
+    </select>
+
+    <insert id="insertAliasUser" parameterType="map">
+        INSERT INTO email_address_user (id, EMAILADDRESS, EMPLOYEEID) VALUES (EMAIL_ADDRESS_USER_ID_SEQ.NEXTVAL, #{alias}, #{employeeId})
+    </insert>
+
+    <insert id="insertAlias">
+        INSERT INTO email_address (EMAILADDRESS, NAME)
+        VALUES (#{alias},  #{aliasNm})
+    </insert>
+
+    <select id="aliasExists" resultType="int">
+        select count(*) from email_address_user where emailAddress = #{value}
+    </select>
+
+    <delete id="deleteAliasUser" parameterType="map">
+        DELETE FROM email_address_user
+        WHERE EMAILADDRESS = #{alias}
+        AND EMPLOYEEID = #{employeeId}
+    </delete>
+
+    <select id="countRecipientsByAlias" resultType="int">
+        SELECT COUNT(*)
+        FROM email_address_user
+        WHERE EMAILADDRESS = #{alias}
+    </select>
+
+    <delete id="deleteAlias" parameterType="string">
+        DELETE FROM email_address
+        WHERE EMAILADDRESS = #{alias}
+    </delete>
+
+    <select id="loadEmailSignature" resultType="string">
+        select * from mail_signature
+    </select>
+
 </mapper>

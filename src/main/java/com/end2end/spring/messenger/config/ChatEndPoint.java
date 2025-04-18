@@ -30,6 +30,7 @@ public class ChatEndPoint {
         this.hSession = (HttpSession) config.getUserProperties().get("hSession");
         dto = (EmployeeDTO) hSession.getAttribute("employee");
         if(dto != null) {
+            System.out.println("Connected to " + dto.getName());
             clientSessions.put(dto.getId(), session); // 사용자 ID로 세션 매핑
         }
         clients.add(session);

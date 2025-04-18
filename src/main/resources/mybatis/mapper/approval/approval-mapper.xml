@@ -120,7 +120,7 @@
 
     <select id="allApprovals" resultType="map">
         SELECT
-            a.id AS approvalId,
+            a.id,
             a.title,
             a.regdate,
             a.state AS state,

@@ -9,7 +9,6 @@ import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.MailURLDTO;
 import com.end2end.spring.schedule.dao.CalendarUserDAO;
 import com.end2end.spring.schedule.dao.ScheduleDAO;
-import com.end2end.spring.schedule.dto.CalendarDTO;
 import com.end2end.spring.schedule.dto.CalendarUserDTO;
 import com.end2end.spring.schedule.dto.ScheduleDTO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
@@ -18,6 +17,7 @@ import com.end2end.spring.works.dto.ProjectWorkDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -159,10 +159,13 @@ public class AlarmService {
         send(AlarmDTO.of(AlarmType.GET_REPLY, employeeId, "/board/detail/" + boardId), employeeId);
     }
 
-    private void send(AlarmDTO dto, String employeeId) {
+    private void send(AlarmDTO dto, String employeeId)  {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         dto.setSendTime(timestamp);
-
-        AlarmEndPoint.sendMessage(dto, employeeId);
+        try {
+            AlarmEndPoint.sendMessage(dto, employeeId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -9,11 +9,13 @@ import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.approval.service.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -34,9 +36,11 @@ public class ApprovalController {
     private VacationService vacationService;
 
     @RequestMapping("/list")
-    public String toList(HttpSession session, Model model) {
+    public String toList(HttpServletRequest request,HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         String employeeId = employee.getId();
+        String scpage = request.getParameter("cpage");
+        int cpage = (scpage == null) ? 1 : Integer.parseInt(scpage);
 
         String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
         boolean team = "경영팀".equals(departmentName);
@@ -54,7 +58,7 @@ public class ApprovalController {
         model.addAttribute("rejectList", rejectList);
         model.addAttribute("formList", formList);
         model.addAttribute("team", team);
-
+        model.addAttribute("cpage", cpage);
         return "approval/approval-test";
     }
 
@@ -143,7 +147,6 @@ public class ApprovalController {
             if (employee == null) {
                 return "redirect:/login";
             }
-
             Map<String, Object> approval = approvalService.selectById(id);
             if (approval == null) {
                 model.addAttribute("error", "존재하지 않는 문서입니다.");
@@ -153,12 +156,22 @@ public class ApprovalController {
             ApprovalFormDTO approvalFormDTO = approvalFormService.selectByFormName(formName);
             List<ApproverDTO> nextId = approvalService.nextId(id);
             List<Map<String, Object>> approvers = approvalService.selectApproversList(id);
-
             if ("휴가계".equals(approval.get("FORMNAME"))) {
                 VacationDTO vacationDTO = vacationService.getVacationByApprovalId(id);
                 System.out.println(vacationDTO);
                 model.addAttribute("vacationDTO", vacationDTO);
             }
+            boolean isManagementDept = "경영팀".equals(employee.getDepartmentName());
+            if(isManagementDept) {
+                model.addAttribute("approval", approval);
+                model.addAttribute("nextId", nextId);
+                model.addAttribute("approvers", approvers);
+                model.addAttribute("employee", employee);
+                model.addAttribute("approvalFormDTO", approvalFormDTO);
+
+                return "approval/detail";
+            }
+
 
             model.addAttribute("approval", approval);
             model.addAttribute("nextId", nextId);
@@ -235,10 +248,10 @@ public class ApprovalController {
         String employeeId = employee.getId();
         String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
         boolean team = "경영팀".equals(departmentName);
-
+        System.out.println(team);
+        System.out.println(employeeId);
 
         List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
-
 
         List<Map<String, Object>> waitingList;
         List<Map<String, Object>> goingList;
@@ -318,7 +331,85 @@ public class ApprovalController {
 
         return "approval/approval-test";
     }
+    @PostMapping("/tempSave")
+    @ResponseBody
+    public ResponseEntity<TempApprovalDTO> saveTempApproval(@ModelAttribute TempApprovalDTO dto) {
+        approvalService.saveTempApproval(dto);
+        System.out.println(dto);
+        return ResponseEntity.ok(dto);
+    }
 
+    @PostMapping("/insertImportant")
+    @ResponseBody
+    public void insertImportant(@RequestBody CheckImportantDTO dto, HttpSession session) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
 
+        if (employee != null) {
+            dto.setEmployeeId(employee.getId());
+        }
 
+        approvalService.insertImportant(dto);
+    }
+    @GetMapping("/important")
+    public String listImportant(HttpSession session, Model model) {
+        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+        String employeeId = employeeDTO.getId();
+
+        String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
+        boolean team = "경영팀".equals(departmentName);
+
+        List<Map<String, Object>> importantList = approvalService.importantlist(employeeId);
+        System.out.println("importantList: " + importantList);
+
+        List<Map<String, Object>> waitingList = new ArrayList<>();
+        List<Map<String, Object>> goingList = new ArrayList<>();
+        List<Map<String, Object>> completedList = new ArrayList<>();
+        List<Map<String, Object>> rejectList = new ArrayList<>();
+
+        for (Map<String, Object> approval : importantList) {
+            String state = (String) approval.get("STATE");
+            System.out.println("STATE: " + state);
+
+            if ("WAITING".equals(state)) {
+                waitingList.add(approval);
+            } else if ("ONGOING".equals(state)) {
+                goingList.add(approval);
+            } else if ("SUBMIT".equals(state)) {
+                completedList.add(approval);
+            } else if ("REJECT".equals(state)) {
+                rejectList.add(approval);
+            }
+        }
+
+        List<ApprovalFormDTO> formList = approvalFormService.selectFormList();
+        model.addAttribute("waitingList", waitingList);
+        model.addAttribute("goingList", goingList);
+        model.addAttribute("completedList", completedList);
+        model.addAttribute("rejectList", rejectList);
+        model.addAttribute("team", team);
+        model.addAttribute("formList", formList);
+
+        return "/approval/important";
+    }
+
+    @PostMapping("/removeImportant")
+    @ResponseBody
+    public String removeImportant(@RequestBody Map<String, String> requestData, HttpSession session) {
+        try {
+            String approvalId = requestData.get("approvalId");
+            EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+            String employeeId = employeeDTO.getId();
+            String leaderCheckYn = requestData.get("leaderCheckYn");
+            CheckImportantDTO dto = new CheckImportantDTO();
+            dto.setApprovalId(approvalId);
+            dto.setEmployeeId(employeeId);
+            dto.setLeaderCheckYn(leaderCheckYn);
+            System.out.println("취소"+dto);
+            approvalService.removeImportant(dto);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "failure";
+        }
+    }
 }

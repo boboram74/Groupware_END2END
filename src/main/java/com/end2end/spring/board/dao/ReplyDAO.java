@@ -22,4 +22,11 @@ public class ReplyDAO {
         return mybatis.selectList("reply.selectByBoardId",boardId);
     }
 
+    public int deleteById(int id) {
+        return mybatis.delete("reply.deleteById", id);
+    }
+
+    public ReplyDTO selectById(int id) {
+        return mybatis.selectOne("reply.selectById", id);
+    }
 }

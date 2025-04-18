@@ -199,7 +199,7 @@
     </tr>
     <tr>
         <td class="label">작성자</td>
-        <td colspan="3">${board.employeeId}</td>
+        <td colspan="3">${board.employeeName}</td>
     </tr>
     <tr>
         <td class="label">내용</td>
@@ -209,8 +209,9 @@
         <tr>
             <td class="label">첨부파일</td>
             <td colspan="3">
-                <span>${file.originFileName}</span>
-                <a href="/download/${file.id}">다운로드</a>
+                <c:forEach var="file" items="${fileList}">
+                    <a href="/file/download?path=${file.path}">${file.originFileName}</a>
+                </c:forEach>
             </td>
         </tr>
     </c:forEach>
@@ -219,15 +220,22 @@
     <a href="/board/list">
         <button class="backBtn">목록</button>
     </a>
-    <a href="/board/write/update?id=${board.id}">
-        <button type="button" class="editBtn">수정</button>
-    </a>
-    <form action="/board/delete" method="post">
-        <input type="hidden" name="id" value="${board.id}"/>
-        <button type="submit" class="deleteBtn">삭제</button>
-    </form>
+    <c:if test="${not empty employee and employee.id eq board.employeeId}">
+        <a href="/board/write/update?id=${board.id}">
+            <button type="button" class="editBtn">수정</button>
+        </a>
+        <form action="/board/delete" method="post">
+            <input type="hidden" name="id" value="${board.id}"/>
+            <button type="submit" class="deleteBtn">삭제</button>
+        </form>
+    </c:if>
 </div>
+
 <hr>
+
+<input type="hidden" id="loginUserId" value="${employee.id}"/>
+
+
 <form id="replyForm" enctype="multipart/form-data">
     <div class="replyContainer">
         <div class="addReply">
@@ -240,9 +248,11 @@
         </div>
     </div>
 </form>
+
 <hr>
 
 <h3>댓글</h3>
+
 
 <div class="replyListContainer">
 
@@ -250,15 +260,47 @@
 
 
 <script>
-    document.querySelector(".deleteBtn").addEventListener("click", function (e) {
+    $(".deleteBtn").on("click", function (e) {
         if (!confirm("정말 삭제하시겠습니까?")) {
             e.preventDefault();
         }
     })
-    document.getElementById("replyForm").addEventListener("submit", function (e) {
+    $("#replyForm").on("submit", function (e) {
         e.preventDefault();
         addContent();
     })
+
+    $(document).on("click", ".deleteReplyBtn", function () {
+        const replyId = $(this).data("id");
+        const employeeId = String($('#loginUserId').val());
+        const replyEmployeeId = String($(this).data("employeeId"));
+
+        console.log("전송할 댓글 ID:", replyId);
+        console.log("로그인된 사용자 employeeId:", employeeId);
+        console.log("댓글 작성자 employeeId:", replyEmployeeId);
+
+
+        if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {
+            $.ajax({
+                type: "GET",
+                url: "/reply/delete/" + replyId,
+                success: function (response) {
+                    response = JSON.parse(response)
+                    console.log("댓글삭제", response);
+                    if(response){
+                        loadReplies(); // 댓글 다시 불러오기
+                    }else{
+                        alert("삭제 실패했습니다.");
+                    }
+                },
+                error: function () {
+                    console.log("댓글 삭제 실패");
+                }
+            });
+        } else {
+            alert("댓글을 작성한 사람만 삭제할 수 있습니다.");
+        }
+    });
 
     const addContent = () => {
         const content = document.getElementById("content").value;
@@ -286,6 +328,9 @@
                 console.log("실패");
                 console.log(request.status);
                 console.log(error);
+                console.log("상태:", status);
+                console.log("요청:", request);
+                console.log("오류:", error);
             }
         });
     }
@@ -322,11 +367,11 @@
                             $('<div class="replyReport">')
                                 .append(
                                     $('<div class="reReply">')
-                                        .append($('<button>').text('댓글').attr('data-id', reply.id))
+                                        .append($('<button>').addClass('deleteReplyBtn').text('삭제').attr('data-id', reply.id).attr('data-employee-id', reply.employeeId))
                                 )
                                 .append(
                                     $('<div class="report">')
-                                        .append($('<button>').text('신고').attr('data-id', reply.id))
+                                        .append($('<button>').text('수정').attr('data-id', reply.id))
                                 )
                         );
                     $('.replyListContainer').append($replyDiv);
@@ -336,11 +381,39 @@
                 console.log("실패");
             }
         });
+
+
+
     };
     // 페이지 로드 시 댓글 목록 불러오기
     $(document).ready(function () {
         loadReplies();
     });
+
+    <%--$(".deleteReplyBtn").on("click", function () {--%>
+    <%--    const replyId = $(this).data("id"); // 삭제할 댓글의 ID--%>
+    <%--    const employeeId = '${employee.id}'; // 현재 로그인된 사용자 ID--%>
+    <%--    const replyEmployeeId = $(this).data("employeeId"); // 댓글 작성자의 ID--%>
+
+    <%--    if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {--%>
+    <%--        $.ajax({--%>
+    <%--            type: "post",--%>
+    <%--            url: "/reply/delete",--%>
+    <%--            data: {id: replyId},--%>
+    <%--            success: function () {--%>
+    <%--                loadReplies(); // 댓글 목록 갱신--%>
+    <%--            },--%>
+    <%--            error: function () {--%>
+    <%--                console.log("댓글 삭제 실패");--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    } else {--%>
+    <%--        alert("댓글을 작성한 사람만 삭제할 수 있습니다.");--%>
+    <%--    }--%>
+    <%--});--%>
+
+
+
 </script>
 
 

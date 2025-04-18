@@ -132,4 +132,50 @@
         ORDER BY a.regdate DESC
     </select>
 
+    <insert id="saveTempApproval">
+        INSERT INTO APPROVAL_TEMP (
+        ID,
+        EMPLOYEEID,
+        APPROVALFORMID,
+        DEPARTMENTID,
+        TITLE,
+        CONTENT,
+        REGDATE
+        ) VALUES (APPROVAL_TEMP_ID_SEQ.NEXTVAL,#{employeeId},#{approvalFormId},#{departmentId},#{title},#{content},SYSDATE)
+    </insert>
+
+    <insert id="insertImportant" parameterType="com.end2end.spring.approval.dto.CheckImportantDTO">
+        insert into important_approval (
+        id, employeeid, approvalid, leadercheckyn, regdate
+        ) values (
+        IMPORTANT_APPROVAL_ID_SEQ.nextval,
+        #{employeeId, jdbcType=VARCHAR},
+        #{approvalId, jdbcType=VARCHAR},
+        #{leaderCheckYn},
+        SYSDATE
+        )
+    </insert>
+
+    <select id="importantlist" resultType="map">
+        SELECT DISTINCT a.id AS ID,
+               a.title AS TITLE,
+               a.state AS STATE,
+               a.regDate AS REGDATE,
+               e.profileImg AS profileImg,
+               e.name AS DRAFTERNAME,
+               af.name AS FORMNAME
+        FROM approval a
+                 JOIN approver ap ON a.id = ap.approvalid
+                 JOIN employee e ON a.employeeid = e.id
+                 JOIN approval_form af ON a.approvalformid = af.id
+                 JOIN important_approval i ON a.id = i.approvalid
+        WHERE i.employeeid = #{employeeId, jdbcType=VARCHAR}
+          AND i.leadercheckyn = 'Y'
+        ORDER BY a.regdate DESC
+    </select>
+
+    <update id="removeImportant" parameterType="com.end2end.spring.approval.dto.CheckImportantDTO">
+        update important_approval set leaderCheckYn = 'N'
+        WHERE approvalid = #{approvalId} AND employeeid = #{employeeId}
+    </update>
 </mapper>

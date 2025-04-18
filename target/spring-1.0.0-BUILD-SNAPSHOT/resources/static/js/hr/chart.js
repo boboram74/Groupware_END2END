@@ -38,6 +38,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     plugins: {
                         legend: {
                             position: "right"
+                        },
+                        title: {
+                            display: true,
+                            text: "부서별 직원 현황",
+                            font: {
+                                size: 20
+                            }
                         }
                     }
                 }
@@ -79,7 +86,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "이번년도 입사 및 퇴사 현황",
+                            font: {
+                                size: 20
+                            }
+                        }
+                    }
                 }
             });
         }
@@ -130,7 +146,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         },
                         title: {
                             display: true,
-                            text: "부서별 연차 사용 현황"
+                            text: "부서별 연차 사용 현황",
+                            font: {
+                                size: 20
+                            }
                         }
                     }
                 }
@@ -183,7 +202,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     plugins: {
                         title: {
                             display: true,
-                            text: "부서별 지각/조퇴/결근 통계"
+                            text: "부서별 지각/조퇴/결근 통계",
+                            font: {
+                                size: 20
+                            }
                         }
                     }
                 }

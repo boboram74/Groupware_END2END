@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -30,7 +32,7 @@
       <h3>END2END</h3>
     </div>
     <div class="menu-items">
-      <div class="menu-item" onClick="location.href='/board/list/1'">
+      <div class="menu-item" onClick="location.href='/board/list'">
         <i class="material-icons">dashboard</i>
         <span>게시판</span>
       </div>
@@ -117,9 +119,18 @@
           <div class="profile-menu surface-bright" id="profileMenu">
             <div class="menu-item" id="mypage">마이페이지</div>
             <div class="menu-item" id="login-history">로그인 기록</div>
-            <c:if test='${employee.role.equals("ADMIN")}'>
-              <div class="menu-item" id="admin">관리자 페이지</div>
+
+            <c:if test="${employee.role eq 'ADMIN'}">
+              <c:choose>
+                <c:when test="${fn:contains(pageContext.request.requestURI, '/admin')}">
+                  <div class="menu-item" onclick="location.href='/'">사용자 페이지</div>
+                </c:when>
+                <c:otherwise>
+                  <div class="menu-item" onclick="location.href='/admin'">관리자 페이지</div>
+                </c:otherwise>
+              </c:choose>
             </c:if>
+
             <div class="menu-item" id="logout">로그아웃</div>
           </div>
         </div>
@@ -136,7 +147,7 @@
         <ul class="full-menu-list">
           <li>
             <a href="/">
-              <i class="material-icons">list</i>
+              <i class="material-icons">home</i>
               <span>홈</span>
             </a>
           </li>
@@ -200,25 +211,9 @@
             <i class="material-icons">list</i>
             <span>메뉴</span>
           </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">dashboard</i>
-            <span>게시판</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">description</i>
-            <span>전자결재</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">mail</i>
-            <span>메일</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">schedule</i>
-            <span>근태관리</span>
-          </a>
-          <a href="#" class="mobile-menu-item">
-            <i class="material-icons">event_available</i>
-            <span>예약</span>
+          <a href="/" class="mobile-menu-item">
+            <i class="material-icons">home</i>
+            <span>홈</span>
           </a>
           <a href="#" class="mobile-menu-item mobile-chat-btn">
             <i class="material-icons">chat</i>

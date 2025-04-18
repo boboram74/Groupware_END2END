@@ -47,6 +47,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public int countTodayScheduleByEmployeeId(String employeeId) {
+        return countTodayScheduleByEmployeeId(employeeId);
+    }
+
+    @Override
     public ScheduleDTO selectById(int id) {
         return scheduleDAO.selectById(id);
     }

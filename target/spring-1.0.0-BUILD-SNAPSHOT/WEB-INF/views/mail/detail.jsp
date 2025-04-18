@@ -313,13 +313,13 @@
                     <span class="detail-badge"><span id="receiveMailBox"></span></span>
                 </li>
             </a>
-            <a href="/mail/temp">
-                <li class="detail-menu-item">
-                    <span class="material-icons">drafts</span>
-                    <span>임시 저장함</span>
-                    <span class="detail-badge">2</span>
-                </li>
-            </a>
+<%--            <a href="/mail/temp">--%>
+<%--                <li class="detail-menu-item">--%>
+<%--                    <span class="material-icons">drafts</span>--%>
+<%--                    <span>임시 저장함</span>--%>
+<%--                    <span class="detail-badge">2</span>--%>
+<%--                </li>--%>
+<%--            </a>--%>
             <a href="/mail/trash">
                 <li class="detail-menu-item">
                     <span class="material-icons">delete</span>

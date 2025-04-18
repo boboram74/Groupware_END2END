@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notice">
+    <select id="selectAll" resultType="com.end2end.spring.board.dto.NoticeDTO">
+        SELECT
+            NOTICE.id AS id, NOTICE.title as title, NOTICE.content AS content, NOTICE.regDate AS regDate, NOTICE.noticeCtId AS noticeCtId,
+            NOTICE_CATEGORY.name AS noticeCtName
+        FROM NOTICE
+        JOIN NOTICE_CATEGORY
+        ON NOTICE.noticeCtId = NOTICE_CATEGORY.id
+    </select>
+
+    <select id="selectAllFromTo" resultType="com.end2end.spring.board.dto.NoticeDTO">
+        SELECT *
+        FROM (
+            SELECT
+                NOTICE.id AS id, NOTICE.title as title, NOTICE.content AS content, NOTICE.regDate AS regDate, NOTICE.noticeCtId AS noticeCtId,
+                NOTICE_CATEGORY.name AS noticeCtName, ROW_NUMBER() over (ORDER BY NOTICE.ID DESC) AS rnum
+            FROM NOTICE
+            JOIN NOTICE_CATEGORY
+            ON NOTICE.noticeCtId = NOTICE_CATEGORY.id) A
+        WHERE rnum BETWEEN ${start} AND ${end}
+    </select>
+
+    <select id="selectByCategoryId" resultType="com.end2end.spring.board.dto.NoticeDTO">
+        SELECT
+            NOTICE.id AS id, NOTICE.title as title, NOTICE.content AS content, NOTICE.regDate AS regDate, NOTICE.noticeCtId AS noticeCtId,
+            NOTICE_CATEGORY.name AS noticeCtName
+        FROM NOTICE
+        JOIN NOTICE_CATEGORY
+        ON NOTICE.noticeCtId = NOTICE_CATEGORY.id
+        WHERE noticeCtId = ${noticeCtId}
+    </select>
+
+    <select id="selectByCategoryIdFromTo" resultType="com.end2end.spring.board.dto.NoticeDTO">
+        SELECT *
+        FROM (
+            SELECT
+                NOTICE.id AS id, NOTICE.title as title, NOTICE.content AS content, NOTICE.regDate AS regDate, NOTICE.noticeCtId AS noticeCtId,
+                NOTICE_CATEGORY.name AS noticeCtName, ROW_NUMBER() over (ORDER BY NOTICE.ID DESC) AS rnum
+            FROM NOTICE
+            JOIN NOTICE_CATEGORY
+            ON NOTICE.noticeCtId = NOTICE_CATEGORY.id
+            WHERE noticeCtId = ${noticeCtId}) A
+        WHERE rnum BETWEEN ${start} AND ${end}
+    </select>
+
+    <select id="selectById" resultType="com.end2end.spring.board.dto.NoticeDTO">
+        SELECT
+            NOTICE.id AS id, NOTICE.title as title, NOTICE.content AS content, NOTICE.regDate AS regDate, NOTICE.noticeCtId AS noticeCtId,
+            NOTICE_CATEGORY.name AS noticeCtName
+        FROM NOTICE
+        JOIN NOTICE_CATEGORY
+        ON NOTICE.noticeCtId = NOTICE_CATEGORY.id
+        WHERE NOTICE.id = ${id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO NOTICE(id, noticeCtId, title, content)
+        VALUES (NOTICE_ID_SEQ.nextval, ${noticeCtId}, #{title}, #{content})
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT NOTICE_ID_SEQ.currval FROM DUAL
+        </selectKey>
+    </insert>
+
+    <update id="update">
+        UPDATE NOTICE SET noticeCtId = ${noticeCtId}, title = #{title}, content = #{content}
+        WHERE id = ${id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM NOTICE WHERE id = ${id}
+    </delete>
+</mapper>

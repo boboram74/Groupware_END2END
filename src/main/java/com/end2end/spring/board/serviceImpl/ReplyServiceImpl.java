@@ -14,6 +14,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Autowired
     private ReplyDAO replyDAO;
+
     @Autowired private AlarmService alarmService;
 
     @Override
@@ -35,7 +36,13 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public int deleteById(int id) {
+        return replyDAO.deleteById(id);
         // TODO: 해당 id의 댓글 삭제
+    }
+
+    @Override
+    public ReplyDTO selectById(int id) {
+        return replyDAO.selectById(id);
     }
 }

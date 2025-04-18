@@ -21,7 +21,7 @@ public class FileUtil {
 
         File filePath = new File(uploadPath);
 
-        filePath.mkdir();
+        filePath.mkdirs();
 
         String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
         file.transferTo(new File(uploadPath + "/" + systemFileName));
@@ -54,7 +54,7 @@ public class FileUtil {
 
         File filePath = new File(uploadPath);
 
-        filePath.mkdir();
+        filePath.mkdirs();
 
         // 원본 파일명에서 확장자만 추출
         String originalFilename = file.getOriginalFilename();

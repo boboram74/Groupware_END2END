@@ -5,84 +5,128 @@
 <link rel="stylesheet" href="/css/template/exam.css" />
 <link rel="stylesheet" href="/css/main/index.css" />
 <style>
-    .birth-item {
-        height: 60px; /* 원하는 높이로 조절 */
-        min-height: 60px; /* 최소 높이 지정 */
-        max-height: 60px; /* 최대 높이 지정 */
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    /* 데이터 없음 스타일 */
+    .board-table .no-data {
+        height: 100px;
     }
 
-    /* 내부 요소들의 정렬을 위해 */
-    .birth-profile {
-        display: flex;
-        align-items: center;
-        height: 100%;
+    .board-table .no-data td {
+        text-align: center;
+        color: var(--md-custom-read-color);
+        font-size: 0.95em;
     }
 
-    .birth-info {
+    .board-table .no-data td:hover {
+        background-color: transparent;
+        cursor: default;
+    }
+
+    .board-table .info-item .material-icons {
+        font-size: 16px;
+    }
+
+    .board-table .view-count,
+    .board-table .reply-count {
+        color: #888;
+    }
+
+    .board-table .title-container .title-text:hover {
+        text-decoration: underline;
+        color: var(--md-sys-color-primary);
+    }
+
+    /* 제목 컨테이너 스타일 */
+    .board-table .title-container {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    /* 제목 텍스트 스타일 */
+    .board-table .title-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* 작성자 정보 스타일 수정 */
+    .board-table .writer-info {
+        display: flex;
+        align-items: center;
         justify-content: center;
+        gap: 8px;
+        padding: 5px;
     }
 
-    /* 엑스트라 라지 사이즈 (1200px) */
-    @media screen and (max-width: 1200px) {
-        .rightContents {
-            display: none;
-        }
-
-        .boxContents {
-            display: grid;
-            grid-template-columns: 1fr 2fr; /* 1:2 비율로 설정 */
-            gap: 20px;
-        }
-
-        .leftContents {
-            width: 100%;
-        }
-
-        .centerContents {
-            width: 100%;
-        }
+    /* 프로필 이미지 스타일 */
+    .board-table .writer-info .profile-img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        flex-shrink: 0;  /* 이미지 크기 고정 */
     }
 
-    @media screen and (max-width: 992px) {
-        .boxContents {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-            padding-bottom: 80px; /* 하단 패딩 추가 */
+    /* 작성자 이름 스타일 */
+    .board-table .writer-info span {
+        font-size: 14px;
+        color: var(--md-sys-color-surface);
+    }
+
+    /* 정보 아이템(조회수, 댓글수) 스타일 */
+    .board-table .info-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: #666;
+        font-size: 0.9em;
+        white-space: nowrap;  /* 줄바꿈 방지 */
+    }
+
+    /* 아이콘 스타일 */
+    .board-table .info-item .material-icons {
+        font-size: 16px;
+        color: #666;
+    }
+
+    /* 조회수, 댓글수 스타일 */
+    .board-table .view-count,
+    .board-table .reply-count {
+        min-width: 20px;
+        text-align: left;
+        color: #888;
+    }
+
+    .board-table .info-items {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* 정보 아이템 스타일 */
+    .board-table .info-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--md-custom-read-color);
+        font-size: 0.9em;
+    }
+
+    /* 반응형 대응 */
+    @media screen and (max-width: 768px) {
+        .board-table .info-item {
+            font-size: 0.8em;
         }
 
-        .leftContents,
-        .centerContents {
-            width: 100%;
+        .board-table .writer-info .profile-img {
+            width: 25px;
+            height: 25px;
         }
 
-        /* leftContents와 centerContents의 그리드 해제 */
-        .leftContents,
-        .centerContents {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* 각 박스들의 높이 조정 */
-        .logbox,
-        .commuteBox,
-        .calendarBox,
-        .boardBox,
-        .approvalBox {
-            grid-row: unset; /* 그리드 속성 해제 */
-            min-height: 300px; /* 최소 높이 설정 */
-        }
-
-        .information {
-            flex-direction: row;
-            justify-content: center;
+        .board-table .writer-info span {
+            font-size: 12px;
         }
     }
 
@@ -109,86 +153,12 @@
     .fc-daygrid-event {
         padding: 0 !important;
     }
-</style>
-<style>
-    .detail-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
 
-    /* box, box-content 스타일을 활용하면서 모달 특성에 맞게 일부 수정 */
-    .detail-modal .modal-container {
-        width: 500px;  /* 모달 너비 조정 */
-        margin: 0;     /* box 클래스의 기본 마진 제거 */
-    }
-
-    .detail-modal .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .detail-modal .modal-header h2 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    .detail-modal .modal-close {
-        border: none;
-        cursor: pointer;
-        padding: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .detail-modal .modal-body {
-        max-height: 70vh;
-        overflow-y: auto;
-    }
-
-    .detail-modal .form-group {
-        margin-bottom: 15px;
-    }
-
-    .detail-modal .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-        color: var(--md-sys-color-surface);
-    }
-
-    .detail-modal .form-group input,
-    .detail-modal .form-group textarea {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 14px;
-    }
-
-    .detail-modal .form-group input,
-    .detail-modal .form-group textarea {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid var(--md-sys-color-outline-variant);
-        border-radius: 4px;
-        background-color: var(--md-sys-color-surface-bright);
-        color: var(--md-sys-color-surface);
-    }
-
-    .modal-header .material-icons {
-        cursor: pointer;
+    .board-table td {
+        padding: 3px;
+        border-bottom: 1px solid var(--md-sys-color-outline);
+        text-align: center;
+        vertical-align: middle;
     }
 </style>
 <script>
@@ -260,8 +230,9 @@
         }
 
         function parseDate(dates) {
-            const parsedMonth = (dates.getMonth() + 1) < 10 ? '0' + (dates.getMonth() + 1) : (dates.getMonth() + 1);
-            return dates.getFullYear() + '-' + parsedMonth + '-' + dates.getDate();
+            const month = String(dates.getMonth() + 1).padStart(2, '0');
+            const date = String(dates.getDate()).padStart(2, '0');
+            return dates.getFullYear() + '-' + month + '-' + date;
         }
 
         function loadEvents(startDate, endDate, successCallback) {
@@ -289,13 +260,14 @@
                                     type: 'schedule'
                                 }
                             }
-                        }
-                        return {
-                            title: event.title,
-                            start: new Date(event.startDate),
-                            allDay: event.allDay,
-                            display: 'block',
-                            color: event.backgroundColor,
+                        } else if (event.eventName === 'holiday') {
+                            return {
+                                title: event.title,
+                                start: new Date(event.startDate),
+                                allDay: true,
+                                display: 'background',
+                                className: 'holiday',
+                            }
                         }
                     })
                     console.log(events);
@@ -347,6 +319,80 @@
             const seconds = String(date.getSeconds()).padStart(2, '0');
             return hours + ':' + minutes + ':' + seconds;
         }
+
+        $('.board-type-btn').click(function() {
+            const type = $(this).data('type');
+            console.log(type);
+
+            renderBoardList(type);
+        })
+
+        renderBoardList('notice');
+
+        function renderBoardList(type) {
+            let url;
+
+            const tbody = $('.boardBox .board-table tbody');
+            if (type === 'notice') {
+                tbody.empty();
+                tbody.append(
+                    $('<tr class="no-data">').append(
+                        $('<td colspan="4">').html('게시글이 없습니다.')))
+
+                return;
+            } else if (type === 'all') {
+                url = '/board/recent'
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                error: function() {
+                    tbody.empty();
+                    tbody.append(
+                        $('<tr class="no-data">').append(
+                            $('<td colspan="4">').html('게시글이 없습니다.')))
+                }
+            }).done(function(resp) {
+                console.log(resp);
+
+                tbody.empty();
+                if (resp.length === 0) {
+                    tbody.append(
+                        $('<tr>').append(
+                            $('<td colspan="4">').html('게시글이 없습니다.')))
+                } else {
+                    for (const item of resp) {
+                        const regDate = parseDate(new Date(item.regDate));
+
+                        const tr = $('<tr>')
+                            .append($('<td>').html(item.id))  // 1열: 번호
+                            .append($('<td class="title-cell">')  // 2열: 제목
+                                .append($('<div class="title-container">')
+                                    .append($('<span class="title-text">').html(item.title))
+                                    .append($('<div class="info-items">')
+                                        .append($('<div class="info-item">')
+                                            .append($('<span class="material-icons">').html('visibility'))
+                                            .append($('<span class="view-count">').html(item.viewCount)))
+                                        .append($('<div class="info-item">')
+                                            .append($('<span class="material-icons">').html('chat_bubble_outline'))
+                                            .append($('<span class="reply-count">').html(item.replyCount))))))
+                            .append($('<td class="writer-cell">')  // 3열: 작성자
+                                .append($('<div class="writer-info">')
+                                    .append($('<div class="profile-img" style="background-image: url(' + item.profileImg + ')">'))
+                                    .append($('<span>').html(item.employeeName))))
+                            .append($('<td class="date-cell">')  // 4열: 날짜
+                                .html(regDate));
+
+                        tr.on('click', function() {
+                            location.href = '/board/detail/' + item.id;
+                        });
+
+                        tbody.append(tr);
+                    }
+                }
+            })
+        }
     });
 
     // 창 크기 변경 시 자동 조절
@@ -377,14 +423,14 @@
                         <span class="material-icons">mail</span>
                         <span class="summary-text">새 메일</span>
                     </div>
-                    <span class="summary-count">5</span>
+                    <span class="summary-count">${mailReadCount}</span>
                 </div>
                 <div class="summary-item">
                     <div class="summary-left">
                         <span class="material-icons">event</span>
                         <span class="summary-text">오늘 일정</span>
                     </div>
-                    <span class="summary-count">3</span>
+                    <span class="summary-count">${todayScheduleCount}</span>
                 </div>
             </div>
         </div>
@@ -414,9 +460,8 @@
             <div class="board-container">
                 <!-- 게시판 타입 버튼 -->
                 <div class="board-type-buttons">
-                    <button class="board-type-btn active">공지 게시판</button>
-                    <button class="board-type-btn">전사 게시판</button>
-                    <button class="board-type-btn">그룹 게시판</button>
+                    <button class="board-type-btn active" data-type="notice">공지 게시판</button>
+                    <button class="board-type-btn" data-type="all">전사 게시판</button>
                 </div>
 
                 <div class="category-list-container">
@@ -446,19 +491,7 @@
                             <th width="20%">등록일자</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <c:forEach begin="1" end="8" var="i">
-                            <tr>
-                                <td>${11 - i}</td> <!-- 10부터 1까지 역순으로 표시 -->
-                                <td class="title">샘플 게시글 제목입니다 ${11 - i}</td>
-                                <td class="writer-info">
-                                    <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
-                                    <span>작성자${i}</span>
-                                </td>
-                                <td>2024-03-19</td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>

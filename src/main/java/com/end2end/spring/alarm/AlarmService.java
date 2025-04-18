@@ -31,7 +31,7 @@ public class AlarmService {
     @Autowired private BoardDAO boardDAO;
 
     public void sendNewLoginIpAlarm(String employeeId) {
-        send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history/1"), employeeId);
+        send(AlarmDTO.of(AlarmType.LOGIN, employeeId, "/login/history?page=1"), employeeId);
     }
 
     public void sendMailAlarm(int emailId) {
@@ -70,6 +70,15 @@ public class AlarmService {
 
         for (EmployeeDTO employeeDTO : projectUserList) {
             send(AlarmDTO.of(alarmType, employeeDTO.getId(), url), employeeDTO.getId());
+        }
+    }
+
+    public void sendProjectCompleteAlarm(int projectId) {
+        List<EmployeeDTO> projectUserList = projectUserDAO.selectByprojectId(projectId);
+
+        for (EmployeeDTO employeeDTO : projectUserList) {
+            send(AlarmDTO.of(AlarmType.PROJECT_COMPLETE, employeeDTO.getId(), "/project/detail/" + projectId),
+                    employeeDTO.getId());
         }
     }
 

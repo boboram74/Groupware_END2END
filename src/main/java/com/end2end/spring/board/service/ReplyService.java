@@ -8,5 +8,8 @@ public interface ReplyService {
     List<ReplyDTO> selectByBoardId(int id);
     void insert(ReplyDTO dto);
     void update(ReplyDTO dto);
-    void deleteById(int id);
+    int deleteById(int id);
+
+
+    ReplyDTO selectById(int id);
 }

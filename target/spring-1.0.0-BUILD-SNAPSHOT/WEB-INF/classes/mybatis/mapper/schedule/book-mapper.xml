@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="book">
+    <select id="selectAllBookTarget" resultType="com.end2end.spring.schedule.dto.BookTargetDTO">
+        SELECT id, name, img, location, capacity, 'meetingRoomId' AS targetType
+        FROM MEETING_ROOM
+
+        UNION ALL
+
+        SELECT FURNITURE.*, NULL, NVL(NULL, 0), 'furnitureId' AS targetType
+        FROM FURNITURE
+    </select>
+
+    <select id="selectAll" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT
+            BOOK.id AS id, BOOK.employeeId AS employeeId,
+            SCHEDULE.startDate AS startDate, SCHEDULE.endDate AS endDate, SCHEDULE.regDate AS regDate,
+            meetingRoomId AS targetId, 'MEETING_ROOM' AS targetType, MEETING_ROOM.NAME AS targetName
+        FROM
+            BOOK
+        JOIN
+            MEETING_ROOM
+        ON
+            BOOK.meetingRoomId = MEETING_ROOM.id
+        JOIN
+            SCHEDULE
+        ON
+            SCHEDULE.bookId = BOOK.id
+
+        UNION ALL
+
+        SELECT
+            BOOK.id AS id, BOOK.employeeId AS employeeId,
+            SCHEDULE.startDate AS startDate, SCHEDULE.endDate AS endDate, SCHEDULE.regDate AS regDate,
+            furnitureId AS targetId, 'FURNITURE' AS targetType, FURNITURE.NAME AS targetName
+        FROM
+            BOOK
+        JOIN
+            FURNITURE
+        ON
+            BOOK.furnitureId = FURNITURE.id
+        JOIN
+            SCHEDULE
+        ON
+            SCHEDULE.bookId = BOOK.id
+    </select>
+
+    <select id="selectByEmployeeId" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT *
+        FROM (
+            SELECT
+                BOOK.id AS id, BOOK.employeeId AS employeeId,
+                SCHEDULE.startDate AS startDate, SCHEDULE.endDate AS endDate, SCHEDULE.regDate AS regDate,
+                meetingRoomId AS targetId, 'MEETING_ROOM' AS targetType, MEETING_ROOM.NAME AS targetName
+            FROM
+                BOOK
+            JOIN
+                MEETING_ROOM
+            ON BOOK.meetingRoomId = MEETING_ROOM.ID
+            JOIN
+                SCHEDULE
+            ON SCHEDULE.bookId = BOOK.id
+
+            UNION ALL
+
+            SELECT
+                BOOK.id AS id, BOOK.employeeId AS employeeId,
+                SCHEDULE.startDate AS startDate, SCHEDULE.endDate AS endDate, SCHEDULE.regDate AS regDate,
+                furnitureId AS targetId, 'FURNITURE' AS targetType, FURNITURE.NAME AS targetName
+            FROM
+                BOOK
+            JOIN
+                FURNITURE
+            ON BOOK.furnitureId = FURNITURE.ID
+            JOIN
+                SCHEDULE
+            ON
+                SCHEDULE.bookId = BOOK.id) A
+        WHERE A.employeeId = #{employeeId}
+    </select>
+
+    <select id="selectById" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT *
+        FROM (
+            SELECT
+                BOOK.id AS id, BOOK.employeeId AS employeeId,
+                SCHEDULE.startDate AS startDate, SCHEDULE.endDate AS endDate, SCHEDULE.regDate AS regDate,
+                meetingRoomId AS targetId, 'MEETING_ROOM' AS targetType, MEETING_ROOM.NAME AS targetName
+            FROM
+                BOOK
+            JOIN
+                MEETING_ROOM
+            ON BOOK.meetingRoomId = MEETING_ROOM.ID
+            JOIN
+                SCHEDULE
+            ON SCHEDULE.bookId = BOOK.id
+
+            UNION ALL
+
+            SELECT
+                BOOK.id AS id, BOOK.employeeId AS employeeId,
+                SCHEDULE.startDate AS startDate, SCHEDULE.endDate AS endDate, SCHEDULE.regDate AS regDate,
+                furnitureId AS targetId, 'FURNITURE' AS targetType, FURNITURE.NAME AS targetName
+            FROM
+                BOOK
+            JOIN
+                FURNITURE
+            ON BOOK.furnitureId = FURNITURE.ID
+            JOIN
+                SCHEDULE
+            ON
+                SCHEDULE.bookId = BOOK.id) A
+        WHERE A.id = ${id}
+    </select>
+
+    <select id="countReserved" resultType="Integer">
+        SELECT COUNT(*)
+        FROM SCHEDULE
+        JOIN BOOK
+        ON SCHEDULE.BOOKID = BOOK.ID
+        WHERE
+            SYSDATE BETWEEN STARTDATE AND ENDDATE
+        AND
+            ${targetType} = ${targetId}
+    </select>
+
+    <select id="selectByDateAndTarget" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT *
+        FROM BOOK
+        JOIN SCHEDULE
+        ON BOOK.id = SCHEDULE.BOOKID
+        WHERE
+            #{date} BETWEEN startDate AND endDate
+        AND
+            ${targetType} = ${targetId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO BOOK(id, employeeId, ${targetType})
+        VALUES (BOOK_ID_SEQ.nextval, #{employeeId}, ${targetId})
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT BOOK_ID_SEQ.currval FROM DUAL
+        </selectKey>
+    </insert>
+
+    <update id="update">
+        UPDATE BOOK SET ${targetType} = ${targetId} WHERE id = ${id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM BOOK WHERE id = ${id}
+    </delete>
+
+    <select id="selectEntityById" resultType="com.end2end.spring.schedule.dto.BookDTO">
+        SELECT * FROM BOOK WHERE ID = ${id}
+    </select>
+
+    <select id="selectByTarget" resultType="com.end2end.spring.schedule.dto.BookTargetDTO">
+        SELECT *
+        FROM
+        <choose>
+            <when test="targetType.equals('meetingRoomId')">
+                MEETING_ROOM WHERE id = ${targetId}
+            </when>
+            <otherwise>
+                FURNITURE WHERE id = ${targetId}
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

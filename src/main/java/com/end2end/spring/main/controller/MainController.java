@@ -5,8 +5,10 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
 import com.end2end.spring.employee.dto.JobDTO;
 import com.end2end.spring.employee.service.EmployeeService;
+import com.end2end.spring.mail.service.MailService;
 import com.end2end.spring.main.dto.LoginHistoryDTO;
 import com.end2end.spring.main.service.LoginHistoryService;
+import com.end2end.spring.schedule.dao.ScheduleDAO;
 import com.end2end.spring.util.HolidayUtil;
 import com.end2end.spring.util.PageNaviUtil;
 import com.end2end.spring.works.dto.ProjectSelectDTO;
@@ -22,9 +24,9 @@ import java.util.List;
 @Controller
 public class MainController {
 
-	@Autowired
-	private EmployeeService employeeService;
-
+	@Autowired private EmployeeService employeeService;
+	@Autowired MailService mailService;
+	@Autowired private ScheduleDAO scheduleDAO;
 	@Autowired
 	private LoginHistoryService loginHistoryService;
 
@@ -35,6 +37,8 @@ public class MainController {
 			return "main/login";
 		}
 		model.addAttribute("birthdayList", employeeService.selectByThisMonthBirthday());
+		model.addAttribute("mailReadCount", mailService.getRecordReadCount(loginUser.getId()));
+		model.addAttribute("todayScheduleCount", scheduleDAO.countTodayScheduleByEmployeeId(loginUser.getId()));
 		return "main/index";
 	}
 
@@ -45,7 +49,7 @@ public class MainController {
 		if (loginUser == null) {
 			return "redirect:/";
 		}
-		// 만약 로그인한 사용자가 자신의 마이페이지가 아니면서 HR 권한이 없는 경우
+
 		if (!loginUser.getId().equals(employeeId)
 			&& !loginUser.getDepartmentName().equals("인사팀")
 			&& !loginUser.getRole().equals("ADMIN")) {
@@ -90,24 +94,19 @@ public class MainController {
 		return "main/contact";
 	}
 
-	@RequestMapping("/worktree")
-	public String toWorktree() {
-		// TODO: 조직도 페이지 출력
-		return "main/worktree";
-	}
-
-	@ResponseBody
-	@RequestMapping("/holiday")
-	public List<HolidayUtil.HolidayDTO> getHoliday(String year, String month) {
-		try {
-			return HolidayUtil.generateHolidayList(year, month);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+	@RequestMapping("/contact/search")
+	public String searchContactList(Model model, String searchOption, String keyword) {
+		if (keyword == null || keyword.trim().isEmpty()) {
+			return "redirect:/contact?page=1";
 		}
+
+		List<EmployeeDTO> contactList = employeeService.searchContactList(searchOption, keyword);
+		model.addAttribute("contactList", contactList);
+		return "main/contact";
 	}
 
 	@RequestMapping("/test")
 	public String toTest() {
-		return "/template/exam";
+		return "works/test";
 	}
 }

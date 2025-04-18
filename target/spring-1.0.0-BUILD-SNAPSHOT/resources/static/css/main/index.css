@@ -141,7 +141,7 @@
 .info-summary {
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--md-sys-color-outline);
     width: 100%; /* information 전체 너비만큼 확장 */
     box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
 }
@@ -288,7 +288,7 @@
     display: flex;
     gap: 0;
     margin-bottom: 20px;
-    border-bottom: 2px solid var(--md-sys-color-outline);
+    border-bottom: 1px solid var(--md-sys-color-outline);
 }
 
 .board-type-btn {
@@ -309,7 +309,7 @@
 /* hover 효과 - active와 동일한 스타일 적용 */
 .board-type-btn:hover {
     font-weight: 600;
-    border-top: 2px solid var(--md-sys-color-primary);
+    border-top: 4px solid var(--md-sys-color-primary);
     border-bottom: 2px solid var(--md-sys-color-surface-bright);
     color: var(--md-sys-color-primary);
     margin-bottom: -2px;
@@ -319,7 +319,7 @@
 .board-type-btn.active {
     font-weight: 600;
     border-bottom: 2px solid var(--md-sys-color-surface-bright);
-    border-top: 2px solid var(--md-sys-color-primary);
+    border-top: 4px solid var(--md-sys-color-primary);
     color: var(--md-sys-color-primary);
     margin-bottom: -2px;
 }
@@ -381,50 +381,6 @@
 /* 게시판 테이블 스타일 */
 .board-table-container {
     overflow-x: auto;
-}
-
-.board-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.board-table th {
-    background-color: var(--md-sys-color-surface-container);
-    padding: 12px;
-    font-weight: 600;
-    text-align: center;
-    border-bottom: 1px solid var(--md-sys-color-outline);
-    border-top: 1px solid var(--md-sys-color-primary);
-}
-
-.board-table td {
-    padding: 10px;
-    border-bottom: 1px solid var(--md-sys-color-outline);
-    text-align: center;
-    vertical-align: middle;
-}
-
-.board-table td.title {
-    text-align: left;
-    cursor: pointer;
-}
-
-.board-table td.title:hover {
-    text-decoration: underline;
-    color: var(--md-sys-color-primary);
-}
-
-/* 테이블 행 호버 효과 */
-.board-table tbody tr:hover {
-    background-color: var(--md-sys-color-surface-container);
-}
-
-/* 기존 스타일에 추가 */
-.writer-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
 }
 
 .profile-img {
@@ -516,4 +472,116 @@
     .rightContents {
         width: 200px;
     }
+}
+
+.birth-item {
+    height: 60px; /* 원하는 높이로 조절 */
+    min-height: 60px; /* 최소 높이 지정 */
+    max-height: 60px; /* 최대 높이 지정 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 내부 요소들의 정렬을 위해 */
+.birth-profile {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.birth-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 엑스트라 라지 사이즈 (1200px) */
+@media screen and (max-width: 1200px) {
+    .rightContents {
+        display: none;
+    }
+
+    .boxContents {
+        display: grid;
+        grid-template-columns: 1fr 2fr; /* 1:2 비율로 설정 */
+        gap: 20px;
+    }
+
+    .leftContents {
+        width: 100%;
+    }
+
+    .centerContents {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .boxContents {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        padding-bottom: 80px; /* 하단 패딩 추가 */
+    }
+
+    .leftContents,
+    .centerContents {
+        width: 100%;
+    }
+
+    /* leftContents와 centerContents의 그리드 해제 */
+    .leftContents,
+    .centerContents {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* 각 박스들의 높이 조정 */
+    .logbox,
+    .commuteBox,
+    .calendarBox,
+    .boardBox,
+    .approvalBox {
+        grid-row: unset; /* 그리드 속성 해제 */
+        min-height: 300px; /* 최소 높이 설정 */
+    }
+
+    .information {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+/* 이벤트 높이 조절 */
+.fc-event {
+    height: 5px !important;  /* 원하는 높이로 조절 */
+    line-height: 5px !important;
+    padding: 0 !important;
+    margin: 1px 0 !important;
+}
+
+/* 이벤트 컨테이너 높이 조절 */
+.fc-daygrid-event-harness {
+    height: 5px !important;
+}
+
+/* 여러 이벤트가 있을 때의 간격 조절 */
+.fc .fc-daygrid-day-events {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* 이벤트 내부 여백 제거 */
+.fc-daygrid-event {
+    padding: 0 !important;
+}
+
+.board-table td {
+    padding: 3px;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    text-align: center;
+    vertical-align: middle;
 }

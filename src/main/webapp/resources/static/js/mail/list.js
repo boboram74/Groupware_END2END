@@ -22,9 +22,7 @@ $(function () {
                     $('<td>').html('<input type="checkbox" class="star-checkbox" data-esid="'+ list[i].esId +'">')
                 );
             }
-
             tr.append($('<td>').html(list[i].emailAddress));
-
             if (list[i].fileCount && list[i].fileCount != 0) {
                 tr.append($('<td>').html('<span class="material-icons">attachment</span>'));
             } else {
@@ -129,24 +127,73 @@ $(function () {
         });
     });
 
+    $("#searchBtn").on("click", function (e) {
+        let option = $("#searchOption").val().trim();
+        let keyword = $("#input").val().toLowerCase().trim();
+        if (keyword === "") {
+            $(".mailList tr").show();
+            return;
+        }
+        $(".mailList searchBtn tr").each(function () {
+            let showRow = false;
+            if (option === "보낸 사람") {
+                let senderText = $(this).find("td").eq(2).text().toLowerCase();
+                if (senderText.indexOf(keyword) >= 0) {
+                    showRow = true;
+                }
+            } else if (option === "제목") {
+                let titleText = $(this).find("td.contents").text().toLowerCase();
+                if (titleText.indexOf(keyword) >= 0) {
+                    showRow = true;
+                }
+            } else if (option === "내용") {
+                let rowText = $(this).text().toLowerCase();
+                if (rowText.indexOf(keyword) >= 0) {
+                    showRow = true;
+                }
+            }
+            if (showRow) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
 });
 
-$("#readBtn").on("click", function () {
-    let esids = [];
-    $('input.childCheckbox:checked').each(function () {
-        let esid = $(this).closest('tr').find('input.star-checkbox').data('esid');
-        if(esid !== undefined) {
-            esids.push(esid);
+$("#searchBtn").on("click", function() {
+    const option = $("#searchOption").val().trim();
+    const keyword = $("#input").val().trim().toLowerCase();
+
+    if (!keyword) {
+        $(".mailList tbody tr").show();
+        return;
+    }
+    $(".mailList tbody tr").each(function() {
+        const $row = $(this);
+        let isMatch = false;
+        switch(option) {
+            case "보낸 사람":
+                isMatch = $row.find("td:eq(2)").text().toLowerCase().includes(keyword);
+                break;
+            case "제목":
+                isMatch = $row.find("td.contents").text().toLowerCase().includes(keyword);
+                break;
+            case "내용":
+                isMatch = $row.find("td.contents").text().toLowerCase().includes(keyword);
+                break;
+            default:
+                isMatch = $row.text().toLowerCase().includes(keyword);
         }
+        $row.toggle(isMatch);
     });
-    $.ajax({
-        url: "/mail/readAndTrashAll?action=read",
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(esids),
-    }).done(function (resp) {
-        window.location.reload();
-    });
+});
+
+$("#input").on("keypress", function(e) {
+    if (e.which === 13) {
+        $("#searchBtn").click();
+    }
 });
 
 $("#trashBtn").on("click", function () {

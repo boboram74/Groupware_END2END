@@ -1,6 +1,7 @@
 package com.end2end.spring.approval.service;
 
 import com.end2end.spring.approval.dto.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -29,6 +30,8 @@ public interface ApprovalService {
 
     List<Map<String, Object>> selectByState(String state, String employeeId);
 
+    ApprovalFormDTO selectByFormId(int id);
+
     void insert(MultipartFile[] files, ApprovalInsertDTO dto);
 
     void update(ApprovalDTO dto);
@@ -37,4 +40,20 @@ public interface ApprovalService {
     void approve(String approvalId, int approverId);
     void rejectApproval(ApprovalRejectDTO rejectDTO);
     void submit(boolean isSubmit);
+
+    @Transactional
+    List<Map<String, Object>> searchDetail(Map<String, Object> paramMap);
+
+    String getDepartmentNameByEmployeeId(String employeeId);
+
+    Map<String, List<Map<String, Object>>> allApprovals();
+
+    Map<String, List<Map<String, Object>>> SearchallApprovals(String keyword);
+
+    void insertImportant(CheckImportantDTO dto);
+
+
+    List<Map<String, Object>> importantlist(String employeeId);
+
+    void removeImportant(CheckImportantDTO dto);
 }

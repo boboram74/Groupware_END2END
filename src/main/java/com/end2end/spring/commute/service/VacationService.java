@@ -14,4 +14,6 @@ public interface VacationService {
     double sumTotalVacationDates(String employeeId);
     double sumTotalUsedVacationDates(String employeeId);
     double sumThisMonthUsedVacationDates(String employeeId);
+
+    VacationDTO getVacationByApprovalId(String approvalId);
 }

@@ -20,6 +20,11 @@ public class ApprovalFormServiceImpl implements ApprovalFormService {
     }
 
     @Override
+    public ApprovalFormDTO selectByFormName(String name) {
+        return approvalDAO.selectByFormName(name);
+    }
+
+    @Override
     public List<ApprovalFormDTO> selectByEmployeeId(String employeeId) {
         // TODO: 해당 직원의 자주 쓰는 결재 문서 양식 출력
         return null;

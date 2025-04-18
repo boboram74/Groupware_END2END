@@ -3,7 +3,6 @@ package com.end2end.spring.employee.serviceImpl;
 import com.end2end.spring.board.dao.BoardDAO;
 import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardCtUserDTO;
-import com.end2end.spring.commute.dao.CommuteDAO;
 import com.end2end.spring.employee.dao.EmployeeDAO;
 import com.end2end.spring.employee.dto.*;
 import com.end2end.spring.employee.service.EmployeeService;
@@ -11,13 +10,13 @@ import com.end2end.spring.mail.dao.MailDAO;
 import com.end2end.spring.mail.dto.EmailAddressDTO;
 import com.end2end.spring.mail.dto.EmailAddressUserDTO;
 import com.end2end.spring.util.SecurityUtil;
+import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -31,7 +30,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO selectById(String id) {
-        // TODO: 해당 id의 사원 출력
         return null;
     }
 
@@ -41,22 +39,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDetailDTO selectDetailById(String employeeId) {
-        // TODO: 해당 id의 사원 상세정보 조회
-        return employeeDAO.selectDetailById(employeeId);
-    }
+    public EmployeeDetailDTO selectDetailById(String employeeId) {return employeeDAO.selectDetailById(employeeId);}
 
     @Override
-    public EmployeeDTO  login(LoginDTO dto) {
+    public EmployeeDTO login(LoginDTO dto) {
         String password = SecurityUtil.hashPassword(dto.getPassword());
         dto.setPassword(password);
-
         return employeeDAO.login(dto);
-    }
-
-    @Override
-    public void logout() {
-        // TODO: 로그아웃
     }
 
     @Transactional
@@ -138,27 +127,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void update(EmployeeDetailDTO dto) {
-        // TODO: 사원 수정
+    public void update(EmployeeDetailDTO dto, MultipartFile file) {
         EmployeeDTO employeeDTO = EmployeeDTO.builder()
-                .id(dto.getId()) // 업데이트 대상 사원 식별 (DTO에 employeeId 포함)
+                .id(dto.getId())
                 .departmentId(dto.getDepartmentId())
                 .jobId(dto.getJobId())
                 .name(dto.getName())
                 .contact(dto.getContact())
                 .profileImg(dto.getProfileImg())
                 .build();
-        // 사원 기본 정보 업데이트
         employeeDAO.update(employeeDTO);
-        // 사원 상세 정보 업데이트
         employeeDAO.updateDetail(dto);
     }
 
     @Override
-    public void deleteById(String id) {
-        // TODO: 해당 id의 사원 삭제
-        employeeDAO.deleteById(id);
-    }
+    public void deleteById(String id) {employeeDAO.deleteById(id);}
 
     @Override
     public List<EmployeeDTO> selectByDepartmentId(int departmentId) {
@@ -186,7 +169,105 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDTO> selectByThisMonthBirthday() {
-        return employeeDAO.selectByThisMonthBirthday();
+    public List<EmployeeDTO> selectByThisMonthBirthday() {return employeeDAO.selectByThisMonthBirthday();}
+
+    @Override
+    public boolean pwVali(String currentPw) {return employeeDAO.pwVali(currentPw);}
+
+    @Override
+    public void changePw(String newPw,String id) {employeeDAO.changePw(newPw,id);}
+
+    @Override
+    public void isResigned(String id) {employeeDAO.isResigned(id);}
+
+    @Override
+    public List<Map<String, Object>> employeeAll() {
+        return employeeDAO.employeeAll();
+    }
+
+    @Override
+    public Map<String, List<Integer>> getMonthlyLineData() {
+        List<Map<String, Object>> rawList = employeeDAO.getMonthlyStats();
+
+        Map<String, List<Integer>> result = new HashMap<>();
+        result.put("join", new ArrayList<>(Collections.nCopies(12, 0)));
+        result.put("resign", new ArrayList<>(Collections.nCopies(12, 0)));
+
+        for (Map<String, Object> row : rawList) {
+            String type = (String) row.get("TYPE");
+            int month = Integer.parseInt((String) row.get("MONTH"));
+            int count = ((Number) row.get("COUNT")).intValue();
+
+            result.get(type).set(month - 1, count);
+        }
+        return result;
+    }
+
+    @Override
+    public String findByLoginId(String id) {
+        return employeeDAO.findByLoginId(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> getVacationStats() {
+        return employeeDAO.getVacationStats();
+    }
+
+    @Override
+    public List<Map<String, Object>> getAttendanceStats() {
+        return employeeDAO.getAttendanceStats();
+    }
+
+    @Override
+    public List<EmployeeDTO> selectAll(int page) {
+        int start = (page - 1) * Statics.recordCountPerPage;
+        int end = Math.min(page * Statics.recordCountPerPage, employeeDAO.selectAll().size());
+        return employeeDAO.selectFromTo(start, end);
+    }
+
+    @Override
+    public List<EmployeeDTO> searchContactList(String searchOption, String keyword) {
+        return employeeDAO.searchContactList(searchOption, keyword);
+    }
+
+    @Override
+    public List<EmployeeDTO> searchEmployeeList(String searchOption, String keyword) {
+        return employeeDAO.searchEmployeeList(searchOption, keyword);
+    }
+
+    @Override
+    public List<DepartmentDTO> selectByDepartmentList() {
+        return employeeDAO.selectByDepartmentList();
+    }
+
+    @Transactional
+    @Override
+    public void saveAll(List<DepartmentDTO> dtos) {
+        for (DepartmentDTO dto : dtos) {
+            String name  = dto.getName();
+            String email = dto.getEmail();
+            Integer id   = dto.getId();
+            if (name == null || name.isEmpty()) { continue; }
+            if (id == null || id == 0) {
+                employeeDAO.insertDepartment(name, email);
+            } else {
+                int exists = employeeDAO.existsById(id);
+                if (exists == 0) {
+                    employeeDAO.insertDepartment(name, email);
+                } else {
+                    employeeDAO.updateDepartment(id, name, email);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void deleteByDepartmentId(int id) {
+        employeeDAO.deleteByDepartmentId(id);
+    }
+
+    @Override
+    public List<RoleListDTO> loadSettingList() {
+        return employeeDAO.loadSettingList();
     }
 }

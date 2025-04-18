@@ -34,4 +34,13 @@ public interface MailService {
     int insertReadYnAll(List<Integer> esids);
     int trashAll(List<Integer> esids);
     int deleteAll(List<Integer> esids);
+
+    void sendMailAlarm(int mailId);
+
+    List<AliasMappingDTO> selectByAliesMail();
+
+    void updateAliasMappings(List<AliasMappingDTO> mappings);
+    void deleteAliasMapping(String alias, List<String> recipients);
+    String loadEmailSignature();
+    int updateEmailSignature(Map<String, String> body);
 }

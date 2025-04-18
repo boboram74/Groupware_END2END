@@ -1,15 +1,15 @@
 package com.end2end.spring.messenger.serviceImpl;
 
 import com.end2end.spring.messenger.dao.MessengerDAO;
-import com.end2end.spring.messenger.dto.ChatRoomListDTO;
-import com.end2end.spring.messenger.dto.MessageHistoryDTO;
-import com.end2end.spring.messenger.dto.MessengerEmployeeListDTO;
+import com.end2end.spring.messenger.dto.*;
 import com.end2end.spring.messenger.service.MessengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MessengerServiceImpl implements MessengerService {
@@ -28,19 +28,8 @@ public class MessengerServiceImpl implements MessengerService {
     }
 
     @Override
-    public List<MessageHistoryDTO> selectByRoomId(int roomId) {
-        return messengerDAO.selectByRoomId(roomId);
-    }
-
-    @Override
-    public int selectRoomByName(String roomName) {
-        Integer result = messengerDAO.selectRoomByName(roomName);
-        return result == null ? 0 : result;
-    }
-
-    @Override
-    public void messageRoomInvite(int roomId, String employeeId) {
-        messengerDAO.messageRoomInvite(roomId, employeeId);
+    public List<MessageHistoryDTO> selectMessageByRoomId(int roomId, String employeeId) {
+        return messengerDAO.selectMessageByRoomId(roomId, employeeId);
     }
 
     @Override
@@ -51,25 +40,53 @@ public class MessengerServiceImpl implements MessengerService {
 
     @Transactional
     @Override
-    public void createChatRoom(String roomName, String employeeId, String messageContent) {
-        //새로운 채팅방 일때
+    public Map<String, Object> createChatRoom(String employeeId, String senderId, String roomName) {
         int messageRoomId = messengerDAO.messageFirstInsert(roomName);
         int messageRoomUserId = messengerDAO.messageFirstRoomInsert(messageRoomId, employeeId);
-        messengerDAO.messageFirstContentInsert(messageRoomId, messageRoomUserId, messageContent);
-    }
-
-    @Transactional
-    @Override
-    public void insertMessageToRoom(int roomId, String employeeId, String messageContent) {
-        Integer roomUserId = messengerDAO.findRoomUser(roomId, employeeId);
-        if (roomUserId == null) {
-            roomUserId = messengerDAO.messageFirstRoomInsert(roomId, employeeId);
-        }
-        messengerDAO.messageFirstContentInsert(roomId, roomUserId, messageContent);
+        messengerDAO.messageFirstRoomInsert(messageRoomId, senderId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("messageRoomId", messageRoomId);
+        result.put("messageRoomUserId", messageRoomUserId);
+        return result;
     }
 
     @Override
-    public void insertInviteUser(int roomId, String employeeId) {
-        messengerDAO.messageFirstRoomInsert(roomId, employeeId);
+    public MessageUserDTO selectUserByEmployeeIdAndRoomId(String employeeId, int roomId) {
+        return messengerDAO.selectUserByEmployeeIdAndRoomId(employeeId, roomId);
+    }
+
+    @Override
+    public int insertMessage(MessageDTO messageDTO) {
+        return messengerDAO.insertMessage(messageDTO);
+    }
+
+    @Override
+    public List<MessageUserListDTO> selectRoomById(int roomId) {
+        return messengerDAO.selectRoomById(roomId);
+    }
+
+    @Override
+    public int selectByName(String roomName) {
+        return messengerDAO.selectByName(roomName);
+    }
+
+    @Override
+    public List<MessageRoomDTO> findByRoomId2(int roomId) {
+        return messengerDAO.findByRoomId2(roomId);
+    }
+
+    @Override
+    public int insertUser(int roomId, String employeeId) {
+        return messengerDAO.insertUser(roomId, employeeId);
+    }
+
+    @Override
+    public void insertUsertoRoom(int roomId, String employeeId) {
+        messengerDAO.insertUsertoRoom(roomId, employeeId);
+    }
+
+    @Override
+    public List<String> findByRoomEmployeeList(int roomId) {
+        return messengerDAO.findByRoomEmployeeList(roomId);
     }
 }

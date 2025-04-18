@@ -17,6 +17,23 @@
         FROM EMPLOYEE e
         JOIN DEPARTMENT d ON e.departmentId = d.id
         JOIN JOB j ON e.jobId = j.id
+        WHERE resignDate IS null
+        ORDER BY e.name ASC
+    </select>
+
+    <select id="selectFromTo" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT A.*
+        FROM (
+            SELECT
+                EMPLOYEE.*, DEPARTMENT.name AS departmentName, JOB.name AS jobName,
+                ROW_NUMBER() over (ORDER BY DEPARTMENTID DESC, JOBID, EMPLOYEE.NAME) AS RNUM
+            FROM EMPLOYEE
+            JOIN DEPARTMENT
+                ON EMPLOYEE.departmentId = DEPARTMENT.id
+            JOIN JOB
+                ON EMPLOYEE.jobId = JOB.id
+            WHERE resignDate IS NULL) A
+        WHERE A.RNUM BETWEEN ${start} AND ${end}
     </select>
 
     <select id="selectAllDepartment" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
@@ -46,6 +63,7 @@
         departmentId = #{departmentId},
         jobId = #{jobId},
         name = #{name},
+        profileImg = #{profileImg},
         contact = #{contact}
         WHERE id = #{id}
     </update>
@@ -76,7 +94,9 @@
             ON EMPLOYEE.jobId = JOB.id
         JOIN DEPARTMENT
             ON EMPLOYEE.departmentId = DEPARTMENT.id
-        WHERE LOGINID = #{loginId} AND PASSWORD = #{password}
+        WHERE LOGINID = #{loginId}
+        AND PASSWORD = #{password}
+        AND RESIGNDATE IS NULL
     </select>
 
     <select id="selectDetailById" resultType="com.end2end.spring.employee.dto.EmployeeDetailDTO">
@@ -130,6 +150,12 @@
         WHERE loginId = #{loginId}
     </select>
 
+    <select id="pwVali" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM EMPLOYEE_DETAIL
+        WHERE password = #{value}
+    </select>
+
     <select id="selectContactList" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT
         e.name,
@@ -137,11 +163,73 @@
         d.name AS departmentName,
         e.jobId,
         j.name AS jobName,
+        e.profileImg as profileImg,
         e.contact
         FROM EMPLOYEE e
         JOIN DEPARTMENT d ON e.departmentId = d.id
         JOIN JOB j ON e.jobId = j.id
+        WHERE resignDate IS null
+        ORDER BY e.name ASC
     </select>
+
+    <select id="searchContactList" parameterType="map" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT
+        e.id,
+        e.name,
+        e.departmentId,
+        d.name AS departmentName,
+        e.jobId,
+        j.name AS jobName,
+        e.profileImg AS profileImg,
+        e.contact
+        FROM EMPLOYEE e
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        JOIN JOB        j ON e.jobId        = j.id
+        <where>
+            AND e.resignDate IS NULL
+            <choose>
+                <when test="searchOption eq '이름'">
+                    AND e.name    LIKE '%' || #{keyword} || '%'
+                </when>
+                <when test="searchOption eq '연락처'">
+                    AND e.contact LIKE '%' || #{keyword} || '%'
+                </when>
+            </choose>
+        </where>
+        ORDER BY e.name ASC
+    </select>
+
+    <select id="searchEmployeeList" parameterType="map" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT
+        e.id,
+        e.name,
+        e.departmentId,
+        d.name    AS departmentName,
+        e.jobId,
+        j.name    AS jobName,
+        e.profileImg   AS profileImg,
+        e.contact,
+        e.role
+        FROM EMPLOYEE e
+        LEFT JOIN DEPARTMENT d ON e.departmentId = d.id
+        LEFT JOIN JOB        j ON e.jobId        = j.id
+        <where>
+            AND e.resignDate IS NULL
+            <choose>
+                <when test="searchOption eq '이름'">
+                    AND e.name  LIKE '%' || #{keyword} || '%'
+                </when>
+                <when test="searchOption eq '부서'">
+                    AND d.name  LIKE '%' || #{keyword} || '%'
+                </when>
+                <when test="searchOption eq '직급'">
+                    AND j.name  LIKE '%' || #{keyword} || '%'
+                </when>
+            </choose>
+        </where>
+        ORDER BY e.name ASC
+    </select>
+
 
     <select id="countNoAuth" resultType="Integer">
         SELECT COUNT(*)
@@ -162,4 +250,159 @@
             EXTRACT(MONTH FROM BIRTHDAY) = TO_CHAR(SYSDATE, 'MM')
         ORDER BY TO_CHAR(birthday, 'DD')
     </select>
+
+    <update id="changePw">
+        UPDATE EMPLOYEE_DETAIL
+        SET password = #{newPw}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByIdIn" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT EMPLOYEE.*, EMPLOYEE_DETAIL.BIRTHDAY, JOB.NAME AS jobName, DEPARTMENT.NAME AS departmentName
+        FROM EMPLOYEE
+        JOIN EMPLOYEE_DETAIL
+        ON EMPLOYEE.ID = EMPLOYEE_DETAIL.ID
+        JOIN DEPARTMENT
+        ON DEPARTMENT.ID = EMPLOYEE.DEPARTMENTID
+        JOIN JOB
+        ON JOB.ID = EMPLOYEE.JOBID
+        WHERE EMPLOYEE.id IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <update id="isResigned">
+        UPDATE EMPLOYEE
+        SET resigndate = SYSDATE
+        WHERE id = #{id}
+    </update>
+
+    <select id="employeeAll" resultType="java.util.Map">
+        SELECT
+        d.name AS label,
+        COUNT(*) AS count
+        FROM EMPLOYEE e
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        WHERE e.RESIGNDATE IS NULL
+        GROUP BY d.name
+    </select>
+
+    <select id="monthlyStats" resultType="java.util.Map">
+        WITH months AS (
+        SELECT LPAD(LEVEL, 2, '0') AS month
+        FROM dual
+        CONNECT BY LEVEL &lt;= 12
+        ),
+        join_counts AS (
+        SELECT SUBSTR(id, 3, 2) AS month, COUNT(*) AS count
+        FROM EMPLOYEE
+        WHERE SUBSTR(id, 1, 2) = TO_CHAR(SYSDATE, 'YY')
+        GROUP BY SUBSTR(id, 3, 2)
+        ),
+        resign_counts AS (
+        SELECT TO_CHAR(resignDate, 'MM') AS month, COUNT(*) AS count
+        FROM EMPLOYEE
+        WHERE resignDate IS NOT NULL
+        AND EXTRACT(YEAR FROM resignDate) = TO_CHAR(SYSDATE, 'YYYY')
+        GROUP BY TO_CHAR(resignDate, 'MM')
+        )
+        SELECT m.month, NVL(j.count, 0) AS count, 'join' AS type
+        FROM months m
+        LEFT JOIN join_counts j ON m.month = j.month
+
+        UNION ALL
+
+        SELECT m.month, NVL(r.count, 0) AS count, 'resign' AS type
+        FROM months m
+        LEFT JOIN resign_counts r ON m.month = r.month
+        ORDER BY type, month
+    </select>
+
+    <select id="vacationStats" resultType="java.util.Map">
+        SELECT
+        DEPARTMENT.NAME AS label,
+        A.remaining_days AS remain,
+        B.used_days AS used
+        FROM (
+        SELECT
+        NVL(SUM("휴가일"), 0) AS remaining_days,
+        DEPARTMENTID AS departmentId
+        FROM EMPLOYEE E
+        LEFT JOIN (
+        SELECT EMPLOYEEID, SUM(DATES) AS "휴가일"
+        FROM VACATION_MANAGEMENT
+        GROUP BY EMPLOYEEID
+        ) V ON E.ID = V.EMPLOYEEID
+        GROUP BY DEPARTMENTID
+        ) A
+        JOIN (
+        SELECT
+        NVL(SUM(VACATIONDATE), 0) AS used_days,
+        DEPARTMENTID
+        FROM EMPLOYEE
+        LEFT JOIN (
+        SELECT VACATION.*, VACATION.EMPLOYEEID AS empId
+        FROM VACATION
+        JOIN APPROVAL ON VACATION.APPROVALID = APPROVAL.ID
+        WHERE APPROVAL.STATE = 'SUBMIT'
+        ) V ON EMPLOYEE.ID = V.empId
+        GROUP BY DEPARTMENTID
+        ) B ON A.DEPARTMENTID = B.DEPARTMENTID
+        JOIN DEPARTMENT ON DEPARTMENT.ID = A.departmentId
+    </select>
+
+    <select id="attendanceStats" resultType="java.util.Map">
+        SELECT
+        d.name AS label,
+        SUM(CASE WHEN s.state = 'LATE' THEN 1 ELSE 0 END) AS late,
+        SUM(CASE WHEN s.state = 'LEAVE_EARLY' THEN 1 ELSE 0 END) AS early,
+        SUM(CASE WHEN s.state = 'ABSENCE' THEN 1 ELSE 0 END) AS absent
+        FROM SOLDERING s
+        JOIN EMPLOYEE e ON s.employeeId = e.id
+        JOIN DEPARTMENT d ON e.departmentId = d.id
+        WHERE e.resignDate IS NULL
+        GROUP BY d.name
+    </select>
+
+    <select id="findByLoginId"  resultType="java.lang.String">
+        SELECT loginId FROM EMPLOYEE_DETAIL WHERE ID = #{value}
+    </select>
+
+    <select id="selectByDepartmentList" resultType="com.end2end.spring.employee.dto.DepartmentDTO">
+        select * from department
+    </select>
+
+    <insert id="insertDepartment">
+        INSERT INTO department (ID, NAME, EMAIL) VALUES
+        (DEPARTMENT_ID_SEQ.NEXTVAL,
+        #{name},
+        #{email} )
+    </insert>
+
+    <select id="existsById" resultType="int">
+        SELECT COUNT(*) FROM department WHERE id = #{id}
+    </select>
+
+    <update id="updateDepartment" parameterType="map">
+        update department set name = #{name}, email = #{email} where id = #{id}
+    </update>
+
+    <delete id="deleteByDepartmentId">
+        DELETE FROM department
+        WHERE id = #{value}
+    </delete>
+
+    <select id="loadSettingList" resultType="com.end2end.spring.employee.dto.RoleListDTO">
+        select
+        e.role, j.name as jobName, d.name teamName, e.name
+        from employee e
+        join department d
+        on e.departmentid = d.id
+        join job j
+        on e.jobid = j.id
+        order by e.role asc, j.id asc, d.id, e.name asc
+    </select>
+
 </mapper>

@@ -377,6 +377,11 @@ input::-moz-placeholder {
     color: var(--md-sys-color-primary);
 }
 
+.board-table td.title-text:hover {
+    text-decoration: underline;
+    color: var(--md-sys-color-primary);
+}
+
 /* 테이블 행 호버 효과 */
 .board-table tbody tr:hover:not(.emptyMessage) {
     background-color: var(--md-sys-color-surface-container);
@@ -385,7 +390,6 @@ input::-moz-placeholder {
 .box {
     display: flex;
     flex-direction: column;
-    height: 100%; /* 전체 높이 사용 */
     border-radius: 8px;
 }
 
@@ -419,4 +423,117 @@ input::-moz-placeholder {
     background-position: center;
     background-repeat: no-repeat;
     border: 1px solid #eee;
+}
+
+.pageNavi{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    padding-top: 0;
+}
+.paging {
+    display: inline-block;
+    margin: 5px 3px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    background: var(--md-sys-color-secondary);
+    color: var(--md-sys-color-on-secondary);
+    border: 1px solid var(--md-sys-color-outline);
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.paging:hover {
+    background: var(--md-sys-color-secondary-hover);
+    transform: translateY(-2px);
+}
+.paging.active {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    transform: none;
+}
+
+.detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* box, box-content 스타일을 활용하면서 모달 특성에 맞게 일부 수정 */
+.detail-modal .modal-container {
+    width: 500px;  /* 모달 너비 조정 */
+    margin: 0;     /* box 클래스의 기본 마진 제거 */
+}
+
+.detail-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.detail-modal .modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.detail-modal .modal-close {
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detail-modal .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.detail-modal .form-group {
+    margin-bottom: 15px;
+}
+
+.detail-modal .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--md-sys-color-surface);
+}
+
+.detail-modal .form-group input,
+.detail-modal .form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.detail-modal .form-group input,
+.detail-modal .form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 4px;
+    background-color: var(--md-sys-color-surface-bright);
+    color: var(--md-sys-color-surface);
+}
+
+.modal-header .material-icons {
+    cursor: pointer;
 }

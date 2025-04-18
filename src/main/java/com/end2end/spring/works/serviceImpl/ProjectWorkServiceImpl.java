@@ -1,7 +1,10 @@
 package com.end2end.spring.works.serviceImpl;
 
+import com.end2end.spring.alarm.AlarmService;
+import com.end2end.spring.alarm.AlarmType;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.works.dao.ProjectDAO;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
@@ -15,26 +18,35 @@ import java.util.List;
 public class ProjectWorkServiceImpl implements ProjectWorkService {
     @Autowired
     ProjectWorkDAO dao;
-
+    @Autowired
+    ProjectDAO pdao;
     @Autowired
     FileService fileService;
+    @Autowired
+    private AlarmService alarmService;
 
     @Override
     public List<ProjectWorkDTO> selectAll(int id) {
         return dao.selectAll(id)  ;
     }
 
-
+    @Override
+    public List<ProjectWorkDTO> selectAll() {
+        return dao.selectAll()  ;
+    }
     @Override
     public void insert(MultipartFile[] files, ProjectWorkDTO dto) throws Exception {
        //게시물 등록
         dao.insert(dto);
 
-        int projectWorkId = dto.getProjectId();
+        int projectWorkId = dto.getId();
         FileDTO fileDTO = FileDTO.builder()
                 .projectWorkId(projectWorkId)
                 .build();
         fileService.insert(files, fileDTO);
+
+        alarmService.sendProjectAlarm(
+                AlarmType.PROJECT_WORK_CREATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
     }
 
     @Override
@@ -51,10 +63,37 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     }
     @Override
     public ProjectWorkDTO update(ProjectWorkDTO dto) {
+        System.out.println("여기 서비스 수정확인1");
         dao.update(dto);
+        System.out.println("여기 서비스 수정확인2");
+        alarmService.sendProjectAlarm(
+                AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
 
         return dto;
     }
+
+    @Override
+    public  int getChartDataCount(int selectedId){
+        int total = dao.countTotalWorks(selectedId);
+        int finished = dao.countFinishedWorks(selectedId);
+        System.out.println(total);
+        System.out.println(finished);
+        if (total == 0) return 0; // 나눗셈 방지
+        return (int) Math.round((finished * 100.0) / total);
+    }
+    @Override
+    public int countByState(int selectedId, String state){
+        return dao.countByState(selectedId,state);
+    }
+    @Override
+    public int countByType(int selectedId, String type){
+        return dao.countByType(selectedId,type);
+    }
+
+@Override
+public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, int projectId, String searchOption) {
+        return dao.searchBynameAndTitle(keyword, projectId,searchOption);
+}
 
 //    @Override
 //    public void update(MultipartFile[]files,ProjectWorkDTO dto) throws Exception {
@@ -67,9 +106,27 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
 //
 //    }
 
+@Override
+public void endworks(int projectId){
+        pdao.endworks(projectId);
+}
+
     @Override
-    public void updateState(String state, int workItemId) {
+    public int updateState(String state, int workItemId, int projectId) {
         dao.updateState(state,workItemId);
+        int total = dao.countTotalWorksByProjectId(projectId);
+        int finished = dao.countFinishWorksByProjectId(projectId);
+
+        int result = (total == finished) ? 0 : 1;
+
+        if(result == 0) {
+            alarmService.sendProjectCompleteAlarm(projectId);
+        } else {
+            alarmService.sendProjectWorkStateChangeAlarm(workItemId);
+        }
+
+        // 4. 모두 FINISH 상태면 0, 아니면 1 반환
+        return result;
     }
 
     @Override

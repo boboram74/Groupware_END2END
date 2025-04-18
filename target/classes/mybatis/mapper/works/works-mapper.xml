@@ -4,16 +4,80 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="works">
 
-<select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
-    SELECT * FROM project_work WHERE projectid = #{id}
-    order by id desc
-</select>
-<!-- 프로젝트 진행중 보고된 게시물 모아보기-->
+    <select id="selectAll" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        SELECT
+        pw.*,
+        pu.employeeId As employeeId,
+        e.name AS employeeName,
+        d.name AS departmentName,
+        j.name AS jobName
+        FROM project_work pw
+        JOIN PROJECT_USER pu ON pu.id = pw.projectUserId
+        JOIN employee e ON pu.employeeId = e.id
+        JOIN job j ON j.id = e.jobid
+        JOIN department d ON e.jobId = d.id
+        WHERE pw.projectid = #{id}
+
+    </select>
+    <!-- 프로젝트 진행중 보고된 게시물 모아보기-->
+
+    <select id="selectAllProjectWork" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        SELECT
+        pw.*,
+        pu.employeeId AS employeeId,
+        e.name AS employeeName,
+        d.name AS departmentName,
+        j.name AS jobName
+        FROM project_work pw
+        JOIN project_user pu ON pu.id = pw.projectUserId
+        JOIN employee e ON pu.employeeId = e.id
+        JOIN job j ON j.id = e.jobId
+        JOIN department d ON e.jobId = d.id
+
+    </select>
+    <select id="searchWorkList" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        SELECT
+        pw.title,
+        e.name AS employeeName,
+        pw.priority,
+        pw.state
+        FROM project_work pw
+        JOIN project_user pu ON pw.projectUserId = pu.id
+        JOIN employee e ON pu.employeeId = e.id
+        WHERE pw.projectId = #{projectId}
+        <choose>
+            <when test="searchOption == 'title'">
+                AND pw.title LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="searchOption == 'name'">
+                AND e.name LIKE '%' || #{keyword} || '%'
+            </when>
+        </choose>
+    </select>
+
+
+    <update id="updateState" parameterType="java.util.Map">
+        update project_work set
+        state=#{state} where id =#{workId}
+    </update>
+    <select id="countFinishWorksByProjectId" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM project_work
+        WHERE projectId = #{projectId}
+        AND state = 'FINISH'
+    </select>
+
+    <select id="countTotalWorksByProjectId" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM project_work
+        WHERE projectId = #{projectId}
+    </select>
+
 
     <delete id="deleteById">
         delete from project_work where id=#{workId}
     </delete>
-<!-- 프로젝트 진행중 보고된 게시물 삭제-->
+    <!-- 프로젝트 진행중 보고된 게시물 삭제-->
 
     <insert id="insert" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO">
         INSERT INTO project_work
@@ -25,10 +89,8 @@
         state,
         priority,
         type,
-        finishdate,
         regDate,
         deadline,
-        regdate,
         content
         )
         VALUES
@@ -40,13 +102,47 @@
         #{state, jdbcType=VARCHAR},
         #{priority},
         #{type},
-        #{regDate},
-        #{deadLine},
         SYSDATE,
+        #{deadLine},
         #{content, jdbcType=VARCHAR}
         )
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT Project_Work_id_SEQ.currval FROM DUAL
+        </selectKey>
     </insert>
 
+    <!--차트에 보낼 데이터 완료된 게시물 수-->
+    <select id="countFinishedWorks" resultType="int">
+        SELECT COUNT(*)
+        FROM PROJECT_WORK
+        WHERE projectId = #{selectedId}
+        AND state = 'FINISH'
+    </select>
+
+
+
+
+
+
+    <select id="countTotalWorks" resultType="int">
+        SELECT COUNT(*)
+        FROM PROJECT_WORK
+        WHERE projectId = #{selectedId}
+    </select>
+
+    <select id="countByState" resultType="int">
+        SELECT COUNT(*)
+        FROM project_work
+        WHERE projectId = #{selectedId}
+        AND state = #{state}
+    </select>
+
+    <select id="countByType" resultType="int">
+        SELECT COUNT(*)
+        FROM project_work
+        WHERE projectId = #{selectedId}
+        AND type = #{type}
+    </select>
 
     <select id="selectByProjectIdAndEmployeeId" parameterType="java.util.Map"
             resultType="String">
@@ -58,10 +154,10 @@
         EMPLOYEEID =#{employeeId}
     </select>
 
-<select id="selectByworksId" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
-    SELECT * FROM PROJECT_WORK
-    WHERE ID = #{id}
-</select>
+    <select id="selectByworksId" resultType="com.end2end.spring.works.dto.ProjectWorkDTO">
+        SELECT * FROM PROJECT_WORK
+        WHERE ID = #{id}
+    </select>
 
 
     <update id="update" parameterType="com.end2end.spring.works.dto.ProjectWorkDTO">
@@ -71,33 +167,18 @@
         type = #{type, jdbcType=VARCHAR},
         priority = #{priority, jdbcType=VARCHAR},
         deadLine = #{deadLine,jdbcType=DATE},
-        state = #{state, jdbcType=VARCHAR},
+
         content = #{content, jdbcType=VARCHAR}
-        WHERE id = #{id}
+        WHERE id = ${id}
     </update>
-<!--    UPDATE project_work-->
-<!--    SET-->
-<!--    title = '엥',-->
-<!--    type = 'DOCUMENT',-->
-<!--    priority = 'HIGH',-->
-<!--    regDate = TO_DATE('2025-04-12 12:10:10', 'YYYY-MM-DD HH24:MI:SS'),-->
-<!--    deadLine = TO_DATE('2025-06-10', 'YYYY-MM-DD'),-->
-<!--    state = 'READY',-->
-<!--    content = 'test'-->
-<!--    WHERE id = 35;-->
-
-
     <!-- 프로젝트 진행중 보고된 게시물 수정-->
 
 
-    <update id="updateState" parameterType="java.util.Map">
-        update project_work set
-    state=#{state} where id =#{workId}
-    </update>
 
 
-<select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">
 
-    SELECT * FROM project_user where projectId = #{id}
-</select>
+    <select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">
+
+        SELECT * FROM project_user where projectId = #{id}
+    </select>
 </mapper>

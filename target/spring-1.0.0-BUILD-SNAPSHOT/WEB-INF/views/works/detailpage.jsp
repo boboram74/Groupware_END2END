@@ -88,6 +88,8 @@
 
     .movingBoardColumn {
         width: 30%;
+        border: 1px solid #dadaeb;
+        overflow-y: auto;
         background: #ffffff;
         border-radius: 12px;
         padding: 20px;
@@ -363,7 +365,7 @@
         .detail-menu-list {
             margin-top: 30px; /* 닫기 버튼과의 간격 */
             max-height: 80vh;
-            overflow-y: auto;
+
             padding-top: 10px; /* 리스트 상단 간격 */
         }
 
@@ -429,6 +431,14 @@
             min-height: 400px;
         }
 
+        #finishProjectBtn {
+            width: 200px;
+            height: 40px;
+            background-color: #28a745;
+            border-radius: 12px;
+            color: white;;
+        }
+
         /* 컬럼 타이틀 스타일 */
         .column-title {
             text-align: center;
@@ -439,6 +449,7 @@
             margin-bottom: 10px;
             background: #f1f1f1;
             border-radius: 8px;
+            display: flex;
         }
 
         /* 다른 상태에 따라 다른 배경색 */
@@ -459,7 +470,10 @@
             min-height: 300px;
             display: flex;
             flex-direction: column;
-            gap: 15px; /* 작업 간격 */
+            gap: 15px;
+            overflow-y: auto;
+
+
         }
 
         /* 카드 스타일 */
@@ -538,12 +552,10 @@
             transition: transform 0.2s;
         }
 
-
         .work-item:hover {
             transform: scale(1.03);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
-
 
         .work-item h4 {
             font-size: 1.2rem;
@@ -610,26 +622,13 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <li class="detailMenuItem">
-                <span class="material-icons">star</span>
-                <span>프로젝트 모음</span>
-                <span class="detail-badge">5</span>
-            </li>
-            <li class="detailMenuItem">
-                <span class="material-icons">all_inbox</span>
-                <span>전체 메일함</span>
-                <span class="detail-badge">32</span>
-            </li>
-            <li class="detailMenuItem">
-                <span class="material-icons">send</span>
-                <span>보낸 메일함</span>
-            </li>
-            <li class="detailMenuItem">
-                <span class="material-icons">move_to_inbox</span>
-                <span class="detail-menu-disc">받은 메일함</span>
-                <span class="detail-badge">12</span>
-            </li>
+            <a style="text-decoration:none;" href="/project/main">
+                <li class="detailMenuItem">
+                    <span class="material-icons">star</span>
+                    <span>프로젝트 모음</span>
 
+                </li>
+            </a>
 
         </ul>
         <button class="detail-modal-close">
@@ -643,16 +642,19 @@
         <div class="search">
             <div>
                 <select id="searchOption">
-                    <option>선택</option>
-                    <option>선택</option>
-                    <option>선택</option>
+
+                    <option value="title" name="title">제목</option>
+                    <option value="name" name="name">작성자</option>
+
                 </select>
             </div>
             <div class="searchInput">
                 <input id="input" type="text" name="keyword" placeholder="검색어 입력">
             </div>
             <div>
-                <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
+                <button id="searchBtn" onclick="submitSearchData(${project.id})"><span
+                        class="material-icons">search</span> 검색
+                </button>
             </div>
         </div>
 
@@ -666,19 +668,24 @@
             <a href="/work/write/${project.id}">
                 <button>작성하기</button>
             </a>
+            <div id="finishBtnDiv" class="finishBtnDiv">
 
+            </div>
         </div>
 
         <!-- 칸반보드 -->
         <div class="movingBoard">
             <!-- 시작전 -->
             <div class="movingBoardColumn ready-column surface-bright" data-state="READY">
-                <h3 class="column-title">프로젝트 작업 진행전</h3>
+                <h3 class="column-title">READY</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'READY'}">
                             <div class="work-item" draggable="true"
-                                 data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
+                                 data-projectId="${work.projectId}"
+                                 data-work-id="${work.id}"
+                                 data-employee-id="${work.employeeId}"
+                                 onclick="openWorkModal(${work.id}, ${work.employeeId})">
                                 <c:if test="${employee.role != 'TeamLeader'}">
                                     <div class="closeBtn">
                                         <button type="button" class="btn-close btn-sm"
@@ -686,7 +693,10 @@
                                                         "></button>
                                     </div>
                                 </c:if>
-                                <h4>${work.title}</h4>
+
+                                <h4>제목 : ${work.title}</h4>
+                                <h4>작성자 :${work.departmentName} ${work.employeeName} ${work.jobName}</h4>
+                                <input type="hidden" name="id" value="${work.employeeId}">
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>
@@ -696,14 +706,15 @@
 
             <!-- 작성중 -->
             <div class="movingBoardColumn ongoing-column surface-bright" data-state="ONGOING">
-                <h3 class="column-title">프로젝트 작업 진행중</h3>
-
-
+                <h3 class="column-title">ONGOING</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'ONGOING'}">
                             <div class="work-item" draggable="true"
-                                 data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
+                                 data-projectId="${work.projectId}"
+                                 data-work-id="${work.id}"
+                                 data-employee-id="${work.employeeId}"
+                                 onclick="openWorkModal(${work.id}, ${work.employeeId})">
                                 <c:if test="${employee.role != 'TeamLeader'}">
                                     <div class="closeBtn">
                                         <button type="button" class="btn-close btn-sm"
@@ -711,7 +722,9 @@
                                                         "></button>
                                     </div>
                                 </c:if>
-                                <h4>${work.title}</h4>
+                                <h4>제목 : ${work.title}</h4>
+                                <h4>작성자 :${work.departmentName} ${work.employeeName} ${work.jobName}</h4>
+                                <input type="hidden" name="id" value="${work.employeeId}">
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>
@@ -722,12 +735,15 @@
 
             <!-- 완료 -->
             <div class="movingBoardColumn finish-column surface-bright" data-state="FINISH">
-                <h3 class="column-title">완료</h3>
+                <h3 class="column-title">FINISH</h3>
                 <div class="work-items">
                     <c:forEach items="${works}" var="work">
                         <c:if test="${work.state == 'FINISH'}">
                             <div class="work-item" draggable="true"
-                                 data-work-id="${work.id}" onclick="openWorkModal(${work.id})">
+                                 data-projectId="${work.projectId}"
+                                 data-work-id="${work.id}"
+                                 data-employee-id="${work.employeeId}"
+                                 onclick="openWorkModal(${work.id}, ${work.employeeId})">
                                 <c:if test="${employee.role != 'TeamLeader'}">
                                     <%--삭제 테스트를 위해 != 설정해둠--%>
                                     <div class="closeBtn">
@@ -735,7 +751,10 @@
                                                 onclick="deleteWork(${work.id})
                                                         "></button>
                                     </div>
-                                </c:if> <h4>${work.title}</h4>
+                                </c:if>   <h4>제목 : ${work.title}</h4>
+                                <h4>작성자 :${work.departmentName} ${work.employeeName} ${work.jobName}</h4>
+                                <input type="hidden" name="id" value="${work.employeeId}">
+
                                 <p class="priority ${work.priority.toLowerCase()}">${work.priority}</p>
                             </div>
                         </c:if>
@@ -771,7 +790,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="openupdateModal(currentWorkId)">수정하기
+
+                        <!-- 수정하기 버튼 -->
+
+                        <button type="button" class="btn btn-primary" id="updateBtn"
+                                onclick="openupdateModal(currentWorkId)">
+                            수정하기
                         </button>
                     </div>
                 </div>
@@ -784,10 +808,11 @@
                     <div class="modal-header">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="/work/update" method="post">
+                    <form id="updateForm">
                         <div class="modal-body">
-                            <input tpye="hidden" name="id" value="1" />
+                            <input type="hidden" name="id"/>
                             <input type="hidden" name="projectId" value="${project.id}"/>
+
                             <h5>게시물 title</h5>
                             <div id="updateTitle">
 
@@ -819,33 +844,87 @@
         </div>
 
         <script>
-            $('form').submit(function (e) {
-                e.preventDefault();
 
-                const formData = new FormData(this);
-                for(const [key, value] of formData.entries()) {
-                    console.log(key, value);
-                }
+            const employeeRole = "${employee.role}";
+            console.log("1 : ${employee.role}");
+            console.log(`2 : ${employee.role}`);
+
+            function submitSearchData(projectId) {
+                console.log(projectId);
                 $.ajax({
-                    url: '/work/update',
-                    data: formData,
+                    url: '/work/search/' + projectId,
                     type: 'POST',
-                    processData: false,
-                    contentType: false,
-                    error: function (xhr, status, error) {
-                        console.error('Error:', error);
-                        console.error('Status:', status);
-                        console.error('Response:', xhr.responseText);
-                    }
-                }).done(function(response) {
-                    console.log(response);
-                    location.reload();
-                })
-            })
+                    data: {
+                        keyword: $('#input').val(),
+                        searchOption: $('#searchOption').val(),
 
-            let currentWorkId = null; // 전역 변수
-            function openWorkModal(workId) {
-                currentWorkId = workId; // 전역 변수
+                    },
+
+                    success: function (response) {
+                        console.log("체크" + response);
+
+                        $(`.movingBoardColumn[data-state="` + "READY" + `"]`).empty();
+                        $(`.movingBoardColumn[data-state="` + "ONGOING" + `"]`).empty();
+                        $(`.movingBoardColumn[data-state="` + "FINISH" + `"]`).empty();
+                        console.log("response 확인", response);
+
+
+                        // 응답이 리스트라고 가정 (List<ProjectWorkDTO>)
+                        response.forEach(function (work) {
+
+
+                            const closeBtnHtml = (employeeRole === 'TeamLeader' || work.isMine) ? `
+                       <div class="closeBtn">
+                       <button type="button" class="btn-close btn-sm" onclick="deleteWork(` + work.id + `)"></button>
+                       </div>
+                      ` : '';
+
+                            const itemHtml = `
+                               <h3 class="column-title">` + work.state + `</h3>
+                         <div class="work-item" draggable="true"
+                          data-work-id="${work.id}"
+                            data-employee-id="` + work.employeeId + `"
+                         onclick="openWorkModal(` + work.id + `, ` + work.employeeId + `)">
+                          ` + closeBtnHtml + `
+                            <h4>제목 : ` + work.title + `</h4>
+                            <h4>작성자 :  ` + work.employeeName + `</h4>
+                            <p class="priority ` + work.priority.toLowerCase() + `">` + work.priority + `</p>
+                          </div>
+                        `;
+
+                            console.log("itemHtml 확인:", itemHtml); // 확인용
+                            let temp = $(itemHtml);
+                            console.log("temp" + temp);
+                            console.log(typeof itemHtml); // 결과가 'string'이어야 함
+
+
+                            if (work.state == 'READY') {
+                                $(`.movingBoardColumn[data-state="` + work.state + `"]`).append(itemHtml);
+
+
+                            } else if (work.state === 'ONGOING') {
+                                $(`.movingBoardColumn[data-state="` + work.state + `"]`).append(itemHtml);
+                                // $('.ongoing-column .work-items').append(itemHtml);
+                            } else if (work.state === 'FINISH') {
+                                $(`.movingBoardColumn[data-state="` + work.state + `"]`).append(itemHtml);
+                            }
+                            console.log("상태" + work.state);
+                            console.log($('.ready-column .work-items').length);
+
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error('검색 실패:', xhr);
+                    }
+                });
+            }
+
+            let currentWorkId = null;
+            const loggedInEmployeeId = ${employee.id}; // 모델로 넘어온 세션 유저 ID
+            console.log("세션로그인" + loggedInEmployeeId)
+
+            function openWorkModal(workId, employeeId) {
+                currentWorkId = workId;
                 $.ajax({
                     url: '/work/detail/' + workId,
                     type: 'GET',
@@ -859,18 +938,19 @@
                         $('#workType').html(work.type);
                         $('#workPriority').html(work.priority);
                         $('#workState').html(work.state);
-                        $('#workDate').html(work.regDate +"~"+work.deadLine);
+                        $('#workDate').html(work.regDate + "~" + work.deadLine);
                         $('#workContent').html(work.content);
+                        $('.work-item').append('<input type="hidden" name="projectId" value="' + workId + '">');
+                        console.log(work)
 
                         // 파일 목록 업데이트
-
                         let fileList = "";
                         if (files && files.length > 0) {
                             files.forEach(function (file) {
                                 console.log(file);
                                 fileList += '<li class="mb-2">' +
                                     '<i class="bi bi-paperclip"></i> ' +
-                                    '<a href="/download/' + file.filesId +
+                                    '<a href="/file/download?path=' + file.path +
                                     '" class="text-decoration-none">' +
 
                                     file.originFileName
@@ -881,6 +961,12 @@
                             fileList = '<li>첨부된 파일이 없습니다.</li>';
                         }
                         $('#fileList').html('<ul>' + fileList + '</ul>');
+                        console.log(employeeId == ${employee.id})
+                        if (employeeId == ${employee.id}) {
+                            $('#updateBtn').show();
+                        } else {
+                            $('#updateBtn').hide();
+                        }
 
 
                         // 모달 표시
@@ -895,7 +981,38 @@
                 });
             }
 
+
+            $('#updateForm').submit(function (e) {
+                e.preventDefault();
+                console.log("수정보내는곳")
+                const formData = new FormData(this);
+                for (const [key, value] of formData.entries()) {
+                    console.log(key, value);
+                }
+                $.ajax({
+                    url: '/work/update',
+                    data: formData,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        console.error('Status:', status);
+                        console.error('Response:', xhr.responseText);
+                    }
+                }).done(function (response) {
+                    console.log(response);
+                    alert("글이 정상적으로 수정되었습니다.");
+                    location.reload();
+
+
+                })
+            })
+
+
             function deleteWork(workId) {
+
                 if (confirm("정말 삭제하시겠습니까?")) {
                     $.ajax({
                         url: '/work/delete/',
@@ -963,29 +1080,29 @@
                     <option value="FINISH"` + work.state + ` == 'FINISH' ? 'selected' : ''}>완료</option>
                 </select>`);
 
-                        $('#updateDate').html(`<input type="date" class="form-control" name="deadLine" value=` + work.deadLine + ` >`);
+                        $('#updateDate').html(`<input type="date" class="form-control" name="deadLine" value="` + work.deadLine + `" >`);
 
                         $('#updateContet').html(`
                 <textarea class="form-control" name="content">` + work.content + ` </textarea>`);
 
-                        // 파일 input
-                        // $('#updatefileList').append('<input type="file" class="form-control" name="files" multiple>');
+                        $('#updatefileList').append('<input type="file" class="form-control" name="files" multiple>');
+                        let fileList = '';
+                        if (files && files.length > 0) {
+                            files.forEach(file => {
+                                fileList += `
+                            <li>
+                                <a href="/file/download?path=' + file.path +
+                                    '" class="text-decoration-none">' +
+                            file.originFileName
+                            + '</a>
+                            </li> `;
+                            });
+                        } else {
+                            fileList = '<li>첨부된 파일이 없습니다.</li>';
+                        }
 
-                        // 파일 안나와서 주석처리해둠
-                        <%--    let fileList = '';--%>
-                        <%--    if (files && files.length > 0) {--%>
-                        <%--        files.forEach(file => {--%>
-                        <%--            fileList += `--%>
-                        <%--    <li>--%>
-                        <%--        <a href="/download/${file.filesId}" target="_blank">${file.originFileName}</a>--%>
-                        <%--    </li>--%>
-                        <%--`;--%>
-                        <%--        });--%>
-                        <%--    } else {--%>
-                        <%--        fileList = '<li>첨부된 파일이 없습니다.</li>';--%>
-                        <%--    }--%>
 
-                        <%--$('#updatefileList').append(`<ul>${fileList}</ul>`);--%>
+                        $('#updatefileList').append(`<ul>${fileList}</ul>`);
                     },
                     error: function (xhr, status, error) {
                         console.error('수정 모달 데이터 실패:', error);
@@ -1012,10 +1129,6 @@
                     id: currentWorkId
 
                 };
-                console.log($('input[name=regDate]').val());
-                console.log($('input[type="date"][name=deadLine]').val());
-                console.log(dtobox.regDate);
-                console.log(dtobox.deadLine);
 
                 // let files =
                 //     $("#updatefileList")[0].files;
@@ -1023,30 +1136,28 @@
                 //     formData.append("files", files[i]);
                 // }
 
-
-                $.ajax({
-                    url: '/work/update',
-                    type: 'POST',
-                    data: {"dto": dtobox},
-
-                    // processData: false, // 필수!
-                    // contentType: false, // 필수!
-                    success: function (result) {
-                        console.log("ajax성공" + result)
-                        if (result) {
-                            alert("글이 정상적으로 수정되었습니다.");
-                            $('#updateModal').modal('hide');
-                            location.reload();
-
-                        }
-
-                    }
-                })
+                // $.ajax({
+                //     url: '/work/update',
+                //     type: 'POST',
+                //     data: {"dto": dtobox},
+                //
+                //     success: function (result) {
+                //         console.log("ajax성공" + result)
+                //         if (result) {
+                //             alert("글이 정상적으로 수정되었습니다.");
+                //             $('#updateModal').modal('hide');
+                //             location.reload();
+                //
+                //         }
+                //
+                //     }
+                // })
             }
 
             // 모달 코드
             $(document).ready(function () {
                 let dragged = null;
+
 
                 $('.work-item').on('dragstart', function (e) {
                     dragged = this;
@@ -1061,7 +1172,30 @@
                 $('.work-item').on('drag', function (e) {
                     // 드래그 중에 처리할 일이 있다면 여기에 작성
                 });
+                $(document).on('click', '#finishProjectBtn', function() {
+                    const projectId = ${projectId};
+                    console.log("마감 요청 projectId:", projectId);
+                    finishWork(projectId);
+                });
 
+
+                function finishWork(projectId) {
+                    if (confirm("정말 프로젝트 작업을 마감하시겠습니까?")) {
+                        $.ajax({
+                            url: '/work/finish',
+                            type: 'POST',
+                            data: { projectId: projectId },
+                            success: function (response) {
+                                alert("프로젝트가 마감되었습니다.");
+                                location.href= '/project/main';
+                            },
+                            error: function (error) {
+                                console.error("마감 실패:", error);
+                                alert("마감 처리 중 오류가 발생했습니다.");
+                            }
+                        });
+                    }
+                }
                 $('.movingBoardColumn'
                 ).on('drop', function (e) {
                     console.log("도착");
@@ -1069,28 +1203,48 @@
                     $(this).append(dragged);
 
                     const columnState = $(this).data('state');
+                    const projectId = $(dragged).data('projectid');
                     const workItemId = $(dragged).data('work-id');
-
+                    console.log("제발 아이디" + projectId);
                     $(this).find('.work-items').append(dragged);
-                    console.log(columnState);
-                    console.log(workItemId);
+
+                    const formData = new FormData();
+                    formData.append('workItemId', workItemId);
+                    formData.append('projectId', projectId);
+                    formData.append('state', columnState);
+
+                    for (let pair of formData.entries()) {
+
+                    }
                     $.ajax({
                         url: '/work/updateState',
                         type: 'POST',
-
-                        data: {
-                            workItemId: workItemId,
-                            state: columnState
-                        },
-
+                        data: formData,
+                        processData: false,
+                        contentType: false,
                         success: function (response) {
-                            console.log('저장 성공:', response);
+                            console.log("동적버튼에 넣을거"+projectId)
+                            if (response == 0) {
+
+                                $('#finishProjectBtn').remove();
+                                $(`.finishBtnDiv`).append(`
+                                     <button id="finishProjectBtn" class="btn btn-primary">
+                                     프로젝트 마감
+                                    </button> `);
+
+                            } else {
+
+                                location.reload();
+                            }
+
+
                         },
                         error: function (error) {
                             console.error('저장 실패:', error);
                         }
                     });
                 });
+
 
                 $('.movingBoardColumn').on('dragover', function (e) {
                     e.preventDefault();

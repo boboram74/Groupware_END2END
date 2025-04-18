@@ -10,11 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/hr")
 @Controller
@@ -24,29 +28,61 @@ public class HRController {
     private EmployeeService employeeService;
 
     @RequestMapping("/list")
-    public String toList(Model model) {
-        // TODO: 직원 관리 페이지로 이동
+    public String toList(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        if (employee == null ||
+                (!"ADMIN".equalsIgnoreCase(employee.getRole()) &&
+                        !"인사팀".equals(employee.getDepartmentName()))) {
+
+            redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
+            return "redirect:/";
+        }
         List<EmployeeDTO> list = employeeService.selectAll();
         model.addAttribute("employeeList", list);
         model.addAttribute("isNoAuthExist", employeeService.isNoAuthExist());
-        return "hr/hr-test";
-    }
-
-    @RequestMapping("/list/search")
-    public String toListSearch(Model model) {
-        // TODO: 해당 검색 결과를 list.jsp에 출력
         return "hr/list";
     }
 
+
+    @RequestMapping("/list/search")
+    public String searchEmployeeList(Model model,String searchOption, String keyword) {
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return "redirect:/hr/list";
+        }
+
+        List<EmployeeDTO> list = employeeService.searchEmployeeList(searchOption, keyword);
+        model.addAttribute("employeeList", list);
+        return "hr/list";
+    }
+
+    @RequestMapping("/contact/search")
+    public String searchContactList(Model model, String searchOption, String keyword) {
+
+        List<EmployeeDTO> contactList = employeeService.searchContactList(searchOption, keyword);
+        model.addAttribute("contactList", contactList);
+
+        return "main/contact";
+    }
+
     @RequestMapping("/chart")
-    public String toChart(Model model) {
-        // TODO: 직원 통계 페이지로 이동
+    public String toChart(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+        EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+
+        if (employee == null ||
+                (!"ADMIN".equalsIgnoreCase(employee.getRole()) &&
+                        !"인사팀".equals(employee.getDepartmentName()))) {
+
+            redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
+            return "redirect:/";
+        }
         return "hr/chart";
     }
 
     @RequestMapping("/write")
     public String toWrite(Model model) {
-        // TODO: 직원 추가 페이지로 이동
+
         List<DepartmentDTO> departmentList = employeeService. selectAllDepartment();
         List<JobDTO> jobList = employeeService.selectAllJob();
 
@@ -58,37 +94,73 @@ public class HRController {
 
     @RequestMapping("/insert")
     public String insert(EmployeeDetailDTO dto, MultipartFile file) {
-        // TODO: 직원 데이터 추가
         employeeService.insert(dto, file);
         return "redirect:/";
     }
 
     @RequestMapping("/roleUpdate/{id}")
     public String roleUpdate(@PathVariable("id") String id) {
-        // TODO: 인사팀에서 승인하면 권한 추가
         employeeService.roleUpdate(id);
+        String loginId = employeeService.findByLoginId(id);
+
+        RestTemplate restTemplate = new RestTemplate();
+        String mailUrl = "http://34.70.179.192/mail/employee";
+        Map<String, String> body = new HashMap<>();
+        body.put("name", loginId);
+        body.put("password", loginId);
+        restTemplate.postForObject(mailUrl, body, String.class);
         return "redirect:/hr/list";
     }
 
     @RequestMapping("/idCheck")
     @ResponseBody
-    public boolean idCheck(@RequestParam("loginId") String loginId) {
-        // TODO: 아이디 중복 검사
+    public boolean idCheck(String loginId) {
         return employeeService.idVali(loginId);
     }
 
     @RequestMapping("/update")
-    public String update(EmployeeDetailDTO dto) {
-        // TODO: 직원 데이터 수정
-       employeeService.update(dto);
+    public String update(HttpSession session, EmployeeDetailDTO dto, MultipartFile file) {
+        employeeService.update(dto,file);
         String employeeId = dto.getId();
-        return "redirect:/mypage/"+employeeId;
+        session.setAttribute("employee", employeeService.selectById(employeeId));
+        return "redirect:/mypage/" + employeeId;
     }
 
     @RequestMapping("/deleteById/{id}")
     public String deleteById(@PathVariable String id) {
-        // TODO: 해당 id의 직원 데이터 삭제
         employeeService.deleteById(id);
         return "redirect:/hr/list";
     }
+
+    @RequestMapping("/isResigned/{id}")
+    public String isResigned(@PathVariable String id) {
+        employeeService.isResigned(id);
+        return "redirect:/hr/list";
+    }
+
+    @RequestMapping("/chart/employeeAll")
+    @ResponseBody
+    public List<Map<String, Object>> getEmploymentTypeChart() {
+        List<Map<String, Object>> result = employeeService.employeeAll();
+        return result;
+    }
+
+    @RequestMapping("/chart/monthly")
+    @ResponseBody
+    public Map<String, List<Integer>> getMonthlyLineChart() {
+        return employeeService.getMonthlyLineData();
+    }
+
+    @RequestMapping("/chart/vacation")
+    @ResponseBody
+    public List<Map<String, Object>> getVacationStats() {
+        return employeeService.getVacationStats();
+    }
+
+    @RequestMapping("/chart/attendance")
+    @ResponseBody
+    public List<Map<String, Object>> getAttendanceStats() {
+        return employeeService.getAttendanceStats();
+    }
+
 }

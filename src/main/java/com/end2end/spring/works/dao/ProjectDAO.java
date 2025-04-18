@@ -2,11 +2,15 @@ package com.end2end.spring.works.dao;
 
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.works.dto.ProjectDTO;
+import com.end2end.spring.works.dto.ProjectInsertDTO;
+import com.end2end.spring.works.dto.ProjectUserDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProjectDAO {
@@ -30,6 +34,23 @@ public class ProjectDAO {
 
     }
 
+    public int deleteProjectMember(ProjectUserDTO dto){
+        return mybatis.delete("project.deleteProjectMember",dto);
+    }
+
+    public List<EmployeeDTO>  getMembersByProjectId(int projectId){
+        return mybatis.selectList("project.getMembersByProjectId", projectId);
+    }
+public void update(ProjectInsertDTO dto) {
+    mybatis.update("project.updateById", dto);
+}
+public void endworks(int projectId){
+    mybatis.update("project.updateStatusByProjectId",projectId);
+}
+
+    public ProjectDTO findLatestProject(){
+       return mybatis.selectOne("project.findLatestProject");
+    }
     public int deleteById(int id){
         return mybatis.delete("project.deleteBySeq",id);
     }
@@ -43,4 +64,11 @@ public class ProjectDAO {
  }
 
 
+    public int hideById(int projectId,String convertedHideYn) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("projectId", projectId);
+        params.put("hideYn",  convertedHideYn);
+        System.out.println("dao"+params);
+    return mybatis.update("project.hideById",params);
+    }
 }

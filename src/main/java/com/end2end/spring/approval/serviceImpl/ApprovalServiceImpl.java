@@ -1,5 +1,6 @@
 package com.end2end.spring.approval.serviceImpl;
 
+import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.approval.dao.ApprovalDAO;
 import com.end2end.spring.approval.dao.ApprovalRejectDAO;
 import com.end2end.spring.approval.dao.ApproverDAO;
@@ -18,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -32,6 +30,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Autowired private FileService fileService;
     @Autowired private VacationService vacationService;
     @Autowired private CommuteService commuteService;
+    @Autowired private AlarmService alarmService;
 
     @Override
     public List<ApprovalDTO> myList(String state) {
@@ -59,6 +58,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         return approvalDAO.search(state, employeeId, keyword);
     }
 
+
     @Override
     public List<ApprovalDTO> search(String employeeId) {
         // TODO: 해당 id의 사원이 볼 수 있는 검색 결과 내용의 결재 리스트 출력
@@ -78,6 +78,11 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public List<ApproverDTO> nextId(String approvalId) {
         return approverDAO.nextId(approvalId);
+    }
+
+    @Override
+    public ApprovalFormDTO selectByFormId(int id) {
+        return approvalDAO.selectByFormId(id);
     }
 
     @Transactional
@@ -116,7 +121,7 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .type(dto.getVacationType())
                     .build();
             vacationService.insert(vacationDTO);
-        } else if (formDTO.getName().contains("연장 근무")) {  // 연장 근무라면 연장 근무 추가
+        } else if (formDTO.getName().contains("연장근무")) {  // 연장 근무라면 연장 근무 추가
             ExtendedCommuteDTO extendedCommuteDTO = ExtendedCommuteDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(dto.getEmployeeId())
@@ -146,10 +151,15 @@ public class ApprovalServiceImpl implements ApprovalService {
             ApproverDTO approverDTO = ApproverDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(approverId)
-                    .orders(order++)
+                    .orders(order)
                     .build();
             approverDAO.insertApprover(approverDTO);
             added.add(approverId);
+
+            if(order == 1) {
+                alarmService.sendApproveCheckAlarm("/approval/detail/" + approvalDTO.getId(), approverId);
+            }
+            order++;
         }
     }
 
@@ -171,8 +181,13 @@ public class ApprovalServiceImpl implements ApprovalService {
                     commuteService.update(extendedCommuteDTO);
                 }
             }
+
+            alarmService.sendApprovalResultAlarm("/approval/detail/" + approvalId, approvalId);
         } else {
             approvalDAO.updateState(approvalId, "ONGOING");
+
+            String approver = nextApprovers.get(0).getEmployeeId();
+            alarmService.sendApproveCheckAlarm("/approval/detail/" + approvalId, approver);
         }
 
     }
@@ -180,12 +195,11 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Transactional
     @Override
     public void rejectApproval(ApprovalRejectDTO rejectDTO) {
-
         approvalRejectDAO.insertReject(rejectDTO);
-
         approverDAO.updateSubmitYn(rejectDTO.getApproverId(), "N", new Timestamp(System.currentTimeMillis()));
-
         approvalDAO.updateState(rejectDTO.getApprovalId(), "REJECT");
+
+        alarmService.sendApprovalResultAlarm("/approval/detail/" + rejectDTO.getApprovalId(), rejectDTO.getApprovalId());
     }
 
     @Override
@@ -206,5 +220,75 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public List<Map<String, Object>> selectApproversList(String approvalId) {
         return approverDAO.selectApproversList(approvalId);
+    }
+
+    @Transactional
+    @Override
+    public List<Map<String, Object>> searchDetail(Map<String, Object> paramMap) {
+        return approvalDAO.searchDetail(paramMap);
+    }
+    @Override
+    public String getDepartmentNameByEmployeeId(String employeeId) {
+        return approvalDAO.selectDepartmentNameById(employeeId);
+    }
+    @Override
+    public Map<String, List<Map<String, Object>>> allApprovals() {
+        List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
+        System.out.println("allApprovals.size() = " + allApprovals.size());
+        Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
+
+        allApproval.put("SUBMIT", new ArrayList<>());
+        allApproval.put("ONGOING", new ArrayList<>());
+        allApproval.put("REJECT", new ArrayList<>());
+
+        for (Map<String, Object> approval : allApprovals) {
+            String state = (String) approval.get("STATE");
+            if (allApproval.containsKey(state)) {
+                allApproval.get(state).add(approval);
+            }
+        }
+
+        return allApproval;
+    }
+    @Override
+    public Map<String, List<Map<String, Object>>> SearchallApprovals(String keyword) {
+        List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
+        System.out.println("allApprovals.size() = " + allApprovals.size());
+        Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
+
+        allApproval.put("SUBMIT", new ArrayList<>());
+        allApproval.put("ONGOING", new ArrayList<>());
+        allApproval.put("REJECT", new ArrayList<>());
+
+        for (Map<String, Object> approval : allApprovals) {
+            String state = (String) approval.get("STATE");
+            if (allApproval.containsKey(state)) {
+                allApproval.get(state).add(approval);
+            }
+        }
+
+        return allApproval;
+    }
+
+    @Override
+    public void insertImportant(CheckImportantDTO dto){
+        CheckImportantDTO importantDTO = CheckImportantDTO.builder()
+                .approvalId(dto.getApprovalId())
+                .employeeId(dto.getEmployeeId())
+                .leaderCheckYn(dto.getLeaderCheckYn())
+                .build();
+        approvalDAO.insertImportant(dto);
+    }
+
+    @Override
+    public List<Map<String, Object>> importantlist(String employeeId) {
+        return approvalDAO.importantlist(employeeId);
+    }
+
+    @Override
+    public void removeImportant(CheckImportantDTO dto){
+        if ("N".equals(dto.getLeaderCheckYn())) {
+         approvalDAO.removeImportant(dto);
+        }
     }
 }

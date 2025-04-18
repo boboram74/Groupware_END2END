@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="/css/approval/draft.css">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <style>
@@ -29,10 +29,33 @@
     .modalActions button {
         margin-left: 10px;
     }
+    .vacationBox {
+        background-color: #f9f9f9;
+        padding: 15px;
+        margin: 20px 0;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+    .vacationTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .vacationTable th, .vacationTable td {
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+    }
+    .vacationTable th {
+        background-color: #f0f0f0;
+        text-align: left;
+    }
+    .fileBox{
+        border: 1px solid black;
+    }
 </style>
 <div class="container">
+
     <table>
-        <th>기 안 문</th>
+        <th>${approvalFormDTO.name}</th>
     </table>
     <hr>
 
@@ -64,7 +87,7 @@
                                 <span class="approverStatus" id="approverStatus${approver['ID']} ${approver["SUBMITYN"] eq 'Y' ? 'done' : 'N'}">
                                     <c:choose>
                                         <c:when test="${approver['SUBMITYN'] eq 'Y'}">승인</c:when>
-                                        <c:otherwise>대기</c:otherwise>
+                                        <c:otherwise>반려</c:otherwise>
                                     </c:choose>
                                 </span>
                             </div>
@@ -73,7 +96,7 @@
                             </c:if>
                         </div>
 
-                        <c:if test="${approver['EMPLOYEEID'] eq employee.id and (empty approver['SUBMITYN'] or approver['SUBMITYN'] eq 'N')}">
+                        <c:if test="${approver['EMPLOYEEID'] eq employee.id and (empty approver['SUBMITYN'])}">
                             <form action="/approval/submit/approve/${approval.ID}" method="post" style="display:inline;">
                                 <input type="hidden" name="approvalId" value="${approval.ID}" />
                                 <input type="hidden" name="approverId" value="${approver['ID']}" />
@@ -82,7 +105,7 @@
                             <form action="/approval/reject" method="post" style="display:inline;">
                                 <input type="hidden" name="approvalId" value="${approval.ID}" />
                                 <input type="hidden" name="approverId" value="${approver['ID']}" />
-                                <button type="submit" class="rejectBtn">반려</button>
+                                <button type="button" class="rejectBtn">반려</button>
                             </form>
                         </c:if>
                     </div>
@@ -102,13 +125,76 @@
             </div>
         </div>
     </div>
-
+    <c:if test="${approvalFormDTO.name eq '휴가계'}">
+        <div class="vacationBox">
+            <h3>휴가 정보</h3>
+            <table class="vacationTable">
+                <tr>
+                    <th>휴가 유형</th>
+                    <td>${vacationDTO.type}</td>
+                </tr>
+                <tr>
+                    <th>시작일</th>
+                    <td><fmt:formatDate value="${vacationDTO.startDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                </tr>
+                <tr>
+                    <th>종료일</th>
+                    <td><fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                </tr>
+                <tr>
+                    <th>총 휴가 일수</th>
+                    <td>${vacationDTO.vacationDate}일</td>
+                </tr>
+                <tr>
+                    <th>사유</th>
+                    <td>${vacationDTO.reason}</td>
+                </tr>
+            </table>
+        </div>
+    </c:if>
+    <c:if test="${approvalFormDTO.name eq '연장근무신청서'}">
+        <div class="vacationBox">
+            <h3>근무 시간</h3>
+            <table class="vacationTable">
+                <tr>
+                    <th>추가 근무</th>
+                    <td>${vacationDTO.type}</td>
+                </tr>
+                <tr>
+                    <th>시작일</th>
+                    <td><fmt:formatDate value="${vacationDTO.startDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                </tr>
+                <tr>
+                    <th>종료일</th>
+                    <td><fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                </tr>
+                <tr>
+                    <th>총 휴가 일수</th>
+                    <td>${vacationDTO.vacationDate}일</td>
+                </tr>
+                <tr>
+                    <th>사유</th>
+                    <td>${vacationDTO.reason}</td>
+                </tr>
+            </table>
+        </div>
+    </c:if>
     <div class="body">
         <div class="titleBox">
             <input type="text" id="title" name="title" value="${approval.TITLE}" readonly>
         </div>
         <div class="contentsBox">
             ${approval.CONTENT}
+        </div>
+        <div class="fileBox">
+        <c:forEach var="file" items="${fileList}">
+            <tr>
+                <td class="label">첨부파일</td>
+                <td colspan="3">
+                    <a href="/file/download?path=${file.path}">${file.originFileName}</a>
+                </td>
+            </tr>
+        </c:forEach>
         </div>
     </div>
 

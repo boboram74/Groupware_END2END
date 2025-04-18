@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reply">
+
+    <insert id="insert" parameterType="com.end2end.spring.board.dto.ReplyDTO">
+        insert into reply(id,boardId,employeeId,content,regDate)
+        values(reply_id_seq.nextval, #{boardId}, #{employeeId}, #{content,jdbcType=VARCHAR}, sysdate)
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT REPLY_ID_SEQ.currval FROM DUAL
+        </selectKey>
+    </insert>
+
+    <select id="selectByBoardId" resultType="com.end2end.spring.board.dto.ReplyDTO">
+        select
+            r.id,
+            r.boardId,
+            r.employeeId,
+            r.content,
+            r.regDate,
+            e.name as employeeName,
+            e.profileImg
+        from reply r
+        join employee e on r.employeeId = e.id
+        where r.boardId = #{boardId}
+        order by r.regDate desc
+    </select>
+
+    <delete id="deleteById" >
+        delete from reply where id = #{id}
+    </delete>
+
+    <select id="selectById" parameterType="int" resultType="com.end2end.spring.board.dto.ReplyDTO">
+        SELECT id, boardId, employeeId, content, regDate
+        FROM reply
+        WHERE id = #{id}
+    </select>
+
+</mapper>

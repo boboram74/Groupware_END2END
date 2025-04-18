@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
+<script src="/js/summernote/summernote-lite.js"></script>
+<script src="/js/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="/js/summernote/summernote-lite.css">
 <style>
     * {
         box-sizing: border-box;
@@ -101,26 +104,22 @@
 </style>
 <div class="content">
 </div>
-<form action="/board/insert" method="post" enctype="multipart/form-data">
+<form action="${empty action ? '/board/insert' : action}" method="post" enctype="multipart/form-data">
 <table>
-    <tr>
-        <th>종류</th>
-        <td>
-            <div class="checkboxArea">
-                <select id="searchOption" name="boardCtId">
-                    <option value="1">공지 게시판</option>
-                    <option value="2">중요 게시판</option>
-                    <option value="3">전사 게시판</option>
-                    <option value="4">그룹 게시판</option>
-                </select>
-            </div>
-        </td>
-
-        <th>등록일</th>
-        <td>
-            <div class="date">등록일</div>
-        </td>
-    </tr>
+    <c:if test="${not empty action}">
+        <tr>
+            <th>종류</th>
+            <td colspan="3">
+                <div class="checkboxArea">
+                    <select id="searchOption" name="noticeCtId">
+                        <c:forEach items="${noticeCategoryList}" var="noticeCt">
+                            <option value="${noticeCt.id}">${noticeCt.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </c:if>
     <tr>
         <th>제목 <span class="required">*</span></th>
         <td colspan="3">
@@ -130,21 +129,27 @@
     <tr>
         <th>이름 <span class="required">*</span></th>
         <td colspan="3">
-            <input type="text" name="employeeId" value="${employee.id}" />
+            <c:choose>
+                <c:when test="${action != null}">
+                    <input type="text" readonly value="관리자" disabled/>
+                </c:when>
+                <c:otherwise>
+                    <input type="text" value="${employee.name}" disabled/>
+                    <input type="hidden" name="employeeId" value="${employee.id}" />
+                </c:otherwise>
+            </c:choose>
         </td>
     </tr>
     <tr>
         <th>첨부파일</th>
         <td colspan="3">
-            <div class="fileUpload">
-                    <input type="file" name="file">
-            </div>
+            <jsp:include page="/WEB-INF/views/template/fileInput.jsp"/>
         </td>
     </tr>
     <tr>
         <th>내용 <span class="required">*</span></th>
         <td colspan="3">
-            <input type="text" name="content">
+            <input type="text" id="content" name="content">
         </td>
     </tr>
 </table>
@@ -158,6 +163,16 @@
     </a>
 </div>
 </form>
+<script type="text/javascript" src="/js/template/summernote.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#content').summernote(summernoteSetting($('#content')));
 
-<script src="/js/main/contact.js" type="text/javascript"></script>
-<jsp:include page="/WEB-INF/views/board/board-footer.jsp"/>
+        $('form').on('submit', function () {
+            const content = $('#content').summernote('code');
+            $('input[name="content"]').val(content);
+            return true;
+        })
+    })
+</script>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

@@ -1,10 +1,13 @@
+
+let toolbarHeight;
+
+
 const summernoteSetting = (target) => {
     return {
         codeviewFilter: true,
         codeviewIframeFilter: true,
         placeholder : '내용을 입력하십시오',
-        height : target.height(),
-        minHeight : target.height(),
+        height : 500,
         lang : 'ko-KR',
         toolbar : [
             [ 'fontname', [ 'fontname' ] ],
@@ -22,7 +25,23 @@ const summernoteSetting = (target) => {
             'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체' ],
         fontSizes : [ '8', '9', '10', '11', '12', '14', '16', '18',
             '20', '22', '24', '28', '30', '36', '50', '72' ],
-        callbacks : { //여기 부분이 이미지를 첨부하는 부분
+        callbacks : {
+            onInit: function() {
+                const editorHeight = target.height() - toolbarHeight;
+
+                // 에디터 초기화 후 높이 재조정
+                $('.note-editable').css('height', editorHeight + 'px');
+
+                // 스크롤바 스타일 조정 (선택사항)
+                $('.note-editable').css('overflow-y', 'auto');
+
+                $(window).on('resize', function() {
+                    const newContainerHeight = $('#editor-container').height();
+                    const newEditorHeight = newContainerHeight - toolbarHeight;
+                    $('.note-editable').css('height', newEditorHeight + 'px');
+                });
+            },
+
             onImageUpload : function(files) {
                 for(let i = 0; i < files.length; i++) {
                     console.log(files);
@@ -84,7 +103,8 @@ function uploadImage(file, editor) {
         contentType : false,
         processData : false,
         beforeSend: function(xhr) {
-            xhr.setRequestHeader("Accept-Charset", "UTF-8");
+            // Accept-Charset 대신 Accept 헤더 사용
+            xhr.setRequestHeader("Accept", "text/plain;charset=UTF-8");
         },
         error : function(request, status, error) {
             console.log("code: " + request.status)
@@ -92,15 +112,7 @@ function uploadImage(file, editor) {
             console.log("error: " + error);
         }
     }).done(function(data) {
-        // 경로에서 파일명만 추출하여 디코딩
-        const path = data.split('/');
-        const fileName = decodeURIComponent(path.pop());
-        path.push(fileName);
-
-        console.log(fileName);
-        const decodedPath = path.join('/');
-
-        $(editor).summernote('insertImage', decodedPath);
+        $(editor).summernote('insertImage', data);
     });
 }
 

@@ -1,12 +1,20 @@
 package com.end2end.spring.board.serviceImpl;
 
+import com.end2end.spring.board.dao.BoardCategoryDAO;
 import com.end2end.spring.board.dao.BoardDAO;
+import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
+import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
+import com.end2end.spring.file.dto.FileDTO;
+import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.file.servieImpl.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -14,6 +22,15 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private BoardDAO boardDAO;
+
+    @Autowired
+    private BoardCategoryDAO boardCategoryDAO;
+
+    @Autowired
+    private BoardCategoryService boardCategoryService;
+
+    @Autowired
+    private FileService fileService;
 
     @Override
     public List<BoardDTO> selectAll() {
@@ -24,7 +41,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<BoardDTO> selectByCategoryId(int categoryId, String employeeId) {
         // TODO: 카테고리 번호의 모든 게시글 조회
-        return boardDAO.selectByCategoryId(categoryId,employeeId);
+        return boardDAO.selectByCategoryId(categoryId, employeeId);
     }
 
     @Override
@@ -34,20 +51,27 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardDTO> search() {
-        // TODO: 검색한 모든 게시글 조회
-        return null;
+    public List<BoardDTO> search(String option, String keyword) {
+        return boardDAO.search(option,keyword);
     }
 
     @Override
     public BoardDTO selectById(int id) {
-        // TODO: 해당 id의 게시글 조회
+        boardDAO.increaseViewCount(id);
         return boardDAO.selectById(id);
     }
 
     @Override
-    public BoardDTO insert(BoardDTO dto) {
-        return boardDAO.insert(dto);
+    public void insert(MultipartFile[] files, BoardDTO dto) throws Exception {
+        int id = boardDAO.selectNextVal();
+        dto.setId(id);
+
+        boardDAO.insert(dto);
+
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(dto.getId())
+                .build();
+        fileService.insert(files, fileDTO);
         // TODO: 게시글 입력
     }
 
@@ -59,12 +83,28 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int deleteById(int id) {
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(id)
+                .build();
+        fileService.removeByParentsId(fileDTO);
+
         return boardDAO.deleteById(id);
         // TODO: 해당 id의 게시글 삭제
     }
 
+
     @Override
-    public void complaint(ComplaintDTO dto) {
-        // TODO: 게시글 신고 (insert)
+    public void insertCategory(BoardCategoryDTO dto) {
+        boardCategoryDAO.insertCategory(dto);
+    }
+
+    @Override
+    public BoardCategoryDTO selectCategoryById(int categoryId) {
+        return boardCategoryService.selectCategoryById(categoryId);
+    }
+
+    @Override
+    public List<BoardDTO> selectRecent() {
+        return boardDAO.selectRecent();
     }
 }

@@ -4,7 +4,6 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/approval/list.css">
 <link ref="stylesheet" href="/css/temapalte/exam.css"/>
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <style>
     .searchBox {
         margin: 20px 0;
@@ -33,7 +32,7 @@
     <div class="userText">나의 전자결재</div>
 </div>
 <div class="searchBox">
-    <form action="/approval/search" method="get" class="searchForm">
+    <form action="/approval/search/" method="get" class="searchForm">
         <input type="text" name="keyword" placeholder="문서종류,기안자,제목" class="searchInput" />
         <button type="submit" class="searchBtn">검색</button>
     </form>

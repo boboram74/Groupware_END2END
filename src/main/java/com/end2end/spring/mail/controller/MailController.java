@@ -1,8 +1,10 @@
 package com.end2end.spring.mail.controller;
 
+import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.mail.dto.EmailAddressUserDTO;
 import com.end2end.spring.mail.dto.ImportYnDTO;
 import com.end2end.spring.mail.dto.InboxDTO;
 import com.end2end.spring.mail.dto.MailDetailDTO;
@@ -30,6 +32,8 @@ public class MailController {
     private MailService mailService;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private AlarmService alarmService;
 
     @RequestMapping("/list")
     public String list(HttpSession session) {
@@ -191,5 +195,12 @@ public class MailController {
     @RequestMapping("/delete")
     public void deleteByEmail(String email) {
         // TODO: 해당 이메일을 삭제함
+    }
+
+    @ResponseBody
+    @RequestMapping("/alarm")
+    public ResponseEntity<Void> sendAlarm(int mailId) {
+       mailService.sendMailAlarm(mailId);
+       return ResponseEntity.ok().build();
     }
 }

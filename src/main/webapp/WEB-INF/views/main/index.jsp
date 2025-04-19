@@ -329,26 +329,18 @@
             return hours + ':' + minutes + ':' + seconds;
         }
 
-        $('.board-type-btn').click(function() {
-            const type = $(this).data('type');
-            console.log(type);
+        renderBoardList('notice', '/notice/recent');
 
-            renderBoardList(type);
-        })
-
-        renderBoardList('notice');
-
-        function renderBoardList(type) {
-            let url;
-
+        function renderBoardList(type, url) {
             const thead = $('.boardBox .board-table thead');
             const tbody = $('.boardBox .board-table tbody');
-            const categoryList = $('.category-list');
 
             if (type === 'notice') {
-                url = '/notice/recent';
+                $('.category-list .notice-category').show();
+                $('.category-list .all-category').hide();
             } else if (type === 'all') {
-                url = '/board/recent'
+                $('.category-list .notice-category').hide();
+                $('.category-list .all-category').show();
             }
 
             $.ajax({
@@ -364,16 +356,8 @@
                 console.log(resp);
                 thead.empty();
                 tbody.empty();
-                categoryList.empty();
 
                 if (type == 'all') {
-                    const active = $('<button class="category-btn active">').html('전체');
-                    categoryList.append(active);
-
-                    active.on('click', function() {
-                        renderBoardList("all");
-                    })
-
                     thead
                         .append($('<th width="8%">').html("번호"))
                         .append($('<th width="52%">').html("제목"))
@@ -414,23 +398,18 @@
                         }
                     }
                 } else {
-                    console.log(resp);
-
-                    const noticeList = resp.noticeList;
-                    const categoryList = resp.cateogryList;
-
                     thead
                         .append($('<th width="8%">').html('번호'))
                         .append($('<th width="15%">').html('분류'))
                         .append($('<th width="52%">').html('제목'))
                         .append($('<th width="25%">').html('등록일자'))
 
-                    if (noticeList.length === 0) {
+                    if (resp === 0) {
                         tbody.append(
                             $('<tr class="no-data">').append(
                                 $('<td colspan="4">').html('게시글이 없습니다.')))
                     } else {
-                        for(const item of noticeList) {
+                        for(const item of resp) {
                             const regDate = parseDate(new Date(item.regDate));
                             const tr = $('<tr>')
                                 .append($('<td>').html(item.id))
@@ -517,22 +496,26 @@
             <div class="board-container">
                 <!-- 게시판 타입 버튼 -->
                 <div class="board-type-buttons">
-                    <button class="board-type-btn active" data-type="notice">공지 게시판</button>
-                    <button class="board-type-btn" data-type="all">전사 게시판</button>
+                    <button class="board-type-btn active" data-type="notice"
+                            onclick="renderBoardList('notice', '/notice/recent')">공지 게시판</button>
+                    <button class="board-type-btn" data-type="all"
+                            onclick="renderBoardList('all', '/board/recent')">전사 게시판</button>
                 </div>
 
-                <div class="category-list-container">
-                    <div class="category-list">
+                <div class="category-list-container notice-category">
+                    <div class="category-list notice-category">
                         <button class="category-btn active">전체</button>
-                        <button class="category-btn">인사</button>
-                        <button class="category-btn">회계</button>
-                        <button class="category-btn">영업</button>
-                        <button class="category-btn">마케팅</button>
-                        <button class="category-btn">개발</button>
-                        <button class="category-btn">기타</button>
+                        <c:forEach items="${noticeCategoryList}" var="item">
+                            <button class="category-btn"
+                                    onclick="renderBoardList('notice', '/notice/recent/${item.id}')">${item.name}</button>
+                        </c:forEach>
                     </div>
 
-                    <a href="/board/list" class="more-btn">
+                    <div class="category-list all-category" style="display: none;">
+                        <button class="category-btn active">전체</button>
+                    </div>
+
+                    <a href="/notice/list" class="more-btn">
                         더보기 <span class="material-icons" style="font-size: 16px; vertical-align: middle;">chevron_right</span>
                     </a>
                 </div>

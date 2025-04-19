@@ -1,5 +1,6 @@
 package com.end2end.spring.main.controller;
 
+import com.end2end.spring.board.service.NoticeCategoryService;
 import com.end2end.spring.employee.dto.DepartmentDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.employee.dto.EmployeeDetailDTO;
@@ -27,8 +28,8 @@ public class MainController {
 	@Autowired private EmployeeService employeeService;
 	@Autowired MailService mailService;
 	@Autowired private ScheduleDAO scheduleDAO;
-	@Autowired
-	private LoginHistoryService loginHistoryService;
+	@Autowired private LoginHistoryService loginHistoryService;
+	@Autowired private NoticeCategoryService noticeCategoryService;
 
 	@GetMapping("/")
 	public String home(HttpSession session, Model model) {
@@ -39,6 +40,8 @@ public class MainController {
 		model.addAttribute("birthdayList", employeeService.selectByThisMonthBirthday());
 		model.addAttribute("mailReadCount", mailService.getRecordReadCount(loginUser.getId()));
 		model.addAttribute("todayScheduleCount", scheduleDAO.countTodayScheduleByEmployeeId(loginUser.getId()));
+		model.addAttribute("noticeCategoryList", noticeCategoryService.selectAll());
+
 		return "main/index";
 	}
 

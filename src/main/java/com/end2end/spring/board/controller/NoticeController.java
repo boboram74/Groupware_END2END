@@ -115,12 +115,8 @@ public class NoticeController {
 
     @ResponseBody
     @RequestMapping("/recent")
-    public Map<String, Object> listRecent() {
-        Map<String, Object> json = new HashMap<>();
-        json.put("noticeList", noticeService.selectRecent());
-        json.put("categoryList", noticeCategoryService.selectAll());
-
-        return json;
+    public List<NoticeDTO> listRecent() {
+        return noticeService.selectRecent();
     }
 
     @ResponseBody

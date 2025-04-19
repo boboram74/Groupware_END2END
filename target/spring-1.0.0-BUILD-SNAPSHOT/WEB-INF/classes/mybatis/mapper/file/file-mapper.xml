@@ -68,7 +68,7 @@
         </choose>
     </delete>
 
-    <delete id="deleteByDetailId">
+    <delete id="deleteDetailById">
         DELETE FROM FILE_DETAIL WHERE id = ${id}
     </delete>
 </mapper>

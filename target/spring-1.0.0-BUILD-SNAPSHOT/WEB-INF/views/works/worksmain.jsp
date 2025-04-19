@@ -175,6 +175,7 @@
     >
     업무 통계
 </div>
+<c:if test="${isTeamLeader}">
 <div class="btnBox">
 
     <button class="projectBtn" onclick="openProjectModal()"
@@ -182,6 +183,7 @@
     </button>
 
 </div>
+</c:if>
 
 <div class="selectBox">
     <select id="projectSelect">
@@ -566,13 +568,13 @@
 
 
                     <td onclick="handleProjectClick(${list.id})">${list.name}
-                        <c:if test="${list.nearDeadline == 'Y'}"><span class="detail-badge">긴급
+                        <c:if test="${list.nearDeadline == 'Y'&& list.status.equals('ongoing')}"><span class="detail-badge">긴급
                     </span></c:if></td>
                     <td onclick="handleProjectClick(${list.id})">${list.regDate}</td>
                     <td onclick="handleProjectClick(${list.id})"> ${list.deadLine}</td>
 
                     <td>
-                        <div class="member-profiles" onclick="location.href='/project/detail/${list.id}'">
+                        <div class="member-profiles" >
                             <!-- 프로필 이미지 리스트 -->
                             <c:if test="${not empty list.profileImg}">
                                 <c:forEach items="${list.profileImg}" var="img">
@@ -686,7 +688,6 @@
 </div>
 
 
-프로젝트수정모달
 <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -866,10 +867,10 @@
                 if (selectedMembers.length > 0) {
                     selectedMembers.forEach(member => {
                         $('#updateSelectedMembersList').append(`
-                        <div class="updateSelected-user" data-id="${member.id}">
-                            <span>${member.name}</span>
+                        <div class="updateSelected-user" data-id="`+member.id+`">
+                            <span>`+member.name+`</span>
                             <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
-                            <input type="hidden" name="employeeId" value="${member.id}">
+                            <input type="hidden" name="employeeId" value="`+member.id+`">
                         </div>
                     `);
                     });
@@ -912,7 +913,7 @@
 
                 $('#updateMemberSearchResults').html(memberList);
 
-                $('#updateMemberSearchResults .user-item').click(function () {
+                $('#updateMemberSearchResults').off('click', '.user-item').on('click', '.user-item', function () {
                     const userId = $(this).data('id');
                     const userName = $(this).data('name');
 
@@ -966,7 +967,7 @@
                     let userId = $(this).data('id');
                     let userName = $(this).data('name');
 
-                    if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
+                    if ($('#selectedMembersList').find(`[data-id="`+userId+`"]`).length === 0) {
 
                         console.log('추가한 새로운 멤버:', userId, userName);
 
@@ -979,6 +980,9 @@
                                 )
                                 .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
                         );
+                    } else {
+
+                        alert("이미 선택한 멤버입니다.");
                     }
                 });
             }

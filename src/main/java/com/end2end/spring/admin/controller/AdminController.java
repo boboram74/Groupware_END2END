@@ -122,6 +122,14 @@ public class AdminController {
         return ResponseEntity.ok().body(result);
     }
 
+    @ResponseBody
+    @RequestMapping("/api/updateRole")
+    public ResponseEntity<Void> updateRole(String employeeId, String role) {
+        System.out.println(employeeId + " " + role);
+        employeeService.updateRole(employeeId,role);
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping("/updateDepartment")
     public String updateDepartment(
             @RequestParam("deptId")      List<Integer>   ids,

@@ -200,7 +200,6 @@
         if (type === 'notice') {
             $('.notice-category').show();
             $('.all-category').hide();
-
             $('.more-btn').attr('href', '/notice/list?page=1');
         } else if (type === 'all') {
             $('.notice-category').hide();
@@ -281,7 +280,8 @@
                             .append($('<td>')
                                 .append($('<div class="notice-ct-container">').html(item.noticeCtName)))
                             .append($('<td class="title-cell">')
-                                .append($('<div class="title-container">').html(item.title)))
+                                .append($('<div class="title-container">')
+                                    .append($('<span class="title-text">').html(item.title))))
                             .append($('<td>').html(regDate));
 
                         tr.on('click', function() {
@@ -519,7 +519,7 @@
                         <button class="category-btn active">전체</button>
                     </div>
 
-                    <a href="/notice/list" class="more-btn">
+                    <a class="more-btn">
                         더보기 <span class="material-icons" style="font-size: 16px; vertical-align: middle;">chevron_right</span>
                     </a>
                 </div>
@@ -527,15 +527,7 @@
                 <!-- 게시글 테이블 -->
                 <div class="board-table-container">
                     <table class="board-table">
-                        <thead>
-                        <tr>
-                            <th width="8%">번호</th>
-                            <th width="52%">제목</th>
-                            <th width="15%">등록일자</th>
-                            <th width="15%">작성자</th>
-                            <th width="10%">조회수</th>
-                        </tr>
-                        </thead>
+                        <thead></thead>
                         <tbody></tbody>
                     </table>
                 </div>

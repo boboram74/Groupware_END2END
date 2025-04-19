@@ -9,17 +9,14 @@ import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.mail.service.MailService;
 import com.end2end.spring.main.dto.LoginHistoryDTO;
 import com.end2end.spring.main.service.LoginHistoryService;
-import com.end2end.spring.schedule.dao.ScheduleDAO;
-import com.end2end.spring.util.HolidayUtil;
+import com.end2end.spring.schedule.service.ScheduleService;
 import com.end2end.spring.util.PageNaviUtil;
-import com.end2end.spring.works.dto.ProjectSelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -27,7 +24,7 @@ public class MainController {
 
 	@Autowired private EmployeeService employeeService;
 	@Autowired MailService mailService;
-	@Autowired private ScheduleDAO scheduleDAO;
+	@Autowired private ScheduleService scheduleService;
 	@Autowired private LoginHistoryService loginHistoryService;
 	@Autowired private NoticeCategoryService noticeCategoryService;
 
@@ -39,7 +36,7 @@ public class MainController {
 		}
 		model.addAttribute("birthdayList", employeeService.selectByThisMonthBirthday());
 		model.addAttribute("mailReadCount", mailService.getRecordReadCount(loginUser.getId()));
-		model.addAttribute("todayScheduleCount", scheduleDAO.countTodayScheduleByEmployeeId(loginUser.getId()));
+		model.addAttribute("todayScheduleCount", scheduleService.countTodayScheduleByEmployeeId(loginUser.getId()));
 		model.addAttribute("noticeCategoryList", noticeCategoryService.selectAll());
 
 		return "main/index";

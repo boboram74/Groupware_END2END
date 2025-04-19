@@ -291,4 +291,12 @@ public class ApprovalServiceImpl implements ApprovalService {
          approvalDAO.removeImportant(dto);
         }
     }
+
+    @Override
+    public List<Map<String, Object>> selectRecent(String state, String employeeId) {
+        int start = 1;
+        int end = Math.min(10, approvalDAO.selectByState(state, employeeId).size());
+
+        return approvalDAO.selectByStateFromTO(state, employeeId, start, end);
+    }
 }

@@ -31,7 +31,7 @@ public class NoticeDAO {
 
     public List<NoticeDTO> selectByCategoryIdFromTo(int categoryId, int start, int end) {
         Map<String, Object> map = new HashMap<>();
-        map.put("categoryId", categoryId);
+        map.put("noticeCtId", categoryId);
         map.put("start", start);
         map.put("end", end);
 

@@ -483,8 +483,6 @@
     });
 
     function saveImportant(approvalId) {
-        console.log("Approval ID in JavaScript: " + approvalId);
-
         const employeeId = '${employeeId}';
 
         $.ajax({

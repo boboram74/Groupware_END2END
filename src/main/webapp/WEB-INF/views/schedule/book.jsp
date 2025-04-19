@@ -543,9 +543,6 @@
             const mainSelect = $('select[name=targetType]');
             const subSelect = $('select[name=targetId]');
             const mainValue = mainSelect.val();
-
-            console.log(mainValue, mainSelect, subSelect);
-
             subSelect.find('option').each(function() {
                 $(this).hide();
             });
@@ -579,8 +576,6 @@
                     $.ajax({
                         url: '/book/list/items'
                     }).done(function(data) {
-                        console.log(data);
-
                         const resources = data.map((item) => {
                             return {
                                 id: item.name,
@@ -592,8 +587,6 @@
                                 capacity: item.capacity,
                             }
                         })
-
-                        console.log(resources);
                         successCallback(resources);
                     })
                 },
@@ -659,16 +652,11 @@
             function loadEvents(startDate, endDate, successCallback) {
                 startDate = parseDate(startDate);
                 endDate = parseDate(endDate);
-
-                console.log(startDate, endDate);
-
                 $.ajax({
                     url: '/book/list/period?startDate=' + startDate + '&endDate=' + endDate,
                     type: 'GET',
                     success: function (data) {
-                        console.log(data);
                         const events = data.map(function(event) {
-                            console.log(event);
                             return {
                                 resourceId: event.eventName,
                                 title: event.title,
@@ -683,12 +671,8 @@
                                 }
                             }
                         })
-                        console.log(events);
                         successCallback(events);
                     }, errors: function(xhr, status, error) {
-                        console.log(xhr.status);
-                        console.log(xhr.responseText);
-                        console.log(error);
                     }
                 })
             }
@@ -725,22 +709,17 @@
             const date = $(this).val();
             const targetType = $('select[name=targetType]').val();
             const targetId = $('select[name=targetId]').val();
-            console.log(date, targetType, targetId);
-
             $.ajax({
                 url: '/book/detail/date?date=' + date + '&targetType=' + targetType + '&targetId=' + targetId,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data);
                     const dataStartDate = new Date(data.startDate);
                     const dataEndDate = new Date(data.endDate);
-
                     $('#insert-startTime').find('option')
                         .prop('disabled', false).removeClass('reserved')
                         .each(function() {
                         const startDateTime = new Date(date + $(this).val());
                             if (startDateTime > dataStartDate && startDateTime < dataEndDate) {
-                                console.log(1);
                                 $(this).prop('disabled', true).addClass('reserved');
                             }
                     })
@@ -752,22 +731,17 @@
             const date = $(this).val();
             const targetType = $('select[name=targetType]').val();
             const targetId = $('select[name=targetId]').val();
-            console.log(date, targetType, targetId);
-
             $.ajax({
                 url: '/book/detail/date?date=' + date + '&targetType=' + targetType + '&targetId=' + targetId,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data);
                     const dataStartDate = new Date(data.startDate);
                     const dataEndDate = new Date(data.endDate);
-
                     $('#insert-endTime').find('option')
                         .prop('disabled', false).removeClass('reserved')
                         .each(function() {
                             const startDateTime = new Date(date + $(this).val());
                             if (startDateTime > dataStartDate && startDateTime < dataEndDate) {
-                                console.log(1);
                                 $(this).prop('disabled', true).addClass('reserved');
                             }
                         })
@@ -816,7 +790,6 @@
 
             // 모달 열기
             $('.open-list-calendar').click(function() {
-                console.log('open list calendar');
                 $('#listCalendarModal').show();
             });
 
@@ -860,8 +833,6 @@
 
             if (date && time) {
                 $('input[name="endDate"]').val(date + time);
-
-                console.log( $('input[name="endDate"]').val())
             }
         });
 

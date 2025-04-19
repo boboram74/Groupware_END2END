@@ -178,8 +178,6 @@
         const titleHeight = $('.boxTitle').outerHeight(true);
         const padding = 40; // 상하/좌우 padding 20px * 2
 
-        console.log(totalHeight - titleHeight - padding);
-        console.log(totalWidth - padding);
         return {
             height: totalHeight - titleHeight - padding,
             width: totalWidth - padding
@@ -209,9 +207,7 @@
                 loadEvents(startDate, endDate, successCallback);
             },
             eventClick: function(info) {
-                console.log(info);
                 if (info.event.extendedProps.type === 'schedule') {
-                    console.log(info.event.extendedProps.id);
                     openDetailModal(info.event.extendedProps.id);
                 }
             },
@@ -247,16 +243,11 @@
         function loadEvents(startDate, endDate, successCallback) {
             startDate = parseDate(startDate);
             endDate = parseDate(endDate);
-
-            console.log(startDate, endDate);
-
             $.ajax({
                 url: '/schedule/list?startDate=' + startDate + '&endDate=' + endDate,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data);
                     const events = data.map(function(event) {
-                        console.log(event);
                         if (event.eventName === 'period') {
                             return {
                                 id: event.id,
@@ -279,12 +270,8 @@
                             }
                         }
                     })
-                    console.log(events);
                     successCallback(events);
                 }, errors: function(xhr, status, error) {
-                    console.log(xhr.status);
-                    console.log(xhr.responseText);
-                    console.log(error);
                 }
             })
         }
@@ -331,8 +318,6 @@
 
         $('.board-type-btn').click(function() {
             const type = $(this).data('type');
-            console.log(type);
-
             renderBoardList(type);
         })
 
@@ -361,7 +346,6 @@
                             $('<td colspan="5">').html('게시글이 없습니다.')))
                 }
             }).done(function(resp) {
-                console.log(resp);
                 thead.empty();
                 tbody.empty();
                 categoryList.empty();
@@ -414,8 +398,6 @@
                         }
                     }
                 } else {
-                    console.log(resp);
-
                     const noticeList = resp.noticeList;
                     const categoryList = resp.cateogryList;
 

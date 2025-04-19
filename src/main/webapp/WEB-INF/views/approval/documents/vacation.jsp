@@ -93,7 +93,6 @@
 
     $('.time').on('change', function() {
         const type = $('input[name="vacationType"]:checked').val();
-        console.log(type);
         $('input[name="vacationDate"]').val((type === 'ANNUAL') ? $(this).val() : 0.5);
     })
 </script>

@@ -48,8 +48,8 @@ public class ProjectWorkController {
                 .projectWorkId(id)
                 .build();
         List<FileDetailDTO> files = fserv.selectByParentsId(fileDTO);
-        System.out.println(files);
-        System.out.println(wdto);
+//        System.out.println(files);
+//        System.out.println(wdto);
 
         Map<String, Object> response = new HashMap<>();
         response.put("files", files);
@@ -66,7 +66,7 @@ public class ProjectWorkController {
 @ResponseBody
 @RequestMapping("/search/{projectId}")
 public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable int projectId, String searchOption) {
-       System.out.println(keyword+projectId);
+//       System.out.println(keyword+projectId);
         return wserv.searchBynameAndTitle(keyword,projectId,searchOption);
 }
 
@@ -77,7 +77,7 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
         String projectUserId = wserv.selectByProjectIdAndEmployeeId(wdto.getProjectId(), employeeDTO.getId());
         wdto.setProjectUserId(projectUserId);
-        System.out.println(projectUserId);
+//        System.out.println(projectUserId);
 
         wserv.insert(files, wdto);
         // TODO: 게시글 등록
@@ -101,7 +101,7 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
     @RequestMapping("/update")
     public void update(MultipartFile[] files, ProjectWorkUpdateDTO dto) throws Exception {
 
-        System.out.println("수정 컨트롤러 도착 ");
+//        System.out.println("수정 컨트롤러 도착 ");
         // TODO: 게시글 수정을 받음
         FileDTO fileDTO = FileDTO.builder()
                 .projectWorkId(dto.getId())
@@ -118,7 +118,7 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
                 .deadLine(dto.getDeadLine())
                 .build();
         wserv.update(wdto);
-        System.out.println(dto.getContent());
+//        System.out.println(dto.getContent());
     }
 
     @ResponseBody
@@ -128,9 +128,9 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
         // 클라이언트로부터 데이터 수신
 //    int workItemId = (int) data.get("workItemId");
 //    String state = (String) data.get("state");
-        System.out.println("아이디값" + workItemId);
-        System.out.println("상태값" + state);
-        System.out.println("프젝아이디값" + projectId);
+//        System.out.println("아이디값" + workItemId);
+//        System.out.println("상태값" + state);
+//        System.out.println("프젝아이디값" + projectId);
         return  wserv.updateState(state, workItemId,projectId);
     }
 
@@ -155,7 +155,7 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
     public Map<String, Integer> getChartDataCount(@PathVariable("selectedId") int selectedId) {
 
         int chartData = wserv.getChartDataCount(selectedId);
-        System.out.println("차트값" + chartData);
+//        System.out.println("차트값" + chartData);
         Map<String, Integer> map = new HashMap<>();
         map.put("progress", chartData);
         return map;
@@ -171,7 +171,7 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
         int notStarted = wserv.countByState(selectedId, "READY");
         int inProgress = wserv.countByState(selectedId, "ONGOING");
         int completed = wserv.countByState(selectedId, "FINISH");
-        System.out.println("컨트롤러도착:" + notStarted);
+//        System.out.println("컨트롤러도착:" + notStarted);
         chartData.put("READY", notStarted);
         chartData.put("ONGOING", inProgress);
         chartData.put("FINISH", completed);
@@ -195,8 +195,8 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
         chartData.put("WBS", wbs);
         chartData.put("MEETING_FOLDER", meetingFolder);
         chartData.put("SPECIFICATION", specification);
-        System.out.println(chartData);
-        System.out.println("컨트롤러" + wserv.countByState(selectedId, "DOCUMENT"));
+//        System.out.println(chartData);
+//        System.out.println("컨트롤러" + wserv.countByState(selectedId, "DOCUMENT"));
         return chartData;
 
     }

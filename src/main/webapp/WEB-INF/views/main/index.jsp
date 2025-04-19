@@ -364,7 +364,6 @@
                         .append($('<th width="15%">').html("작성자"))
                         .append($('<th width="15%">').html("등록일자"))
                         .append($('<th width="10%">').html("조회수"));
-
                     if (resp.length === 0) {
                         tbody.append(
                             $('<tr>').append(
@@ -400,6 +399,7 @@
                 } else {
                     const noticeList = resp.noticeList;
                     const categoryList = resp.cateogryList;
+                    console.log(noticeList);
 
                     thead
                         .append($('<th width="8%">').html('번호'))

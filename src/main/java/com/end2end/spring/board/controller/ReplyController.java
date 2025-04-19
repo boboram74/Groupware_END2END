@@ -24,9 +24,9 @@ public class ReplyController {
     @ResponseBody
     public List<ReplyDTO> list(@RequestParam("boardId") int boardId, HttpSession session) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        System.out.println("dddd" + employee);
+//        System.out.println("dddd" + employee);
         List<ReplyDTO> replyList = replyService.selectByBoardId(boardId);
-        System.out.println("replies.size(): " + replyList.size()); // 이거 꼭 찍어봐!
+//        System.out.println("replies.size(): " + replyList.size()); // 이거 꼭 찍어봐!
         return replyList;
 
         // TODO: 게시글 id로 댓글 조회
@@ -39,7 +39,7 @@ public class ReplyController {
         String employeeId = employee.getId();
         dto.setEmployeeId(employeeId);
 
-        System.out.println("댓글 등록" + dto);
+//        System.out.println("댓글 등록" + dto);
         replyService.insert(dto);
         //return "/board/list";
         // TODO: 댓글을 등록함
@@ -57,12 +57,12 @@ public class ReplyController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         ReplyDTO reply = replyService.selectById(id);
 
-        System.out.println("로그인한 사용자 ID: " + employee.getId());
-        System.out.println("댓글 작성자 ID: " + reply.getEmployeeId());
+//        System.out.println("로그인한 사용자 ID: " + employee.getId());
+//        System.out.println("댓글 작성자 ID: " + reply.getEmployeeId());
 
         if (employee.getId().equals(reply.getEmployeeId())) {
-            System.out.println("댓글 삭제 진행 중... 댓글 ID: " + id); //삭제필요
-            System.out.println("성공");
+//            System.out.println("댓글 삭제 진행 중... 댓글 ID: " + id); //삭제필요
+//            System.out.println("성공");
             replyService.deleteById(id);
             return true;
         }

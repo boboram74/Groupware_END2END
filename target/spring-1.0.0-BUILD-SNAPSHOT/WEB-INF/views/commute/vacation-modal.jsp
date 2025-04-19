@@ -144,7 +144,6 @@
             url: '/commute/vacation/list/' + ${employee.id},
             type: 'GET'
         }).done(function (data) {
-            console.log(data);
             const tbody = $('.vacation-history-table-body');
 
             if (data.length === 0) {

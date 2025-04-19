@@ -33,7 +33,7 @@ public class HolidayUtil {
         urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
 
         URL url = new URL(urlBuilder.toString());
-        System.out.println(url.toString());
+//        System.out.println(url.toString());
 
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

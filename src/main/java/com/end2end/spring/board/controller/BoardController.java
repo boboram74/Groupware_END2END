@@ -32,8 +32,8 @@ public class BoardController {
     public String list(Model model) {
         List<BoardDTO> boardList = boardService.selectAll();
         List<BoardCategoryDTO> boardCategoryList = boardCategoryService.selectAll();
-        System.out.println(boardList);
-        System.out.println(boardCategoryList);
+//        System.out.println(boardList);
+//        System.out.println(boardCategoryList);
         model.addAttribute("boardList", boardList);
         model.addAttribute("boardCategoryList",boardCategoryList);
 
@@ -48,7 +48,7 @@ public class BoardController {
             return "redirect:/board/list?error=unauthorized";
         }
         int deleteId = boardService.deleteById(id);
-        System.out.println(deleteId);
+//        System.out.println(deleteId);
         return "redirect:/board/list";
     }
 //    @RequestMapping("/detail")
@@ -69,7 +69,7 @@ public class BoardController {
         }
 
         List<BoardDTO> boardList = boardService.selectByCategoryId(categoryId, employee.getId());
-        System.out.println("카테고리 게시판 출력: " + boardList);
+//        System.out.println("카테고리 게시판 출력: " + boardList);
         model.addAttribute("category", category);
         model.addAttribute("boardList", boardList);
         model.addAttribute("employeeDTO", employee);
@@ -140,7 +140,7 @@ public class BoardController {
 
     @RequestMapping("/insert")
     public String insert(HttpSession session, BoardDTO dto, MultipartFile[] files)throws Exception {
-        System.out.println("insert 메서드 호출");
+//        System.out.println("insert 메서드 호출");
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         if (employee == null) {
             return "redirect:/login"; // 세션이 없으면 로그인 페이지로 리다이렉트
@@ -169,9 +169,9 @@ public class BoardController {
     @PostMapping("/category/insert")
     public String insertCategory(@ModelAttribute BoardCategoryDTO dto) {
 
-        System.out.println("Category Name: " + dto.getName());
-        System.out.println("Category Description: " + dto.getCategory());
-        System.out.println(dto.getId()+dto.getName()+dto.getCategory()+dto.getRegDate());
+//        System.out.println("Category Name: " + dto.getName());
+//        System.out.println("Category Description: " + dto.getCategory());
+//        System.out.println(dto.getId()+dto.getName()+dto.getCategory()+dto.getRegDate());
         boardCategoryService.insertCategory(dto);
         return "redirect:/board/list";
         // TODO: 카테고리 입력을 받음

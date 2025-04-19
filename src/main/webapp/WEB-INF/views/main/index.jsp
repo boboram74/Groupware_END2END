@@ -459,14 +459,14 @@
             </div>
             <div class="info-summary">
                 <div class="summary-item">
-                    <div class="summary-left">
+                    <div class="summary-left" onClick="location.href='/mail/list'">
                         <span class="material-icons">mail</span>
                         <span class="summary-text">새 메일</span>
                     </div>
                     <span class="summary-count">${mailReadCount}</span>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-left">
+                    <div class="summary-left" onclick="location.href='/calendar/list'">
                         <span class="material-icons">event</span>
                         <span class="summary-text">오늘 일정</span>
                     </div>
@@ -494,7 +494,6 @@
     </div>
 
     <div class="centerContents">
-
         <div class="boardBox surface-bright">
             <div class="boxTitle">게시글 목록</div>
             <div class="board-container">

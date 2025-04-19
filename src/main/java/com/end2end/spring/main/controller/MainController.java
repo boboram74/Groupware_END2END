@@ -1,5 +1,6 @@
 package com.end2end.spring.main.controller;
 
+import com.end2end.spring.approval.service.ApprovalService;
 import com.end2end.spring.board.service.NoticeCategoryService;
 import com.end2end.spring.employee.dto.DepartmentDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
@@ -27,6 +28,7 @@ public class MainController {
 	@Autowired private ScheduleService scheduleService;
 	@Autowired private LoginHistoryService loginHistoryService;
 	@Autowired private NoticeCategoryService noticeCategoryService;
+	@Autowired private ApprovalService approvalService;
 
 	@GetMapping("/")
 	public String home(HttpSession session, Model model) {
@@ -38,6 +40,7 @@ public class MainController {
 		model.addAttribute("mailReadCount", mailService.getRecordReadCount(loginUser.getId()));
 		model.addAttribute("todayScheduleCount", scheduleService.countTodayScheduleByEmployeeId(loginUser.getId()));
 		model.addAttribute("noticeCategoryList", noticeCategoryService.selectAll());
+		model.addAttribute("approvalList", approvalService.selectRecent("ONGOING", loginUser.getId()));
 
 		return "main/index";
 	}

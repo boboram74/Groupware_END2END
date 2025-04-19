@@ -35,6 +35,17 @@ public class ApprovalDAO {
 
         return mybatis.selectList("approval.selectByState", map);
     }
+
+    public List<Map<String, Object>> selectByStateFromTO(String state, String employeeId, int start, int end) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("state", state);
+        map.put("employeeId", employeeId);
+        map.put("start", start);
+        map.put("end", end);
+
+        return mybatis.selectList("approval.selectByState", map);
+    }
+
     public Map<String, Object> selectById(String id) {
         return mybatis.selectOne("approval.selectById", id);
     }

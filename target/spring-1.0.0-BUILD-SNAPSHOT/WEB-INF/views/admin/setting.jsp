@@ -4,17 +4,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <link rel="stylesheet" href="/css/admin/setting.css"/>
 <div class="mainHeader surface-bright">
-  <a href="/admin">
-    <div class="detail-menu-header">
+  <div class="detail-menu-header">
+    <a href="/admin">
       <div class="detail-menu-title">
         <span class="material-icons">mail</span>
         <span>관리자 페이지</span>
       </div>
-      <button class="detail-menu-toggle-btn">
-        <span class="material-icons">menu</span>
-      </button>
-    </div>
-  </a>
+    </a>
+    <button class="detail-menu-toggle-btn">
+      <span class="material-icons">menu</span>
+    </button>
+  </div>
   <div class="detail-menu-modal">
     <ul class="detail-menu-list">
       <a href="/admin/department-setting">
@@ -45,25 +45,19 @@
 <div class="mainContainer">
   <div class="mainBody">
     <div class="box">
-      <div class="box-title">부서 관리</div>
+      <div class="box-title">사원 권한 관리</div>
       <div class="box-content">
         <form id="updateDepartment" action="/admin/updateDepartment" method="post">
           <table class="custom-mail-table department-table">
             <thead>
             <tr>
               <th>권한</th>
-              <th>직위</th>
               <th>부서명</th>
+              <th>직위</th>
               <th>이름</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td><input type="text" name="role" readonly placeholder="권한"/></td>
-              <td><input type="text" name="jobName" placeholder="직위"/></td>
-              <td><input type="text" name="teamName" placeholder="부서명"/></td>
-              <td><input type="text" name="name" placeholder="이름"/></td>
-            </tr>
             </tbody>
           </table>
         </form>
@@ -102,6 +96,26 @@
           $('body').css('overflow', '');
         }
       });
+
+      $('.custom-mail-table tbody').on('click', '.saveRole', function() {
+        const $tr = $(this).closest('tr');
+        const employeeId = $tr.data('employeeId');
+        const selectedRole = $tr.find('select[name="role"]').val();
+        const selectedName = $tr.find('input[name="name"]').val();
+
+        if (confirm(selectedName + "님의 권한을 " + selectedRole + "로 변경하시겠습니까?")) {
+          $.ajax({
+            url: '/admin/api/updateRole',
+            method: 'POST',
+            data: {
+              employeeId: employeeId,
+              role:       selectedRole
+            }
+          }).done(function (resp) {
+            location.reload();
+          })
+        }
+      });
     });
 
     function loadSettingList() {
@@ -110,8 +124,7 @@
       }).done(function (resp) {
         var $tbody = $('.custom-mail-table tbody').empty();
         resp.forEach(function (item) {
-          var $tr = $(
-                  '<tr>' +
+          var $tr = $('<tr>').attr('data-employee-id', item.employeeId).append(
                   '<td>' +
                     '<select name="role">'+
                       '<option value="ADMIN">ADMIN</option>'+
@@ -119,15 +132,18 @@
                       '<option value="TEAM_LEADER">TEAM_LEADER</option>'+
                       '<option value="USER">USER</option>'+
                     '</select>'+
+                  '<button type="button" class="btn-icon saveRole">' +
+                  '<span class="material-icons">how_to_reg</span>' +
+                  '</button>' +
                   '</td>' +
-                  '<td><input type="text" name="jobName" readonly></td>' +
                   '<td><input type="text" name="teamName" readonly></td>' +
+                  '<td><input type="text" name="jobName" readonly></td>' +
                   '<td><input type="text" name="name" readonly></td>' +
                   '</tr>'
           );
           $tr.find('select[name="role"]').val(item.role);
-          $tr.find('input[name="jobName"]').val(item.jobName);
           $tr.find('input[name="teamName"]').val(item.teamName);
+          $tr.find('input[name="jobName"]').val(item.jobName);
           $tr.find('input[name="name"]').val(item.name);
           $tbody.append($tr);
         });
@@ -136,7 +152,6 @@
 
   </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
-
 <%--select--%>
 <%--e.role, j.name as jobName, d.name teamName, e.name--%>
 <%--from employee e--%>

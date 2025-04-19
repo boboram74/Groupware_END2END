@@ -104,22 +104,14 @@
 </style>
 <div class="content">
 </div>
-<form action="${empty action ? '/board/insert' : action}" method="post" enctype="multipart/form-data">
+<form action="/board/insert" method="post" enctype="multipart/form-data">
 <table>
-    <c:if test="${not empty action}">
-        <tr>
-            <th>종류</th>
-            <td colspan="3">
-                <div class="checkboxArea">
-                    <select id="searchOption" name="noticeCtId">
-                        <c:forEach items="${noticeCategoryList}" var="noticeCt">
-                            <option value="${noticeCt.id}">${noticeCt.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </td>
-        </tr>
-    </c:if>
+    <tr>
+        <th>등록일</th>
+        <td>
+            <div class="date"></div>
+        </td>
+    </tr>
     <tr>
         <th>제목 <span class="required">*</span></th>
         <td colspan="3">
@@ -127,17 +119,9 @@
         </td>
     </tr>
     <tr>
-        <th>이름 <span class="required">*</span></th>
+        <th>이름 <span class="required"></span></th>
         <td colspan="3">
-            <c:choose>
-                <c:when test="${action != null}">
-                    <input type="text" readonly value="관리자" disabled/>
-                </c:when>
-                <c:otherwise>
-                    <input type="text" value="${employee.name}" disabled/>
-                    <input type="hidden" name="employeeId" value="${employee.id}" />
-                </c:otherwise>
-            </c:choose>
+           <div class="name" ${employee.name}></div>
         </td>
     </tr>
     <tr>
@@ -153,9 +137,6 @@
         </td>
     </tr>
 </table>
-<%--    <input type="hidden" name="employeeId" value="${employee.employeeId}">--%>
-<%--    <input type="hidden" name="id" value="자동으로 설정">--%>
-
 <div class="button-area">
     <button class="saveBtn">저장</button>
     <a href="/board/list">
@@ -165,6 +146,11 @@
 </form>
 <script type="text/javascript" src="/js/template/summernote.js"></script>
 <script>
+    window.onload = function () {
+        const date = new Date(); // 올바른 작성법: new Date()
+        document.querySelector('.date').innerHTML = date.toLocaleString(); // 현재 날짜와 시간을 형식에 맞게 출력
+    };
+
     $(document).ready(function () {
         $('#content').summernote(summernoteSetting($('#content')));
 

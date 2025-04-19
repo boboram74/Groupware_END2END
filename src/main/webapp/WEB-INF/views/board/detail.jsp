@@ -427,30 +427,6 @@
         $(document).ready(function () {
             loadReplies();
         });
-
-        <%--$(".deleteReplyBtn").on("click", function () {--%>
-        <%--    const replyId = $(this).data("id"); // 삭제할 댓글의 ID--%>
-        <%--    const employeeId = '${employee.id}'; // 현재 로그인된 사용자 ID--%>
-        <%--    const replyEmployeeId = $(this).data("employeeId"); // 댓글 작성자의 ID--%>
-
-        <%--    if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {--%>
-        <%--        $.ajax({--%>
-        <%--            type: "post",--%>
-        <%--            url: "/reply/delete",--%>
-        <%--            data: {id: replyId},--%>
-        <%--            success: function () {--%>
-        <%--                loadReplies(); // 댓글 목록 갱신--%>
-        <%--            },--%>
-        <%--            error: function () {--%>
-        <%--                console.log("댓글 삭제 실패");--%>
-        <%--            }--%>
-        <%--        });--%>
-        <%--    } else {--%>
-        <%--        alert("댓글을 작성한 사람만 삭제할 수 있습니다.");--%>
-        <%--    }--%>
-        <%--});--%>
-
-
     </script>
 </c:if>
 <script src="/js/main/contact.js" type="text/javascript"></script>

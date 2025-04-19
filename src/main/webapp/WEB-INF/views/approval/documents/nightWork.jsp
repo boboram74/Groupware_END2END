@@ -136,7 +136,7 @@
         </div>
         <div class="signInform" id="signButtons">
             <div class="fileUpload">
-                <input type="file" id="fileInput" name="attachment">
+                <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
             </div>
             <button id="signOk">제출</button>
             <button type="button" onclick="location.href='/approval/list'">취소</button>

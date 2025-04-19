@@ -136,7 +136,7 @@
         </div>
         <div class="signInform" id="signButtons">
             <div class="fileUpload">
-                <input type="file" id="fileInput" name="attachment">
+                <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
             </div>
             <button id="signOk">제출</button>
             <button type="button" onclick="location.href='/approval/list'">취소</button>
@@ -153,10 +153,6 @@
             if (startTime && endTime) {
                 const start = Date.parse('2000-01-01T' + startTime + ':00');
                 const end = Date.parse('2000-01-01T' + endTime + ':00');
-                console.log('startTime:', startTime);
-                console.log('endTime:', endTime);
-                console.log('start:', start);
-                console.log('end:', end);
 
                 if (!isNaN(start) && !isNaN(end)) {
                     if (end > start) {

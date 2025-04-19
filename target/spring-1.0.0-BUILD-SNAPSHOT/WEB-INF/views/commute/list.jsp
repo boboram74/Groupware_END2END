@@ -50,15 +50,9 @@
     }
 </style>
 <div class="commute-list-wrapper">
-    <div class="box department-info-box surface-bright">
-        <div class="box-title">
-            ${employee.departmentName}
-        </div>
-        <div class="box-content department-info-content"></div>
-    </div>
     <div class="box group-schedule-list-box surface-bright">
         <div class="box-title">
-            부서 근무 현황
+            부서 근무 현황 (${employee.departmentName})
         </div>
         <div class="box-content" id="calender"></div>
     </div>
@@ -71,8 +65,6 @@
                 $.ajax({
                     url: '/employee/department/${employee.departmentId}'
                 }).done(function(data) {
-                    console.log(data);
-
                     const resources = data.map((employee) => {
                         return {
                             id: String(employee.id),
@@ -84,7 +76,6 @@
                 })
             },
             resourceLabelContent: function(arg) {
-                console.log(arg.resource.extendedProps.profileImg);
                 return {
                     html: "<div class=resource-title><div class='profile-img' style='background-image: url('"
                         + arg.resource.extendedProps.profileImg + "');'></div><span>" + arg.resource.extendedProps.name + "</span></div>"
@@ -136,11 +127,8 @@
                 }
             }).done(function(data) {
                 calender.removeAllEvents();
-                console.log(data);
-
                 let result = [];
                 const events = Object.entries(data).map(([key, value]) => {
-                    console.log(key);
                     return value.map((event) => {
                         if (event.eventName === 'period') {
                             return {
@@ -165,7 +153,6 @@
                 events.forEach((event) => {
                     result = result.concat(event);
                 })
-                console.log(result);
                 successCallback(result);
             })
         }

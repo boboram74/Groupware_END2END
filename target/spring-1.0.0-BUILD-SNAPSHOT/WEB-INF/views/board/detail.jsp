@@ -214,7 +214,8 @@
             </c:otherwise>
         </c:choose>
     </tr>
-    <tr class="board-content">
+    <tr>
+         <td class="label"> 내용
         <td colspan="4">${board.content}</td>
     </tr>
     <c:forEach var="file" items="${fileList}">
@@ -322,11 +323,6 @@
             const replyId = $(this).data("id");
             const employeeId = String($('#loginUserId').val());
             const replyEmployeeId = String($(this).data("employeeId"));
-
-            console.log("전송할 댓글 ID:", replyId);
-            console.log("로그인된 사용자 employeeId:", employeeId);
-            console.log("댓글 작성자 employeeId:", replyEmployeeId);
-
             if (employeeId !== replyEmployeeId) {
                 alert("다른 게시물은 삭제 할 수 없습니다.");
             }
@@ -337,7 +333,6 @@
                     url: "/reply/delete/" + replyId,
                     success: function (response) {
                         response = JSON.parse(response)
-                        console.log("댓글삭제", response);
 
                         if (response) {
                             loadReplies(); // 댓글 다시 불러오기
@@ -369,7 +364,6 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    console.log("작성성공");
                     loadReplies();
                     document.getElementById("content").value = ""; // 입력창 초기화
 
@@ -387,18 +381,13 @@
 
         const loadReplies = () => {
             const boardId = '${board.id}';
-            console.log(boardId);
-
             $.ajax({
                 type: "get",
                 url: "/reply/list",
                 data: {boardId: boardId},
                 success: function (replyList) {
                     $(".replyListContainer").empty();
-                    console.log(replyList);
-
                     replyList.forEach(reply => {
-                        console.log(reply.regDate);
                         const $replyDiv = $('<div class="replyList">')
                             .append(
                                 $('<div class="profile" style="background-image: url(' + reply.profileImg + ')">'))
@@ -438,30 +427,6 @@
         $(document).ready(function () {
             loadReplies();
         });
-
-        <%--$(".deleteReplyBtn").on("click", function () {--%>
-        <%--    const replyId = $(this).data("id"); // 삭제할 댓글의 ID--%>
-        <%--    const employeeId = '${employee.id}'; // 현재 로그인된 사용자 ID--%>
-        <%--    const replyEmployeeId = $(this).data("employeeId"); // 댓글 작성자의 ID--%>
-
-        <%--    if (employeeId === replyEmployeeId && confirm("정말 삭제하시겠습니까?")) {--%>
-        <%--        $.ajax({--%>
-        <%--            type: "post",--%>
-        <%--            url: "/reply/delete",--%>
-        <%--            data: {id: replyId},--%>
-        <%--            success: function () {--%>
-        <%--                loadReplies(); // 댓글 목록 갱신--%>
-        <%--            },--%>
-        <%--            error: function () {--%>
-        <%--                console.log("댓글 삭제 실패");--%>
-        <%--            }--%>
-        <%--        });--%>
-        <%--    } else {--%>
-        <%--        alert("댓글을 작성한 사람만 삭제할 수 있습니다.");--%>
-        <%--    }--%>
-        <%--});--%>
-
-
     </script>
 </c:if>
 <script src="/js/main/contact.js" type="text/javascript"></script>

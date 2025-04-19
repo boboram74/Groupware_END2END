@@ -137,9 +137,6 @@
         </td>
     </tr>
 </table>
-<%--    <input type="hidden" name="employeeId" value="${employee.employeeId}">--%>
-<%--    <input type="hidden" name="id" value="자동으로 설정">--%>
-
 <div class="button-area">
     <button class="saveBtn">저장</button>
     <a href="/board/list">

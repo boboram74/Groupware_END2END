@@ -20,12 +20,8 @@ import java.util.List;
 @RequestMapping("/board")
 @Controller
 public class BoardController {
-    @Autowired
-    private BoardService boardService;
-
-    @Autowired
-    private BoardCategoryService boardCategoryService;
-
+    @Autowired private BoardService boardService;
+    @Autowired private BoardCategoryService boardCategoryService;
     @Autowired private FileService fileService;
 
     @RequestMapping("/list")
@@ -51,10 +47,6 @@ public class BoardController {
         System.out.println(deleteId);
         return "redirect:/board/list";
     }
-//    @RequestMapping("/detail")
-//    public String list(Model model) {
-//        return "board/detail";
-//    }
 
     @RequestMapping("/list/{categoryId}")
     public String toList(@PathVariable int categoryId, HttpSession session, Model model) {

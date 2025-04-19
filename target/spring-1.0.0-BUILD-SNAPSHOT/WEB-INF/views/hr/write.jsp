@@ -53,7 +53,7 @@
                     </div>
                     <div class="form-group repw">
                         <label>패스워드 확인</label>
-                        <input type="password" placeholder="위와 동일하게 입력">
+                        <input class="repw" type="password" placeholder="위와 동일하게 입력">
                         <div id="resultRePw" class="validation-msg"></div>
                     </div>
                     <div class="form-group">

@@ -550,7 +550,6 @@ input::-moz-placeholder {
     cursor: pointer;
 }
 
-/* /css/admin/mail-custom.css */
 .box { background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); margin-bottom:20px; }
 .box-title { padding:12px 20px; font-size:18px; font-weight:600; border-bottom:1px solid #eee; }
 .box-content { padding:20px; }
@@ -589,7 +588,6 @@ input::-moz-placeholder {
 }
 .button-container { text-align:right; }
 
-/* 폼의 시그니처 입력 */
 .signature-row {
     display: flex;
     align-items: flex-start;
@@ -609,7 +607,6 @@ input::-moz-placeholder {
     font-family: inherit;
 }
 
-/* 서버 용량 표시 */
 .server-capacity {
     display: flex;
     flex-direction: column;

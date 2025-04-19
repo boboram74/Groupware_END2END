@@ -120,7 +120,7 @@
 
     <select id="allApprovals" resultType="map">
         SELECT
-            a.id AS approvalId,
+            a.id,
             a.title,
             a.regdate,
             a.state AS state,
@@ -131,18 +131,6 @@
                  JOIN approval_form af ON a.approvalformid = af.id
         ORDER BY a.regdate DESC
     </select>
-
-    <insert id="saveTempApproval">
-        INSERT INTO APPROVAL_TEMP (
-        ID,
-        EMPLOYEEID,
-        APPROVALFORMID,
-        DEPARTMENTID,
-        TITLE,
-        CONTENT,
-        REGDATE
-        ) VALUES (APPROVAL_TEMP_ID_SEQ.NEXTVAL,#{employeeId},#{approvalFormId},#{departmentId},#{title},#{content},SYSDATE)
-    </insert>
 
     <insert id="insertImportant" parameterType="com.end2end.spring.approval.dto.CheckImportantDTO">
         insert into important_approval (

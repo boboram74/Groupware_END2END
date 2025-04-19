@@ -234,4 +234,40 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDTO> searchEmployeeList(String searchOption, String keyword) {
         return employeeDAO.searchEmployeeList(searchOption, keyword);
     }
+
+    @Override
+    public List<DepartmentDTO> selectByDepartmentList() {
+        return employeeDAO.selectByDepartmentList();
+    }
+
+    @Transactional
+    @Override
+    public void saveAll(List<DepartmentDTO> dtos) {
+        for (DepartmentDTO dto : dtos) {
+            String name  = dto.getName();
+            String email = dto.getEmail();
+            Integer id   = dto.getId();
+            if (name == null || name.isEmpty()) { continue; }
+            if (id == null || id == 0) {
+                employeeDAO.insertDepartment(name, email);
+            } else {
+                int exists = employeeDAO.existsById(id);
+                if (exists == 0) {
+                    employeeDAO.insertDepartment(name, email);
+                } else {
+                    employeeDAO.updateDepartment(id, name, email);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void deleteByDepartmentId(int id) {
+        employeeDAO.deleteByDepartmentId(id);
+    }
+
+    @Override
+    public List<RoleListDTO> loadSettingList() {
+        return employeeDAO.loadSettingList();
+    }
 }

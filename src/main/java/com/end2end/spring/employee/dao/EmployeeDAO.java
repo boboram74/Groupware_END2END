@@ -151,4 +151,35 @@ public class EmployeeDAO {
         param.put("keyword", keyword);
         return mybatis.selectList("employee.searchEmployeeList", param);
     }
+
+    public List<DepartmentDTO> selectByDepartmentList() {
+        return mybatis.selectList("employee.selectByDepartmentList");
+    }
+
+    public void insertDepartment(String name, String email) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("name", name);
+        param.put("email", email);
+        mybatis.insert("employee.insertDepartment", param);
+    }
+
+    public int existsById(Integer id) {
+        return mybatis.selectOne("employee.existsById", id);
+    }
+
+    public void updateDepartment(Integer id, String name, String email) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("id", id);
+        param.put("name", name);
+        param.put("email", email);
+        mybatis.update("employee.updateDepartment", param);
+    }
+
+    public void deleteByDepartmentId(int id) {
+        mybatis.delete("employee.deleteByDepartmentId", id);
+    }
+
+    public List<RoleListDTO> loadSettingList() {
+        return mybatis.selectList("employee.loadSettingList");
+    }
 }

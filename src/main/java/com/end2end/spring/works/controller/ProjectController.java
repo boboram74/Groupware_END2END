@@ -1,5 +1,6 @@
 package com.end2end.spring.works.controller;
 
+import com.end2end.spring.employee.dto.DepartmentDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.works.dto.*;
 
@@ -28,7 +29,7 @@ public class ProjectController {
 
 
     @RequestMapping("/main")
-    public String main(HttpSession session, Model model) {
+    public String main(HttpSession session, Model model) throws Exception {
         EmployeeDTO EmployeeDTO = (EmployeeDTO) session.getAttribute("employee");
 
         List<ProjectSelectDTO> projects = projectService.selectAllProject();
@@ -38,11 +39,14 @@ public class ProjectController {
                 List<ProjectWorkDTO> list = wserv.selectAll(id);
 
                 System.out.println("nearDeadline: " + dto.getNearDeadline());
+
+                model.addAttribute("nearDeadline", dto.getNearDeadline());
+
             }
 
-        model.addAttribute("isTeamLeader",
-                "TEAM_LEADER".equals(EmployeeDTO.getRole()) && "개발부서".equals(EmployeeDTO.getDepartmentName()));
 
+        model.addAttribute("isTeamLeader",
+                "TEAM_LEADER".equals(EmployeeDTO.getRole()) && "연구팀".equals(EmployeeDTO.getDepartmentName()));
         model.addAttribute("projects", projects);
         model.addAttribute("employee", EmployeeDTO);
 

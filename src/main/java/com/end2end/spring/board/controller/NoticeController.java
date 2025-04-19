@@ -1,6 +1,7 @@
 package com.end2end.spring.board.controller;
 
 import com.end2end.spring.board.dto.NoticeDTO;
+import com.end2end.spring.board.dto.NoticeUpdateDTO;
 import com.end2end.spring.board.service.NoticeCategoryService;
 import com.end2end.spring.board.service.NoticeService;
 import com.end2end.spring.file.dto.FileDTO;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/notice")
 @Controller
@@ -85,8 +88,8 @@ public class NoticeController {
     }
 
     @RequestMapping("/update")
-    public String update(NoticeDTO dto) {
-        noticeService.update(dto);
+    public String update(MultipartFile[] files, NoticeUpdateDTO dto) {
+        noticeService.update(files, dto);
         return "redirect:/notice/detail/" + dto.getId();
     }
 
@@ -97,13 +100,17 @@ public class NoticeController {
     }
 
     @ResponseBody
-    @RequestMapping("/recent/list")
-    public List<NoticeDTO> listRecent() {
-        return noticeService.selectRecent();
+    @RequestMapping("/recent")
+    public Map<String, Object> listRecent() {
+        Map<String, Object> json = new HashMap<>();
+        json.put("noticeList", noticeService.selectRecent());
+        json.put("categoryList", noticeCategoryService.selectAll());
+
+        return json;
     }
 
     @ResponseBody
-    @RequestMapping("recent//list/{categoryId}")
+    @RequestMapping("recent/{categoryId}")
     public List<NoticeDTO> listRecent(@PathVariable int categoryId) {
         return noticeService.selectRecentByCategoryId(categoryId);
     }

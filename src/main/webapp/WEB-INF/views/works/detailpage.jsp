@@ -666,7 +666,7 @@
 
             </div>
             <a href="/work/write/${project.id}">
-                <button>작성하기</button>
+                <button id="writeBtn">작성하기</button>
             </a>
             <div id="finishBtnDiv" class="finishBtnDiv">
 
@@ -875,7 +875,7 @@
 
                             const closeBtnHtml = (employeeRole === 'TeamLeader' || work.isMine) ? `
                        <div class="closeBtn">
-                       <button type="button" class="btn-close btn-sm" onclick="deleteWork(` + work.id + `)"></button>
+                       <button type="button" id="deleteBtn" class="btn-close btn-sm" onclick="deleteWork(` + work.id + `)"></button>
                        </div>
                       ` : '';
 
@@ -1175,7 +1175,17 @@
                     finishWork(projectId);
                 });
 
+                function disableProjectFeatures() {
 
+                    $('#writeBtn,#deleteBtn, #deleteBtn').prop('disabled', true);
+
+
+                    $('.work-item').attr('draggable', false);
+
+                    $('.movingBoardColumn').off('dragover drop');
+                    $('.work-item').off('dragstart dragend');
+
+                }
                 function finishWork(projectId) {
                     if (confirm("정말 프로젝트 작업을 마감하시겠습니까?")) {
                         $.ajax({
@@ -1184,6 +1194,7 @@
                             data: { projectId: projectId },
                             success: function (response) {
                                 alert("프로젝트가 마감되었습니다.");
+                                disableProjectFeatures();
                                 location.href= '/project/main';
                             },
                             error: function (error) {
@@ -1193,6 +1204,9 @@
                         });
                     }
                 }
+
+
+
                 $('.movingBoardColumn'
                 ).on('drop', function (e) {
                     console.log("도착");
@@ -1228,7 +1242,6 @@
                                      <button id="finishProjectBtn" class="btn btn-primary">
                                      프로젝트 마감
                                     </button> `);
-
                             } else {
 
                                 location.reload();

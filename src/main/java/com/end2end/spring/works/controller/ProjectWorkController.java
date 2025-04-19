@@ -98,7 +98,7 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
 
     @ResponseBody
     @RequestMapping("/update")
-    public void update(ProjectWorkDTO dto) throws Exception {
+    public void update(MultipartFile[] files, ProjectWorkDTO dto) throws Exception {
 
         System.out.println("수정 컨트롤러 도착 ");
         // TODO: 게시글 수정을 받음

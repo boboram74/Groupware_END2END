@@ -954,7 +954,9 @@
                                     '" class="text-decoration-none">' +
 
                                     file.originFileName
-                                    + '</a></li>';
+                                    + '</a>'
+                                    + '<input type="hidden" name="fileId" value="' + file.id + '">'
+                                    + '</li>';
                             });
 
                         } else {
@@ -1047,7 +1049,7 @@
                     success: function (response) {
                         const work = response.worksDTO;
                         const files = response.files;
-                        console.log("가져온값" + work.title)
+                        console.log("가져온값" + response.files)
                         // 값 가져오고있음
                         $('input[name="id"]').val(currentWorkId);
                         $('#updateTitle').html(`
@@ -1086,20 +1088,22 @@
                         let fileList = '';
                         if (files && files.length > 0) {
                             files.forEach(file => {
-                                fileList += `
-                            <li>
-                                <a href="/file/download?path=' + file.path +
+                                console.log(file);
+                                fileList +=
+                            '<li>'
+                            +    '<a href="/file/download?path=' + file.path +
                                     '" class="text-decoration-none">' +
                             file.originFileName
-                            + '</a>
-                            </li> `;
+                            + '</a>'
+                                    + '<input type="hidden" name="fileId" value="' + file.id + '">'
+                            + '<button type="button" onClick="$(this).parent().remove();">삭제</button>' +'</li>';
                             });
                         } else {
                             fileList = '<li>첨부된 파일이 없습니다.</li>';
                         }
 
 
-                        $('#updatefileList').append(`<ul>${fileList}</ul>`);
+                        $('#updatefileList').append('<ul>' + fileList + '</ul>');
                     },
                     error: function (xhr, status, error) {
                         console.error('수정 모달 데이터 실패:', error);
@@ -1107,7 +1111,6 @@
                     }
                 });
             }
-
 
             function closeupdateModal() {
                 $('#updateModal').modal('hide');

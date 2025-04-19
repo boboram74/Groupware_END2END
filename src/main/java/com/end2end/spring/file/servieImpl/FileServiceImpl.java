@@ -92,16 +92,23 @@ public class FileServiceImpl implements FileService {
         FileColumnMapperDTO mapper = FileColumnMapperDTO.of(dto);
         List<FileDetailDTO> currentFileList = dao.selectByParentsId(mapper);
 
-        for (FileDetailDTO currentFile : currentFileList) {
-            boolean isDuplicate = false;
-            for (int updateFileId : updatedFileIdList) {
-                if (currentFile.getId() == updateFileId) {
-                    isDuplicate = true;
-                    break;
+        if (updatedFileIdList != null) {
+            for (FileDetailDTO currentFile : currentFileList) {
+                boolean isDuplicate = false;
+                for (int updateFileId : updatedFileIdList) {
+                    if (currentFile.getId() == updateFileId) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!isDuplicate) {
+                    FileUtil.removeFile(currentFile.getPath());
+                    dao.deleteDetailById(currentFile.getId());
                 }
             }
-
-            if (!isDuplicate) {
+        } else {
+            for (FileDetailDTO currentFile : currentFileList) {
                 FileUtil.removeFile(currentFile.getPath());
                 dao.deleteDetailById(currentFile.getId());
             }

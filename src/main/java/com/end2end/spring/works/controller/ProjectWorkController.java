@@ -6,6 +6,7 @@ import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
+import com.end2end.spring.works.dto.ProjectWorkUpdateDTO;
 import com.end2end.spring.works.dto.WorkUpdateDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,11 +99,25 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
 
     @ResponseBody
     @RequestMapping("/update")
-    public void update(MultipartFile[] files, ProjectWorkDTO dto) throws Exception {
+    public void update(MultipartFile[] files, ProjectWorkUpdateDTO dto) throws Exception {
 
         System.out.println("수정 컨트롤러 도착 ");
         // TODO: 게시글 수정을 받음
-        wserv.update(dto);
+        FileDTO fileDTO = FileDTO.builder()
+                .projectWorkId(dto.getId())
+                .build();
+        fserv.update(files, fileDTO, dto.getFileId());
+
+        ProjectWorkDTO wdto = ProjectWorkDTO.builder()
+                .id(dto.getId())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .type(dto.getType())
+                .state(dto.getState())
+                .priority(dto.getPriority())
+                .deadLine(dto.getDeadLine())
+                .build();
+        wserv.update(wdto);
         System.out.println(dto.getContent());
     }
 

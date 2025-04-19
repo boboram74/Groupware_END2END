@@ -87,6 +87,20 @@ public class NoticeController {
         return "redirect:/notice/detail/" + dto.getId();
     }
 
+    @RequestMapping("/write/update/{id}")
+    public String toUpdate(@PathVariable int id, Model model) {
+        model.addAttribute("board", noticeService.selectById(id));
+        model.addAttribute("active", "notice");
+        model.addAttribute("action", "/notice/update");
+
+        FileDTO fileDTO = FileDTO.builder()
+                .noticeId(id)
+                .build();
+        model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+
+        return "board/update";
+    }
+
     @RequestMapping("/update")
     public String update(MultipartFile[] files, NoticeUpdateDTO dto) {
         noticeService.update(files, dto);
@@ -101,12 +115,8 @@ public class NoticeController {
 
     @ResponseBody
     @RequestMapping("/recent")
-    public Map<String, Object> listRecent() {
-        Map<String, Object> json = new HashMap<>();
-        json.put("noticeList", noticeService.selectRecent());
-        json.put("categoryList", noticeCategoryService.selectAll());
-
-        return json;
+    public List<NoticeDTO> listRecent() {
+        return noticeService.selectRecent();
     }
 
     @ResponseBody

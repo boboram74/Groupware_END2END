@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProjectWorkDTO {
+public class ProjectWorkUpdateDTO {
     private int id;
     private int projectId;
     private String projectUserId;
@@ -29,6 +30,5 @@ public class ProjectWorkDTO {
     private Date deadLine;
     private Timestamp regDate;
     private int workCount;
-
-
+    private List<Integer> fileId;
 }

@@ -70,7 +70,7 @@ public class NoticeServiceImpl implements NoticeService {
         FileDTO fileDTO = FileDTO.builder()
                 .noticeId(dto.getId())
                 .build();
-        fileService.update(files, fileDTO, dto.getUpdateFileList());
+        fileService.update(files, fileDTO, dto.getUpdateFileId());
 
         NoticeDTO noticeDTO = NoticeDTO.builder()
                 .id(dto.getId())

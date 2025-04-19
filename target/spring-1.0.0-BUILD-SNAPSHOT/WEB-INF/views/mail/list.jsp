@@ -133,6 +133,7 @@
                 $('body').css('overflow', '');
             }
         });
+
         $.ajax({
             url: "/mail/alertList",
             method: "POST",

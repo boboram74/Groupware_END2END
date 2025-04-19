@@ -1,6 +1,7 @@
 package com.end2end.spring.board.controller;
 
 import com.end2end.spring.board.dto.NoticeDTO;
+import com.end2end.spring.board.dto.NoticeUpdateDTO;
 import com.end2end.spring.board.service.NoticeCategoryService;
 import com.end2end.spring.board.service.NoticeService;
 import com.end2end.spring.file.dto.FileDTO;
@@ -87,8 +88,8 @@ public class NoticeController {
     }
 
     @RequestMapping("/update")
-    public String update(NoticeDTO dto) {
-        noticeService.update(dto);
+    public String update(MultipartFile[] files, NoticeUpdateDTO dto) {
+        noticeService.update(files, dto);
         return "redirect:/notice/detail/" + dto.getId();
     }
 

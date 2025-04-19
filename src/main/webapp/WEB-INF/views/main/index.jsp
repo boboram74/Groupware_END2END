@@ -494,7 +494,6 @@
     </div>
 
     <div class="centerContents">
-
         <div class="boardBox surface-bright">
             <div class="boxTitle">게시글 목록</div>
             <div class="board-container">

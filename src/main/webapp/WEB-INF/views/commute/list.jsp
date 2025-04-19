@@ -50,15 +50,9 @@
     }
 </style>
 <div class="commute-list-wrapper">
-    <div class="box department-info-box surface-bright">
-        <div class="box-title">
-            ${employee.departmentName}
-        </div>
-        <div class="box-content department-info-content"></div>
-    </div>
     <div class="box group-schedule-list-box surface-bright">
         <div class="box-title">
-            부서 근무 현황
+            부서 근무 현황 (${employee.departmentName})
         </div>
         <div class="box-content" id="calender"></div>
     </div>

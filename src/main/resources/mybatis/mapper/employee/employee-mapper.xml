@@ -394,4 +394,15 @@
         WHERE id = #{value}
     </delete>
 
+    <select id="loadSettingList" resultType="com.end2end.spring.employee.dto.RoleListDTO">
+        select
+        e.role, j.name as jobName, d.name teamName, e.name
+        from employee e
+        join department d
+        on e.departmentid = d.id
+        join job j
+        on e.jobid = j.id
+        order by e.role asc, j.id asc, d.id, e.name asc
+    </select>
+
 </mapper>

@@ -40,4 +40,6 @@ public interface EmployeeService {
     void saveAll(List<DepartmentDTO> dtos);
 
     void deleteByDepartmentId(int id);
+
+    List<RoleListDTO> loadSettingList();
 }

@@ -84,7 +84,6 @@
 <script>
     $(document).ready(function () {
         loadDepartmentList();
-
         $('#addRow').on('click', function () {
             var $template = $('.custom-mail-table tbody tr:first');
             var $newRow = $template.clone();

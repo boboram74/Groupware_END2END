@@ -178,4 +178,8 @@ public class EmployeeDAO {
     public void deleteByDepartmentId(int id) {
         mybatis.delete("employee.deleteByDepartmentId", id);
     }
+
+    public List<RoleListDTO> loadSettingList() {
+        return mybatis.selectList("employee.loadSettingList");
+    }
 }

@@ -1,6 +1,7 @@
 package com.end2end.spring.admin.controller;
 
 import com.end2end.spring.employee.dto.DepartmentDTO;
+import com.end2end.spring.employee.dto.RoleListDTO;
 import com.end2end.spring.employee.service.EmployeeService;
 import com.end2end.spring.mail.dto.AliasMappingDTO;
 import com.end2end.spring.mail.service.MailService;
@@ -115,6 +116,12 @@ public class AdminController {
         return ResponseEntity.ok().body(result);
     }
 
+    @RequestMapping("/api/loadSettingList")
+    public ResponseEntity<List<RoleListDTO>> loadSettingList() {
+        List<RoleListDTO> result = employeeService.loadSettingList();
+        return ResponseEntity.ok().body(result);
+    }
+
     @RequestMapping("/updateDepartment")
     public String updateDepartment(
             @RequestParam("deptId")      List<Integer>   ids,
@@ -145,5 +152,6 @@ public class AdminController {
     public String setting() {
         return "admin/setting";
     }
+
 
 }

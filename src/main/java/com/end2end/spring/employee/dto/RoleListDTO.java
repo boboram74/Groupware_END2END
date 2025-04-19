@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleListDTO {
+    private String employeeId;
     private String role;
     private String jobName;
     private String teamName;

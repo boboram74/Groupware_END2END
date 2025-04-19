@@ -86,4 +86,34 @@ public class FileServiceImpl implements FileService {
     public List<FileDetailDTO> selectByEmail(String email) {
         return dao.selectByEmail(email);
     }
+
+    @Override
+    public void update(MultipartFile[] files, FileDTO dto, List<Integer> updatedFileIdList) {
+        FileColumnMapperDTO mapper = FileColumnMapperDTO.of(dto);
+        List<FileDetailDTO> currentFileList = dao.selectByParentsId(mapper);
+
+        if (updatedFileIdList != null) {
+            for (FileDetailDTO currentFile : currentFileList) {
+                boolean isDuplicate = false;
+                for (int updateFileId : updatedFileIdList) {
+                    if (currentFile.getId() == updateFileId) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!isDuplicate) {
+                    FileUtil.removeFile(currentFile.getPath());
+                    dao.deleteDetailById(currentFile.getId());
+                }
+            }
+        } else {
+            for (FileDetailDTO currentFile : currentFileList) {
+                FileUtil.removeFile(currentFile.getPath());
+                dao.deleteDetailById(currentFile.getId());
+            }
+        }
+
+        insert(files, dto);
+    }
 }

@@ -40,10 +40,6 @@ public class FileUtil {
 
         File file = new File(fileLocation);
 
-        if (!file.exists()) {
-            throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
-        }
-
         file.delete();
     }
 

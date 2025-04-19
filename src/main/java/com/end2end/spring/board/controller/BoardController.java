@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.util.List;
 
 @RequestMapping("/board")
@@ -37,7 +36,6 @@ public class BoardController {
         System.out.println(boardCategoryList);
         model.addAttribute("boardList", boardList);
         model.addAttribute("boardCategoryList",boardCategoryList);
-        // TODO: 모든 리스트
 
         return "/board/list";
     }
@@ -52,7 +50,7 @@ public class BoardController {
         int deleteId = boardService.deleteById(id);
         System.out.println(deleteId);
         return "redirect:/board/list";
-}
+    }
 //    @RequestMapping("/detail")
 //    public String list(Model model) {
 //        return "board/detail";
@@ -93,9 +91,9 @@ public class BoardController {
 
     @RequestMapping("/search")
     public String toSearch(Model model,String option,String keyword) {
-    List<BoardDTO> result = boardService.search(option,keyword);
-    model.addAttribute("boardList", result);
-    return "/board/list";
+        List<BoardDTO> result = boardService.search(option,keyword);
+        model.addAttribute("boardList", result);
+        return "/board/list";
     }
 
     @RequestMapping("/write")
@@ -112,15 +110,15 @@ public class BoardController {
         System.out.println(categoryList);
         model.addAttribute("categoryList", categoryList);
 
-        // TODO: 게시글 입력 폼으로 이동
+
         return "/board/write";
     }
 
     @RequestMapping("/write/update")
     public String toUpdate(@RequestParam("id") int id, Model model) {
-    BoardDTO board = boardService.selectById(id);
-    model.addAttribute("board", board);
-        // TODO: 게시글 수정 폼으로 이동
+        BoardDTO board = boardService.selectById(id);
+        model.addAttribute("board", board);
+
         return "/board/update";
     }
 

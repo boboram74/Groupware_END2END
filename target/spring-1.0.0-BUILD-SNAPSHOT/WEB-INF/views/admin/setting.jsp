@@ -4,17 +4,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <link rel="stylesheet" href="/css/admin/setting.css"/>
 <div class="mainHeader surface-bright">
-  <a href="/admin">
-    <div class="detail-menu-header">
+  <div class="detail-menu-header">
+    <a href="/admin">
       <div class="detail-menu-title">
         <span class="material-icons">mail</span>
         <span>관리자 페이지</span>
       </div>
-      <button class="detail-menu-toggle-btn">
-        <span class="material-icons">menu</span>
-      </button>
-    </div>
-  </a>
+    </a>
+    <button class="detail-menu-toggle-btn">
+      <span class="material-icons">menu</span>
+    </button>
+  </div>
   <div class="detail-menu-modal">
     <ul class="detail-menu-list">
       <a href="/admin/department-setting">
@@ -23,15 +23,16 @@
           <span>부서 관리</span>
         </li>
       </a>
+
       <a href="/admin/mail-setting">
         <li class="detail-menu-item">
-          <span class="material-icons">inbox_customize</span>
+          <span class="material-icons">mail</span>
           <span>공용 메일 설정</span>
         </li>
       </a>
       <a href="/admin/setting">
         <li class="detail-menu-item">
-          <span class="material-icons">setting</span>
+          <span class="material-icons">manage_accounts</span>
           <span>관리자 설정</span>
         </li>
       </a>
@@ -41,46 +42,36 @@
     </button>
   </div>
 </div>
-
 <div class="mainContainer">
   <div class="mainBody">
-    <div class="search">
-      <div>
-        <select id="searchOption">
-          <option>선택</option>
-          <option>선택</option>
-          <option>선택</option>
-        </select>
-      </div>
-      <div class="searchInput">
-        <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-      </div>
-      <div>
-        <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
+    <div class="box">
+      <div class="box-title">사원 권한 관리</div>
+      <div class="box-content">
+        <form id="updateDepartment" action="/admin/updateDepartment" method="post">
+          <table class="custom-mail-table department-table">
+            <thead>
+            <tr>
+              <th>권한</th>
+              <th>부서명</th>
+              <th>직위</th>
+              <th>이름</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </form>
       </div>
     </div>
-    <div class="content">
-      출력 공간(높이 주지말고 컨텐츠 내용에 따라 유동적으로 증가하게 두세요)
-    </div>
-    <!-- 배경색 hover 효과 -->
-    <button class="primary primary-hover">호버 효과가 있는 기본 버튼</button>
-    <div class="primary-container primary-container-hover">호버 효과가 있는 컨테이너</div>
-
-    <!-- 텍스트 hover 효과 -->
-    <a class="primary-text primary-text-hover">호버 효과가 있는 링크</a>
-
-    <!-- 여러 효과 조합 -->
-    <button class="secondary secondary-hover">
-      <span class="primary-text primary-text-hover">혼합된 호버 효과</span>
-    </button>
   </div>
+</div>
   <script>
     $(document).ready(function() {
       $('.detail-menu-item').on('click', function() {
         $('.detail-menu-item').removeClass('active');
         $(this).addClass('active');
-        // 클릭 이벤트 처리 로직
       });
+      loadSettingList();
 
       const $menuBtn = $('.detail-menu-toggle-btn');
       const $detailMenuModal = $('.detail-menu-modal');
@@ -105,6 +96,67 @@
           $('body').css('overflow', '');
         }
       });
+
+      $('.custom-mail-table tbody').on('click', '.saveRole', function() {
+        const $tr = $(this).closest('tr');
+        const employeeId = $tr.data('employeeId');
+        const selectedRole = $tr.find('select[name="role"]').val();
+        const selectedName = $tr.find('input[name="name"]').val();
+
+        if (confirm(selectedName + "님의 권한을 " + selectedRole + "로 변경하시겠습니까?")) {
+          $.ajax({
+            url: '/admin/api/updateRole',
+            method: 'POST',
+            data: {
+              employeeId: employeeId,
+              role:       selectedRole
+            }
+          }).done(function (resp) {
+            location.reload();
+          })
+        }
+      });
     });
+
+    function loadSettingList() {
+      $.ajax({
+        url: "/admin/api/loadSettingList"
+      }).done(function (resp) {
+        var $tbody = $('.custom-mail-table tbody').empty();
+        resp.forEach(function (item) {
+          var $tr = $('<tr>').attr('data-employee-id', item.employeeId).append(
+                  '<td>' +
+                    '<select name="role">'+
+                      '<option value="ADMIN">ADMIN</option>'+
+                      '<option value="NO_AUTH">NO_AUTH</option>'+
+                      '<option value="TEAM_LEADER">TEAM_LEADER</option>'+
+                      '<option value="USER">USER</option>'+
+                    '</select>'+
+                  '<button type="button" class="btn-icon saveRole">' +
+                  '<span class="material-icons">how_to_reg</span>' +
+                  '</button>' +
+                  '</td>' +
+                  '<td><input type="text" name="teamName" readonly></td>' +
+                  '<td><input type="text" name="jobName" readonly></td>' +
+                  '<td><input type="text" name="name" readonly></td>' +
+                  '</tr>'
+          );
+          $tr.find('select[name="role"]').val(item.role);
+          $tr.find('input[name="teamName"]').val(item.teamName);
+          $tr.find('input[name="jobName"]').val(item.jobName);
+          $tr.find('input[name="name"]').val(item.name);
+          $tbody.append($tr);
+        });
+      });
+    }
+
   </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<%--select--%>
+<%--e.role, j.name as jobName, d.name teamName, e.name--%>
+<%--from employee e--%>
+<%--join department d--%>
+<%--on e.departmentid = d.id--%>
+<%--join job j--%>
+<%--on e.jobid = j.id--%>
+<%--order by e.role asc, j.id asc, d.id, e.name asc;--%>

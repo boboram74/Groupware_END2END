@@ -389,4 +389,23 @@
         update department set name = #{name}, email = #{email} where id = #{id}
     </update>
 
+    <delete id="deleteByDepartmentId">
+        DELETE FROM department
+        WHERE id = #{value}
+    </delete>
+
+    <select id="loadSettingList" resultType="com.end2end.spring.employee.dto.RoleListDTO">
+        select
+        e.id as employeeId, e.role, j.name as jobName, d.name teamName, e.name
+        from employee e
+        join department d
+        on e.departmentid = d.id
+        join job j
+        on e.jobid = j.id
+        order by e.role asc, j.id asc, d.id, e.name asc
+    </select>
+
+    <update id="updateRole" parameterType="map">
+        update employee set role = #{role} where id = #{employeeId}
+    </update>
 </mapper>

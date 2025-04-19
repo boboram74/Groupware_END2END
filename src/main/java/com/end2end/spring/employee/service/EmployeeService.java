@@ -42,4 +42,6 @@ public interface EmployeeService {
     void deleteByDepartmentId(int id);
 
     List<RoleListDTO> loadSettingList();
+
+    void updateRole(String employeeId, String role);
 }

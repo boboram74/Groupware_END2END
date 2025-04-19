@@ -3,6 +3,7 @@ package com.end2end.spring.board.serviceImpl;
 import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.board.dao.NoticeDAO;
 import com.end2end.spring.board.dto.NoticeDTO;
+import com.end2end.spring.board.dto.NoticeUpdateDTO;
 import com.end2end.spring.board.service.NoticeService;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
@@ -65,8 +66,19 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Transactional
     @Override
-    public void update(NoticeDTO dto) {
-        noticeDAO.update(dto);
+    public void update(MultipartFile[] files, NoticeUpdateDTO dto) {
+        FileDTO fileDTO = FileDTO.builder()
+                .noticeId(dto.getId())
+                .build();
+        fileService.update(files, fileDTO, dto.getUpdateFileId());
+
+        NoticeDTO noticeDTO = NoticeDTO.builder()
+                .id(dto.getId())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .noticeCtId(dto.getNoticeCtId())
+                .build();
+        noticeDAO.update(noticeDTO);
     }
 
     @Transactional

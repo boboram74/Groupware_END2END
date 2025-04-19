@@ -42,6 +42,7 @@
         gap: 10px;
         cursor: pointer;
         width: 100%;
+        padding-left: 5px;
     }
 
     /* 제목 텍스트 스타일 */
@@ -159,6 +160,14 @@
         border-bottom: 1px solid var(--md-sys-color-outline);
         text-align: center;
         vertical-align: middle;
+    }
+
+    .notice-ct-container {
+        height: 30px;
+        padding: 5px;
+        display: flex;
+        align-content: center;
+        justify-content: center;
     }
 </style>
 <script>
@@ -320,28 +329,18 @@
             return hours + ':' + minutes + ':' + seconds;
         }
 
-        $('.board-type-btn').click(function() {
-            const type = $(this).data('type');
-            console.log(type);
+        renderBoardList('notice', '/notice/recent');
 
-            renderBoardList(type);
-        })
-
-        renderBoardList('notice');
-
-        function renderBoardList(type) {
-            let url;
-
+        function renderBoardList(type, url) {
+            const thead = $('.boardBox .board-table thead');
             const tbody = $('.boardBox .board-table tbody');
-            if (type === 'notice') {
-                tbody.empty();
-                tbody.append(
-                    $('<tr class="no-data">').append(
-                        $('<td colspan="4">').html('게시글이 없습니다.')))
 
-                return;
+            if (type === 'notice') {
+                $('.category-list .notice-category').show();
+                $('.category-list .all-category').hide();
             } else if (type === 'all') {
-                url = '/board/recent'
+                $('.category-list .notice-category').hide();
+                $('.category-list .all-category').show();
             }
 
             $.ajax({
@@ -351,44 +350,81 @@
                     tbody.empty();
                     tbody.append(
                         $('<tr class="no-data">').append(
-                            $('<td colspan="4">').html('게시글이 없습니다.')))
+                            $('<td colspan="5">').html('게시글이 없습니다.')))
                 }
             }).done(function(resp) {
                 console.log(resp);
-
+                thead.empty();
                 tbody.empty();
-                if (resp.length === 0) {
-                    tbody.append(
-                        $('<tr>').append(
-                            $('<td colspan="4">').html('게시글이 없습니다.')))
+
+                if (type == 'all') {
+                    thead
+                        .append($('<th width="8%">').html("번호"))
+                        .append($('<th width="52%">').html("제목"))
+                        .append($('<th width="15%">').html("작성자"))
+                        .append($('<th width="15%">').html("등록일자"))
+                        .append($('<th width="10%">').html("조회수"));
+
+                    if (resp.length === 0) {
+                        tbody.append(
+                            $('<tr>').append(
+                                $('<td colspan="5">').html('게시글이 없습니다.')))
+                    } else {
+                        for (const item of resp) {
+                            const regDate = parseDate(new Date(item.regDate));
+
+                            const tr = $('<tr>')
+                                .append($('<td>').html(item.id))  // 1열: 번호
+                                .append($('<td class="title-cell">')  // 2열: 제목
+                                    .append($('<div class="title-container">')
+                                        .append($('<span class="title-text">').html(item.title))
+                                        .append($('<div class="info-items">')
+                                            .append($('<div class="info-item">')
+                                                .append($('<span class="material-icons">').html('chat_bubble_outline'))
+                                                .append($('<span class="reply-count">').html(item.replyCount))))))
+                                .append($('<td class="writer-cell">')  // 3열: 작성자
+                                    .append($('<div class="writer-info">')
+                                        .append($('<div class="profile-img" style="background-image: url(' + item.profileImg + ')">'))
+                                        .append($('<span>').html(item.employeeName))))
+                                .append($('<td class="date-cell">')  // 4열: 날짜
+                                    .html(regDate))
+                                .append($('<td>').html(item.viewCount));
+
+                            tr.on('click', function() {
+                                location.href = '/board/detail/' + item.id;
+                            });
+
+                            tbody.append(tr);
+                        }
+                    }
                 } else {
-                    for (const item of resp) {
-                        const regDate = parseDate(new Date(item.regDate));
+                    thead
+                        .append($('<th width="8%">').html('번호'))
+                        .append($('<th width="15%">').html('분류'))
+                        .append($('<th width="52%">').html('제목'))
+                        .append($('<th width="25%">').html('등록일자'))
 
-                        const tr = $('<tr>')
-                            .append($('<td>').html(item.id))  // 1열: 번호
-                            .append($('<td class="title-cell">')  // 2열: 제목
-                                .append($('<div class="title-container">')
-                                    .append($('<span class="title-text">').html(item.title))
-                                    .append($('<div class="info-items">')
-                                        .append($('<div class="info-item">')
-                                            .append($('<span class="material-icons">').html('visibility'))
-                                            .append($('<span class="view-count">').html(item.viewCount)))
-                                        .append($('<div class="info-item">')
-                                            .append($('<span class="material-icons">').html('chat_bubble_outline'))
-                                            .append($('<span class="reply-count">').html(item.replyCount))))))
-                            .append($('<td class="writer-cell">')  // 3열: 작성자
-                                .append($('<div class="writer-info">')
-                                    .append($('<div class="profile-img" style="background-image: url(' + item.profileImg + ')">'))
-                                    .append($('<span>').html(item.employeeName))))
-                            .append($('<td class="date-cell">')  // 4열: 날짜
-                                .html(regDate));
+                    if (resp === 0) {
+                        tbody.append(
+                            $('<tr class="no-data">').append(
+                                $('<td colspan="4">').html('게시글이 없습니다.')))
+                    } else {
+                        for(const item of resp) {
+                            const regDate = parseDate(new Date(item.regDate));
+                            const tr = $('<tr>')
+                                .append($('<td>').html(item.id))
+                                .append($('<td>')
+                                    .append($('<div class="notice-ct-container">').html(item.noticeCtName)))
+                                .append($('<td class="title-cell">')
+                                    .append($('<div class="title-container">').html(item.title)))
+                                .append($('<td>').html(regDate));
 
-                        tr.on('click', function() {
-                            location.href = '/board/detail/' + item.id;
-                        });
+                            tr.on('click', function() {
+                                location.href = '/notice/detail/' + item.id;
+                            })
 
-                        tbody.append(tr);
+                            tbody.append(tr);
+                        }
                     }
                 }
             })
@@ -460,22 +496,26 @@
             <div class="board-container">
                 <!-- 게시판 타입 버튼 -->
                 <div class="board-type-buttons">
-                    <button class="board-type-btn active" data-type="notice">공지 게시판</button>
-                    <button class="board-type-btn" data-type="all">전사 게시판</button>
+                    <button class="board-type-btn active" data-type="notice"
+                            onclick="renderBoardList('notice', '/notice/recent')">공지 게시판</button>
+                    <button class="board-type-btn" data-type="all"
+                            onclick="renderBoardList('all', '/board/recent')">전사 게시판</button>
                 </div>
 
-                <div class="category-list-container">
-                    <div class="category-list">
+                <div class="category-list-container notice-category">
+                    <div class="category-list notice-category">
                         <button class="category-btn active">전체</button>
-                        <button class="category-btn">인사</button>
-                        <button class="category-btn">회계</button>
-                        <button class="category-btn">영업</button>
-                        <button class="category-btn">마케팅</button>
-                        <button class="category-btn">개발</button>
-                        <button class="category-btn">기타</button>
+                        <c:forEach items="${noticeCategoryList}" var="item">
+                            <button class="category-btn"
+                                    onclick="renderBoardList('notice', '/notice/recent/${item.id}')">${item.name}</button>
+                        </c:forEach>
                     </div>
 
-                    <a href="/board/list" class="more-btn">
+                    <div class="category-list all-category" style="display: none;">
+                        <button class="category-btn active">전체</button>
+                    </div>
+
+                    <a href="/notice/list" class="more-btn">
                         더보기 <span class="material-icons" style="font-size: 16px; vertical-align: middle;">chevron_right</span>
                     </a>
                 </div>
@@ -487,8 +527,9 @@
                         <tr>
                             <th width="8%">번호</th>
                             <th width="52%">제목</th>
-                            <th width="20%">글쓴이</th>
-                            <th width="20%">등록일자</th>
+                            <th width="15%">등록일자</th>
+                            <th width="15%">작성자</th>
+                            <th width="10%">조회수</th>
                         </tr>
                         </thead>
                         <tbody></tbody>

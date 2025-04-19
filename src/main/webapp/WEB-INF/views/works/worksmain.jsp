@@ -175,6 +175,7 @@
     >
     업무 통계
 </div>
+<c:if test="${isTeamLeader}">
 <div class="btnBox">
 
     <button class="projectBtn" onclick="openProjectModal()"
@@ -182,6 +183,7 @@
     </button>
 
 </div>
+</c:if>
 
 <div class="selectBox">
     <select id="projectSelect">
@@ -540,8 +542,7 @@
     <div class="tableBox">
         <table class="table">
             <thead>
-            <tr
-                    class="${list.hideYn == 'Y'
+            <tr class="${list.hideYn == 'Y'
             ? (isTeamLeader ? 'hidden-project leader' : 'hidden-project staff')
             : ''}">
 
@@ -567,13 +568,13 @@
 
 
                     <td onclick="handleProjectClick(${list.id})">${list.name}
-                        <c:if test="${list.nearDeadline == 'Y'}"><span class="detail-badge">긴급
+                        <c:if test="${list.nearDeadline == 'Y'&& list.status.equals('ongoing')}"><span class="detail-badge">긴급
                     </span></c:if></td>
                     <td onclick="handleProjectClick(${list.id})">${list.regDate}</td>
                     <td onclick="handleProjectClick(${list.id})"> ${list.deadLine}</td>
 
                     <td>
-                        <div class="member-profiles" onclick="location.href='/project/detail/${list.id}'">
+                        <div class="member-profiles" >
                             <!-- 프로필 이미지 리스트 -->
                             <c:if test="${not empty list.profileImg}">
                                 <c:forEach items="${list.profileImg}" var="img">
@@ -611,6 +612,7 @@
                                     <input class="form-check-input hideSwitch"
                                            type="checkbox"
                                            id="hideSwitch-23"
+                                        ${list.hideYn == 'Y' ? 'checked' : ''}
                                            data-is-team-leader="${isTeamLeader}"
                                            status="${list.status}"
                                            hideYn="${list.hideYn}"
@@ -686,7 +688,6 @@
 </div>
 
 
-프로젝트수정모달
 <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -866,10 +867,10 @@
                 if (selectedMembers.length > 0) {
                     selectedMembers.forEach(member => {
                         $('#updateSelectedMembersList').append(`
-                        <div class="updateSelected-user" data-id="${member.id}">
-                            <span>${member.name}</span>
+                        <div class="updateSelected-user" data-id="`+member.id+`">
+                            <span>`+member.name+`</span>
                             <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
-                            <input type="hidden" name="employeeId" value="${member.id}">
+                            <input type="hidden" name="employeeId" value="`+member.id+`">
                         </div>
                     `);
                     });
@@ -912,11 +913,11 @@
 
                 $('#updateMemberSearchResults').html(memberList);
 
-                $('#updateMemberSearchResults .user-item').click(function () {
-                    var userId = $(this).data('id');
-                    var userName = $(this).data('name');
+                $('#updateMemberSearchResults').off('click', '.user-item').on('click', '.user-item', function () {
+                    const userId = $(this).data('id');
+                    const userName = $(this).data('name');
 
-                    if ($('#updateSelectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
+                    if ($('#updateSelectedMembersList').find('[data-id="' + userId + '"]').length === 0) {
                         $('#updateSelectedMembersList').append(
                             $('<div>').addClass('selected-user').attr('data-id', userId)
                                 .append($('<span>').html(userName))
@@ -925,6 +926,9 @@
                                 }))
                                 .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
                         );
+                    } else {
+                        console.log("이미 선택한 직원입니다.");
+                        alert("이미 선택한 직원입니다.");
                     }
                 });
             }
@@ -963,7 +967,7 @@
                     let userId = $(this).data('id');
                     let userName = $(this).data('name');
 
-                    if ($('#selectedMembersList').find(`[data-id="${userId}"]`).length === 0) {
+                    if ($('#selectedMembersList').find(`[data-id="`+userId+`"]`).length === 0) {
 
                         console.log('추가한 새로운 멤버:', userId, userName);
 
@@ -976,6 +980,9 @@
                                 )
                                 .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
                         );
+                    } else {
+
+                        alert("이미 선택한 멤버입니다.");
                     }
                 });
             }
@@ -984,7 +991,7 @@
 
     $(document).ready(function () {
 
-            $('.hideSwitch').on('change', function () {
+        $('.hideSwitch').on('change', function () {
             const target = $(this);
             const projectId = target.data('project-id');
             const isChecked = target.prop('checked');
@@ -995,78 +1002,86 @@
             const isTeamLeader = '${employee.role == "TEAM_LEADER"}';
 
             if (isChecked) {
-            if (isTeamLeader === true || isTeamLeader === "true") {
-            row.css('opacity', '0.5').addClass("hidden-project");
-        } else {
-            row.hide();
-        }
-        } else {
-            row.removeClass("hidden-project").css("opacity", "1").show();
-        }
+                if (isTeamLeader === true || isTeamLeader === "true") {
+                    row.css('opacity', '0.5').addClass("hidden-project");
+                } else {
+                    row.hide();
+                }
+            } else {
+                row.removeClass("hidden-project").css("opacity", "1").show();
+            }
             $.ajax({
-            url: "/project/hide",
-            method: "POST",
-            data: {
-            projectId: projectId,
-            hideYn: isChecked ? 'true' : 'false'
-        },
-            success: function () {
-                alert("숨김처리되었습니다");
-        },
-            error: function () {
-            alert("숨김 상태 변경 실패");
-            // 실패 시 UI 복원
-            if (isChecked) {
-            row.css("opacity", "1").show();
-            target.prop('checked', false); // 체크 해제
-        } else {
-            if (isTeamLeader === true || isTeamLeader === "true") {
-            row.css('opacity', '0.5');
-            target.prop('checked', true); // 다시 체크
-        } else {
-            row.hide();
-            target.prop('checked', true); // 다시 체크
-        }
-        }
-        }
-        })
-        })
-            ;
+                url: "/project/hide",
+                method: "POST",
+                data: {
+                    projectId: projectId,
+                    hideYn: isChecked ? 'true' : 'false'
+                },
+                success: function () {
+                    if (isChecked) {
+                        alert("숨김 처리되었습니다");
+                        location.reload();
+                    } else {
+                        alert("프로젝트 숨김 상태가 해제되었습니다");
+                        location.reload();
+                    }
+                },
+                error: function () {
+                    alert("숨김 상태 변경 실패");
+                    // 실패 시 UI 복원
+                    if (isChecked) {
+                        row.css("opacity", "1").show();
+                        target.prop('checked', false); // 체크 해제
+
+                    } else {
+                        if (isTeamLeader === true || isTeamLeader === "true") {
+                            row.css('opacity', '0.5');
+                            target.prop('checked', true);
+
+                        } else {
+                            row.hide();
+                            target.prop('checked', true);
+                        }
+                    }
+                }
             })
+        })
+        ;
+    })
 
-            function confirmSelectedMembers() {
-            $("#selectedMembers").html($("#selectedMembersList").html());
-            document.activeElement.blur();
-            $("#memberSearchModal").modal('hide');
-        }
+    function confirmSelectedMembers() {
+        $("#selectedMembers").html($("#selectedMembersList").html());
+        document.activeElement.blur();
+        $("#memberSearchModal").modal('hide');
+    }
 
-            function createProject(e) {
-            $('#projectForm').submit();
-        }
+    function createProject(e) {
+        $('#projectForm').submit();
+    }
 
-            function closeupdateModal() {
-            $('#updateModal').modal('hide');
-        }
+    function closeupdateModal() {
+        $('#updateModal').modal('hide');
+    }
 
-            function updateConfirmSelectedMembers() {
-            $("#updateMembers").html($("#updateSelectedMembersList").html());
-            document.activeElement.blur();
-            $("#updateMemberSearchModal").modal('hide');
+    function updateConfirmSelectedMembers() {
+        $("#updateMembers").html($("#updateSelectedMembersList").html());
+        document.activeElement.blur();
+        $("#updateMemberSearchModal").modal('hide');
 
-            function getSelectedMembers() {
+        function getSelectedMembers() {
             let updateSelectedMembers = [];
             $('#updateSelectedMembers .updateSelectedUser').each(function () {
-            const id = $(this).attr('data-id');
-            if (id) {
-            updateSelectedMembers.push(id[1]);
-        }
-        });
+                const id = $(this).attr('data-id');
+                if (id) {
+                    updateSelectedMembers.push(id[1]);
+                }
+            });
             return updateSelectedMembers;
         }
-        }
+    }
 
-            function addProjectToTable(response) {
-            const tableHtml = `
+    function addProjectToTable(response) {
+        const tableHtml = `
         <tr onClick="location.href='/works/work/${response.id}'">
             <td>${response.name}</td>
             <td>${response.regDate}</td>
@@ -1077,8 +1092,8 @@
             <button class="deleteProjectBtn" onClick="deleteProject(${response.id})">삭제</button>
         </tr>
     `;
-            $('.table tbody').append(tableHtml);
-        }
+        $('.table tbody').append(tableHtml);
+    }
 
 </script>
 

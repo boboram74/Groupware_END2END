@@ -34,4 +34,12 @@ public interface EmployeeService {
     List<EmployeeDTO> selectAll(int page);
     List<EmployeeDTO> searchContactList(String searchOption, String keyword);
     List<EmployeeDTO> searchEmployeeList(String searchOption, String keyword);
+
+    List<DepartmentDTO> selectByDepartmentList();
+
+    void saveAll(List<DepartmentDTO> dtos);
+
+    void deleteByDepartmentId(int id);
+
+    List<RoleListDTO> loadSettingList();
 }

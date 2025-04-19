@@ -23,21 +23,16 @@
           <span>부서 관리</span>
         </li>
       </a>
-      <a href="/admin/approval-templates">
-        <li class="detail-menu-item">
-          <span class="material-icons">all_inbox</span>
-          <span>결재 문서 양식 설정</span>
-        </li>
-      </a>
+
       <a href="/admin/mail-setting">
         <li class="detail-menu-item">
-          <span class="material-icons">send</span>
-          <span>공용 메일 설정</span>
+            <span class="material-icons">mail</span>
+            <span>공용 메일 설정</span>
         </li>
       </a>
       <a href="/admin/setting">
         <li class="detail-menu-item">
-          <span class="material-icons">send</span>
+          <span class="material-icons">manage_accounts</span>
           <span>관리자 설정</span>
         </li>
       </a>
@@ -59,10 +54,10 @@
         <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=1&from=now-30m&to=now&theme=light"></iframe>
       </div>
       <div class="iframe-card">
-        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=4&from=now-30m&to=now&theme=light"></iframe>
+        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=3&from=now-30m&to=now&theme=light"></iframe>
       </div>
       <div class="iframe-card">
-        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=3&from=now-30m&to=now&theme=light"></iframe>
+        <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=4&from=now-30m&to=now&theme=light"></iframe>
       </div>
       <div class="iframe-card">
         <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/ec9bb9-ec849c-ebb284?from=1744950629114&to=1744954229115&orgId=1&panelId=5"></iframe>
@@ -75,10 +70,10 @@
     <h1>메일서버 모니터링</h1>
     <div class="iframe-grid">
       <div class="iframe-card">
-        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744930921473&to=1744952521473&panelId=1"></iframe>
+        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744966496210&to=1744988096210&panelId=1"></iframe>
       </div>
       <div class="iframe-card">
-        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744930944548&to=1744952544548&panelId=2"></iframe>
+        <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744966529821&to=1744988129821&panelId=2"></iframe>
       </div>
       <div class="iframe-card">
         <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744930958420&to=1744952558420&panelId=3"></iframe>

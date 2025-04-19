@@ -23,21 +23,16 @@
           <span>부서 관리</span>
         </li>
       </a>
-      <a href="/admin/approval-templates">
-        <li class="detail-menu-item">
-          <span class="material-icons">all_inbox</span>
-          <span>결재 문서 양식 설정</span>
-        </li>
-      </a>
+
       <a href="/admin/mail-setting">
         <li class="detail-menu-item">
-          <span class="material-icons">send</span>
+          <span class="material-icons">mail</span>
           <span>공용 메일 설정</span>
         </li>
       </a>
       <a href="/admin/setting">
         <li class="detail-menu-item">
-          <span class="material-icons">send</span>
+          <span class="material-icons">manage_accounts</span>
           <span>관리자 설정</span>
         </li>
       </a>
@@ -47,46 +42,42 @@
     </button>
   </div>
 </div>
-
 <div class="mainContainer">
   <div class="mainBody">
-    <div class="search">
-      <div>
-        <select id="searchOption">
-          <option>선택</option>
-          <option>선택</option>
-          <option>선택</option>
-        </select>
-      </div>
-      <div class="searchInput">
-        <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-      </div>
-      <div>
-        <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
+    <div class="box">
+      <div class="box-title">부서 관리</div>
+      <div class="box-content">
+        <form id="updateDepartment" action="/admin/updateDepartment" method="post">
+          <table class="custom-mail-table department-table">
+            <thead>
+            <tr>
+              <th>권한</th>
+              <th>직위</th>
+              <th>부서명</th>
+              <th>이름</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td><input type="text" name="role" readonly placeholder="권한"/></td>
+              <td><input type="text" name="jobName" placeholder="직위"/></td>
+              <td><input type="text" name="teamName" placeholder="부서명"/></td>
+              <td><input type="text" name="name" placeholder="이름"/></td>
+            </tr>
+            </tbody>
+          </table>
+        </form>
       </div>
     </div>
-    <div class="content">
-      출력 공간(높이 주지말고 컨텐츠 내용에 따라 유동적으로 증가하게 두세요)
-    </div>
-    <!-- 배경색 hover 효과 -->
-    <button class="primary primary-hover">호버 효과가 있는 기본 버튼</button>
-    <div class="primary-container primary-container-hover">호버 효과가 있는 컨테이너</div>
-
-    <!-- 텍스트 hover 효과 -->
-    <a class="primary-text primary-text-hover">호버 효과가 있는 링크</a>
-
-    <!-- 여러 효과 조합 -->
-    <button class="secondary secondary-hover">
-      <span class="primary-text primary-text-hover">혼합된 호버 효과</span>
-    </button>
   </div>
+</div>
   <script>
     $(document).ready(function() {
       $('.detail-menu-item').on('click', function() {
         $('.detail-menu-item').removeClass('active');
         $(this).addClass('active');
-        // 클릭 이벤트 처리 로직
       });
+      loadSettingList();
 
       const $menuBtn = $('.detail-menu-toggle-btn');
       const $detailMenuModal = $('.detail-menu-modal');
@@ -112,5 +103,45 @@
         }
       });
     });
+
+    function loadSettingList() {
+      $.ajax({
+        url: "/admin/api/loadSettingList"
+      }).done(function (resp) {
+        var $tbody = $('.custom-mail-table tbody').empty();
+        resp.forEach(function (item) {
+          var $tr = $(
+                  '<tr>' +
+                  '<td>' +
+                    '<select name="role">'+
+                      '<option value="ADMIN">ADMIN</option>'+
+                      '<option value="NO_AUTH">NO_AUTH</option>'+
+                      '<option value="TEAM_LEADER">TEAM_LEADER</option>'+
+                      '<option value="USER">USER</option>'+
+                    '</select>'+
+                  '</td>' +
+                  '<td><input type="text" name="jobName" readonly></td>' +
+                  '<td><input type="text" name="teamName" readonly></td>' +
+                  '<td><input type="text" name="name" readonly></td>' +
+                  '</tr>'
+          );
+          $tr.find('select[name="role"]').val(item.role);
+          $tr.find('input[name="jobName"]').val(item.jobName);
+          $tr.find('input[name="teamName"]').val(item.teamName);
+          $tr.find('input[name="name"]').val(item.name);
+          $tbody.append($tr);
+        });
+      });
+    }
+
   </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+
+<%--select--%>
+<%--e.role, j.name as jobName, d.name teamName, e.name--%>
+<%--from employee e--%>
+<%--join department d--%>
+<%--on e.departmentid = d.id--%>
+<%--join job j--%>
+<%--on e.jobid = j.id--%>
+<%--order by e.role asc, j.id asc, d.id, e.name asc;--%>

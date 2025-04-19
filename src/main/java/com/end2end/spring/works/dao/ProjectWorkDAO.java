@@ -46,7 +46,7 @@ public class ProjectWorkDAO {
 
     public void update(ProjectWorkDTO dto) {
         
-        System.out.println("dao도착");
+//        System.out.println("dao도착");
         mybatis.update("works.update", dto);
     }
 public List<ProjectWorkDTO> searchBynameAndTitle(String keyword,int projectId, String searchOption) {
@@ -76,7 +76,7 @@ public int countTotalWorksByProjectId(int projectId) {
     }
 
     public void deleteById(int workId) {
-        System.out.println("dao 도착" + workId);
+//        System.out.println("dao 도착" + workId);
         mybatis.delete("works.deleteById", workId);
     }
 

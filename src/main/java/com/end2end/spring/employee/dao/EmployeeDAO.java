@@ -58,7 +58,7 @@ public class EmployeeDAO {
     }
 
     public boolean pwVali(String currentPw) {
-        System.out.println(currentPw);
+//        System.out.println(currentPw);
         Integer count = mybatis.selectOne("employee.pwVali", currentPw);
         if (count != null && count > 0) {
             return true;

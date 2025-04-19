@@ -178,12 +178,121 @@
         const titleHeight = $('.boxTitle').outerHeight(true);
         const padding = 40; // 상하/좌우 padding 20px * 2
 
-        console.log(totalHeight - titleHeight - padding);
-        console.log(totalWidth - padding);
+        // console.log(totalHeight - titleHeight - padding);
+        // console.log(totalWidth - padding);
         return {
             height: totalHeight - titleHeight - padding,
             width: totalWidth - padding
         };
+    }
+
+    function parseDate(dates) {
+        const month = String(dates.getMonth() + 1).padStart(2, '0');
+        const date = String(dates.getDate()).padStart(2, '0');
+        return dates.getFullYear() + '-' + month + '-' + date;
+    }
+
+    function renderBoardList(type, url) {
+        // console.log(type, url);
+        const thead = $('.boardBox .board-table thead');
+        const tbody = $('.boardBox .board-table tbody');
+
+        if (type === 'notice') {
+            $('.notice-category').show();
+            $('.all-category').hide();
+            $('.more-btn').attr('href', '/notice/list?page=1');
+        } else if (type === 'all') {
+            $('.notice-category').hide();
+            $('.all-category').show();
+            $('.more-btn').attr('href', '/board/list');
+        }
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            error: function() {
+                tbody.empty();
+                tbody.append(
+                    $('<tr class="no-data">').append(
+                        $('<td colspan="5">').html('게시글이 없습니다.')))
+            }
+        }).done(function(resp) {
+            // console.log(resp);
+            thead.empty();
+            tbody.empty();
+
+            if (type == 'all') {
+                thead
+                    .append($('<th width="8%">').html("번호"))
+                    .append($('<th width="52%">').html("제목"))
+                    .append($('<th width="15%">').html("작성자"))
+                    .append($('<th width="15%">').html("등록일자"))
+                    .append($('<th width="10%">').html("조회수"));
+
+                if (resp.length === 0) {
+                    tbody.append(
+                        $('<tr>').append(
+                            $('<td colspan="5">').html('게시글이 없습니다.')))
+                } else {
+                    for (const item of resp) {
+                        const regDate = parseDate(new Date(item.regDate));
+
+                        const tr = $('<tr>')
+                            .append($('<td>').html(item.id))  // 1열: 번호
+                            .append($('<td class="title-cell">')  // 2열: 제목
+                                .append($('<div class="title-container">')
+                                    .append($('<span class="title-text">').html(item.title))
+                                    .append($('<div class="info-items">')
+                                        .append($('<div class="info-item">')
+                                            .append($('<span class="material-icons">').html('chat_bubble_outline'))
+                                            .append($('<span class="reply-count">').html(item.replyCount))))))
+                            .append($('<td class="writer-cell">')  // 3열: 작성자
+                                .append($('<div class="writer-info">')
+                                    .append($('<div class="profile-img" style="background-image: url(' + item.profileImg + ')">'))
+                                    .append($('<span>').html(item.employeeName))))
+                            .append($('<td class="date-cell">')  // 4열: 날짜
+                                .html(regDate))
+                            .append($('<td>').html(item.viewCount));
+
+                        tr.on('click', function() {
+                            location.href = '/board/detail/' + item.id;
+                        });
+
+                        tbody.append(tr);
+                    }
+                }
+            } else {
+                thead
+                    .append($('<th width="8%">').html('번호'))
+                    .append($('<th width="15%">').html('분류'))
+                    .append($('<th width="52%">').html('제목'))
+                    .append($('<th width="25%">').html('등록일자'))
+
+                if (resp.length === 0) {
+                    tbody.append(
+                        $('<tr class="no-data">').append(
+                            $('<td colspan="4">').html('게시글이 없습니다.')))
+                } else {
+                    for(const item of resp) {
+                        const regDate = parseDate(new Date(item.regDate));
+                        const tr = $('<tr>')
+                            .append($('<td>').html(item.id))
+                            .append($('<td>')
+                                .append($('<div class="notice-ct-container">').html(item.noticeCtName)))
+                            .append($('<td class="title-cell">')
+                                .append($('<div class="title-container">')
+                                    .append($('<span class="title-text">').html(item.title))))
+                            .append($('<td>').html(regDate));
+
+                        tr.on('click', function() {
+                            location.href = '/notice/detail/' + item.id;
+                        })
+
+                        tbody.append(tr);
+                    }
+                }
+            }
+        })
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -200,7 +309,7 @@
             },
             initialView: 'dayGridMonth',
             initialDate: new Date(),
-            width: '100%',
+            // width: '100%',
             height: 'auto',
             events: function(info, successCallback) {
                 const startDate = info.start;
@@ -209,9 +318,9 @@
                 loadEvents(startDate, endDate, successCallback);
             },
             eventClick: function(info) {
-                console.log(info);
+                // console.log(info);
                 if (info.event.extendedProps.type === 'schedule') {
-                    console.log(info.event.extendedProps.id);
+                    // console.log(info.event.extendedProps.id);
                     openDetailModal(info.event.extendedProps.id);
                 }
             },
@@ -238,25 +347,19 @@
             });
         }
 
-        function parseDate(dates) {
-            const month = String(dates.getMonth() + 1).padStart(2, '0');
-            const date = String(dates.getDate()).padStart(2, '0');
-            return dates.getFullYear() + '-' + month + '-' + date;
-        }
-
         function loadEvents(startDate, endDate, successCallback) {
             startDate = parseDate(startDate);
             endDate = parseDate(endDate);
 
-            console.log(startDate, endDate);
+            // console.log(startDate, endDate);
 
             $.ajax({
                 url: '/schedule/list?startDate=' + startDate + '&endDate=' + endDate,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
                     const events = data.map(function(event) {
-                        console.log(event);
+                        // console.log(event);
                         if (event.eventName === 'period') {
                             return {
                                 id: event.id,
@@ -279,7 +382,7 @@
                             }
                         }
                     })
-                    console.log(events);
+                    // console.log(events);
                     successCallback(events);
                 }, errors: function(xhr, status, error) {
                     console.log(xhr.status);
@@ -330,105 +433,6 @@
         }
 
         renderBoardList('notice', '/notice/recent');
-
-        function renderBoardList(type, url) {
-            const thead = $('.boardBox .board-table thead');
-            const tbody = $('.boardBox .board-table tbody');
-
-            if (type === 'notice') {
-                $('.category-list .notice-category').show();
-                $('.category-list .all-category').hide();
-            } else if (type === 'all') {
-                $('.category-list .notice-category').hide();
-                $('.category-list .all-category').show();
-            }
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                error: function() {
-                    tbody.empty();
-                    tbody.append(
-                        $('<tr class="no-data">').append(
-                            $('<td colspan="5">').html('게시글이 없습니다.')))
-                }
-            }).done(function(resp) {
-                console.log(resp);
-                thead.empty();
-                tbody.empty();
-
-                if (type == 'all') {
-                    thead
-                        .append($('<th width="8%">').html("번호"))
-                        .append($('<th width="52%">').html("제목"))
-                        .append($('<th width="15%">').html("작성자"))
-                        .append($('<th width="15%">').html("등록일자"))
-                        .append($('<th width="10%">').html("조회수"));
-
-                    if (resp.length === 0) {
-                        tbody.append(
-                            $('<tr>').append(
-                                $('<td colspan="5">').html('게시글이 없습니다.')))
-                    } else {
-                        for (const item of resp) {
-                            const regDate = parseDate(new Date(item.regDate));
-
-                            const tr = $('<tr>')
-                                .append($('<td>').html(item.id))  // 1열: 번호
-                                .append($('<td class="title-cell">')  // 2열: 제목
-                                    .append($('<div class="title-container">')
-                                        .append($('<span class="title-text">').html(item.title))
-                                        .append($('<div class="info-items">')
-                                            .append($('<div class="info-item">')
-                                                .append($('<span class="material-icons">').html('chat_bubble_outline'))
-                                                .append($('<span class="reply-count">').html(item.replyCount))))))
-                                .append($('<td class="writer-cell">')  // 3열: 작성자
-                                    .append($('<div class="writer-info">')
-                                        .append($('<div class="profile-img" style="background-image: url(' + item.profileImg + ')">'))
-                                        .append($('<span>').html(item.employeeName))))
-                                .append($('<td class="date-cell">')  // 4열: 날짜
-                                    .html(regDate))
-                                .append($('<td>').html(item.viewCount));
-
-                            tr.on('click', function() {
-                                location.href = '/board/detail/' + item.id;
-                            });
-
-                            tbody.append(tr);
-                        }
-                    }
-                } else {
-                    thead
-                        .append($('<th width="8%">').html('번호'))
-                        .append($('<th width="15%">').html('분류'))
-                        .append($('<th width="52%">').html('제목'))
-                        .append($('<th width="25%">').html('등록일자'))
-
-                    if (resp === 0) {
-                        tbody.append(
-                            $('<tr class="no-data">').append(
-                                $('<td colspan="4">').html('게시글이 없습니다.')))
-                    } else {
-                        for(const item of resp) {
-                            const regDate = parseDate(new Date(item.regDate));
-                            const tr = $('<tr>')
-                                .append($('<td>').html(item.id))
-                                .append($('<td>')
-                                    .append($('<div class="notice-ct-container">').html(item.noticeCtName)))
-                                .append($('<td class="title-cell">')
-                                    .append($('<div class="title-container">').html(item.title)))
-                                .append($('<td>').html(regDate));
-
-                            tr.on('click', function() {
-                                location.href = '/notice/detail/' + item.id;
-                            })
-
-                            tbody.append(tr);
-                        }
-                    }
-                }
-            })
-        }
     });
 
     // 창 크기 변경 시 자동 조절
@@ -455,14 +459,14 @@
             </div>
             <div class="info-summary">
                 <div class="summary-item">
-                    <div class="summary-left">
+                    <div class="summary-left" onClick="location.href='/mail/list'">
                         <span class="material-icons">mail</span>
                         <span class="summary-text">새 메일</span>
                     </div>
                     <span class="summary-count">${mailReadCount}</span>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-left">
+                    <div class="summary-left" onclick="location.href='/calendar/list'">
                         <span class="material-icons">event</span>
                         <span class="summary-text">오늘 일정</span>
                     </div>
@@ -490,7 +494,6 @@
     </div>
 
     <div class="centerContents">
-
         <div class="boardBox surface-bright">
             <div class="boxTitle">게시글 목록</div>
             <div class="board-container">
@@ -502,7 +505,7 @@
                             onclick="renderBoardList('all', '/board/recent')">전사 게시판</button>
                 </div>
 
-                <div class="category-list-container notice-category">
+                <div class="category-list-container">
                     <div class="category-list notice-category">
                         <button class="category-btn active">전체</button>
                         <c:forEach items="${noticeCategoryList}" var="item">
@@ -515,7 +518,7 @@
                         <button class="category-btn active">전체</button>
                     </div>
 
-                    <a href="/notice/list" class="more-btn">
+                    <a class="more-btn">
                         더보기 <span class="material-icons" style="font-size: 16px; vertical-align: middle;">chevron_right</span>
                     </a>
                 </div>
@@ -523,15 +526,7 @@
                 <!-- 게시글 테이블 -->
                 <div class="board-table-container">
                     <table class="board-table">
-                        <thead>
-                        <tr>
-                            <th width="8%">번호</th>
-                            <th width="52%">제목</th>
-                            <th width="15%">등록일자</th>
-                            <th width="15%">작성자</th>
-                            <th width="10%">조회수</th>
-                        </tr>
-                        </thead>
+                        <thead></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -544,24 +539,35 @@
                     <table class="board-table">
                         <thead>
                         <tr>
-                            <th width="10%">기안 번호</th>
-                            <th width="50%">제목</th>
-                            <th width="20%">기안자</th>
-                            <th width="20%">등록 일자</th>
+                            <th class="apColTitle">제목</th>
+                            <th class="apColStatus">결재 상태</th>
+                            <th class="apColWriter">기안자</th>
+                            <th class="apColDate">기안일</th>
+                            <th class="apColType">문서 종류</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach begin="1" end="7" var="i">
-                            <tr>
-                                <td>문서-${5 - i}</td>
-                                <td class="title">결재 문서 제목입니다 ${5 - i}</td>
-                                <td class="writer-info">
-                                    <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
-                                    <span>기안자${i}</span>
-                                </td>
-                                <td>2024-03-19</td>
-                            </tr>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${empty approvalList}">
+                                <tr>
+                                    <td colspan="5" class="emptyMessage">진행 중인 문서가 없습니다.</td>
+                                </tr>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="i" items="${approvalList}">
+                                    <tr>
+                                        <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
+                                        <td class="apColStatus">결재 진행중</td>
+                                        <td class="apColWriter writer-info">
+                                            <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
+                                            <span>${i.DRAFTERNAME}</span>
+                                        </td>
+                                        <td class="apColDate">${i.REGDATE}</td>
+                                        <td class="apColType">${i.FORMNAME}</td>
+                                    </tr>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                         </tbody>
                     </table>
                 </div>

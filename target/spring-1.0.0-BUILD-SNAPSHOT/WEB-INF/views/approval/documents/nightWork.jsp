@@ -153,10 +153,6 @@
             if (startTime && endTime) {
                 const start = Date.parse('2000-01-01T' + startTime + ':00');
                 const end = Date.parse('2000-01-01T' + endTime + ':00');
-                console.log('startTime:', startTime);
-                console.log('endTime:', endTime);
-                console.log('start:', start);
-                console.log('end:', end);
 
                 if (!isNaN(start) && !isNaN(end)) {
                     if (end > start) {

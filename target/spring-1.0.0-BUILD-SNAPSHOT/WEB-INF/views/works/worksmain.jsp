@@ -4,7 +4,7 @@
 <head>
     <title>Title</title>
     <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<%--    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>--%>
 
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -12,30 +12,30 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossorigin="anonymous"/>
 
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js" defer></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
 <body>
-<script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"
-></script>
+<%--<script--%>
+<%--        src="https://code.jquery.com/jquery-3.3.1.min.js"--%>
+<%--        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="--%>
+<%--        crossorigin="anonymous"--%>
+<%--></script>--%>
 
 <script
         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"
 ></script>
-<script
-        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"
-></script>
+<%--<script--%>
+<%--        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"--%>
+<%--        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"--%>
+<%--        crossorigin="anonymous"--%>
+<%--></script>--%>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<link rel="stylesheet" href="/css/worksmain.css">
+<%--<link rel="stylesheet" href="/css/works/worksmain.css">--%>
 <link rel="stylesheet" href="/css/color/newColor.css"/>
 <style>
     tbody tr:hover {
@@ -188,7 +188,6 @@
 <div class="selectBox">
     <select id="projectSelect">
         <c:forEach var="project" items="${projects}">
-            console.log(${project.id}s)
             <option value="${project.id}" }>프로젝트이름
                 :${project.name}</option>
         </c:forEach>
@@ -214,7 +213,6 @@
                 url: '/project/latestProjectId',
                 type: 'GET',
                 success: function (latestId) {
-                    console.log("최신 프로젝트 ID:", latestId);
                     $("#projectSelect").val(latestId);
                     applyProjectById(latestId);
                 },
@@ -230,7 +228,6 @@
         }
 
         function applyProjectById(projectId) {
-            console.log("선택된 프로젝트 ID:", projectId);
 
             // 진행률 차트
             $.ajax({
@@ -362,8 +359,6 @@
         function applyProject() {
             const selectedId = $("#projectSelect").val();
 
-            console.log("선택된 프로젝트 ID:", selectedId);
-
             $.ajax({
 
                 url: '/work/chartData/' + selectedId,
@@ -371,7 +366,6 @@
                 dataType: 'json',
                 success: function (data) {
                     const chartData = data.progress;
-                    console.log("진행률 데이터:", chartData);
 
                     const data2 = 100 - chartData;
 
@@ -417,8 +411,6 @@
                 dataType: 'json',
                 success: function (data) {
                     const chartData = data;
-                    console.log("진행률차트2 데이터:", chartData);
-
                     const labels = ["READY", "ONGOING", "FINISH"];
                     const values = [chartData.READY, chartData.ONGOING, chartData.FINISH];
 
@@ -927,7 +919,6 @@
                                 .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
                         );
                     } else {
-                        console.log("이미 선택한 직원입니다.");
                         alert("이미 선택한 직원입니다.");
                     }
                 });
@@ -947,7 +938,6 @@
     }
 
     function searchMembers() {
-        console.log($('#memberSearchInput').val());
         $.ajax({
             url: '/project/searchUser/',
             type: 'GET',
@@ -968,9 +958,6 @@
                     let userName = $(this).data('name');
 
                     if ($('#selectedMembersList').find(`[data-id="`+userId+`"]`).length === 0) {
-
-                        console.log('추가한 새로운 멤버:', userId, userName);
-
                         $('#selectedMembersList').append(
                             $('<div>').addClass('selected-user').attr('data-id', userId)
                                 .append($('<span>').html(userName))
@@ -996,9 +983,6 @@
             const projectId = target.data('project-id');
             const isChecked = target.prop('checked');
             const row = $(`#changeRow-${projectId}`);
-            console.log(row);
-            console.log(isChecked);
-            console.log(target);
             const isTeamLeader = '${employee.role == "TEAM_LEADER"}';
 
             if (isChecked) {

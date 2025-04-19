@@ -178,8 +178,8 @@
         const titleHeight = $('.boxTitle').outerHeight(true);
         const padding = 40; // 상하/좌우 padding 20px * 2
 
-        console.log(totalHeight - titleHeight - padding);
-        console.log(totalWidth - padding);
+        // console.log(totalHeight - titleHeight - padding);
+        // console.log(totalWidth - padding);
         return {
             height: totalHeight - titleHeight - padding,
             width: totalWidth - padding
@@ -193,7 +193,7 @@
     }
 
     function renderBoardList(type, url) {
-        console.log(type, url);
+        // console.log(type, url);
         const thead = $('.boardBox .board-table thead');
         const tbody = $('.boardBox .board-table tbody');
 
@@ -217,7 +217,7 @@
                         $('<td colspan="5">').html('게시글이 없습니다.')))
             }
         }).done(function(resp) {
-            console.log(resp);
+            // console.log(resp);
             thead.empty();
             tbody.empty();
 
@@ -309,7 +309,7 @@
             },
             initialView: 'dayGridMonth',
             initialDate: new Date(),
-            width: '100%',
+            // width: '100%',
             height: 'auto',
             events: function(info, successCallback) {
                 const startDate = info.start;
@@ -318,9 +318,9 @@
                 loadEvents(startDate, endDate, successCallback);
             },
             eventClick: function(info) {
-                console.log(info);
+                // console.log(info);
                 if (info.event.extendedProps.type === 'schedule') {
-                    console.log(info.event.extendedProps.id);
+                    // console.log(info.event.extendedProps.id);
                     openDetailModal(info.event.extendedProps.id);
                 }
             },
@@ -351,15 +351,15 @@
             startDate = parseDate(startDate);
             endDate = parseDate(endDate);
 
-            console.log(startDate, endDate);
+            // console.log(startDate, endDate);
 
             $.ajax({
                 url: '/schedule/list?startDate=' + startDate + '&endDate=' + endDate,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
                     const events = data.map(function(event) {
-                        console.log(event);
+                        // console.log(event);
                         if (event.eventName === 'period') {
                             return {
                                 id: event.id,
@@ -382,7 +382,7 @@
                             }
                         }
                     })
-                    console.log(events);
+                    // console.log(events);
                     successCallback(events);
                 }, errors: function(xhr, status, error) {
                     console.log(xhr.status);

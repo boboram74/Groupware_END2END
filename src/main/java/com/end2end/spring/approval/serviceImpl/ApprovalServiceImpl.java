@@ -234,7 +234,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public Map<String, List<Map<String, Object>>> allApprovals() {
         List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
-        System.out.println("allApprovals.size() = " + allApprovals.size());
+//        System.out.println("allApprovals.size() = " + allApprovals.size());
         Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
 
         allApproval.put("SUBMIT", new ArrayList<>());
@@ -253,7 +253,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public Map<String, List<Map<String, Object>>> SearchallApprovals(String keyword) {
         List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
-        System.out.println("allApprovals.size() = " + allApprovals.size());
+//        System.out.println("allApprovals.size() = " + allApprovals.size());
         Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
 
         allApproval.put("SUBMIT", new ArrayList<>());

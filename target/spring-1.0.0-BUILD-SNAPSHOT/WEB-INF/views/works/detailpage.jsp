@@ -846,11 +846,7 @@
         <script>
 
             const employeeRole = "${employee.role}";
-            console.log("1 : ${employee.role}");
-            console.log(`2 : ${employee.role}`);
-
             function submitSearchData(projectId) {
-                console.log(projectId);
                 $.ajax({
                     url: '/work/search/' + projectId,
                     type: 'POST',
@@ -861,14 +857,9 @@
                     },
 
                     success: function (response) {
-                        console.log("체크" + response);
-
                         $(`.movingBoardColumn[data-state="` + "READY" + `"]`).empty();
                         $(`.movingBoardColumn[data-state="` + "ONGOING" + `"]`).empty();
                         $(`.movingBoardColumn[data-state="` + "FINISH" + `"]`).empty();
-                        console.log("response 확인", response);
-
-
                         // 응답이 리스트라고 가정 (List<ProjectWorkDTO>)
                         response.forEach(function (work) {
 
@@ -892,12 +883,7 @@
                           </div>
                         `;
 
-                            console.log("itemHtml 확인:", itemHtml); // 확인용
                             let temp = $(itemHtml);
-                            console.log("temp" + temp);
-                            console.log(typeof itemHtml); // 결과가 'string'이어야 함
-
-
                             if (work.state == 'READY') {
                                 $(`.movingBoardColumn[data-state="` + work.state + `"]`).append(itemHtml);
 
@@ -908,9 +894,6 @@
                             } else if (work.state === 'FINISH') {
                                 $(`.movingBoardColumn[data-state="` + work.state + `"]`).append(itemHtml);
                             }
-                            console.log("상태" + work.state);
-                            console.log($('.ready-column .work-items').length);
-
                         });
                     },
                     error: function (xhr) {
@@ -921,8 +904,6 @@
 
             let currentWorkId = null;
             const loggedInEmployeeId = ${employee.id}; // 모델로 넘어온 세션 유저 ID
-            console.log("세션로그인" + loggedInEmployeeId)
-
             function openWorkModal(workId, employeeId) {
                 currentWorkId = workId;
                 $.ajax({
@@ -930,7 +911,6 @@
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
-                        console.log(response);
                         const work = response.worksDTO;
                         const files = response.files;
 
@@ -941,13 +921,11 @@
                         $('#workDate').html(work.regDate + "~" + work.deadLine);
                         $('#workContent').html(work.content);
                         $('.work-item').append('<input type="hidden" name="projectId" value="' + workId + '">');
-                        console.log(work)
 
                         // 파일 목록 업데이트
                         let fileList = "";
                         if (files && files.length > 0) {
                             files.forEach(function (file) {
-                                console.log(file);
                                 fileList += '<li class="mb-2">' +
                                     '<i class="bi bi-paperclip"></i> ' +
                                     '<a href="/file/download?path=' + file.path +
@@ -963,7 +941,6 @@
                             fileList = '<li>첨부된 파일이 없습니다.</li>';
                         }
                         $('#fileList').html('<ul>' + fileList + '</ul>');
-                        console.log(employeeId == ${employee.id})
                         if (employeeId == ${employee.id}) {
                             $('#updateBtn').show();
                         } else {
@@ -986,10 +963,9 @@
 
             $('#updateForm').submit(function (e) {
                 e.preventDefault();
-                console.log("수정보내는곳")
                 const formData = new FormData(this);
                 for (const [key, value] of formData.entries()) {
-                    console.log(key, value);
+
                 }
                 $.ajax({
                     url: '/work/update',
@@ -1004,7 +980,6 @@
                         console.error('Response:', xhr.responseText);
                     }
                 }).done(function (response) {
-                    console.log(response);
                     alert("글이 정상적으로 수정되었습니다.");
                     location.reload();
 
@@ -1021,7 +996,6 @@
                         type: 'POST',
                         data: {workId: workId},
                         success: function (response) {
-                            console.log('삭제 성공:', response);
                             location.reload();
                         },
                         error: function (error) {
@@ -1049,7 +1023,6 @@
                     success: function (response) {
                         const work = response.worksDTO;
                         const files = response.files;
-                        console.log("가져온값" + response.files)
                         // 값 가져오고있음
                         $('input[name="id"]').val(currentWorkId);
                         $('#updateTitle').html(`
@@ -1088,7 +1061,6 @@
                         let fileList = '';
                         if (files && files.length > 0) {
                             files.forEach(file => {
-                                console.log(file);
                                 fileList +=
                             '<li>'
                             +    '<a href="/file/download?path=' + file.path +
@@ -1142,7 +1114,6 @@
                 //     data: {"dto": dtobox},
                 //
                 //     success: function (result) {
-                //         console.log("ajax성공" + result)
                 //         if (result) {
                 //             alert("글이 정상적으로 수정되었습니다.");
                 //             $('#updateModal').modal('hide');
@@ -1174,7 +1145,6 @@
                 });
                 $(document).on('click', '#finishProjectBtn', function() {
                     const projectId = ${projectId};
-                    console.log("마감 요청 projectId:", projectId);
                     finishWork(projectId);
                 });
 
@@ -1212,14 +1182,12 @@
 
                 $('.movingBoardColumn'
                 ).on('drop', function (e) {
-                    console.log("도착");
                     e.preventDefault();
                     $(this).append(dragged);
 
                     const columnState = $(this).data('state');
                     const projectId = $(dragged).data('projectid');
                     const workItemId = $(dragged).data('work-id');
-                    console.log("제발 아이디" + projectId);
                     $(this).find('.work-items').append(dragged);
 
                     const formData = new FormData();
@@ -1237,7 +1205,6 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            console.log("동적버튼에 넣을거"+projectId)
                             if (response == 0) {
 
                                 $('#finishProjectBtn').remove();

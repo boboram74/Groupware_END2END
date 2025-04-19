@@ -101,6 +101,11 @@
         height: 30px;
         border-radius: 5px;
     }
+    .note-editable {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
 </style>
 <div class="content">
 </div>

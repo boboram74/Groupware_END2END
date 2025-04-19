@@ -230,7 +230,7 @@
     </c:forEach>
 </table>
 <div class="btnGroup">
-    <button class="backBtn" onclick="window.history.back()">목록</button>
+    <button class="backBtn" onclick="location.href='/board/list';">목록</button>
     <c:choose>
         <c:when test="${empty active}">
             <c:if test="${not empty employee and employee.id eq board.employeeId}">

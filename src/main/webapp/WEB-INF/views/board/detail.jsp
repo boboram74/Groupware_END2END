@@ -214,7 +214,8 @@
             </c:otherwise>
         </c:choose>
     </tr>
-    <tr class="board-content">
+    <tr>
+         <td class="label"> 내용
         <td colspan="4">${board.content}</td>
     </tr>
     <c:forEach var="file" items="${fileList}">

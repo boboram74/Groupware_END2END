@@ -107,11 +107,9 @@
 <form action="/board/insert" method="post" enctype="multipart/form-data">
 <table>
     <tr>
-
-
         <th>등록일</th>
         <td>
-            <div class="date">등록일</div>
+            <div class="date"></div>
         </td>
     </tr>
     <tr>
@@ -121,9 +119,9 @@
         </td>
     </tr>
     <tr>
-        <th>이름 <span class="required">*</span></th>
+        <th>이름 <span class="required"></span></th>
         <td colspan="3">
-            <input type="text" name="employeeId" value="${employee.id}" />
+           <div class="name" ${employee.name}></div>
         </td>
     </tr>
     <tr>
@@ -151,6 +149,11 @@
 </form>
 <script type="text/javascript" src="/js/template/summernote.js"></script>
 <script>
+    window.onload = function () {
+        const date = new Date(); // 올바른 작성법: new Date()
+        document.querySelector('.date').innerHTML = date.toLocaleString(); // 현재 날짜와 시간을 형식에 맞게 출력
+    };
+
     $(document).ready(function () {
         $('#content').summernote(summernoteSetting($('#content')));
 

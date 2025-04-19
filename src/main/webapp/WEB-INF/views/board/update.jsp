@@ -138,7 +138,7 @@
         <tr>
             <th>이름<span class="required"></span></th>
             <td colspan="3">
-                <input type="text" class="form-input" name="employeeName" value="${board.employeeName}" readonly>
+               ${board.employeeName}
             </td>
         </tr>
         <tr>

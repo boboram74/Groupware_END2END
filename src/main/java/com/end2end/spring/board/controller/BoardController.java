@@ -99,7 +99,7 @@ public class BoardController {
     @RequestMapping("/write")
     public String toWrite(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-        System.out.println(employee);
+//        System.out.println(employee);
         if (employee == null) {
             return "redirect:/login";
         }
@@ -107,7 +107,7 @@ public class BoardController {
         // 게시판 카테고리 목록을 모델에 추가
         List<BoardCategoryDTO> categoryList = boardCategoryService.selectAll();
         model.addAttribute("employeeDTO", employee);
-        System.out.println(categoryList);
+//        System.out.println(categoryList);
         model.addAttribute("categoryList", categoryList);
 
 

@@ -15,7 +15,8 @@
 	<resources mapping="/css/**" location="/resources/static/css/" />
 	<resources mapping="/js/**" location="/resources/static/js/" />
 	<resources mapping="/image/**" location="/resources/image/" />
-	<resources mapping="/files/**" location="file:/C:/files/" />
+<!--	<resources mapping="/files/**" location="file:/C:/files/" />-->
+	<resources mapping="/files/**" location="/home/files/" />
 
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />

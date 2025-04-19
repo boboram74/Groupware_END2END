@@ -62,7 +62,8 @@
                     <c:if test="${sessionScope.employee.departmentName eq '인사팀' or sessionScope.employee.role eq 'ADMIN'}">
                         <select name="jobId" id="positionInput" style="display:none;">
                             <c:forEach var="job" items="${jobList}">
-                                <option value="${job.id}">
+                                <option value="${job.id}"
+                                        <c:if test="${job.id == employeeDetail.jobId}">selected</c:if>>
                                         ${job.name}
                                 </option>
                             </c:forEach>

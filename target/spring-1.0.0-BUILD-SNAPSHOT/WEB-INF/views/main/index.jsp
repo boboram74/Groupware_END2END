@@ -42,6 +42,7 @@
         gap: 10px;
         cursor: pointer;
         width: 100%;
+        padding-left: 5px;
     }
 
     /* 제목 텍스트 스타일 */
@@ -159,6 +160,14 @@
         border-bottom: 1px solid var(--md-sys-color-outline);
         text-align: center;
         vertical-align: middle;
+    }
+
+    .notice-ct-container {
+        height: 30px;
+        padding: 5px;
+        display: flex;
+        align-content: center;
+        justify-content: center;
     }
 </style>
 <script>
@@ -332,14 +341,12 @@
         function renderBoardList(type) {
             let url;
 
+            const thead = $('.boardBox .board-table thead');
             const tbody = $('.boardBox .board-table tbody');
-            if (type === 'notice') {
-                tbody.empty();
-                tbody.append(
-                    $('<tr class="no-data">').append(
-                        $('<td colspan="4">').html('게시글이 없습니다.')))
+            const categoryList = $('.category-list');
 
-                return;
+            if (type === 'notice') {
+                url = '/notice/recent';
             } else if (type === 'all') {
                 url = '/board/recent'
             }
@@ -351,44 +358,94 @@
                     tbody.empty();
                     tbody.append(
                         $('<tr class="no-data">').append(
-                            $('<td colspan="4">').html('게시글이 없습니다.')))
+                            $('<td colspan="5">').html('게시글이 없습니다.')))
                 }
             }).done(function(resp) {
                 console.log(resp);
-
+                thead.empty();
                 tbody.empty();
-                if (resp.length === 0) {
-                    tbody.append(
-                        $('<tr>').append(
-                            $('<td colspan="4">').html('게시글이 없습니다.')))
+                categoryList.empty();
+
+                if (type == 'all') {
+                    const active = $('<button class="category-btn active">').html('전체');
+                    categoryList.append(active);
+
+                    active.on('click', function() {
+                        renderBoardList("all");
+                    })
+
+                    thead
+                        .append($('<th width="8%">').html("번호"))
+                        .append($('<th width="52%">').html("제목"))
+                        .append($('<th width="15%">').html("작성자"))
+                        .append($('<th width="15%">').html("등록일자"))
+                        .append($('<th width="10%">').html("조회수"));
+
+                    if (resp.length === 0) {
+                        tbody.append(
+                            $('<tr>').append(
+                                $('<td colspan="5">').html('게시글이 없습니다.')))
+                    } else {
+                        for (const item of resp) {
+                            const regDate = parseDate(new Date(item.regDate));
+
+                            const tr = $('<tr>')
+                                .append($('<td>').html(item.id))  // 1열: 번호
+                                .append($('<td class="title-cell">')  // 2열: 제목
+                                    .append($('<div class="title-container">')
+                                        .append($('<span class="title-text">').html(item.title))
+                                        .append($('<div class="info-items">')
+                                            .append($('<div class="info-item">')
+                                                .append($('<span class="material-icons">').html('chat_bubble_outline'))
+                                                .append($('<span class="reply-count">').html(item.replyCount))))))
+                                .append($('<td class="writer-cell">')  // 3열: 작성자
+                                    .append($('<div class="writer-info">')
+                                        .append($('<div class="profile-img" style="background-image: url(' + item.profileImg + ')">'))
+                                        .append($('<span>').html(item.employeeName))))
+                                .append($('<td class="date-cell">')  // 4열: 날짜
+                                    .html(regDate))
+                                .append($('<td>').html(item.viewCount));
+
+                            tr.on('click', function() {
+                                location.href = '/board/detail/' + item.id;
+                            });
+
+                            tbody.append(tr);
+                        }
+                    }
                 } else {
-                    for (const item of resp) {
-                        const regDate = parseDate(new Date(item.regDate));
+                    console.log(resp);
 
-                        const tr = $('<tr>')
-                            .append($('<td>').html(item.id))  // 1열: 번호
-                            .append($('<td class="title-cell">')  // 2열: 제목
-                                .append($('<div class="title-container">')
-                                    .append($('<span class="title-text">').html(item.title))
-                                    .append($('<div class="info-items">')
-                                        .append($('<div class="info-item">')
-                                            .append($('<span class="material-icons">').html('visibility'))
-                                            .append($('<span class="view-count">').html(item.viewCount)))
-                                        .append($('<div class="info-item">')
-                                            .append($('<span class="material-icons">').html('chat_bubble_outline'))
-                                            .append($('<span class="reply-count">').html(item.replyCount))))))
-                            .append($('<td class="writer-cell">')  // 3열: 작성자
-                                .append($('<div class="writer-info">')
-                                    .append($('<div class="profile-img" style="background-image: url(' + item.profileImg + ')">'))
-                                    .append($('<span>').html(item.employeeName))))
-                            .append($('<td class="date-cell">')  // 4열: 날짜
-                                .html(regDate));
+                    const noticeList = resp.noticeList;
+                    const categoryList = resp.cateogryList;
 
-                        tr.on('click', function() {
-                            location.href = '/board/detail/' + item.id;
-                        });
+                    thead
+                        .append($('<th width="8%">').html('번호'))
+                        .append($('<th width="15%">').html('분류'))
+                        .append($('<th width="52%">').html('제목'))
+                        .append($('<th width="25%">').html('등록일자'))
 
-                        tbody.append(tr);
+                    if (noticeList.length === 0) {
+                        tbody.append(
+                            $('<tr class="no-data">').append(
+                                $('<td colspan="4">').html('게시글이 없습니다.')))
+                    } else {
+                        for(const item of noticeList) {
+                            const regDate = parseDate(new Date(item.regDate));
+                            const tr = $('<tr>')
+                                .append($('<td>').html(item.id))
+                                .append($('<td>')
+                                    .append($('<div class="notice-ct-container">').html(item.noticeCtName)))
+                                .append($('<td class="title-cell">')
+                                    .append($('<div class="title-container">').html(item.title)))
+                                .append($('<td>').html(regDate));
+
+                            tr.on('click', function() {
+                                location.href = '/notice/detail/' + item.id;
+                            })
+
+                            tbody.append(tr);
+                        }
                     }
                 }
             })
@@ -487,8 +544,9 @@
                         <tr>
                             <th width="8%">번호</th>
                             <th width="52%">제목</th>
-                            <th width="20%">글쓴이</th>
-                            <th width="20%">등록일자</th>
+                            <th width="15%">등록일자</th>
+                            <th width="15%">작성자</th>
+                            <th width="10%">조회수</th>
                         </tr>
                         </thead>
                         <tbody></tbody>

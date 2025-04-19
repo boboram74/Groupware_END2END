@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/notice")
 @Controller
@@ -97,13 +99,17 @@ public class NoticeController {
     }
 
     @ResponseBody
-    @RequestMapping("/recent/list")
-    public List<NoticeDTO> listRecent() {
-        return noticeService.selectRecent();
+    @RequestMapping("/recent")
+    public Map<String, Object> listRecent() {
+        Map<String, Object> json = new HashMap<>();
+        json.put("noticeList", noticeService.selectRecent());
+        json.put("categoryList", noticeCategoryService.selectAll());
+
+        return json;
     }
 
     @ResponseBody
-    @RequestMapping("recent//list/{categoryId}")
+    @RequestMapping("recent/{categoryId}")
     public List<NoticeDTO> listRecent(@PathVariable int categoryId) {
         return noticeService.selectRecentByCategoryId(categoryId);
     }

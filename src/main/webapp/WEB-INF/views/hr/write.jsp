@@ -3,6 +3,7 @@
 <html lang="ko" class="light">
 <head>
     <link rel="stylesheet" href="/css/color/newColor.css">
+    <link rel="icon" href="/resources/image/favicon.ico">
     <link rel="stylesheet" href="/css/hr/write.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

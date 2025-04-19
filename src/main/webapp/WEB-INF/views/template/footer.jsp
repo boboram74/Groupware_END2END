@@ -546,7 +546,6 @@
 
 		ws.onmessage = function (e) {
 			let msg = JSON.parse(e.data);
-			console.log(msg);
 			if (msg.type === "invite") {
 				return;
 			}

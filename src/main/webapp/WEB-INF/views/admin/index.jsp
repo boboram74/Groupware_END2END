@@ -44,7 +44,10 @@
 
 <div class="mainContainer">
   <div class="mainBody">
-    <h1>웹서버 모니터링</h1>
+    <div class="section-chip">
+      <span class="chip">LIVE</span>
+      <h2>웹서버 상태 대시보드</h2>
+    </div>
     <div class="iframe-grid">
       <div class="iframe-card">
         <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=2&from=now-30m&to=now&theme=light"></iframe>
@@ -66,7 +69,10 @@
       </div>
     </div>
 
-    <h1>메일서버 모니터링</h1>
+    <div class="section-chip">
+      <span class="chip">LIVE</span>
+      <h2>메일서버 상태 대시보드</h2>
+    </div>
     <div class="iframe-grid">
       <div class="iframe-card">
         <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744966496210&to=1744988096210&panelId=1"></iframe>

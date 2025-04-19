@@ -617,9 +617,6 @@
             const totalWidth = $container.width();
             const titleHeight = $('.boxTitle').outerHeight(true);
             const padding = 40; // 상하/좌우 padding 20px * 2
-
-            console.log(totalHeight - titleHeight - padding);
-            console.log(totalWidth - padding);
             return {
                 height: totalHeight - titleHeight - padding,
                 width: totalWidth - padding
@@ -645,9 +642,7 @@
                     loadEvents(startDate, endDate, successCallback);
                 },
                 eventClick: function(info) {
-                    console.log(info);
                     if (info.event.extendedProps.type === 'schedule') {
-                        console.log(info.event.extendedProps.id);
                         openDetailModal(info.event.extendedProps.id);
                     }
                 },
@@ -687,16 +682,11 @@
             function loadEvents(startDate, endDate, successCallback) {
                 startDate = parseDate(startDate);
                 endDate = parseDate(endDate);
-
-                console.log(startDate, endDate);
-
                 $.ajax({
                     url: '/schedule/list?startDate=' + startDate + '&endDate=' + endDate,
                     type: 'GET',
                     success: function (data) {
-                        console.log(data);
                         const events = data.map(function(event) {
-                            console.log(event);
                             if (event.eventName === 'period') {
                                 return {
                                     id: event.id,
@@ -720,12 +710,8 @@
                                 color: event.backgroundColor,
                             }
                         })
-                        console.log(events);
                         successCallback(events);
                     }, errors: function(xhr, status, error) {
-                        console.log(xhr.status);
-                        console.log(xhr.responseText);
-                        console.log(error);
                     }
                 })
             }
@@ -735,7 +721,6 @@
                     url: '/schedule/detail/' + id,
                     type: 'GET',
                     success: function (data) {
-                        console.log(data);
                         const startDateTime = new Date(data.startDate);
                         const endDateTime = new Date(data.endDate);
 
@@ -825,9 +810,6 @@
                     location.reload();
                 },
                 errors: function(xhr, status, error) {
-                    console.log(xhr.status);
-                    console.log(xhr.responseText);
-                    console.log(error);
                 }
             });
         })
@@ -943,7 +925,6 @@
 
             // 모달 열기
             $('.open-list-calendar').click(function() {
-                console.log('open list calendar');
                 $('#listCalendarModal').show();
             });
 
@@ -965,21 +946,13 @@
                     url: '/calendar/detail/' + selectedId,
                     method: 'GET',
                     error : function(request, status, error) {
-                        console.log("code: " + request.status)
-                        console.log("message: " + request.responseText)
-                        console.log("error: " + error);
+
                     },
                     success: function(resp) {
-                        console.log(resp);
                         const calendar = resp.calendar;
                         const members = resp.members;
-
-                        console.log(calendar);
-                        console.log(members);
-
                         $('#cal-name').val(calendar.title);
                         $('#cal-color').css('background-color', calendar.color);
-
                         // 공유 멤버 표시
                         const $members = $('#cal-members');
                         $members.empty();
@@ -1026,7 +999,7 @@
                 const formData = new FormData($('#calendarWriteForm')[0]);
 
                 for (const [key, value] of formData.entries()) {
-                    console.log(key, value);
+
                 }
 
                 $.ajax({
@@ -1065,10 +1038,6 @@
                     });
                     target.addClass('selected');
                 }
-
-                console.log(target);
-                console.log(selectedEmployees);
-
                 renderSelectedEmployees();
             }
 
@@ -1102,8 +1071,6 @@
 
             if (date && time) {
                 $('input[name="endDate"]').val(date + time);
-
-                console.log( $('input[name="endDate"]').val())
             }
         });
 

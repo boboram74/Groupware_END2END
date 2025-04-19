@@ -1021,8 +1021,6 @@
                         success: function (response) {
                             console.log('삭제 성공:', response);
                             location.reload();
-
-
                         },
                         error: function (error) {
                             console.error('저장 실패:', error);
@@ -1033,7 +1031,6 @@
 
             function openupdateModal(currentWorkId) {
                 $('#updateModal').modal('show');
-
                 // 이전 내용 초기화
                 $('#updateTitle').html('');
                 $('#updateType').html('');

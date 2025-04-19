@@ -23,15 +23,16 @@
                     <span>부서 관리</span>
                 </li>
             </a>
+
             <a href="/admin/mail-setting">
                 <li class="detail-menu-item">
-                    <span class="material-icons">inbox_customize</span>
+                    <span class="material-icons">mail</span>
                     <span>공용 메일 설정</span>
                 </li>
             </a>
             <a href="/admin/setting">
                 <li class="detail-menu-item">
-                    <span class="material-icons">setting</span>
+                    <span class="material-icons">manage_accounts</span>
                     <span>관리자 설정</span>
                 </li>
             </a>

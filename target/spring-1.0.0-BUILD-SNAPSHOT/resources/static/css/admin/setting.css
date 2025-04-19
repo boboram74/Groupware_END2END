@@ -549,3 +549,95 @@ input::-moz-placeholder {
 .modal-header .material-icons {
     cursor: pointer;
 }
+
+.box { background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); margin-bottom:20px; }
+.box-title { padding:12px 20px; font-size:18px; font-weight:600; border-bottom:1px solid #eee; }
+.box-content { padding:20px; }
+.custom-mail-table {
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:16px;
+}
+.custom-mail-table th,
+.custom-mail-table td {
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:left;
+}
+.custom-mail-table th.col-actions,
+.custom-mail-table td.col-actions {
+    width:48px;
+    text-align:center;
+}
+.custom-mail-table input {
+    width:100%;
+    padding:6px 8px;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+.btn-icon {
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:4px;
+}
+.btn-icon .material-icons {
+    font-size:20px;
+    vertical-align:middle;
+    color:var(--md-sys-color-primary);
+}
+.button-container { text-align:right; }
+
+.signature-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 16px 0;
+}
+.signature-row label {
+    width: 100px;
+    font-weight: 500;
+}
+.signature-row textarea {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.server-capacity {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.usage-bar {
+    width: 100%;
+    height: 12px;
+    background: #eee;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.usage-bar .used {
+    display: block;
+    height: 100%;
+    background: #3f51b5;
+    width: 0;
+    transition: width 1s ease-in-out;
+}
+.server-capacity p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+    text-align: right;
+}
+
+#defaultSignature {
+    resize: none;
+    overflow: auto;
+}
+
+#defaultSignature::-webkit-resizer {
+    display: none;
+}

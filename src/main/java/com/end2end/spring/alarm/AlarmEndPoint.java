@@ -28,6 +28,11 @@ public class AlarmEndPoint {
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) throws IOException {
         HttpSession hSession = (HttpSession) config.getUserProperties().get("hSession");
+        if (hSession == null) {
+            session.close(new CloseReason(
+                    CloseReason.CloseCodes.VIOLATED_POLICY,"익명유저"));
+            return;
+        }
         EmployeeDTO employee = (EmployeeDTO) hSession.getAttribute("employee");
 //        System.out.println("onOpen : " + employee.getId());
 

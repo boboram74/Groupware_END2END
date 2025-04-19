@@ -99,13 +99,15 @@ public class BoardController {
     @RequestMapping("/write")
     public String toWrite(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        System.out.println(employee);
         if (employee == null) {
-            return "redirect:/login"; // 세션이 없으면 로그인 페이지로 리다이렉트
+            return "redirect:/login";
         }
 
         // 게시판 카테고리 목록을 모델에 추가
         List<BoardCategoryDTO> categoryList = boardCategoryService.selectAll();
         model.addAttribute("employeeDTO", employee);
+        System.out.println(categoryList);
         model.addAttribute("categoryList", categoryList);
 
 
@@ -116,6 +118,11 @@ public class BoardController {
     public String toUpdate(@RequestParam("id") int id, Model model) {
         BoardDTO board = boardService.selectById(id);
         model.addAttribute("board", board);
+
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(id)
+                .build();
+        model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
 
         return "/board/update";
     }
@@ -156,6 +163,7 @@ public class BoardController {
     @RequestMapping("/update")
     public String update(BoardDTO dto) {
         boardService.update(dto);
+
         return "redirect:/board/list";
         // TODO: 게시글 수정을 받음
     }

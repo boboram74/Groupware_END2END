@@ -56,4 +56,5 @@ public interface ApprovalService {
     List<Map<String, Object>> importantlist(String employeeId);
 
     void removeImportant(CheckImportantDTO dto);
+    List<Map<String, Object>> selectRecent(String  state, String employeeId);
 }

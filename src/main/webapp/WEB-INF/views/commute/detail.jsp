@@ -66,7 +66,7 @@
     }
 </style>
 <div class="button-container">
-    <button class="extended-button primary">연장근무 신청</button>
+    <button class="extended-button primary" onclick="window.open('/approval/write/${extendCommuteFormId}', 'new', 'width=1000,height=1000')">연장근무 신청</button>
     <button class="vacation-button primary" onclick="window.open('/approval/write/${vacationApprovalFormId}', 'new', 'width=1000,height=1000')">휴가 신청</button>
     <button class="vacation-list-button secondary">휴가 조회</button>
 

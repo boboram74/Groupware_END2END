@@ -370,6 +370,7 @@ input::-moz-placeholder {
 .board-table td.title {
     text-align: left;
     cursor: pointer;
+    padding-left: 10px;
 }
 
 .board-table td.title:hover {

@@ -34,6 +34,26 @@
           AND a.state = #{state}
     </select>
 
+    <select id="selectByStateFromTo" resultType="map">
+    SELECT *
+    FROM (
+    SELECT a.id AS ID,
+               a.title AS TITLE,
+               a.state AS STATE,
+               a.regDate AS REGDATE,
+               e.profileImg AS profileImg,
+               e.name AS DRAFTERNAME,
+               af.name AS FORMNAME,
+               ROW_NUMBER OVER(ORDER BY e.ID DESC) AS RNUM
+        FROM approval a
+                 JOIN approver ap ON a.id = ap.approvalid
+                 JOIN employee e ON a.employeeid = e.id
+                 JOIN approval_form af ON a.approvalformid = af.id
+        WHERE ap.employeeid = #{employeeId}
+          AND a.state = #{state})
+    WHERE RUN BETWEEN ${start} AND ${end}
+    </select>
+
     <insert id="insert">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">
             SELECT #{prefixes} || '-' || APPROVAL_ID_SEQ.nextval FROM DUAL

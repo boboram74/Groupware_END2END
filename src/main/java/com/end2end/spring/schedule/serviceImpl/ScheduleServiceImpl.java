@@ -48,7 +48,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public int countTodayScheduleByEmployeeId(String employeeId) {
-        return countTodayScheduleByEmployeeId(employeeId);
+        return scheduleDAO.countTodayScheduleByEmployeeId(employeeId);
     }
 
     @Override

@@ -178,4 +178,15 @@ public class EmployeeDAO {
     public void deleteByDepartmentId(int id) {
         mybatis.delete("employee.deleteByDepartmentId", id);
     }
+
+    public List<RoleListDTO> loadSettingList() {
+        return mybatis.selectList("employee.loadSettingList");
+    }
+
+    public void updateRole(String employeeId, String role) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("employeeId", employeeId);
+        param.put("role", role);
+        mybatis.update("employee.updateRole", param);
+    }
 }

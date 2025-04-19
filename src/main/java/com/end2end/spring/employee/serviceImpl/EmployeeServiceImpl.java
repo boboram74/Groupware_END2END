@@ -265,4 +265,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteByDepartmentId(int id) {
         employeeDAO.deleteByDepartmentId(id);
     }
+
+    @Override
+    public List<RoleListDTO> loadSettingList() {
+        return employeeDAO.loadSettingList();
+    }
+
+    @Override
+    public void updateRole(String employeeId, String role) {
+        employeeDAO.updateRole(employeeId,role);
+    }
 }

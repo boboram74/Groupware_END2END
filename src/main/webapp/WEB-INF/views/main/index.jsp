@@ -540,24 +540,35 @@
                     <table class="board-table">
                         <thead>
                         <tr>
-                            <th width="10%">기안 번호</th>
-                            <th width="50%">제목</th>
-                            <th width="20%">기안자</th>
-                            <th width="20%">등록 일자</th>
+                            <th class="apColTitle">제목</th>
+                            <th class="apColStatus">결재 상태</th>
+                            <th class="apColWriter">기안자</th>
+                            <th class="apColDate">기안일</th>
+                            <th class="apColType">문서 종류</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach begin="1" end="7" var="i">
-                            <tr>
-                                <td>문서-${5 - i}</td>
-                                <td class="title">결재 문서 제목입니다 ${5 - i}</td>
-                                <td class="writer-info">
-                                    <div class="profile-img" style="background-image: url('https://picsum.photos/seed/${i}/200')"></div>
-                                    <span>기안자${i}</span>
-                                </td>
-                                <td>2024-03-19</td>
-                            </tr>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${empty approvalList}">
+                                <tr>
+                                    <td colspan="5" class="emptyMessage">진행 중인 문서가 없습니다.</td>
+                                </tr>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="i" items="${approvalList}">
+                                    <tr>
+                                        <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
+                                        <td class="apColStatus">결재 진행중</td>
+                                        <td class="apColWriter writer-info">
+                                            <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
+                                            <span>${i.DRAFTERNAME}</span>
+                                        </td>
+                                        <td class="apColDate">${i.REGDATE}</td>
+                                        <td class="apColType">${i.FORMNAME}</td>
+                                    </tr>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                         </tbody>
                     </table>
                 </div>

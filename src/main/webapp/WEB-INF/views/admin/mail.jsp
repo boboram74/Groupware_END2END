@@ -162,7 +162,6 @@
             method: 'GET',
             dataType: 'json'
         }).done(function (resp) {
-            console.log(resp);
             const totalGb = parseInt(resp.size, 10);
             const pct = parseInt(resp.usePercent, 10);
             const usedGb = Math.round(totalGb * pct / 100);

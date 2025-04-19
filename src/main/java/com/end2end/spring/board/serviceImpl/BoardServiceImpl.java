@@ -4,17 +4,15 @@ import com.end2end.spring.board.dao.BoardCategoryDAO;
 import com.end2end.spring.board.dao.BoardDAO;
 import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardDTO;
-import com.end2end.spring.board.dto.ComplaintDTO;
+import com.end2end.spring.board.dto.BoardUpdateDTO;
 import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
-import com.end2end.spring.file.servieImpl.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -72,13 +70,22 @@ public class BoardServiceImpl implements BoardService {
                 .boardId(dto.getId())
                 .build();
         fileService.insert(files, fileDTO);
-        // TODO: 게시글 입력
     }
 
     @Override
-    public void update(BoardDTO dto) {
-        boardDAO.update(dto);
-        // TODO: 게시글 수정
+    public void update(MultipartFile[] files, BoardUpdateDTO dto) {
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(dto.getId())
+                .build();
+        fileService.update(files, fileDTO, dto.getFileId());
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .id(dto.getId())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .boardCtId(dto.getBoardCtId())
+                .build();
+        boardDAO.update(boardDTO);
     }
 
     @Override

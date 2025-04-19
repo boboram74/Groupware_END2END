@@ -1,6 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
+<script src="/js/summernote/summernote-lite.js"></script>
+<script src="/js/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="/js/summernote/summernote-lite.css">
 <style>
     .form-container {
         width: 100%;
@@ -120,7 +124,7 @@
 <div class="content">
 </div>
 <div class="form-container">
-    <form action="/board/update" method="post">
+    <form action="/board/update" method="post" enctype="multipart/form-data">
     <table class="form-table">
         <tr>
             <th>등록일<span class="required"></span></th>
@@ -142,9 +146,22 @@
             </td>
         </tr>
         <tr>
+            <th>첨부파일</th>
+            <td colspan="3">
+                <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
+                <c:forEach items="${fileList}" var="file">
+                    <div>
+                        <span>${file.originFileName}</span>
+                        <button onclick="$(this).parent().remove();">삭제</button>
+                        <input type="hidden" name="fileId" value="${file.id}">
+                    </div>
+                </c:forEach>
+            </td>
+        </tr>
+        <tr>
             <th>내용<span class="required"></span></th>
             <td colspan="3">
-                <textarea class="form-textarea" name="content">${board.content}</textarea>
+                <textarea class="form-textarea" name="content" id="content">${board.content}</textarea>
             </td>
         </tr>
         <input type="hidden" name="id" value="${board.id}">
@@ -156,6 +173,14 @@
     </div>
     </form>
 </div>
+<script type="text/javascript" src="/js/template/summernote.js"></script>
+<script>
+    $('#content').summernote(summernoteSetting($('#content')));
+    $('#content').summernote('code', '${board.content}');
 
+    $('form').on('submit', function(e) {
+        $('input [name="content"]').val($('#content').summernote('code'));
+    })
+</script>
 <script src="/js/main/contact.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/board/board-footer.jsp"/>

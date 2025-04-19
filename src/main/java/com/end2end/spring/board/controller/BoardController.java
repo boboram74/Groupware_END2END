@@ -2,6 +2,7 @@ package com.end2end.spring.board.controller;
 
 import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardDTO;
+import com.end2end.spring.board.dto.BoardUpdateDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
 import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
@@ -111,6 +112,11 @@ public class BoardController {
         BoardDTO board = boardService.selectById(id);
         model.addAttribute("board", board);
 
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(id)
+                .build();
+        model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+
         return "/board/update";
     }
 
@@ -148,16 +154,11 @@ public class BoardController {
     }
 
     @RequestMapping("/update")
-    public String update(BoardDTO dto) {
-        boardService.update(dto);
-        return "redirect:/board/list";
-        // TODO: 게시글 수정을 받음
-    }
+    public String update(MultipartFile[] files, BoardUpdateDTO dto) {
+        boardService.update(files, dto);
 
-//    @RequestMapping("/delete")
-//    public void deleteById(int id) {
-//        // TODO: 게시글 번호로 삭제
-//    }
+        return "redirect:/board/list";
+    }
 
 
     @PostMapping("/category/insert")

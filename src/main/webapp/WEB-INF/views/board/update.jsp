@@ -123,30 +123,26 @@
     <form action="/board/update" method="post">
     <table class="form-table">
         <tr>
-
-            <td>
-
-            </td>
-            <th>등록일</th>
+            <th>등록일<span class="required"></span></th>
             <td><span class="date-field"></span>
                 <div class="date">${board.regDate}</div>
             </td>
 
         </tr>
         <tr>
-            <th>제목<span class="required">*</span></th>
+            <th>제목<span class="required"></span></th>
             <td colspan="3">
                 <input type="text" class="form-input" name="title" value="${board.title}">
             </td>
         </tr>
         <tr>
-            <th>이름<span class="required">*</span></th>
+            <th>이름<span class="required"></span></th>
             <td colspan="3">
-                <input type="text" class="form-input" name="employeeName" value="${board.employeeName}">
+                <input type="text" class="form-input" name="employeeName" value="${board.employeeName}" readonly>
             </td>
         </tr>
         <tr>
-            <th>내용<span class="required">*</span></th>
+            <th>내용<span class="required"></span></th>
             <td colspan="3">
                 <textarea class="form-textarea" name="content">${board.content}</textarea>
             </td>

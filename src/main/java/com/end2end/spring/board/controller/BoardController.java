@@ -103,7 +103,7 @@ public class BoardController {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         System.out.println(employee);
         if (employee == null) {
-            return "redirect:/login"; // 세션이 없으면 로그인 페이지로 리다이렉트
+            return "redirect:/login";
         }
 
         // 게시판 카테고리 목록을 모델에 추가

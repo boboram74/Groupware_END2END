@@ -88,14 +88,14 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void update(MultipartFile[] files, FileDTO dto, List<FileDetailDTO> updatedList) {
+    public void update(MultipartFile[] files, FileDTO dto, List<String> updatedFileSystemFileNameList) {
         FileColumnMapperDTO mapper = FileColumnMapperDTO.of(dto);
         List<FileDetailDTO> currentFileList = dao.selectByParentsId(mapper);
 
         for (FileDetailDTO currentFile : currentFileList) {
             boolean isDuplicate = false;
-            for (FileDetailDTO updatedFile : updatedList) {
-                if (currentFile.getPath().equals(updatedFile.getPath())) {
+            for (String updateSystemFileName : updatedFileSystemFileNameList) {
+                if (currentFile.getSystemFileName().equals(updateSystemFileName)) {
                     isDuplicate = true;
                     break;
                 }

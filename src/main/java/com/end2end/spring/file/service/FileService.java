@@ -14,5 +14,5 @@ public interface FileService {
     void removeByParentsId(FileDTO dto);
     void download(String path, HttpServletResponse response);
     List<FileDetailDTO> selectByEmail(String email);
-    void update(MultipartFile[] files, FileDTO dto, List<FileDetailDTO> updatedList);
+    void update(MultipartFile[] files, FileDTO dto, List<String> updatedFileSystemFileNameList);
 }

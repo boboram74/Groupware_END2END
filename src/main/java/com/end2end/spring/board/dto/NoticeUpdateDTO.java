@@ -17,5 +17,5 @@ public class NoticeUpdateDTO {
     private int noticeCtId;
     private String title;
     private String content;
-    private List<FileDetailDTO> updateFileList;
+    private List<String> updateFileList;
 }

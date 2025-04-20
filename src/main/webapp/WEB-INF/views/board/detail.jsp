@@ -3,40 +3,202 @@
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
 <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
 <style>
+    /* 게시글 테이블 스타일 */
     table {
         width: 100%;
         border-collapse: collapse;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-
+        border-top: 1px solid var(--md-sys-color-primary);
+        border-bottom: 1px solid var(--md-sys-color-primary);
+        color: var(--md-sys-color-surface);
+        margin-bottom: 30px;
     }
 
     th, td {
-        padding: 8px;
+        padding: 15px;
         text-align: left;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #eee;
     }
 
+    .addReply {
+        display: flex;
+        gap: 10px;
+    }
+
+    .addInput {
+        flex: 1;
+    }
+
+    .addInput input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--md-sys-color-outline);
+        background-color:  rgba(255, 255, 255, 0.1);
+        color: var(--md-sys-color-surface);
+        height: 100%;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .addBtn {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    /* 댓글 목록 스타일 */
+    .replyList {
+        display: flex;
+        align-items: flex-start;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-top: 1px solid var(--md-sys-color-outline);
+        border-radius: 4px;
+        gap: 20px;
+    }
+
+    .profile {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .replyWrite {
+        flex: 1;
+    }
+
+    .writerSysdate {
+        margin-bottom: 10px;
+    }
+
+    .realContents {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .realContents input[readonly] {
+        border: none;
+        background: transparent;
+        padding: 0;
+    }
+
+    .realContents input[readonly]:first-child {
+        font-weight: bold;
+    }
+
+    .realContents input[readonly]:last-child {
+        font-size: 0.9em;
+    }
+
+
+    .realContents input {
+        border: none;
+        background: transparent;
+        font-weight: 600;
+        color: var(--md-sys-color-surface);
+    }
+
+    .inputReply {
+        margin-top: 8px;
+    }
+
+    .inputReply input {
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: var(--md-sys-color-surface);
+    }
+
+    .replyReport button {
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .replyReport button:hover {
+        opacity: 0.9;
+    }
+
+    /* 댓글 입력 폼 스타일 */
+    .replyContainer {
+        border: 1px solid var(--md-sys-color-outline);
+        background-color: var(--md-sys-color-surface-bright);
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .addReply {
+        display: flex;
+        gap: 10px;
+    }
+
+    .addInput {
+        flex: 1;
+    }
+
+    .addInput input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .addBtn {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .addBtn button {
+        padding: 10px 20px;
+        border: 1px solid var(--md-sys-color-outline);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    /* 상단 메타 정보 스타일 */
+    .meta-info {
+        font-size: 1em;  /* 폰트 사이즈 증가 */
+        color: #666;     /* 색상을 좀 더 진하게 */
+        text-align: right;
+        padding: 8px 10px;
+        width: 30%;      /* 전체 너비 30%로 설정 */
+        float: right;    /* 우측 정렬 */
+        margin-top: 5px; /* 상단 여백 추가 */
+    }
+
+    .meta-info span {
+        margin-left: 20px;  /* 간격 증가 */
+        display: inline-block;
+    }
+
+    /* 제목 컨테이너 스타일 추가 */
+    .title-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .title-text {
+        flex: 1;       /* 나머지 공간 차지 */
+        padding-right: 20px;  /* 메타 정보와의 간격 */
+    }
+
+    /* 테이블 스타일 수정 */
     .label {
-        background-color: #f8f8f8;
+        background-color: var(--md-sys-color-surface-container);
         width: 15%;
-        border-right: 1px solid #ddd;
+        font-weight: 600;
     }
 
     .contents {
-        width: 60%;
-    }
-
-    .meta {
-        width: 15%;
-        text-align: center;
-        border-left: 1px solid #ddd;
-    }
-
-    .date {
-        width: 20%;
-        text-align: center;
-        border-left: 1px solid #ddd;
+        width: 85%;  /* 너비 수정 */
     }
 
     .btnGroup {
@@ -48,157 +210,40 @@
     .editBtn, .deleteBtn, .replyBtn, .backBtn {
         padding: 6px 12px;
         margin: 0 2px;
-        border: 1px solid #ccc;
-        background-color: white;
+        border: 1px solid var(--md-sys-color-outline);
         cursor: pointer;
     }
 
-    .editBtn {
-        background-color: #f8f8f8;
-        color: #333;
-    }
-
-    .deleteBtn {
-        background-color: #f8f8f8;
-        color: #333;
-    }
-
-    .replyBtn {
-        background-color: #f8f8f8;
-        color: #333;
-    }
-
-    .backBtn {
-        background-color: #f8f8f8;
-        color: #333;
-    }
-
-    /*----------------버-------------------*/
-    .replyContainer {
-        border: 1px solid black;
-        width: 100%;
-        height: 120px;
-    }
-
-    .addReply {
-        width: 100%;
-        height: 100%;
-        display: flex;
-    }
-
-    .addInput {
-        width: 95%;
-        height: 100%;
-    }
-
-    .addInput input {
-        width: 100%;
-        height: 100%;
-    }
-
-    .addBtn {
-        width: 5%;
-        height: 100%;
-    }
-
-    .addBtn button {
-        width: 100%;
-        height: 50%;
-    }
-
-    .replyList {
-        width: 100%;
-        height: 120px;
-        border: 1px solid black;
-        display: flex;
-    }
-
-    .profile {
-        width: 10%;
-        height: 100%;
-        border: 1px solid black;
-    }
-
-    .replyWrite {
-        width: 85%;
-        height: 100%;
-    }
-
-    .writerSysdate {
-        width: 100%;
-        height: 23%;
-    }
-
-    .realContents {
-        width: 30%;
-        height: 100%;
-        display: flex;
-    }
-
-    .realContents input {
-        width: 50%;
-        height: 100%;
-    }
-
-    .inputReply {
-        width: 100%;
-        height: 77%;
-    }
-
-    .inputReply input {
-        width: 100%;
-        height: 100%;
-    }
-
-    .replyReport {
-        width: 5%;
-        height: 100%;
-        display: flow;
-    }
-
-    .reReply {
-        width: 100%;
-        height: 100%;
-    }
-
-    .reReply button {
-        width: 100%;
-        height: 100%;
-    }
-
-    .report {
-        width: 100%;
-        height: 50%;
-    }
-
-    .report button {
-        width: 100%;
-        height: 100%;
-    }
-
-    .board-content>td {
+    /* 내용란 스타일 */
+    .board-detail-content {  /* 클래스 이름 변경 */
         min-height: 500px;
+        padding: 20px;
+        line-height: 1.6;
     }
 
+    .replyListContainer {
+        border-top: 1px solid var(--md-sys-color-primary);
+    }
 </style>
-<div class="content">
-
-</div>
-
 <table>
-
     <tr>
         <c:choose>
             <c:when test="${empty active}">
                 <td class="label">제목</td>
-                <td class="contents">${board.title}</td>
-                <td class="meta">조회</td>
-                <td class="date">${board.viewCount}</td>
+                <td class="contents" colspan="3">
+                    <div class="title-container">
+                        <div class="title-text">${board.title}</div>
+                        <div class="meta-info">
+                            <span>조회 ${board.viewCount}</span>
+                            <span>${board.regDate}</span>
+                        </div>
+                    </div>
+                </td>
             </c:when>
             <c:otherwise>
                 <td class="label">제목</td>
                 <td class="contents">${board.title}</td>
-                <td class="meta">분류</td>
+                <td class="label">분류</td>
                 <td class="date">${board.noticeCtName}</td>
             </c:otherwise>
         </c:choose>
@@ -207,7 +252,7 @@
         <td class="label">작성자</td>
         <c:choose>
             <c:when test="${empty active}">
-                <td colspan="3">${board.employeeName}</td>
+                <td class="contents">${board.employeeName}</td>
             </c:when>
             <c:otherwise>
                 <td colspan="3">관리자</td>
@@ -215,8 +260,7 @@
         </c:choose>
     </tr>
     <tr>
-         <td class="label"> 내용
-        <td colspan="4">${board.content}</td>
+        <td class="board-detail-content" colspan="6">${board.content}</td>
     </tr>
     <c:forEach var="file" items="${fileList}">
         <tr>
@@ -230,23 +274,23 @@
     </c:forEach>
 </table>
 <div class="btnGroup">
-    <button class="backBtn" onclick="window.history.back()">목록</button>
+    <button class="backBtn secondary" onclick="window.history.back()">목록</button>
     <c:choose>
         <c:when test="${empty active}">
             <c:if test="${not empty employee and employee.id eq board.employeeId}">
                 <a href="/board/write/update?id=${board.id}">
-                    <button type="button" class="editBtn">수정</button>
+                    <button type="button" class="editBtn primary">수정</button>
                 </a>
                 <form action="/board/delete" method="post">
                     <input type="hidden" name="id" value="${board.id}"/>
-                    <button type="submit" class="deleteBtn">삭제</button>
+                    <button type="submit" class="deleteBtn secondary">삭제</button>
                 </form>
             </c:if>
         </c:when>
         <c:otherwise>
             <c:if test="${employee.role eq 'ADMIN'}">
-                <button type="button" class="editBtn" onclick="location.href='/notice/write/update/${board.id}'">수정</button>
-                <button type="submit" class="deleteBtn" onclick="
+                <button type="button" class="editBtn primary" onclick="location.href='/notice/write/update/${board.id}'">수정</button>
+                <button type="submit" class="deleteBtn secondary" onclick="
                     if (confirm('정말 삭제하시겠습니까?')) {
                         alert('삭제되었습니다.');
                         location.href='/notice/delete/${board.id}'
@@ -266,7 +310,7 @@
                     <input type="text" id="content" placeholder="댓글 입력">
                 </div>
                 <div class="addBtn">
-                    <button id="addButton">등록</button>
+                    <button id="addButton" class="primary">등록</button>
                     <button class="button" type="button" id="emojiBtn">😀</button>
                 </div>
                 <div class="emoticons">
@@ -277,7 +321,7 @@
         </div>
     </form>
 
-    <h3>댓글</h3>
+    <h3 style="color: var(--md-sys-color-primary);">댓글</h3>
     <div class="replyListContainer"></div>
 
     <script>
@@ -413,7 +457,7 @@
                                 $('<div class="replyReport">')
                                     .append(
                                         $('<div class="reReply">')
-                                            .append($('<button>').addClass('deleteReplyBtn').text('삭제').attr('data-id', reply.id).attr('data-employee-id', reply.employeeId))
+                                            .append($('<button>').addClass('deleteReplyBtn secondary').text('삭제').attr('data-id', reply.id).attr('data-employee-id', reply.employeeId))
                                     )
                             );
                         $('.replyListContainer').append($replyDiv);

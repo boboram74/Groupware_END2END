@@ -1229,7 +1229,9 @@
                 $('.movingBoardColumn').on('dragover', function (e) {
                     e.preventDefault();
                 })
+
             })
+
 
         </script>
 

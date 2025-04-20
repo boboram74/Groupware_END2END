@@ -104,7 +104,7 @@
 </style>
 <div class="content">
 </div>
-<form action="/board/insert" method="post" enctype="multipart/form-data">
+<form action="${action == null ?  '/board/insert' : action}" method="post" enctype="multipart/form-data">
 <table>
     <tr>
         <th>등록일</th>
@@ -121,7 +121,7 @@
     <tr>
         <th>이름 <span class="required"></span></th>
         <td colspan="3">
-           <div class="name" ${employee.name}></div>
+           <div class="name">${action == null ? employee.name : '관리자'}</div>
         </td>
     </tr>
     <tr>
@@ -139,8 +139,8 @@
 </table>
 <div class="button-area">
     <button class="saveBtn">저장</button>
-    <a href="/board/list">
-    <button type="button" class="canBtn">취소</button>
+    <a href="${action == null ? 'board/list' : '/notice/list?page=1'}">
+        <button type="button" class="canBtn">취소</button>
     </a>
 </div>
 </form>

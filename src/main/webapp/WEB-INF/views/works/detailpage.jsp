@@ -457,7 +457,7 @@
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
-            <span class="material-icons">mail</span>
+            <i class="material-icons">description</i>
             <span>Works</span>
         </div>
         <button class="detail-menu-toggle-btn">
@@ -504,7 +504,7 @@
             <h2>프로젝트 : ${project.name}</h2>
             <div class="projectTime">
                 <span>기간: ${project.deadLine}</span>
-
+                <input type="hidden" id="projectStatus" value="${project.status}">
             </div>
             <a href="/work/write/${project.id}">
                 <button id="writeBtn" }>작성하기</button>
@@ -1005,6 +1005,7 @@
                             success: function (response) {
                                 alert("프로젝트가 마감되었습니다.");
                                 disableProjectFeatures();
+                                location.reload();
 
                             },
                             error: function (error) {
@@ -1022,6 +1023,12 @@
                     $('.movingBoardColumn').off('dragover drop');
                     $('.work-item').off('dragstart dragend');
                 }
+                $(document).ready(function () {
+                    const status = $('#projectStatus').val();
+                    if (status === "finish") {
+                        disableProjectFeatures();
+                    }
+                });
 
                 // function disableProjectFeatures() {
                 //

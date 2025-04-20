@@ -41,12 +41,12 @@
         </tr>
         <tr>
             <th class="label">첨부파일</th>
-            <td colspan="3">
+            <td colspan="3"  style="margin-right: 10px;>
                 <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
                 <c:forEach items="${fileList}" var="file">
                     <div>
                         <span>${file.originFileName}</span>
-                        <button onclick="$(this).parent().remove();">삭제</button>
+                        <span class="material-icons" onclick="$(this).parent().remove();">close</span>
                         <input type="hidden" name="fileId" value="${file.id}" />
                     <div/>
                 </c:forEach>

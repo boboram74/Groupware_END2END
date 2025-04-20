@@ -1,12 +1,11 @@
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" class="light">
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-        <link rel="stylesheet" href="/css/approval/draft.css">
         <script src="/js/summernote/summernote-lite.js"></script>
         <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
         <link rel="stylesheet" href="/js/summernote/summernote-lite.css">

@@ -242,7 +242,7 @@
             </c:when>
             <c:otherwise>
                 <td class="label">제목</td>
-                <td class="contents">${board.title}</td>
+                <td class="contents" style="${active == null ? '' : 'width: 60%;'}"}>${board.title}</td>
                 <td class="label">분류</td>
                 <td class="date">${board.noticeCtName}</td>
             </c:otherwise>
@@ -262,16 +262,16 @@
     <tr>
         <td class="board-detail-content" colspan="6">${board.content}</td>
     </tr>
-    <c:forEach var="file" items="${fileList}">
-        <tr>
-            <td class="label">첨부파일</td>
-            <td colspan="3">
-                <c:forEach var="file" items="${fileList}">
+    <tr>
+        <td class="label">첨부파일</td>
+        <td colspan="3">
+            <c:forEach var="file" items="${fileList}">
+                <div class="file-list-item">
                     <a href="/file/download?path=${file.path}">${file.originFileName}</a>
-                </c:forEach>
-            </td>
-        </tr>
-    </c:forEach>
+                </div>
+            </c:forEach>
+        </td>
+    </tr>
 </table>
 <div class="btnGroup">
     <button class="backBtn secondary" onclick="window.history.back()">목록</button>

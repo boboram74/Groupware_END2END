@@ -101,7 +101,7 @@
 
         <div class="button-group">
             <button type="submit" id="signOk" class="submit-btn primary">상신하기</button>
-            <button type="button" onclick="location.href='/approval/list'" class="cancel-btn secondary">취소</button>
+            <button type="button" onclick="window.close();" class="cancel-btn secondary">취소</button>
         </div>
     </div>
 </div>

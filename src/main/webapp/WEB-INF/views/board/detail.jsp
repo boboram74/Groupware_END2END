@@ -246,7 +246,11 @@
         <c:otherwise>
             <c:if test="${employee.role eq 'ADMIN'}">
                 <button type="button" class="editBtn" onclick="location.href='/notice/write/update/${board.id}'">수정</button>
-                <button type="submit" class="deleteBtn" onclick="location.href='/notice/delete/${board.id}'">삭제</button>
+                <button type="submit" class="deleteBtn" onclick="
+                    if (confirm('정말 삭제하시겠습니까?')) {
+                        alert('삭제되었습니다.');
+                        location.href='/notice/delete/${board.id}'
+                    }">삭제</button>
             </c:if>
         </c:otherwise>
     </c:choose>

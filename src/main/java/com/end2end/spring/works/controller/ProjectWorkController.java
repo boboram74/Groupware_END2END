@@ -8,6 +8,7 @@ import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.dto.ProjectWorkUpdateDTO;
 import com.end2end.spring.works.dto.WorkUpdateDTO;
+import com.end2end.spring.works.service.ProjectService;
 import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,13 +28,15 @@ public class ProjectWorkController {
 
     @Autowired
     FileService fserv;
-
+    @Autowired
+    ProjectService serv;
     @Autowired
     ProjectWorkService wserv;
 
     @RequestMapping("/write/{id}")
     public String toWrite(@PathVariable int id, Model model) {
         model.addAttribute("projectId", id);
+        model.addAttribute("dto",  serv.selectProjectDeadLine(id));
         // TODO: 게시글 입력 폼으로 이동
         return "/works/write";
     }

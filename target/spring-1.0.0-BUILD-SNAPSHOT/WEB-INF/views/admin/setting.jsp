@@ -45,19 +45,37 @@
 <div class="mainContainer">
   <div class="mainBody">
     <div class="box">
+<<<<<<< HEAD
+      <div class="box-title">부서 관리</div>
+=======
       <div class="box-title">사원 권한 관리</div>
+>>>>>>> edae181ca12492373ffebe9e74ed892d4a2bc919
       <div class="box-content">
         <form id="updateDepartment" action="/admin/updateDepartment" method="post">
           <table class="custom-mail-table department-table">
             <thead>
             <tr>
               <th>권한</th>
+<<<<<<< HEAD
+              <th>직위</th>
+              <th>부서명</th>
+=======
               <th>부서명</th>
               <th>직위</th>
+>>>>>>> edae181ca12492373ffebe9e74ed892d4a2bc919
               <th>이름</th>
             </tr>
             </thead>
             <tbody>
+<<<<<<< HEAD
+            <tr>
+              <td><input type="text" name="role" readonly placeholder="권한"/></td>
+              <td><input type="text" name="jobName" placeholder="직위"/></td>
+              <td><input type="text" name="teamName" placeholder="부서명"/></td>
+              <td><input type="text" name="name" placeholder="이름"/></td>
+            </tr>
+=======
+>>>>>>> edae181ca12492373ffebe9e74ed892d4a2bc919
             </tbody>
           </table>
         </form>
@@ -124,7 +142,12 @@
       }).done(function (resp) {
         var $tbody = $('.custom-mail-table tbody').empty();
         resp.forEach(function (item) {
+<<<<<<< HEAD
+          var $tr = $(
+                  '<tr>' +
+=======
           var $tr = $('<tr>').attr('data-employee-id', item.employeeId).append(
+>>>>>>> edae181ca12492373ffebe9e74ed892d4a2bc919
                   '<td>' +
                     '<select name="role">'+
                       '<option value="ADMIN">ADMIN</option>'+
@@ -132,18 +155,29 @@
                       '<option value="TEAM_LEADER">TEAM_LEADER</option>'+
                       '<option value="USER">USER</option>'+
                     '</select>'+
+<<<<<<< HEAD
+                  '</td>' +
+                  '<td><input type="text" name="jobName" readonly></td>' +
+                  '<td><input type="text" name="teamName" readonly></td>' +
+=======
                   '<button type="button" class="btn-icon saveRole">' +
                   '<span class="material-icons">how_to_reg</span>' +
                   '</button>' +
                   '</td>' +
                   '<td><input type="text" name="teamName" readonly></td>' +
                   '<td><input type="text" name="jobName" readonly></td>' +
+>>>>>>> edae181ca12492373ffebe9e74ed892d4a2bc919
                   '<td><input type="text" name="name" readonly></td>' +
                   '</tr>'
           );
           $tr.find('select[name="role"]').val(item.role);
+<<<<<<< HEAD
+          $tr.find('input[name="jobName"]').val(item.jobName);
+          $tr.find('input[name="teamName"]').val(item.teamName);
+=======
           $tr.find('input[name="teamName"]').val(item.teamName);
           $tr.find('input[name="jobName"]').val(item.jobName);
+>>>>>>> edae181ca12492373ffebe9e74ed892d4a2bc919
           $tr.find('input[name="name"]').val(item.name);
           $tbody.append($tr);
         });
@@ -152,6 +186,10 @@
 
   </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<<<<<<< HEAD
+
+=======
+>>>>>>> edae181ca12492373ffebe9e74ed892d4a2bc919
 <%--select--%>
 <%--e.role, j.name as jobName, d.name teamName, e.name--%>
 <%--from employee e--%>

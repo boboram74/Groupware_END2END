@@ -137,7 +137,7 @@
         AND state = #{state}
     </select>
 
-    <select id="countByType" resultType="int">
+    <select id="countByType" resultType="int" parameterType="java.util.Map">
         SELECT COUNT(*)
         FROM project_work
         WHERE projectId = #{selectedId}
@@ -166,15 +166,10 @@
         title = #{title, jdbcType=VARCHAR},
         type = #{type, jdbcType=VARCHAR},
         priority = #{priority, jdbcType=VARCHAR},
-        deadLine = #{deadLine,jdbcType=DATE},
-
         content = #{content, jdbcType=VARCHAR}
         WHERE id = ${id}
     </update>
     <!-- 프로젝트 진행중 보고된 게시물 수정-->
-
-
-
 
 
     <select id="searchById" resultType="com.end2end.spring.works.dto.ProjectUserDTO">

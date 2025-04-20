@@ -396,7 +396,11 @@
 
     <select id="loadSettingList" resultType="com.end2end.spring.employee.dto.RoleListDTO">
         select
+<<<<<<< HEAD
+        e.role, j.name as jobName, d.name teamName, e.name
+=======
         e.id as employeeId, e.role, j.name as jobName, d.name teamName, e.name
+>>>>>>> edae181ca12492373ffebe9e74ed892d4a2bc919
         from employee e
         join department d
         on e.departmentid = d.id
@@ -405,7 +409,10 @@
         order by e.role asc, j.id asc, d.id, e.name asc
     </select>
 
+<<<<<<< HEAD
+=======
     <update id="updateRole" parameterType="map">
         update employee set role = #{role} where id = #{employeeId}
     </update>
+>>>>>>> edae181ca12492373ffebe9e74ed892d4a2bc919
 </mapper>

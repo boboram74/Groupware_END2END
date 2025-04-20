@@ -71,4 +71,8 @@ public void endworks(int projectId){
 //        System.out.println("dao"+params);
     return mybatis.update("project.hideById",params);
     }
+
+    public ProjectDTO selectProjectDeadLine(int id) {
+        return mybatis.selectOne("project.selectProjectDeadLine",id);
+    }
 }

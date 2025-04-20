@@ -8,12 +8,12 @@ $("document").on("drop", (event) => {
 
 $("#drop-file").on("dragover", (event) => {
     event.preventDefault();
-    $("#drop-file").css("border-color", "blue");
+    $("#drop-file").css("border-color", "var(--md-sys-color-primary)");
 });
 
 $("#drop-file").on("dragleave", (event) => {
     event.preventDefault();
-    $("#drop-file").css("border-color", "black");
+    $("#drop-file").css("border-color", "var(--md-sys-color-surface");
 });
 
 $("#drop-file").on("drop", (event) => {
@@ -73,7 +73,7 @@ const deleteFile = (target) => {
 };
 
 const fileList = (file) => {
-    const deleteButton = $("<button>").html("x").addClass("delete-file");
+    const deleteButton = $("<span class='material-icons'>").html('close').addClass("delete-file");
 
     const li = $("<li>").append(
         $("<div>")

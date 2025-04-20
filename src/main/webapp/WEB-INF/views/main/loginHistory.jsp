@@ -32,21 +32,6 @@
 
 <div class="mainContainer">
     <div class="mainBody">
-        <div class="search">
-            <div>
-                <select id="searchOption">
-                    <option>선택</option>
-                    <option>선택</option>
-                    <option>선택</option>
-                </select>
-            </div>
-            <div class="searchInput">
-                <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-            </div>
-            <div>
-                <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
-            </div>
-        </div>
         <div class="box surface-bright">
             <div class="box-title">로그인 기록</div>
             <div class="box-content">

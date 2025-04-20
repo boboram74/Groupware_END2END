@@ -454,13 +454,6 @@
 
 </style>
 
-<c:if test="${project.status eq 'finish'}">
-    <script>
-        window.addEventListener('DOMContentLoaded', function () {
-            disableProjectFeatures();
-        });
-    </script>
-</c:if>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
@@ -693,6 +686,9 @@
         </div>
 
         <script>
+            window.addEventListener('DOMContentLoaded', function () {
+                setTimeout(disableProjectFeatures, 100);
+            });
 
             const employeeRole = "${employee.role}";
 

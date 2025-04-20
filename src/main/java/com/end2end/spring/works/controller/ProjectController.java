@@ -60,7 +60,6 @@ public class ProjectController {
             List<ProjectWorkDTO> list = wserv.selectAll(id);
             model.addAttribute("now", new java.sql.Date(System.currentTimeMillis()));
 
-
             model.addAttribute("nearDeadline", dto.getNearDeadline());
 
         }

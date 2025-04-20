@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <link rel="stylesheet" href="/css/color/newColor.css" />
-<input type="hidden" name="approvalFormId" value="1" />
+<input type="hidden" name="approvalFormId" value="3" />
 <div class="approval-document surface-bright">
     <div class="document-header">
         <h1 class="document-title">휴 가 계</h1>
@@ -102,11 +102,11 @@
     $('input[name="vacationType"]').on('change', function(e) {
         const type = e.target.value;
         if(type === 'ANNUAL') {
-            $('#annual').addClass('active').show();
-            $('#half').removeClass('active').hide();
+            $('#annual').addClass('active').show().attr('required', true);
+            $('#half').removeClass('active').hide().removeAttr('required');
         } else {
-            $('#annual').removeClass('active').hide();
-            $('#half').addClass('active').show();
+            $('#annual').removeClass('active').hide().removeAttr('required');
+            $('#half').addClass('active').show().attr('required', true);
         }
     })
 
@@ -131,6 +131,10 @@
     .select-item {
         display: flex;
         align-items: center;
+    }
+
+    .select-item select {
+        margin: 0;
     }
 
     .form-select, .form-control {

@@ -23,15 +23,16 @@
                     <span>부서 관리</span>
                 </li>
             </a>
+
             <a href="/admin/mail-setting">
                 <li class="detail-menu-item">
-                    <span class="material-icons">inbox_customize</span>
+                    <span class="material-icons">mail</span>
                     <span>공용 메일 설정</span>
                 </li>
             </a>
             <a href="/admin/setting">
                 <li class="detail-menu-item">
-                    <span class="material-icons">setting</span>
+                    <span class="material-icons">manage_accounts</span>
                     <span>관리자 설정</span>
                 </li>
             </a>
@@ -83,7 +84,6 @@
 <script>
     $(document).ready(function () {
         loadDepartmentList();
-
         $('#addRow').on('click', function () {
             var $template = $('.custom-mail-table tbody tr:first');
             var $newRow = $template.clone();
@@ -92,8 +92,26 @@
         });
 
         $(document).on('click', '.removeRow', function () {
-            $(this).closest('tr').remove();
+            const $row = $(this).closest('tr');
+            const id   = $row.find('input[name="deptId"]').val();
+            if (!id) {
+                return $row.remove();
+            }
+            if (!confirm("해당 부서를 정말 삭제하시겠습니까?\n(부서 소속 모든 직원 정보도 함께 삭제됩니다.)")) {
+                return;
+            }
+            $.ajax({
+                url: '/admin/api/department-delete',
+                method: 'POST',
+                data: {
+                    id: id
+                }
+            }).done(function () {
+                $row.remove();
+            });
         });
+
+
 
         $("#updateDepartment").on("submit",function () {
 

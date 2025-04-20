@@ -1184,9 +1184,9 @@
 </div>
 <script>
     const departmentName = '${employee.departmentName}';
-
+    const jobName = '${employee.jobName}'
     function handleProjectClick(projectId) {
-        if (departmentName !== '연구팀' && '사장') {
+        if (departmentName !== '연구팀' && jobNamev!== '대표이사') {
             alert('연구팀과 대표이사만 입장이 가능합니다.');
             return;
         } else {

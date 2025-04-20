@@ -9,12 +9,8 @@
         <script src="/js/summernote/summernote-lite.js"></script>
         <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
         <link rel="stylesheet" href="/js/summernote/summernote-lite.css">
+        <link rel="stylesheet" href="/css/approval/draft.css" />
         <title>Document</title>
-        <style>
-            .loading-img {
-                //background-image: '/image/';
-            }
-        </style>
     </head>
     <div class="loading-img" style="display: none"></div>
     <body>

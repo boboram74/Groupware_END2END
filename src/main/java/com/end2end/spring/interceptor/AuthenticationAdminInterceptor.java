@@ -1,6 +1,7 @@
 package com.end2end.spring.interceptor;
 
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.util.UnauthorizedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -18,10 +19,8 @@ public class AuthenticationAdminInterceptor implements HandlerInterceptor {
             if(employee.getRole().equals("ADMIN")) {
                 return true;
             }
-
-            response.sendRedirect(request.getContextPath() + "/error");
-            return false;
         }
-        return false;
+
+        throw new UnauthorizedException("접근 권한이 없습니다.");
     }
 }

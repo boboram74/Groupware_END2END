@@ -1,38 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="/css/color/newColor.css" />
 <input type="hidden" name="approvalFormId" value="1" />
-<div class="approval-document">
+<div class="approval-document surface-bright">
     <div class="document-header">
         <h1 class="document-title">기 안 문</h1>
         <div class="approval-section">
             <!-- 결재란 테이블 -->
             <table class="approval-table">
-                <tr>
+                <tr id="approval-table-header">
                     <th>기안</th>
-                    <th>결재</th>
-                    <th>결재</th>
-                    <th>결재</th>
+
                 </tr>
-                <tr class="sign-rows">
+                <tr class="sign-rows" id="lineBox">
                     <td class="sign-cell">
                         <div class="position">${employee.jobName}</div>
                         <div class="name">${employee.name}</div>
                         <div class="date"></div>
-                    </td>
-                    <td class="sign-cell">
-                        <div class="position">차장</div>
-                        <div class="name">김차장</div>
-                        <div class="date">2024-01-22</div>
-                    </td>
-                    <td class="sign-cell">
-                        <div class="position">부장</div>
-                        <div class="name">이부장</div>
-                        <div class="date">2024-01-22</div>
-                    </td>
-                    <td class="sign-cell">
-                        <div class="position">이사</div>
-                        <div class="name">박이사</div>
-                        <div class="date">2024-01-22</div>
+                        <input type="hidden" name="employeeId" value="${employee.id}" />
                     </td>
                 </tr>
             </table>
@@ -67,7 +51,7 @@
     </div>
 
     <div class="document-footer">
-        <div class="attachment-section">
+        <div class="attachment-section file-input-section">
             <h3>첨부파일</h3>
             <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
         </div>
@@ -84,7 +68,7 @@
         width: 800px;
         margin: 20px auto;
         padding: 30px;
-        background: #fff;
+        background: var(--md-sys-color-surface-bright);
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
@@ -105,7 +89,7 @@
         float: right;    /* 오른쪽 정렬 */
         padding: 4px 8px;
         font-size: 11px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--md-sys-color-outline);
         border-radius: 4px;
         cursor: pointer;
         width: 100px;
@@ -126,14 +110,15 @@
 
     .approval-table th {
         width: 120px;  /* th 너비를 120px로 설정 */
-        border: 1px solid #000;
+        border: 1px solid var(--md-sys-color-surface);
+        background-color: var(--md-sys-color-outline);
         padding: 4px;
         text-align: center;
         font-size: 11px;
     }
 
     .approval-table td {
-        border: 1px solid #000;
+        border: 1px solid var(--md-sys-color-surface);
         padding: 4px;
         text-align: center;
         font-size: 15px;
@@ -151,12 +136,12 @@
     }
 
     .info-table th {
-        background-color: #f5f5f5;
+        background-color: var(--md-sys-color-outline);
         width: 100px;
     }
 
     .info-table th, .info-table td {
-        border: 1px solid #000;
+        border: 1px solid var(--md-sys-color-surface);
         padding: 8px;
     }
 
@@ -168,7 +153,7 @@
 
     .content-body {
         min-height: 400px;
-        border: 1px solid #000;
+        border: 1px solid var(--md-sys-color-surface);
         padding: 20px;
         margin-bottom: 30px;
     }
@@ -187,7 +172,6 @@
     .attachment-section {
         margin: 20px 0;
         padding: 10px;
-        background-color: #f5f5f5;
     }
 
     .position {
@@ -204,6 +188,11 @@
         padding: 5px 10px;
         margin-top: 10px;
         float: right;
+    }
+
+    .file-input-section {
+        color: var(--md-sys-color-surface);
+        background-color: var(--md-sys-color-surface-container);
     }
 </style>
 <style>
@@ -343,4 +332,5 @@
 
     .approverStatus.done {
         color: #27ae60;
+    }
 </style>

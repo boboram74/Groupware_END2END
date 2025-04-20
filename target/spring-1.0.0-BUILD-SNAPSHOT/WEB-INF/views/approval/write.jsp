@@ -67,14 +67,17 @@
         $('#addApproval').on('click', function () {
             const lineBox = $('#lineBox');
             const approvalLine = $('#approvalLine');
+            const approvalTableHeader = $('#approval-table-header');
 
             approvalList.forEach(employee => {
-
                 if ($('#lineBox').find(`#${employee.name}`).length === 0) {
-                    const div = makeEmployee(employee);
-                    div.append($('<input>').attr('type', 'hidden').attr('name', 'approverId').val(employee.id))
+                    approvalTableHeader.append($('<th>').html("결재"));
+                    const td = $('<td class="sign-cell">')
+                        .append($('<div class="position">').html(employee.jobName))
+                        .append($('<div class="name">').html(employee.name))
+                        .append($('<input>').attr('type', 'hidden').attr('name', 'approverId').val(employee.id))
 
-                    lineBox.append(div);
+                    lineBox.append(td);
                 }
             });
 

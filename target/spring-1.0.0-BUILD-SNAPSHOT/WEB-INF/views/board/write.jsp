@@ -5,101 +5,248 @@
 <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="/js/summernote/summernote-lite.css">
 <style>
-    * {
-        box-sizing: border-box;
-        font-family: 'Malgun Gothic', sans-serif;
-    }
-
+    /* 게시글 테이블 스타일 */
     table {
         width: 100%;
         border-collapse: collapse;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
+        border-top: 1px solid var(--md-sys-color-primary);
+        border-bottom: 1px solid var(--md-sys-color-primary);
+        color: var(--md-sys-color-surface);
+        margin-bottom: 30px;
     }
 
     th, td {
-        padding: 10px;
+        padding: 0;  /* 패딩 제거 */
         text-align: left;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid var(--md-sys-color-outline);
     }
 
-    th {
+    /* 입력 필드 스타일 수정 */
+    td input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background: transparent;
+        color: var(--md-sys-color-surface);
+    }
+
+    .addReply {
+        display: flex;
+        gap: 10px;
+    }
+
+    .addInput {
+        flex: 1;
+    }
+
+    .addInput input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--md-sys-color-outline);
+        background-color:  rgba(255, 255, 255, 0.1);
+        color: var(--md-sys-color-surface);
+        height: 100%;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .addBtn {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    /* 댓글 목록 스타일 */
+    .replyList {
+        display: flex;
+        align-items: flex-start;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-top: 1px solid var(--md-sys-color-outline);
+        border-radius: 4px;
+        gap: 20px;
+    }
+
+    .profile {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .replyWrite {
+        flex: 1;
+    }
+
+    .writerSysdate {
+        margin-bottom: 10px;
+    }
+
+    .realContents {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .realContents input[readonly] {
+        border: none;
+        background: transparent;
+        padding: 0;
+    }
+
+    .realContents input[readonly]:first-child {
+        font-weight: bold;
+    }
+
+    .realContents input[readonly]:last-child {
+        font-size: 0.9em;
+    }
+
+
+    .realContents input {
+        border: none;
+        background: transparent;
+        font-weight: 600;
+        color: var(--md-sys-color-surface);
+    }
+
+    .inputReply {
+        margin-top: 8px;
+    }
+
+    .inputReply input {
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: var(--md-sys-color-surface);
+    }
+
+    .replyReport button {
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .replyReport button:hover {
+        opacity: 0.9;
+    }
+
+    /* 댓글 입력 폼 스타일 */
+    .replyContainer {
+        border: 1px solid var(--md-sys-color-outline);
+        background-color: var(--md-sys-color-surface-bright);
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .addReply {
+        display: flex;
+        gap: 10px;
+    }
+
+    .addInput {
+        flex: 1;
+    }
+
+    .addInput input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .addBtn {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .addBtn button {
+        padding: 10px 20px;
+        border: 1px solid var(--md-sys-color-outline);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    /* 상단 메타 정보 스타일 */
+    .meta-info {
+        font-size: 1em;  /* 폰트 사이즈 증가 */
+        color: #666;     /* 색상을 좀 더 진하게 */
+        text-align: right;
+        padding: 8px 10px;
+        width: 30%;      /* 전체 너비 30%로 설정 */
+        float: right;    /* 우측 정렬 */
+        margin-top: 5px; /* 상단 여백 추가 */
+    }
+
+    .meta-info span {
+        margin-left: 20px;  /* 간격 증가 */
+        display: inline-block;
+    }
+
+    /* 제목 컨테이너 스타일 추가 */
+    .title-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .title-text {
+        flex: 1;       /* 나머지 공간 차지 */
+        padding-right: 20px;  /* 메타 정보와의 간격 */
+    }
+
+    .label {
+        background-color: var(--md-sys-color-surface-container);
         width: 15%;
-        background-color: #f9f9f9;
-        font-weight: normal;
-        vertical-align: top;
+        font-weight: 600;
+        padding: 10px;  /* 라벨에만 최소한의 패딩 유지 */
+    }
+    .contents {
+        width: 85%;  /* 너비 수정 */
     }
 
-    th .required {
-        color: #ff0000;
+    .btnGroup {
+        margin-top: 10px;
+        text-align: center;
+        display: flex;
+    }
+
+    .editBtn, .deleteBtn, .replyBtn, .backBtn {
+        padding: 6px 12px;
+        margin: 0 2px;
+        border: 1px solid var(--md-sys-color-outline);
+        cursor: pointer;
+    }
+
+    /* 내용란 스타일 */
+    .board-detail-content {  /* 클래스 이름 변경 */
+        min-height: 500px;
+        line-height: 1.6;
+    }
+
+    .replyListContainer {
+        border-top: 1px solid var(--md-sys-color-primary);
+    }
+
+    .required {
+        color: var(--md-sys-color-error);
         margin-left: 3px;
     }
 
-    input[type="text"], textarea {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 2px;
-    }
-
-    textarea {
-        min-height: 150px;
-        resize: vertical;
-    }
-
-    .checkboxArea {
-        display: flex;
-        align-items: center;
-    }
-
     .date {
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        padding: 8px;
-        border-radius: 2px;
+        margin-left: 10px;
     }
 
-    .buttonArea {
-        margin-top: 15px;
-        text-align: center;
-    }
-
-    .saveBtn, .canBtn {
-        padding: 6px 20px;
-        margin: 0 3px;
-        border: 1px solid #ccc;
-        border-radius: 2px;
-        cursor: pointer;
-    }
-
-    .saveBtn {
-        background-color: #0099cc;
-        color: white;
-        border: 1px solid #0088bb;
-    }
-
-    .canBtn {
-        background-color: white;
-        color: #333;
-    }
-    /* 파일 첨부 관련 스타일 */
-    .fileUpload {
-        padding: 10px 0;
-    }
-
-    .file-upload-button {
-        display: inline-block;
-        padding: 6px 12px;
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        cursor: pointer;
-        margin-right: 10px;
-    }
-    #searchOption{
-        width: 120px;
-        height: 30px;
-        border-radius: 5px;
+    .note-editable {
+        color: var(--md-sys-color-surface) !important;
+        /* 또는 */
+        /* color: #FFFFFF !important; */
     }
 </style>
 <div class="content">
@@ -107,7 +254,7 @@
 <form action="${action == null ?  '/board/insert' : action}" method="post" enctype="multipart/form-data">
 <table>
     <tr>
-        <th>등록일</th>
+        <th class="label">등록일</th>
         <td>
             <div class="date"></div>
         </td>
@@ -128,13 +275,13 @@
         </tr>
     </c:if>
     <tr>
-        <th>제목 <span class="required">*</span></th>
+        <th class="label">제목 <span class="required">*</span></th>
         <td colspan="3">
             <input type="text" name="title">
         </td>
     </tr>
     <tr>
-        <th>이름 <span class="required">*</span></th>
+        <th class="label">이름 <span class="required">*</span></th>
         <td colspan="3">
             <c:choose>
                 <c:when test="${action != null}">
@@ -147,22 +294,21 @@
         </td>
     </tr>
     <tr>
-        <th>첨부파일</th>
+        <th class="label">첨부파일</th>
         <td colspan="3">
             <jsp:include page="/WEB-INF/views/template/fileInput.jsp"/>
         </td>
     </tr>
     <tr>
-        <th>내용 <span class="required">*</span></th>
-        <td colspan="3">
+        <td colspan="4" class="board-detail-content">
             <input type="text" id="content" name="content">
         </td>
     </tr>
 </table>
-<div class="button-area">
-    <button class="saveBtn">저장</button>
-    <a href="${action == null ? 'board/list' : '/notice/list?page=1'}">
-        <button type="button" class="canBtn">취소</button>
+<div class="button-container">
+    <button class="primary">저장</button>
+    <a href="${action == null ? '/board/list?page=1' : '/notice/list?page=1'}">
+        <button type="button" class="secondary">취소</button>
     </a>
 </div>
 </form>

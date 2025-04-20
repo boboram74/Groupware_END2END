@@ -145,6 +145,15 @@ public class EmployeeDAO {
         return mybatis.selectList("employee.searchContactList", param);
     }
 
+    public List<EmployeeDTO> searchContactListFromTo(String searchOption, String keyword, int start, int end) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("searchOption", searchOption);
+        param.put("keyword", keyword);
+        param.put("start", start);
+        param.put("end", end);
+        return mybatis.selectList("employee.searchContactList", param);
+    }
+
     public List<EmployeeDTO> searchEmployeeList(String searchOption, String keyword) {
         Map<String, Object> param = new HashMap<>();
         param.put("searchOption", searchOption);

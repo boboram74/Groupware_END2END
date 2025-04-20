@@ -199,7 +199,7 @@ public class ApprovalController {
             if ("휴가계".equals(approval.get("FORMNAME"))) {
                 VacationDTO vacationDTO = vacationService.getVacationByApprovalId(id);
                 model.addAttribute("vacationDTO", vacationDTO);
-            } else if ("연장근무신청".equals(approval.get("FORMNAME"))) {
+            } else if ("연장근무신청서".equals(approval.get("FORMNAME"))) {
                 ExtendedCommuteDTO extendedCommuteDTO = extendedCommuteService.selectByApprovalId(id);
                 model.addAttribute("extendedCommuteDTO", extendedCommuteDTO);
             }

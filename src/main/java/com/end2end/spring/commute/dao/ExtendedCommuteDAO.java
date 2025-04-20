@@ -20,6 +20,6 @@ public class ExtendedCommuteDAO {
     }
 
     public ExtendedCommuteDTO selectByApprovalId(String approvalId) {
-        return mybatis.selectOne("extendedCommute.selectByCommuteId", approvalId);
+        return mybatis.selectOne("extendedCommute.selectByApprovalId", approvalId);
     }
 }

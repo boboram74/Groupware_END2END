@@ -61,7 +61,32 @@
         ORDER BY regDate DESC
     </select>
 
-
+    <select id="searchFromTo" resultType="com.end2end.spring.board.dto.BoardDTO">
+        SELECT A.*
+        FROM (
+            SELECT e.name as employeeName , e.profileImg AS profileImg, b.*, R.replyCount AS replyCount,
+                   ROW_NUMBER() OVER(ORDER BY B.ID DESC) AS RNUM
+            FROM board b
+            join employee e
+            on b.EMPLOYEEID = e.id
+            LEFT JOIN (
+                SELECT COUNT(*) AS replyCount, boardId AS boardId
+                FROM REPLY
+                GROUP BY boardId) R
+            ON b.id = R.boardId
+            <where>
+                <choose>
+                    <when test="option == 'title'">
+                        title LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <when test="option == 'writer'">
+                        e.name LIKE '%' || #{keyword} || '%'
+                    </when>
+                </choose>
+            </where>
+             ) A
+        WHERE RNUM BETWEEN ${start} AND ${end}
+    </select>
 
     <delete id="deleteById">
         delete from board where id = #{id}

@@ -35,11 +35,6 @@ public class BookController {
         return "schedule/book";
     }
 
-    @RequestMapping("/search")
-    public String toBookSearch(Model model) {
-        return "schedule/book";
-    }
-
     @ResponseBody
     @RequestMapping("/list/items")
     public List<BookTargetDTO> selectAllTarget() {

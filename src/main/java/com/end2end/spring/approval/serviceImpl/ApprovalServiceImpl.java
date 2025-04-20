@@ -171,7 +171,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
             ApprovalDTO approvalDTO = approvalDAO.selectDTOById(approvalId);
             if (approvalDAO.selectByFormId(approvalDTO.getApprovalFormId()).getName().contains("연장 근무")) {
-                ExtendedCommuteDTO extendedCommuteDTO = extendedCommuteDAO.selectByApprovalId(approverId);
+                ExtendedCommuteDTO extendedCommuteDTO = extendedCommuteDAO.selectByApprovalId(approvalId);
 
                 if (extendedCommuteDTO.getCommuteId() != 0) {
                     commuteService.update(extendedCommuteDTO);

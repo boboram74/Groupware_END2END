@@ -2,7 +2,9 @@ package com.end2end.spring.approval.controller;
 
 import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.approval.service.ApprovalFormService;
+import com.end2end.spring.commute.dto.ExtendedCommuteDTO;
 import com.end2end.spring.commute.dto.VacationDTO;
+import com.end2end.spring.commute.service.ExtendedCommuteService;
 import com.end2end.spring.commute.service.VacationService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dao.FileDAO;
@@ -36,6 +38,7 @@ public class ApprovalController {
 
     @Autowired
     private VacationService vacationService;
+    @Autowired private ExtendedCommuteService extendedCommuteService;
     @Autowired private FileService fileService;
 
     @RequestMapping("/list")
@@ -196,6 +199,9 @@ public class ApprovalController {
             if ("휴가계".equals(approval.get("FORMNAME"))) {
                 VacationDTO vacationDTO = vacationService.getVacationByApprovalId(id);
                 model.addAttribute("vacationDTO", vacationDTO);
+            } else if ("연장근무신청".equals(approval.get("FORMNAME"))) {
+                ExtendedCommuteDTO extendedCommuteDTO = extendedCommuteService.selectByApprovalId(id);
+                model.addAttribute("extendedCommuteDTO", extendedCommuteDTO);
             }
             if(team) {
                 model.addAttribute("approval", approval);

@@ -99,7 +99,8 @@
     }
 
     .approval-content {
-        min-height: 500px;
+        height: 500px;
+        overflow: auto;
         vertical-align: top;
         padding: 15px;
     }
@@ -215,12 +216,8 @@
                         <td colspan="3">
                             <table class="vacationTable">
                                 <tr>
-                                    <th>추가 근무</th>
-                                    <td>${vacationDTO.type}</td>
-                                </tr>
-                                <tr>
                                     <th>종료일</th>
-                                    <td><fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                                    <td><fmt:formatDate value="${extendedCommuteDTO.workOffTime}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
                                 </tr>
                             </table>
                         </td>

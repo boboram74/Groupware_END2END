@@ -101,6 +101,11 @@
         height: 30px;
         border-radius: 5px;
     }
+    .note-editable {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
 </style>
 <div class="content">
 </div>
@@ -138,7 +143,7 @@
     </tr>
 </table>
 <%--    <input type="hidden" name="employeeId" value="${employee.employeeId}">--%>
-<%--    <input type="hidden" name="id" value="자동으로 설정">--%>
+<%--    <input type="hidden" name="id" value="자동으로 설ewreerw정">--%>
 
 <div class="button-area">
     <button class="saveBtn">저장</button>

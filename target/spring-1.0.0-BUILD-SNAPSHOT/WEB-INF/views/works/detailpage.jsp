@@ -1148,17 +1148,7 @@
                     finishWork(projectId);
                 });
 
-                function disableProjectFeatures() {
 
-                    $('#writeBtn,#deleteBtn, #deleteBtn').prop('disabled', true);
-
-
-                    $('.work-item').attr('draggable', false);
-
-                    $('.movingBoardColumn').off('dragover drop');
-                    $('.work-item').off('dragstart dragend');
-
-                }
                 function finishWork(projectId) {
                     if (confirm("정말 프로젝트 작업을 마감하시겠습니까?")) {
                         $.ajax({
@@ -1178,7 +1168,18 @@
                     }
                 }
 
+                function disableProjectFeatures() {
 
+                    $('#writeBtn,#deleteBtn, #deleteBtn').prop('disabled', true);
+
+                    $('.work-item').removeAttr('draggable');
+
+                    // $('.work-item').attr('draggable', false);
+
+                    $('.movingBoardColumn').off('dragover drop');
+                    $('.work-item').off('dragstart dragend');
+
+                }
 
                 $('.movingBoardColumn'
                 ).on('drop', function (e) {

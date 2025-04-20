@@ -352,21 +352,6 @@
 
 <div class="mainContainer">
     <div class="mainBody">
-        <div class="search">
-            <div>
-                <select id="searchOption">
-                    <option>선택</option>
-                    <option>선택</option>
-                    <option>선택</option>
-                </select>
-            </div>
-            <div class="searchInput">
-                <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-            </div>
-            <div>
-                <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
-            </div>
-        </div>
         <div class="button-container">
             <button class="primary insert-schedule open-write-schedule">일정 추가</button>
             <button class="primary open-write-calender">캘린더 추가</button>
@@ -633,7 +618,6 @@
                 },
                 initialView: 'dayGridMonth',
                 initialDate: new Date(),
-                width: '100%',
                 height: 'auto',
                 events: function(info, successCallback) {
                     const startDate = info.start;

@@ -136,12 +136,12 @@ public class ProjectServiceImpl implements ProjectService {
         return dto;
     }
     public int hideById(int projectId, String hideYn) {
-        System.out.println("Original hideYn: " + hideYn);
+//        System.out.println("Original hideYn: " + hideYn);
 
         // 변환 처리
         String convertedHideYn = "false".equalsIgnoreCase(hideYn) ? "N" : "Y";
 
-        System.out.println("after hideYn: " + convertedHideYn);
+//        System.out.println("after hideYn: " + convertedHideYn);
 
         return projectDao.hideById(projectId, convertedHideYn);
     }
@@ -196,7 +196,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<EmployeeDTO> selectByUser(String name) {
         // TODO: 이름으로 검색
         String target = "%" + name + "%";
-System.out.println("selectByUser"+target);
+//System.out.println("selectByUser"+target);
         return projectDao.selectByUser(target);
     }
 

@@ -394,21 +394,6 @@
 
 <div class="mainContainer">
     <div class="mainBody">
-        <div class="search">
-            <div>
-                <select id="searchOption">
-                    <option>선택</option>
-                    <option>선택</option>
-                    <option>선택</option>
-                </select>
-            </div>
-            <div class="searchInput">
-                <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-            </div>
-            <div>
-                <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
-            </div>
-        </div>
         <div class="button-container">
             <button class="primary insert-schedule open-write-schedule">예약 하기</button>
             <button class="secondary open-list-calendar">사용 완료</button>
@@ -516,7 +501,7 @@
                         <div class="info-container">
                             <div class="form-group">
                                 <label>이름</label>
-                                <input type="text" id="cal-name" class="form-input" readonly>
+                                <input type="text" id="cal-name" class="form-input">
                             </div>
                             <div class="form-group">
                                 <label>색상</label>

@@ -18,9 +18,8 @@
 <div class="search">
   <div>
     <select id="searchOption">
-      <optio>선택</optio>
-      <option>선택</option>
-      <option>선택</option>
+      <option value="writer">작성자</option>
+      <option value="title">제목</option>
     </select>
   </div>
   <div class="searchInput">

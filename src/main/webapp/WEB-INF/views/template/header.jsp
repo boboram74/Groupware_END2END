@@ -230,7 +230,7 @@
 
       <script>
         $(document).ready(function() {
-          const alarm = new WebSocket('ws://localhost/alarm');
+          const alarm = new WebSocket('wss://end2end.site/alarm');
 
           alarm.onopen = function() {
 

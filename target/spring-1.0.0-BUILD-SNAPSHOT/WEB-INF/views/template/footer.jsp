@@ -535,7 +535,7 @@
 <input type="hidden" id="sender-name" value="${employee.name}">
 <script>
 	$(document).ready(function() {
-		let ws = new WebSocket("ws://172.30.1.24/chat");
+		let ws = new WebSocket("wss://end2end.site/chat");
 		let employees = [];
 		let chatRooms = [];
 		let currentRoomId = 0;

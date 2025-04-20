@@ -4,15 +4,26 @@
 <%--<link rel="stylesheet" href="/css/write.css" />--%>
 
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
-<!-- FullCalendar JS -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/ko.global.min.js"></script>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/summernote/summernote-lite.js"></script>
 <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="/js/summernote/summernote-lite.css">
+
 <style>
+    * {
+        box-sizing: border-box;
+        font-family: 'Malgun Gothic', sans-serif;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+    }
+
+
     textarea{
         height: 300px;
         resize: none;

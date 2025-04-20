@@ -72,10 +72,12 @@ public class CommuteController {
         model.addAttribute("totalVacationDates", vacationService.sumTotalVacationDates(employee.getId()));
         model.addAttribute("totalUsedVacationDates", vacationService.sumTotalUsedVacationDates(employee.getId()));
         model.addAttribute("thisMonthUsedVacationDates", vacationService.sumThisMonthUsedVacationDates(employee.getId()));
+        model.addAttribute("vacationList", vacationService.selectByEmployeeId(employee.getId()));
 
         model.addAttribute("active", 0);
 
         model.addAttribute("vacationApprovalFormId", approvalFormService.selectLikeName("휴가").getId());
+        model.addAttribute("extendCommuteFormId", approvalFormService.selectLikeName("연장").getId());
 
         return "commute/detail";
     }

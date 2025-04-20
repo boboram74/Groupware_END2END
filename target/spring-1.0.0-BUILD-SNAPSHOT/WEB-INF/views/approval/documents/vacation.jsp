@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <link rel="stylesheet" href="/css/color/newColor.css" />
@@ -59,7 +60,7 @@
                             <label>조퇴</label>
                         </div>
                         <div class="select-item">
-                            <input type="date" name="startDate" class="form-control">
+                            <input type="date" min="<fmt:formatDate value='<%= new java.util.Date() %>' pattern='yyyy-MM-dd'/>" name="startDate" class="form-control">
                         </div>
                         <div class="select-item">
                             <select id="annual" class="time" style="display: none;" required>

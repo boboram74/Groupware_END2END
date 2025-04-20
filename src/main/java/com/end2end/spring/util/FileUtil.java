@@ -21,7 +21,7 @@ public class FileUtil {
 
         File filePath = new File(uploadPath);
 
-        filePath.mkdirs();
+        filePath.mkdir();
 
         String systemFileName = UUID.randomUUID() + file.getOriginalFilename();
         file.transferTo(new File(uploadPath + "/" + systemFileName));
@@ -39,10 +39,6 @@ public class FileUtil {
         String fileLocation = Statics.FILE_UPLOAD_PATH + path.substring("/files/".length());
 
         File file = new File(fileLocation);
-
-        if (!file.exists()) {
-            throw new IllegalArgumentException("해당 경로의 파일이 존재하지 않습니다.");
-        }
 
         file.delete();
     }

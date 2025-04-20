@@ -6,13 +6,15 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<%--  <meta name="viewport" content="width=device-width, initial-scale=1.0" />--%>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>END2END</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=work" />
   <link rel="stylesheet" href="/css/color/newColor.css" />
   <link rel="stylesheet" href="/css/color/calenderColor.css" />
   <link rel="stylesheet" href="/css/template/header.css" />
+  <link rel="icon" href="/resources/image/favicon.ico">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
@@ -228,23 +230,22 @@
 
       <script>
         $(document).ready(function() {
-          const alarm = new WebSocket('ws://localhost/alarm');
+          const alarm = new WebSocket('wss://end2end.site/alarm');
 
           alarm.onopen = function() {
-            console.log('알람 웹소켓 연결됨');
+
           };
 
           alarm.onerror = function(error) {
-            console.log('알람 웹소켓 에러:', error);
+
           };
 
           alarm.onclose = function(event) {
-            console.log('알람 웹소켓 닫힘:', event.code, event.reason);
+
           };
 
           alarm.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            console.log(data);
 
             let notReadCount = 0;
 

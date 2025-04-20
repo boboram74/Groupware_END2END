@@ -2,12 +2,14 @@ package com.end2end.spring.board.controller;
 
 import com.end2end.spring.board.dto.BoardCategoryDTO;
 import com.end2end.spring.board.dto.BoardDTO;
+import com.end2end.spring.board.dto.BoardUpdateDTO;
 import com.end2end.spring.board.dto.ComplaintDTO;
 import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.util.PageNaviUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,29 +17,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.util.List;
 
 @RequestMapping("/board")
 @Controller
 public class BoardController {
-    @Autowired
-    private BoardService boardService;
-
-    @Autowired
-    private BoardCategoryService boardCategoryService;
-
+    @Autowired private BoardService boardService;
+    @Autowired private BoardCategoryService boardCategoryService;
     @Autowired private FileService fileService;
 
     @RequestMapping("/list")
-    public String list(Model model) {
-        List<BoardDTO> boardList = boardService.selectAll();
-        List<BoardCategoryDTO> boardCategoryList = boardCategoryService.selectAll();
-        System.out.println(boardList);
-        System.out.println(boardCategoryList);
-        model.addAttribute("boardList", boardList);
-        model.addAttribute("boardCategoryList",boardCategoryList);
-        // TODO: 모든 리스트
+    public String list(Model model, @RequestParam(defaultValue = "1") int page) {
+        model.addAttribute("boardList", boardService.selectAll(page));
+        PageNaviUtil.PageNavi pageNavi =
+                new PageNaviUtil(page, boardService.selectAll().size()).generate();
+        model.addAttribute("pageNavi", pageNavi);
 
         return "/board/list";
     }
@@ -52,11 +46,7 @@ public class BoardController {
         int deleteId = boardService.deleteById(id);
         System.out.println(deleteId);
         return "redirect:/board/list";
-}
-//    @RequestMapping("/detail")
-//    public String list(Model model) {
-//        return "board/detail";
-//    }
+    }
 
     @RequestMapping("/list/{categoryId}")
     public String toList(@PathVariable int categoryId, HttpSession session, Model model) {
@@ -93,32 +83,39 @@ public class BoardController {
 
     @RequestMapping("/search")
     public String toSearch(Model model,String option,String keyword) {
-    List<BoardDTO> result = boardService.search(option,keyword);
-    model.addAttribute("boardList", result);
-    return "/board/list";
+        List<BoardDTO> result = boardService.search(option,keyword);
+        model.addAttribute("boardList", result);
+        return "/board/list";
     }
 
     @RequestMapping("/write")
     public String toWrite(HttpSession session, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
+        System.out.println(employee);
         if (employee == null) {
-            return "redirect:/login"; // 세션이 없으면 로그인 페이지로 리다이렉트
+            return "redirect:/login";
         }
 
         // 게시판 카테고리 목록을 모델에 추가
         List<BoardCategoryDTO> categoryList = boardCategoryService.selectAll();
         model.addAttribute("employeeDTO", employee);
+        System.out.println(categoryList);
         model.addAttribute("categoryList", categoryList);
 
-        // TODO: 게시글 입력 폼으로 이동
+
         return "/board/write";
     }
 
     @RequestMapping("/write/update")
     public String toUpdate(@RequestParam("id") int id, Model model) {
-    BoardDTO board = boardService.selectById(id);
-    model.addAttribute("board", board);
-        // TODO: 게시글 수정 폼으로 이동
+        BoardDTO board = boardService.selectById(id);
+        model.addAttribute("board", board);
+
+        FileDTO fileDTO = FileDTO.builder()
+                .boardId(id)
+                .build();
+        model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+
         return "/board/update";
     }
 
@@ -156,16 +153,11 @@ public class BoardController {
     }
 
     @RequestMapping("/update")
-    public String update(BoardDTO dto) {
-        boardService.update(dto);
-        return "redirect:/board/list";
-        // TODO: 게시글 수정을 받음
-    }
+    public String update(MultipartFile[] files, BoardUpdateDTO dto) {
+        boardService.update(files, dto);
 
-//    @RequestMapping("/delete")
-//    public void deleteById(int id) {
-//        // TODO: 게시글 번호로 삭제
-//    }
+        return "redirect:/board/list";
+    }
 
 
     @PostMapping("/category/insert")

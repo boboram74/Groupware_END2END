@@ -334,9 +334,21 @@
 	/* 모바일 반응형 */
 	@media (max-width: 768px) {
 		.chat-modal {
-			width: calc(100% - 40px);
-			right: 20px;
-			bottom: 90px;
+			/*width: calc(100% - 40px);*/
+			/*right: 20px;*/
+			/*bottom: 90px;*/
+			max-width: none !important;
+			right:    0 !important;
+			bottom:   0 !important;
+			/* 화면 꽉 채우기 */
+			top:    0 !important;
+			left:   0 !important;
+			width:  100vw  !important;
+			height: 100vh  !important;
+			/* 모서리 둥글기 없애기 */
+			border-radius: 0 !important;
+			/* 네비/푸터 위로 올라오기 */
+			z-index: 9999 !important;
 		}
 	}
 	.room-list {
@@ -523,20 +535,17 @@
 <input type="hidden" id="sender-name" value="${employee.name}">
 <script>
 	$(document).ready(function() {
-		let ws = new WebSocket("ws://10.10.55.9/chat");
+		let ws = new WebSocket("wss://end2end.site/chat");
 		let employees = [];
 		let chatRooms = [];
 		let currentRoomId = 0;
 		let roomEmployeeList = [];
 		let invitedIds = [];
 		var globalRoomAlarms = {};
-
 		refreshChatRoomList();
 
-		//메시지 수신
 		ws.onmessage = function (e) {
 			let msg = JSON.parse(e.data);
-			// console.log(msg);
 			if (msg.type === "invite") {
 				return;
 			}
@@ -601,9 +610,9 @@
 				} else {
 					$(".chat-button").find(".chat-alarm-badge").hide();
 				}
+				refreshChatRoomList();
 				return;
 			}
-
 			if (currentRoomId != msg.messagerRoomId) {
 				return;
 			}
@@ -614,7 +623,6 @@
 			let chatDate = $("<span>").addClass("chat-date").text(
 					new Date().toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true })
 			);
-
 			chat.append(chatName, chatContent, chatDate);
 			$(".chat-messages").append(chat);
 			$(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
@@ -713,25 +721,36 @@
 			$(".room-list").prepend(newRoomElement);
 		}
 
+		<%--const $item = $(`.room-list .employee-item[data-room-id='${roomId}']`);--%>
 		function updateLastMessageInRoom(msg) {
-			let roomIndex = chatRooms.findIndex(room =>
-					String(room.roomId || room.messagerRoomId) === String(msg.roomId)
-			);
-
-			if (roomIndex !== -1) {
-				chatRooms[roomIndex].lastMessage = msg.content || "No messages yet";
-				let updatedRoom = chatRooms.splice(roomIndex, 1)[0];
-				chatRooms.unshift(updatedRoom);
-				let $roomElement = $(".room-list").find(".employee-item[data-room-id='" + msg.roomId + "']");
-				if ($roomElement.length) {
-					$roomElement.find(".employee-position").text(updatedRoom.lastMessage);
-					$roomElement.detach().prependTo($(".room-list"));
-				} else {
-					renderRoomList(chatRooms);
+			const roomId = msg.roomId || msg.messagerRoomId;
+			let idx = chatRooms.findIndex(r => String(r.roomId) === String(roomId));
+			if (idx !== -1) {
+				chatRooms[idx].lastMessage = msg.content;
+				let $item = $(".room-list").find(`.employee-item[data-room-id = '${roomId}']`);
+				if ($item.length) {
+					$item.find(".employee-position")
+							.text(msg.content);
 				}
-			} else {
-				refreshChatRoomList();
 			}
+			// let roomIndex = chatRooms.findIndex(room =>
+			// 		String(room.roomId || room.messagerRoomId) === String(msg.roomId)
+			// );
+			//
+			// if (roomIndex !== -1) {
+			// 	chatRooms[roomIndex].lastMessage = msg.content || "No messages yet";
+			// 	let updatedRoom = chatRooms.splice(roomIndex, 1)[0];
+			// 	chatRooms.unshift(updatedRoom);
+			// 	let $roomElement = $(".room-list").find(".employee-item[data-room-id='" + msg.roomId + "']");
+			// 	if ($roomElement.length) {
+			// 		$roomElement.find(".employee-position").text(updatedRoom.lastMessage);
+			// 		$roomElement.detach().prependTo($(".room-list"));
+			// 	} else {
+			// 		renderRoomList(chatRooms);
+			// 	}
+			// } else {
+			// 	refreshChatRoomList();
+			// }
 		}
 
 

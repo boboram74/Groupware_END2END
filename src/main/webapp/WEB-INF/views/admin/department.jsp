@@ -4,17 +4,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <link rel="stylesheet" href="/css/admin/mail.css"/>
 <div class="mainHeader surface-bright">
-    <a href="/admin">
-        <div class="detail-menu-header">
+    <div class="detail-menu-header">
+        <a href="/admin">
             <div class="detail-menu-title">
                 <span class="material-icons">mail</span>
                 <span>관리자 페이지</span>
             </div>
-            <button class="detail-menu-toggle-btn">
-                <span class="material-icons">menu</span>
-            </button>
-        </div>
-    </a>
+        </a>
+        <button class="detail-menu-toggle-btn">
+            <span class="material-icons">menu</span>
+        </button>
+    </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
             <a href="/admin/department-setting">
@@ -23,7 +23,6 @@
                     <span>부서 관리</span>
                 </li>
             </a>
-
             <a href="/admin/mail-setting">
                 <li class="detail-menu-item">
                     <span class="material-icons">mail</span>
@@ -111,10 +110,34 @@
             });
         });
 
-
-
         $("#updateDepartment").on("submit",function () {
+        });
+        $('.detail-menu-item').on('click', function() {
+            $('.detail-menu-item').removeClass('active');
+            $(this).addClass('active');
+            var index = $('.detail-menu-item').index(this);
+            localStorage.setItem("activeMenuIndex", index);
+        });
 
+        const $menuBtn = $('.detail-menu-toggle-btn');
+        const $detailMenuModal = $('.detail-menu-modal');
+        const $closeBtn = $('.detail-modal-close');
+
+        $menuBtn.on('click', function() {
+            $detailMenuModal.addClass('active');
+            $('body').css('overflow', 'hidden');
+        });
+
+        $closeBtn.on('click', function() {
+            $detailMenuModal.removeClass('active');
+            $('body').css('overflow', '');
+        });
+
+        $(window).on('click', function(e) {
+            if ($(e.target).is($detailMenuModal)) {
+                $detailMenuModal.removeClass('active');
+                $('body').css('overflow', '');
+            }
         });
 
     });
@@ -123,7 +146,6 @@
         $.ajax({
             url: '/admin/api/departmentList',
         }).done(function (resp) {
-            console.log(resp);
             var $tbody = $('.custom-mail-table tbody').empty();
             resp.forEach(function (item) {
                 var $tr = $(

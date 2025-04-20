@@ -63,9 +63,9 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     }
     @Override
     public ProjectWorkDTO update(ProjectWorkDTO dto) {
-        System.out.println("여기 서비스 수정확인1");
+//        System.out.println("여기 서비스 수정확인1");
         dao.update(dto);
-        System.out.println("여기 서비스 수정확인2");
+//        System.out.println("여기 서비스 수정확인2");
         alarmService.sendProjectAlarm(
                 AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
 
@@ -76,8 +76,8 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     public  int getChartDataCount(int selectedId){
         int total = dao.countTotalWorks(selectedId);
         int finished = dao.countFinishedWorks(selectedId);
-        System.out.println(total);
-        System.out.println(finished);
+//        System.out.println(total);
+//        System.out.println(finished);
         if (total == 0) return 0; // 나눗셈 방지
         return (int) Math.round((finished * 100.0) / total);
     }
@@ -132,7 +132,7 @@ public void endworks(int projectId){
     @Override
     public void deleteById(int workId) {
 
-        System.out.println("서비스 도착"+workId);
+//        System.out.println("서비스 도착"+workId);
     dao.deleteById(workId);
     }
 

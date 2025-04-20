@@ -7,7 +7,8 @@ const summernoteSetting = (target) => {
         codeviewFilter: true,
         codeviewIframeFilter: true,
         placeholder : '내용을 입력하십시오',
-        height : 500,
+        minHeight : 500,
+        maxHeight : null,
         lang : 'ko-KR',
         toolbar : [
             [ 'fontname', [ 'fontname' ] ],
@@ -68,25 +69,6 @@ const summernoteSetting = (target) => {
                     const deletedImageUrl = $(target)
                         .attr('src')
                     deleteImage(deletedImageUrl);
-                }
-            },
-
-            onKeydown: function(e) {
-                const key = e.keyCode;
-                console.log(key);
-                if (key === 8 || key === 46) {  // 8은 백스페이스, 46은 Delete 키
-                    const target = $(this).summernote('invoke', 'moduleInvoke', 'editor.getSelectedNode');
-                    console.log(target);
-
-                    if ($(target).is('img')) {
-                        if (confirm('이미지를 삭제 하시겠습니까?')) {
-                            const deletedImageUrl = $(target)
-                                .attr('src')
-                            deleteImage(deletedImageUrl);
-                        } else {
-                            e.preventDefault();  // 삭제 취소시 기본 동작 방지
-                        }
-                    }
                 }
             }
         }

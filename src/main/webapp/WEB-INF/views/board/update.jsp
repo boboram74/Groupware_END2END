@@ -1,165 +1,90 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:include page="/WEB-INF/views/board/board-header.jsp"/>
-<style>
-    .form-container {
-        width: 100%;
-        max-width: 650px;
-        margin: 0 auto;
-        font-family: 'Noto Sans KR', sans-serif;
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-
-    /* 테이블 스타일 */
-    .form-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    /* 테이블 셀 공통 스타일 */
-    .form-table th, .form-table td {
-        padding: 12px 15px;
-        border-bottom: 1px solid #dee2e6;
-        border-right: 1px solid #dee2e6;
-        vertical-align: top;
-    }
-
-    /* 헤더 셀 스타일 */
-    .form-table th {
-        width: 120px;
-        background-color: #f8f9fa;
-        text-align: right;
-        font-weight: normal;
-        color: #495057;
-    }
-
-    /* 필수 입력 표시 (*) */
-    .required {
-        color: #dc3545;
-        margin-left: 2px;
-    }
-
-    /* 입력 필드 스타일 */
-    .form-input {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        font-size: 14px;
-        box-sizing: border-box;
-    }
-
-    /* 텍스트 영역 스타일 */
-    .form-textarea {
-        width: 100%;
-        min-height: 120px;
-        padding: 8px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        font-size: 14px;
-        resize: vertical;
-        box-sizing: border-box;
-    }
-
-    /* 체크박스 컨테이너 */
-    .checkbox-container {
-        display: flex;
-        align-items: center;
-    }
-
-    /* 체크박스 스타일 */
-    .form-checkbox {
-        margin-right: 6px;
-    }
-
-    /* 버튼 컨테이너 */
-    .button-container {
-        display: flex;
-        justify-content: center;
-        padding: 15px 0;
-        gap: 10px;
-    }
-
-    /* 기본 버튼 스타일 */
-    .btn {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 4px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-    /* 저장 버튼 */
-    .btn-primary {
-        background-color: #17a2b8;
-        color: white;
-    }
-
-    /* 취소 버튼 */
-    .btn-secondary {
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
-        color: #495057;
-    }
-
-    /* 날짜 스타일 */
-    .date-field {
-        color: #6c757d;
-        font-size: 14px;
-    }
-</style>
-
-<div class="search">
-    <div>
-
-    </div>
-
-</div>
-<div class="content">
-</div>
+<script src="/js/summernote/summernote-lite.js"></script>
+<script src="/js/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="/js/summernote/summernote-lite.css">
+<link rel="stylesheet" href="/css/board/write.css" />
 <div class="form-container">
-    <form action="/board/update" method="post">
+    <form action="${action == null ? '/board/update' : '/notice/update'}" method="post" enctype="multipart/form-data">
     <table class="form-table">
         <tr>
-
+            <th class="label">등록일<span class="required"></span></th>
             <td>
-
-            </td>
-            <th>등록일</th>
-            <td><span class="date-field"></span>
+                <span class="date-field"></span>
                 <div class="date">${board.regDate}</div>
             </td>
-
+            <c:if test="${action != null}">
+                <th class="label">분류</th>
+                <td>${board.noticeCtName}</td>
+            </c:if>
         </tr>
         <tr>
-            <th>제목<span class="required">*</span></th>
+            <th class="label">제목<span class="required"></span></th>
             <td colspan="3">
                 <input type="text" class="form-input" name="title" value="${board.title}">
             </td>
         </tr>
         <tr>
-            <th>이름<span class="required">*</span></th>
+            <th class="label">이름<span class="required"></span></th>
             <td colspan="3">
-                <input type="text" class="form-input" name="employeeName" value="${board.employeeName}">
+                <c:choose>
+                    <c:when test="${action == null}">
+                        <input type="text" value="${board.employeeName}" disabled />
+                    </c:when>
+                    <c:otherwise>
+                        관리자
+                    </c:otherwise>
+                </c:choose>
+            </td>
+        </tr>
+        <c:forEach var="file" items="${fileList}">
+            <tr>
+                <td class="label">첨부파일</td>
+                <td colspan="3">
+                    <c:forEach var="file" items="${fileList}">
+                        <a href="/file/download?path=${file.path}">${file.originFileName}</a>
+                    </c:forEach>
+                </td>
+            </tr>
+        </c:forEach>
+        <tr>
+            <th class="label">첨부파일</th>
+            <td colspan="3"  style="margin-right: 10px;>
+                <jsp:include page="/WEB-INF/views/template/fileInput.jsp" />
+                <c:forEach items="${fileList}" var="file">
+                    <div>
+                        <span>${file.originFileName}</span>
+                        <span class="material-icons" onclick="$(this).parent().remove();">close</span>
+                        <input type="hidden" name="fileId" value="${file.id}" />
+                    <div/>
+                </c:forEach>
             </td>
         </tr>
         <tr>
-            <th>내용<span class="required">*</span></th>
-            <td colspan="3">
-                <textarea class="form-textarea" name="content">${board.content}</textarea>
+            <td colspan="5" class="board-detail-content">
+                <textarea class="form-textarea" name="content" id="content">${board.content}</textarea>
             </td>
         </tr>
         <input type="hidden" name="id" value="${board.id}">
     </table>
     <div class="button-container">
-        <button class="btn btn-primary">수정</button>
-        <button type="button" class="btn btn-secondary" onclick="location.href = '/board/detail/${board.id}'">취소</button>
+        <button class="primary">수정</button>
+        <button type="button" class="secondary" onclick="location.href = ${actaion == null ?'/board/detail/' : '/notice/detail/'}${board.id};">취소</button>
 
     </div>
     </form>
 </div>
+<script type="text/javascript" src="/js/template/summernote.js"></script>
+<script>
+    $('#content')
+        .summernote(summernoteSetting($('#content')))
+        .summernote('code', '${board.content}');
 
+    $('form').on('submit', function(e) {
+        $('input [name="content"]').val($('#content').summernote('code'));
+    })
+</script>
 <script src="/js/main/contact.js" type="text/javascript"></script>
 <jsp:include page="/WEB-INF/views/board/board-footer.jsp"/>

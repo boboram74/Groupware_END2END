@@ -71,12 +71,10 @@
             <li class="detail-menu-item ${active eq 'notice' ? 'active' : ''}" onClick="location.href='/notice/list?page=1'">
                 <span class="material-icons">notifications</span>
                 <span>공지 게시판</span>
-                <span class="detail-badge">5</span>
             </li>
             <li class="detail-menu-item ${empty active ? 'active' : ''}" onClick="location.href='/board/list'">
                 <span class="material-icons">bookmark</span>
                 <span class="detail-menu-disc">전사 게시판</span>
-                <span class="detail-badge">12</span>
             </li>
         </ul>
         <button class="detail-modal-close">

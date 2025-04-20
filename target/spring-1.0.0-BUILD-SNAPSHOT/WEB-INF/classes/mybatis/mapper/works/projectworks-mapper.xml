@@ -22,6 +22,13 @@
     </select>
     <!-- 프로젝트 모아보기-->
 
+    <select id="selectProjectDeadLine" resultType="com.end2end.spring.works.dto.ProjectDTO" parameterType="int">
+        SELECT id, deadLine
+        FROM project
+        WHERE id = #{id}
+
+
+</select>
 
     <select id="selectByprojectId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
 
@@ -113,17 +120,15 @@
     </select>
 
 
-    <!--  모달창에서 추가할 프로젝트 인원 검색-->
     <select id="selectByUser" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
-        SELECT EMPLOYEE.*, DEPARTMENT.NAME AS departmentName, job.name as jobName
+        SELECT EMPLOYEE.*, DEPARTMENT.NAME AS departmentName, JOB.NAME AS jobName
         FROM EMPLOYEE
-        JOIN DEPARTMENT
-        ON EMPLOYEE.DEPARTMENTID = DEPARTMENT.ID
-        JOIN JOB
-        ON EMPLOYEE.JOBID = JOB.ID
+        JOIN DEPARTMENT ON EMPLOYEE.DEPARTMENTID = DEPARTMENT.ID
+        JOIN JOB ON EMPLOYEE.JOBID = JOB.ID
         WHERE EMPLOYEE.NAME LIKE #{name}
-
+        AND DEPARTMENT.NAME = '연구팀'
     </select>
+
 
     <!--프로젝트에 추가되어 있던 멤버-->
     <select id="getMembersByProjectId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">

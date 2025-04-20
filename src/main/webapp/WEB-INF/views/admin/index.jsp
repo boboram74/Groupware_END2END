@@ -4,17 +4,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <link rel="stylesheet" href="/css/admin/index.css"/>
 <div class="mainHeader surface-bright">
-  <a href="/admin">
     <div class="detail-menu-header">
-      <div class="detail-menu-title">
+      <a href="/admin">
+        <div class="detail-menu-title">
         <span class="material-icons">mail</span>
         <span>관리자 페이지</span>
       </div>
-      <button class="detail-menu-toggle-btn">
+      </a>
+      <button class="detail-menu-toggle-btn" type="button">
         <span class="material-icons">menu</span>
       </button>
     </div>
-  </a>
   <div class="detail-menu-modal">
     <ul class="detail-menu-list">
       <a href="/admin/department-setting">
@@ -23,7 +23,6 @@
           <span>부서 관리</span>
         </li>
       </a>
-
       <a href="/admin/mail-setting">
         <li class="detail-menu-item">
             <span class="material-icons">mail</span>
@@ -45,7 +44,10 @@
 
 <div class="mainContainer">
   <div class="mainBody">
-    <h1>웹서버 모니터링</h1>
+    <div class="section-chip">
+      <span class="chip">LIVE</span>
+      <h2>웹서버 상태 대시보드</h2>
+    </div>
     <div class="iframe-grid">
       <div class="iframe-card">
         <iframe src="https://end2end.site:3000/d-solo/eej8u5ls61728a/boram-first?orgId=1&panelId=2&from=now-30m&to=now&theme=light"></iframe>
@@ -67,7 +69,10 @@
       </div>
     </div>
 
-    <h1>메일서버 모니터링</h1>
+    <div class="section-chip">
+      <span class="chip">LIVE</span>
+      <h2>메일서버 상태 대시보드</h2>
+    </div>
     <div class="iframe-grid">
       <div class="iframe-card">
         <iframe src="https://end2end.site:3000/d-solo/aej92n102uz9ca/eba994-ec9dbc-ec849c-ebb284?orgId=1&from=1744966496210&to=1744988096210&panelId=1"></iframe>
@@ -95,32 +100,31 @@
       $('.detail-menu-item').on('click', function() {
         $('.detail-menu-item').removeClass('active');
         $(this).addClass('active');
-        // 클릭 이벤트 처리 로직
+        var index = $('.detail-menu-item').index(this);
+        localStorage.setItem("activeMenuIndex", index);
       });
 
       const $menuBtn = $('.detail-menu-toggle-btn');
       const $detailMenuModal = $('.detail-menu-modal');
       const $closeBtn = $('.detail-modal-close');
 
-      // 메뉴 버튼 클릭 시 모달 열기
       $menuBtn.on('click', function() {
         $detailMenuModal.addClass('active');
         $('body').css('overflow', 'hidden');
       });
 
-      // 닫기 버튼 클릭 시 모달 닫기
       $closeBtn.on('click', function() {
         $detailMenuModal.removeClass('active');
         $('body').css('overflow', '');
       });
 
-      // 모달 외부 클릭 시 닫기
       $(window).on('click', function(e) {
         if ($(e.target).is($detailMenuModal)) {
           $detailMenuModal.removeClass('active');
           $('body').css('overflow', '');
         }
       });
+
     });
   </script>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

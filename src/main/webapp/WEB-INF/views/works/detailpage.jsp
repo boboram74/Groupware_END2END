@@ -5,7 +5,8 @@
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<link rel="stylesheet" href="/css/template/exam.css"/>
 <!-- Date Range Picker CSS & JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -19,7 +20,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <style>
     * {
@@ -40,7 +41,7 @@
 
     .mainContainer {
         width: calc(100% - 200px); /* boxContents 전체 너비에서 mainHeader(200px)만큼 뺌 */
-        margin-left: 200px; /* mainHeader 너비만큼 왼쪽 마진 */
+        margin-left: 200px;
         min-height: 100vh;
         background-color: #fff;
         padding: 20px;
@@ -144,14 +145,17 @@
 
     .priority.high {
         background: linear-gradient(45deg, #ff6b6b, #ff8787);
+        width: 50px;
     }
 
     .priority.middle {
         background: linear-gradient(45deg, #ffd43b, #ffa931);
+        width: 60px;
     }
 
     .priority.low {
         background: linear-gradient(45deg, #69db7c, #51cf66);
+        width: 50px;
     }
 
     .detail-menu-header {
@@ -250,23 +254,64 @@
         height: 25px !important;
     }
 
-    /* 입력 필드나 버튼 등의 추가 스타일 필요시 */
-    .search input,
-    .search button,
-    .search select {
-        height: 25px;
-        line-height: 25px;
-        padding: 0 8px;
+
+    .search select,
+    .search input {
+
+        border: none;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        outline: none;
     }
 
-    #searchBtn {
-        font-size: 13px;
+    .search select {
+        background-color: #f9fafc;
+        color: #333;
+    }
+
+    .search input {
+        width: 220px;
+        background-color: #ffffff;
+    }
+
+    .search button {
+        background-color: #3a4b76;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
         display: flex;
         align-items: center;
-        justify-content: center;
-        padding: 0 12px;
+        gap: 5px;
     }
 
+    .search button:hover {
+        background-color: #2b3b5b;
+    }
+
+    #writeBtn {
+        background-color: #1f2a44;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        margin-top: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #writeBtn:hover {
+        background-color: #2b3b5b; /* 더 밝은 남색 */
+        box-shadow: 0 4px 10px rgba(31, 42, 68, 0.3); /* 약한 그림자 */
+    }
+
+
+    .finishBtnDiv {
+        margin-top: 15px;
+    }
 
     .content {
         width: 100%;
@@ -287,9 +332,9 @@
         position: relative;
     }
 
-    /* 모바일 메뉴 버튼 */
+
     .detail-menu-toggle-btn {
-        display: none; /* 기본적으로 숨김 */
+        display: none;
         padding: 8px;
         background: #fff;
         border: 1px solid #e0e0e0;
@@ -308,9 +353,9 @@
         font-size: 24px;
     }
 
-    /* 모달 닫기 버튼 */
+
     .detail-modal-close {
-        display: none; /* 기본적으로 숨김 */
+        display: none;
         position: absolute;
         top: 10px;
         right: 10px;
@@ -329,6 +374,24 @@
         color: #666;
     }
 
+    #finishProjectBtn {
+        background-color: #1f2a44;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #finishProjectBtn:hover {
+        background-color: #162036;
+        transform: translateY(-2px);
+    }
+
     /* 반응형 디자인 */
     @media (max-width: 768px) {
         .mainHeader {
@@ -344,11 +407,11 @@
         }
 
         .detail-menu-toggle-btn {
-            display: flex; /* 모바일에서만 보이게 */
+            display: flex;
         }
 
         .detail-modal-close {
-            display: block; /* 모바일에서만 보이게 */
+            display: block;
             position: absolute;
             top: 10px;
             right: 10px;
@@ -363,24 +426,24 @@
         }
 
         .detail-menu-list {
-            margin-top: 30px; /* 닫기 버튼과의 간격 */
+            margin-top: 30px;
             max-height: 80vh;
 
-            padding-top: 10px; /* 리스트 상단 간격 */
+            padding-top: 10px;
         }
 
         .detail-menu-modal {
             display: none;
             position: absolute;
-            top: 100%; /* 헤더 바로 아래에 위치 */
-            width: 250px; /* 너비 250px로 설정 */
+            top: 100%;
+            width: 250px;
             right: 0;
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 1100;
-            margin-top: 10px; /* 헤더와의 간격 */
+            margin-top: 10px;
         }
 
         .detail-menu-modal.active {
@@ -388,228 +451,9 @@
         }
     }
 
-    /* 미디어 쿼리 추가 */
-    @media screen and (max-width: 768px) {
-        .mainHeader {
-            margin-top: 10px;
-        }
 
-        .mainContainer {
-            margin-top: 10px;
-            width: 100%;
-            margin-left: 0;
-            min-height: calc(100vh - 70px);
-        }
-
-        .projectTime {
-            font-size: 1rem;
-            color: #666;
-        }
-
-        /* 칸반보드 기본 스타일 */
-        .movingBoard {
-            display: flex;
-            justify-content: space-evenly; /* 균등 분배 */
-            gap: 20px;
-            margin: 20px auto;
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-width: 1400px;
-            overflow: hidden;
-        }
-
-        /* 칸반 컬럼 스타일 */
-        .movingBoardColumn {
-            flex: 1;
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-            transition: 0.3s transform ease;
-            min-height: 400px;
-        }
-
-        #finishProjectBtn {
-            width: 200px;
-            height: 40px;
-            background-color: #28a745;
-            border-radius: 12px;
-            color: white;;
-        }
-
-        /* 컬럼 타이틀 스타일 */
-        .column-title {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #444;
-            padding: 10px 0;
-            margin-bottom: 10px;
-            background: #f1f1f1;
-            border-radius: 8px;
-            display: flex;
-        }
-
-        /* 다른 상태에 따라 다른 배경색 */
-        .ready-column {
-            border: 2px solid #007bff; /* 시작전 */
-        }
-
-        .ongoing-column {
-            border: 2px solid #f39c12; /* 작성중 */
-        }
-
-        .finish-column {
-            border: 2px solid #28a745; /* 완료 */
-        }
-
-        /* 작업 아이템(카드) */
-        .work-items {
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            overflow-y: auto;
-
-
-        }
-
-        /* 카드 스타일 */
-        .work-item {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 10px 15px;
-            cursor: grab;
-            transition: transform 0.2s, background-color 0.3s;
-        }
-
-        .work-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-            background: #ffffff;
-        }
-
-        .work-item:active {
-            cursor: grabbing;
-        }
-
-        /* 우선순위 뱃지 */
-        .priority {
-            display: inline-block;
-            padding: 5px 10px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #fff;
-            border-radius: 12px;
-            text-transform: uppercase;
-        }
-
-        .priority.high {
-            background: #e74c3c;
-        }
-
-        /* 높은 우선순위 */
-        .priority.middle {
-            background: #f1c40f;
-        }
-
-        /* 중간 우선순위 */
-        .priority.low {
-            background: #2ecc71;
-        }
-
-        /* 낮은 우선순위 */
-        /* 드래그 상태 강조 */
-        .work-items.drag-over {
-            background: rgba(0, 123, 255, 0.1);
-            border: 2px dashed #007bff;
-            border-radius: 8px;
-        }
-
-        .movingBoardColumn.drag-over {
-            border: 2px dashed #007bff;
-            background-color: rgba(0, 123, 255, 0.1);
-        }
-
-        .work-items {
-            min-height: 300px;
-            margin-top: 20px;
-            cursor: grab;
-
-        }
-
-        /* 작업 카드 */
-        .work-item {
-            background: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            cursor: grab;
-            transition: transform 0.2s;
-        }
-
-        .work-item:hover {
-            transform: scale(1.03);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        }
-
-        .work-item h4 {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #444;
-            margin: 0;
-        }
-
-        .priority {
-            display: inline-block;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-            color: #fff;
-            border-radius: 12px;
-        }
-
-        .priority.high {
-            background: #ff6b6b;
-        }
-
-        .priority.middle {
-            background: #ffa931;
-        }
-
-        .priority.low {
-            background: #1dd1a1;
-        }
-
-        /* 드래그 오버 상태 */
-        .drag-over {
-            background: #f0f9ff;
-            border: 2px dashed #00aaff;
-            border-radius: 8px;
-        }
-
-        .closeBtn {
-            display: flex;
-            justify-content: flex-end; /* 오른쪽 정렬 */
-            margin-bottom: 5px; /* 아래 내용과의 간격 */
-        }
-
-        .btn-close {
-            padding: 0.15rem !important; /* 패딩 줄임 */
-            font-size: 0.6rem !important; /* 글자 크기 줄임 */
-            opacity: 0.5; /* 투명도 조절 */
-        }
-
-        .btn-close:hover {
-            opacity: 1; /* 호버시 완전 불투명 */
-        }
-
-
-    }
 </style>
+
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
@@ -622,13 +466,11 @@
     </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
-            <a style="text-decoration:none;" href="/project/main">
-                <li class="detailMenuItem">
-                    <span class="material-icons">star</span>
-                    <span>프로젝트 모음</span>
+            <li class="detail-menu-item" onclick="location.href='/project/main'">
+                <span class="material-icons">star</span>
+                <span>Works 메인</span>
+            </li>
 
-                </li>
-            </a>
 
         </ul>
         <button class="detail-modal-close">
@@ -666,11 +508,13 @@
 
             </div>
             <a href="/work/write/${project.id}">
-                <button>작성하기</button>
+                <button id="writeBtn" }>작성하기</button>
             </a>
-            <div id="finishBtnDiv" class="finishBtnDiv">
+            <c:if test="${list.projectUserId}">
+                <div id="finishBtnDiv" class="finishBtnDiv">
 
-            </div>
+                </div>
+            </c:if>
         </div>
 
         <!-- 칸반보드 -->
@@ -689,8 +533,8 @@
                                 <c:if test="${employee.role != 'TeamLeader'}">
                                     <div class="closeBtn">
                                         <button type="button" class="btn-close btn-sm"
-                                                onclick="deleteWork(${work.id})
-                                                        "></button>
+                                                onclick="event.stopPropagation(); deleteWork(${work.id});">
+                                        </button>
                                     </div>
                                 </c:if>
 
@@ -718,8 +562,8 @@
                                 <c:if test="${employee.role != 'TeamLeader'}">
                                     <div class="closeBtn">
                                         <button type="button" class="btn-close btn-sm"
-                                                onclick="deleteWork(${work.id})
-                                                        "></button>
+                                                onclick="event.stopPropagation(); deleteWork(${work.id});">
+                                        </button>
                                     </div>
                                 </c:if>
                                 <h4>제목 : ${work.title}</h4>
@@ -744,12 +588,12 @@
                                  data-work-id="${work.id}"
                                  data-employee-id="${work.employeeId}"
                                  onclick="openWorkModal(${work.id}, ${work.employeeId})">
-                                <c:if test="${employee.role != 'TeamLeader'}">
-                                    <%--삭제 테스트를 위해 != 설정해둠--%>
+                                <c:if test="${employee.role == 'TeamLeader'}">
+
                                     <div class="closeBtn">
                                         <button type="button" class="btn-close btn-sm"
-                                                onclick="deleteWork(${work.id})
-                                                        "></button>
+                                                onclick="event.stopPropagation(); deleteWork(${work.id});">
+                                        </button>
                                     </div>
                                 </c:if>   <h4>제목 : ${work.title}</h4>
                                 <h4>작성자 :${work.departmentName} ${work.employeeName} ${work.jobName}</h4>
@@ -780,8 +624,8 @@
                         <div id="workPriority"><h2>중요도</h2></div>
                         <h5>진행도</h5>
                         <div id="workState"><h2>진행도</h2></div>
-                        <h5>기간</h5>
-                        <div id="workDate"><h2>기간</h2></div>
+<%--                        <h5>기간</h5>--%>
+<%--                        <div id="workDate"><h2>기간</h2></div>--%>
                         <h5>내용</h5>
                         <div id="workContent"></div>
                         <h5>파일 리스트</h5>
@@ -824,8 +668,8 @@
                             <div id="updatePriority"></div>
                             <h5>진행도</h5>
                             <div id="updateState"></div>
-                            <h5>기간</h5>
-                            <div id="updateDate"></div>
+<%--                            <h5>기간</h5>--%>
+<%--                            <div id="updateDate"></div>--%>
                             <h5>내용</h5>
                             <div id="updateContet"></div>
                             <h5>파일 리스트</h5>
@@ -846,11 +690,8 @@
         <script>
 
             const employeeRole = "${employee.role}";
-            console.log("1 : ${employee.role}");
-            console.log(`2 : ${employee.role}`);
 
             function submitSearchData(projectId) {
-                console.log(projectId);
                 $.ajax({
                     url: '/work/search/' + projectId,
                     type: 'POST',
@@ -861,21 +702,16 @@
                     },
 
                     success: function (response) {
-                        console.log("체크" + response);
-
                         $(`.movingBoardColumn[data-state="` + "READY" + `"]`).empty();
                         $(`.movingBoardColumn[data-state="` + "ONGOING" + `"]`).empty();
                         $(`.movingBoardColumn[data-state="` + "FINISH" + `"]`).empty();
-                        console.log("response 확인", response);
-
-
                         // 응답이 리스트라고 가정 (List<ProjectWorkDTO>)
                         response.forEach(function (work) {
 
 
                             const closeBtnHtml = (employeeRole === 'TeamLeader' || work.isMine) ? `
                        <div class="closeBtn">
-                       <button type="button" class="btn-close btn-sm" onclick="deleteWork(` + work.id + `)"></button>
+                       <button type="button" id="deleteBtn" class="btn-close btn-sm" onclick="deleteWork(` + work.id + `)"></button>
                        </div>
                       ` : '';
 
@@ -892,12 +728,7 @@
                           </div>
                         `;
 
-                            console.log("itemHtml 확인:", itemHtml); // 확인용
                             let temp = $(itemHtml);
-                            console.log("temp" + temp);
-                            console.log(typeof itemHtml); // 결과가 'string'이어야 함
-
-
                             if (work.state == 'READY') {
                                 $(`.movingBoardColumn[data-state="` + work.state + `"]`).append(itemHtml);
 
@@ -908,9 +739,6 @@
                             } else if (work.state === 'FINISH') {
                                 $(`.movingBoardColumn[data-state="` + work.state + `"]`).append(itemHtml);
                             }
-                            console.log("상태" + work.state);
-                            console.log($('.ready-column .work-items').length);
-
                         });
                     },
                     error: function (xhr) {
@@ -921,8 +749,6 @@
 
             let currentWorkId = null;
             const loggedInEmployeeId = ${employee.id}; // 모델로 넘어온 세션 유저 ID
-            console.log("세션로그인" + loggedInEmployeeId)
-
             function openWorkModal(workId, employeeId) {
                 currentWorkId = workId;
                 $.ajax({
@@ -930,7 +756,6 @@
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
-                        console.log(response);
                         const work = response.worksDTO;
                         const files = response.files;
 
@@ -941,27 +766,26 @@
                         $('#workDate').html(work.regDate + "~" + work.deadLine);
                         $('#workContent').html(work.content);
                         $('.work-item').append('<input type="hidden" name="projectId" value="' + workId + '">');
-                        console.log(work)
 
                         // 파일 목록 업데이트
                         let fileList = "";
                         if (files && files.length > 0) {
                             files.forEach(function (file) {
-                                console.log(file);
                                 fileList += '<li class="mb-2">' +
                                     '<i class="bi bi-paperclip"></i> ' +
                                     '<a href="/file/download?path=' + file.path +
                                     '" class="text-decoration-none">' +
 
                                     file.originFileName
-                                    + '</a></li>';
+                                    + '</a>'
+                                    + '<input type="hidden" name="fileId" value="' + file.id + '">'
+                                    + '</li>';
                             });
 
                         } else {
                             fileList = '<li>첨부된 파일이 없습니다.</li>';
                         }
                         $('#fileList').html('<ul>' + fileList + '</ul>');
-                        console.log(employeeId == ${employee.id})
                         if (employeeId == ${employee.id}) {
                             $('#updateBtn').show();
                         } else {
@@ -984,10 +808,9 @@
 
             $('#updateForm').submit(function (e) {
                 e.preventDefault();
-                console.log("수정보내는곳")
                 const formData = new FormData(this);
                 for (const [key, value] of formData.entries()) {
-                    console.log(key, value);
+
                 }
                 $.ajax({
                     url: '/work/update',
@@ -1002,7 +825,6 @@
                         console.error('Response:', xhr.responseText);
                     }
                 }).done(function (response) {
-                    console.log(response);
                     alert("글이 정상적으로 수정되었습니다.");
                     location.reload();
 
@@ -1019,10 +841,7 @@
                         type: 'POST',
                         data: {workId: workId},
                         success: function (response) {
-                            console.log('삭제 성공:', response);
                             location.reload();
-
-
                         },
                         error: function (error) {
                             console.error('저장 실패:', error);
@@ -1033,7 +852,6 @@
 
             function openupdateModal(currentWorkId) {
                 $('#updateModal').modal('show');
-
                 // 이전 내용 초기화
                 $('#updateTitle').html('');
                 $('#updateType').html('');
@@ -1050,7 +868,6 @@
                     success: function (response) {
                         const work = response.worksDTO;
                         const files = response.files;
-                        console.log("가져온값" + work.title)
                         // 값 가져오고있음
                         $('input[name="id"]').val(currentWorkId);
                         $('#updateTitle').html(`
@@ -1089,20 +906,21 @@
                         let fileList = '';
                         if (files && files.length > 0) {
                             files.forEach(file => {
-                                fileList += `
-                            <li>
-                                <a href="/file/download?path=' + file.path +
+                                fileList +=
+                                    '<li>'
+                                    + '<a href="/file/download?path=' + file.path +
                                     '" class="text-decoration-none">' +
-                            file.originFileName
-                            + '</a>
-                            </li> `;
+                                    file.originFileName
+                                    + '</a>'
+                                    + '<input type="hidden" name="fileId" value="' + file.id + '">'
+                                    + '<button type="button" onClick="$(this).parent().remove();">삭제</button>' + '</li>';
                             });
                         } else {
                             fileList = '<li>첨부된 파일이 없습니다.</li>';
                         }
 
 
-                        $('#updatefileList').append(`<ul>${fileList}</ul>`);
+                        $('#updatefileList').append('<ul>' + fileList + '</ul>');
                     },
                     error: function (xhr, status, error) {
                         console.error('수정 모달 데이터 실패:', error);
@@ -1110,7 +928,6 @@
                     }
                 });
             }
-
 
             function closeupdateModal() {
                 $('#updateModal').modal('hide');
@@ -1142,7 +959,6 @@
                 //     data: {"dto": dtobox},
                 //
                 //     success: function (result) {
-                //         console.log("ajax성공" + result)
                 //         if (result) {
                 //             alert("글이 정상적으로 수정되었습니다.");
                 //             $('#updateModal').modal('hide');
@@ -1166,16 +982,16 @@
 
                 $('.work-item').on('dragend', function (e) {
                     dragged = null;
-                    // 드래그가 끝난 후 처리할 일이 있다면 여기에 작성
+
                 });
 
                 $('.work-item').on('drag', function (e) {
-                    // 드래그 중에 처리할 일이 있다면 여기에 작성
+
                 });
-                $(document).on('click', '#finishProjectBtn', function() {
+                $(document).on('click', '#finishProjectBtn', function () {
                     const projectId = ${projectId};
-                    console.log("마감 요청 projectId:", projectId);
                     finishWork(projectId);
+                    disableProjectFeatures();
                 });
 
 
@@ -1184,10 +1000,11 @@
                         $.ajax({
                             url: '/work/finish',
                             type: 'POST',
-                            data: { projectId: projectId },
+                            data: {projectId: projectId},
                             success: function (response) {
                                 alert("프로젝트가 마감되었습니다.");
-                                location.href= '/project/main';
+                                disableProjectFeatures();
+
                             },
                             error: function (error) {
                                 console.error("마감 실패:", error);
@@ -1196,16 +1013,37 @@
                         });
                     }
                 }
+
+                function disableProjectFeatures() {
+
+                    $('#writeBtn, #deleteBtn, #updateBtn').prop('disabled', true).css('cursor', 'not-allowed');
+                    $('.work-item').removeAttr('draggable').css('cursor', 'not-allowed');
+                    $('.movingBoardColumn').off('dragover drop');
+                    $('.work-item').off('dragstart dragend');
+                }
+
+                // function disableProjectFeatures() {
+                //
+                //     $('#writeBtn,#deleteBtn, #updateBtn').prop('disabled', true);
+                //
+                //     $('.work-item').removeAttr('draggable');
+                //     $('.btn-close').prop('disabled', true);
+                //
+                //     // $('.work-item').attr('draggable', false);
+                //
+                //     $('.movingBoardColumn').off('dragover drop');
+                //     $('.work-item').off('dragstart dragend');
+                //
+                // }
+
                 $('.movingBoardColumn'
                 ).on('drop', function (e) {
-                    console.log("도착");
                     e.preventDefault();
                     $(this).append(dragged);
 
                     const columnState = $(this).data('state');
                     const projectId = $(dragged).data('projectid');
                     const workItemId = $(dragged).data('work-id');
-                    console.log("제발 아이디" + projectId);
                     $(this).find('.work-items').append(dragged);
 
                     const formData = new FormData();
@@ -1223,7 +1061,6 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            console.log("동적버튼에 넣을거"+projectId)
                             if (response == 0) {
 
                                 $('#finishProjectBtn').remove();
@@ -1231,7 +1068,6 @@
                                      <button id="finishProjectBtn" class="btn btn-primary">
                                      프로젝트 마감
                                     </button> `);
-
                             } else {
 
                                 location.reload();

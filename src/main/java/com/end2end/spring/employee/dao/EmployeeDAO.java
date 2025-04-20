@@ -58,7 +58,7 @@ public class EmployeeDAO {
     }
 
     public boolean pwVali(String currentPw) {
-        System.out.println(currentPw);
+//        System.out.println(currentPw);
         Integer count = mybatis.selectOne("employee.pwVali", currentPw);
         if (count != null && count > 0) {
             return true;
@@ -181,5 +181,12 @@ public class EmployeeDAO {
 
     public List<RoleListDTO> loadSettingList() {
         return mybatis.selectList("employee.loadSettingList");
+    }
+
+    public void updateRole(String employeeId, String role) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("employeeId", employeeId);
+        param.put("role", role);
+        mybatis.update("employee.updateRole", param);
     }
 }

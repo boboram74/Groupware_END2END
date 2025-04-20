@@ -1,21 +1,16 @@
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" class="light">
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-        <link rel="stylesheet" href="/css/approval/draft.css">
         <script src="/js/summernote/summernote-lite.js"></script>
         <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
         <link rel="stylesheet" href="/js/summernote/summernote-lite.css">
+        <link rel="stylesheet" href="/css/approval/draft.css" />
         <title>Document</title>
-        <style>
-            .loading-img {
-                //background-image: '/image/';
-            }
-        </style>
     </head>
     <div class="loading-img" style="display: none"></div>
     <body>
@@ -68,14 +63,17 @@
         $('#addApproval').on('click', function () {
             const lineBox = $('#lineBox');
             const approvalLine = $('#approvalLine');
+            const approvalTableHeader = $('#approval-table-header');
 
             approvalList.forEach(employee => {
-
                 if ($('#lineBox').find(`#${employee.name}`).length === 0) {
-                    const div = makeEmployee(employee);
-                    div.append($('<input>').attr('type', 'hidden').attr('name', 'approverId').val(employee.id))
+                    approvalTableHeader.append($('<th>').html("결재"));
+                    const td = $('<td class="sign-cell">')
+                        .append($('<div class="position">').html(employee.jobName))
+                        .append($('<div class="name">').html(employee.name))
+                        .append($('<input>').attr('type', 'hidden').attr('name', 'approverId').val(employee.id))
 
-                    lineBox.append(div);
+                    lineBox.append(td);
                 }
             });
 
@@ -207,19 +205,16 @@
 
                 const vacationType = formData.get('vacationType');
 
-                console.log(vacationType);
-
                 if (vacationType === 'ANNUAL') {
                     formData.append('startDate', date + " 00:00:00");
                 } else {
-                    console.log(date, time);
                     formData.append('startDate', date + " " + time);
                     $('input [name="vacationDate"]').val(0.5);
                 }
             }
 
             for (const key of formData.keys()) {
-                console.log(key +": " + formData.get(key));
+
             }
 
             $.ajax({
@@ -235,7 +230,6 @@
 
                 }
             }).done(function(resp) {
-                console.log('전송됨');
                 if (window.opener) {
                     window.opener.location.reload();
                     window.close();

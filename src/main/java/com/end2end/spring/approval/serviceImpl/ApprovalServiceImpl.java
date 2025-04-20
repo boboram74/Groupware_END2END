@@ -87,7 +87,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
     @Transactional
     @Override
-    public void insert(MultipartFile[] files, ApprovalInsertDTO dto) {
+    public void insert(MultipartFile[] files, ApprovalInsertDTO dto) throws Exception {
         ApprovalFormDTO formDTO = approvalDAO.selectByFormId(dto.getApprovalFormId());
 
         ApprovalDTO approvalDTO = ApprovalDTO.builder()
@@ -100,16 +100,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         approvalDAO.insert(approvalDTO);
 
-        if (files.length != 0) {
-            FileDTO fileDTO = FileDTO.builder()
-                    .approvalId(approvalDTO.getId())
-                    .build();
-            try {
-                fileService.insert(files, fileDTO);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
+        FileDTO fileDTO = FileDTO.builder()
+                .approvalId(approvalDTO.getId())
+                .build();
+        fileService.insert(files, fileDTO);
+
+        String formName = formDTO.getName();
+        boolean isSubmit = formName.contains("연장");
 
         if (formDTO.getName().contains("휴가")) {  // 휴가 문서라면 휴가 추가
             VacationDTO vacationDTO = VacationDTO.builder()
@@ -121,12 +118,11 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .type(dto.getVacationType())
                     .build();
             vacationService.insert(vacationDTO);
-        } else if (formDTO.getName().contains("연장근무")) {  // 연장 근무라면 연장 근무 추가
+        } else if (formDTO.getName().contains("연장")) {  // 연장 근무라면 연장 근무 추가
             ExtendedCommuteDTO extendedCommuteDTO = ExtendedCommuteDTO.builder()
                     .approvalId(approvalDTO.getId())
                     .employeeId(dto.getEmployeeId())
-                    .commuteId(dto.getCommuteId())
-                    .workOffTime(Timestamp.valueOf(dto.getWorkOffTime()))
+                    .workOffTime(Timestamp.valueOf(dto.getWorkDate() + " " + dto.getEndTime() + ":00"))
                     .build();
             extendedCommuteDAO.insert(extendedCommuteDTO);
         }
@@ -234,7 +230,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public Map<String, List<Map<String, Object>>> allApprovals() {
         List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
-        System.out.println("allApprovals.size() = " + allApprovals.size());
+//        System.out.println("allApprovals.size() = " + allApprovals.size());
         Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
 
         allApproval.put("SUBMIT", new ArrayList<>());
@@ -253,7 +249,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public Map<String, List<Map<String, Object>>> SearchallApprovals(String keyword) {
         List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
-        System.out.println("allApprovals.size() = " + allApprovals.size());
+//        System.out.println("allApprovals.size() = " + allApprovals.size());
         Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
 
         allApproval.put("SUBMIT", new ArrayList<>());
@@ -290,5 +286,13 @@ public class ApprovalServiceImpl implements ApprovalService {
         if ("N".equals(dto.getLeaderCheckYn())) {
          approvalDAO.removeImportant(dto);
         }
+    }
+
+    @Override
+    public List<Map<String, Object>> selectRecent(String state, String employeeId) {
+        int start = 1;
+        int end = Math.min(10, approvalDAO.selectByState(state, employeeId).size());
+
+        return approvalDAO.selectByStateFromTO(state, employeeId, start, end);
     }
 }

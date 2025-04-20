@@ -1,6 +1,7 @@
 package com.end2end.spring.board.controller;
 
 import com.end2end.spring.board.dto.NoticeDTO;
+import com.end2end.spring.board.dto.NoticeUpdateDTO;
 import com.end2end.spring.board.service.NoticeCategoryService;
 import com.end2end.spring.board.service.NoticeService;
 import com.end2end.spring.file.dto.FileDTO;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/notice")
 @Controller
@@ -84,9 +87,24 @@ public class NoticeController {
         return "redirect:/notice/detail/" + dto.getId();
     }
 
+    @RequestMapping("/write/update/{id}")
+    public String toUpdate(@PathVariable int id, Model model) {
+        model.addAttribute("board", noticeService.selectById(id));
+        model.addAttribute("noticeCategoryList", noticeCategoryService.selectAll());
+        model.addAttribute("active", "notice");
+        model.addAttribute("action", "/notice/update");
+
+        FileDTO fileDTO = FileDTO.builder()
+                .noticeId(id)
+                .build();
+        model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
+
+        return "board/update";
+    }
+
     @RequestMapping("/update")
-    public String update(NoticeDTO dto) {
-        noticeService.update(dto);
+    public String update(MultipartFile[] files, NoticeUpdateDTO dto) {
+        noticeService.update(files, dto);
         return "redirect:/notice/detail/" + dto.getId();
     }
 
@@ -97,13 +115,13 @@ public class NoticeController {
     }
 
     @ResponseBody
-    @RequestMapping("/recent/list")
+    @RequestMapping("/recent")
     public List<NoticeDTO> listRecent() {
         return noticeService.selectRecent();
     }
 
     @ResponseBody
-    @RequestMapping("recent//list/{categoryId}")
+    @RequestMapping("recent/{categoryId}")
     public List<NoticeDTO> listRecent(@PathVariable int categoryId) {
         return noticeService.selectRecentByCategoryId(categoryId);
     }

@@ -38,7 +38,7 @@ public class ProjectController {
                 int id = dto.getId();
                 List<ProjectWorkDTO> list = wserv.selectAll(id);
 
-                System.out.println("nearDeadline: " + dto.getNearDeadline());
+//                System.out.println("nearDeadline: " + dto.getNearDeadline());
 
                 model.addAttribute("nearDeadline", dto.getNearDeadline());
 
@@ -55,7 +55,7 @@ public class ProjectController {
 @ResponseBody
 @RequestMapping("/hide")
 public String hide(int projectId,String hideYn) {
-        System.out.println("프젝아이디"+projectId+hideYn);
+//        System.out.println("프젝아이디"+projectId+hideYn);
     projectService.hideById(projectId,hideYn);
     return "SUCCESS";
 }
@@ -78,7 +78,7 @@ public String hide(int projectId,String hideYn) {
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
         ProjectDTO project = projectService.selectById(id);
         List<ProjectWorkDTO> list = wserv.selectAll(id);
-
+model.addAttribute("employee", employeeDTO);
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
         model.addAttribute("works", list);

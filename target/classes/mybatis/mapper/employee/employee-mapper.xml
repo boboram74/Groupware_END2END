@@ -396,7 +396,7 @@
 
     <select id="loadSettingList" resultType="com.end2end.spring.employee.dto.RoleListDTO">
         select
-        e.role, j.name as jobName, d.name teamName, e.name
+        e.id as employeeId, e.role, j.name as jobName, d.name teamName, e.name
         from employee e
         join department d
         on e.departmentid = d.id
@@ -405,4 +405,7 @@
         order by e.role asc, j.id asc, d.id, e.name asc
     </select>
 
+    <update id="updateRole" parameterType="map">
+        update employee set role = #{role} where id = #{employeeId}
+    </update>
 </mapper>

@@ -32,7 +32,7 @@ public interface ApprovalService {
 
     ApprovalFormDTO selectByFormId(int id);
 
-    void insert(MultipartFile[] files, ApprovalInsertDTO dto);
+    void insert(MultipartFile[] files, ApprovalInsertDTO dto) throws Exception;
 
     void update(ApprovalDTO dto);
 
@@ -56,4 +56,5 @@ public interface ApprovalService {
     List<Map<String, Object>> importantlist(String employeeId);
 
     void removeImportant(CheckImportantDTO dto);
+    List<Map<String, Object>> selectRecent(String  state, String employeeId);
 }

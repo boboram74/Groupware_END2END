@@ -4,17 +4,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <link rel="stylesheet" href="/css/admin/mail.css"/>
 <div class="mainHeader surface-bright">
-    <a href="/admin">
-        <div class="detail-menu-header">
+    <div class="detail-menu-header">
+        <a href="/admin">
             <div class="detail-menu-title">
                 <span class="material-icons">mail</span>
                 <span>관리자 페이지</span>
             </div>
-            <button class="detail-menu-toggle-btn">
-                <span class="material-icons">menu</span>
-            </button>
-        </div>
-    </a>
+        </a>
+        <button class="detail-menu-toggle-btn">
+            <span class="material-icons">menu</span>
+        </button>
+    </div>
     <div class="detail-menu-modal">
         <ul class="detail-menu-list">
             <a href="/admin/department-setting">
@@ -23,15 +23,16 @@
                     <span>부서 관리</span>
                 </li>
             </a>
+
             <a href="/admin/mail-setting">
                 <li class="detail-menu-item">
-                    <span class="material-icons">inbox_customize</span>
+                    <span class="material-icons">mail</span>
                     <span>공용 메일 설정</span>
                 </li>
             </a>
             <a href="/admin/setting">
                 <li class="detail-menu-item">
-                    <span class="material-icons">setting</span>
+                    <span class="material-icons">manage_accounts</span>
                     <span>관리자 설정</span>
                 </li>
             </a>
@@ -161,7 +162,6 @@
             method: 'GET',
             dataType: 'json'
         }).done(function (resp) {
-            console.log(resp);
             const totalGb = parseInt(resp.size, 10);
             const pct = parseInt(resp.usePercent, 10);
             const usedGb = Math.round(totalGb * pct / 100);

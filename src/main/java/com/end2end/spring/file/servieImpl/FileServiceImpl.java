@@ -29,7 +29,15 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void insert(MultipartFile[] files, FileDTO dto) {
-        if (Arrays.stream(files).allMatch(MultipartFile::isEmpty)) {
+        boolean isEmpty = true;
+        for( MultipartFile file : files) {
+           if (!file.isEmpty()) {
+               isEmpty = false;
+               break;
+           }
+       }
+
+        if (isEmpty) {
             return;
         }
 
@@ -85,5 +93,35 @@ public class FileServiceImpl implements FileService {
     @Override
     public List<FileDetailDTO> selectByEmail(String email) {
         return dao.selectByEmail(email);
+    }
+
+    @Override
+    public void update(MultipartFile[] files, FileDTO dto, List<Integer> updatedFileIdList) {
+        FileColumnMapperDTO mapper = FileColumnMapperDTO.of(dto);
+        List<FileDetailDTO> currentFileList = dao.selectByParentsId(mapper);
+
+        if (updatedFileIdList != null) {
+            for (FileDetailDTO currentFile : currentFileList) {
+                boolean isDuplicate = false;
+                for (int updateFileId : updatedFileIdList) {
+                    if (currentFile.getId() == updateFileId) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!isDuplicate) {
+                    FileUtil.removeFile(currentFile.getPath());
+                    dao.deleteDetailById(currentFile.getId());
+                }
+            }
+        } else {
+            for (FileDetailDTO currentFile : currentFileList) {
+                FileUtil.removeFile(currentFile.getPath());
+                dao.deleteDetailById(currentFile.getId());
+            }
+        }
+
+        insert(files, dto);
     }
 }

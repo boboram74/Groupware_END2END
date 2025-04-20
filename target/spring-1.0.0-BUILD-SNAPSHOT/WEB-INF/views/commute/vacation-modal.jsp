@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <style>
     /* 모달 기본 스타일 */
     .modal {
@@ -125,12 +126,21 @@
                         <th>일자</th>
                         <th>구분</th>
                         <th>사용일수</th>
-                        <th>사유</th>
                         <th>상태</th>
                         <th>문서</th>
                     </tr>
                     </thead>
-                    <tbody class="vacation-history-table-body"></tbody>
+                    <tbody class="vacation-history-table-body">
+                        <c:forEach items="${vacationList}" var="item">
+                            <tr>
+                                <td><fmt:formatDate value="${item.startDate}" pattern="YYYY/MM/dd"/> ~ <fmt:formatDate value="${item.endDate}" pattern="YYYY/MM/dd"/></td>
+                                <td>${item.type}</td>
+                                <td>${item.vacationDate}일</td>
+                                <td>${item.state}</td>
+                                <td onclick="location.href='/approval/detail/${item.approvalId}'">${item.approvalId}</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -144,7 +154,6 @@
             url: '/commute/vacation/list/' + ${employee.id},
             type: 'GET'
         }).done(function (data) {
-            console.log(data);
             const tbody = $('.vacation-history-table-body');
 
             if (data.length === 0) {

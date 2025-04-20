@@ -7,7 +7,7 @@ public class Statics {
 
     // 파일 입출력 경로
     public static final String FILE_UPLOAD_PATH = "C:/files/";
-    public static final String MAPPED_FILE_UPLOAD_PATH = "/files/";
+    public static final String MAPPED_FILE_UPLOAD_PATH = "/files/"; 
 
     //페이지 유틸
     public static final int recordCountPerPage = 10;

@@ -78,7 +78,7 @@ public String hide(int projectId,String hideYn) {
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
         ProjectDTO project = projectService.selectById(id);
         List<ProjectWorkDTO> list = wserv.selectAll(id);
-
+model.addAttribute("employee", employeeDTO);
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
         model.addAttribute("works", list);

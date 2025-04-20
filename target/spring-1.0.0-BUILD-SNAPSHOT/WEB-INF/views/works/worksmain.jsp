@@ -200,8 +200,55 @@
         transform: scale(1.1);
         z-index: 2;
     }
+    .inputMemberBtn {
+        background-color: #888888;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 8px;
+        margin-right: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .inputMemberBtn:hover {
+        background-color: #666666;
+    }
+
+    .closeBtn {
+        background-color: #888888;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 8px;
+        margin-right: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .closeBtn:hover {
+        background-color: #666666;
+    }
 
 
+    .remove-user {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        color: #fff;
+        background-color: gray;
+        border: none;
+        cursor: pointer;
+        margin-left: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .remove-user:hover {
+        background-color: #d9363e;
+        transform: scale(1.1);
+    }
     .form-check-input:focus {
         box-shadow: none;
     }
@@ -223,60 +270,6 @@
         border-color: #333e4e;
     }
 
-    .tip {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 20px;
-        height: 20px;
-        background-color: var(--gray-300);
-        border-radius: 50%;
-        font-size: 12px;
-        cursor: help;
-    }
-
-    .tip:before {
-        content: '?';
-        color: var(--gray-700);
-        font-weight: bold;
-    }
-
-    .tip p {
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-top: 10px;
-        width: 280px;
-        padding: 12px;
-        background-color: var(--gray-900);
-        color: white;
-        font-size: 13px;
-        line-height: 1.5;
-        border-radius: var(--border-radius);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        opacity: 0;
-        visibility: hidden;
-        transition: var(--transition);
-        z-index: 1000;
-    }
-
-    .tip p:before {
-        content: '';
-        position: absolute;
-        top: -6px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 6px;
-        border-style: solid;
-        border-color: transparent transparent var(--gray-900) transparent;
-    }
-
-    .tip:hover p {
-        opacity: 1;
-        visibility: visible;
-    }
 
     .modal-content {
         border: none;
@@ -308,6 +301,27 @@
         font-weight: 500;
         color: var(--gray-700);
         margin-bottom: 8px;
+    }
+    .hidden-project.leader {
+        opacity: 0.5;
+    }
+
+    .hidden-project.staff {
+        display: none;
+    }
+    .hidden-project {
+        opacity: 0.4;
+        transition: opacity 0.3s ease;
+        color: #7f8c8d;
+    }
+
+    .employee .hidden-project {
+        display: none;
+    }
+
+
+    .manager .hidden-project {
+        opacity: 0.3;
     }
 
     .form-control {
@@ -348,11 +362,37 @@
         background-color: #f0f8ff;
     }
 
-    /*.profile {*/
-    /*    width: 35px;*/
-    /*    height: 35px;*/
-    /*    margin-right: -20px;*/
-    /*}*/
+    .btn-outline-primary{    background-color: var(--gray-100);
+        color: var(--gray-700);
+        border: 1px solid var(--gray-300);
+        padding: 6px 16px;
+        border-radius: var(--border-radius);
+        font-size: 13px;
+        font-weight: 500;
+        transition: var(--transition);}
+    .btn-outline-primary:hover {
+        background-color: #333e4e;
+        color: white;
+        border-color: #333e4e;
+    }
+
+   .btn-primary{
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+    padding: 6px 16px;
+    border-radius: var(--border-radius);
+    font-size: 13px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+   .btn-primary:hover {
+        background-color: #333e4e;
+        color: white;
+        border-color: #333e4e;
+    }
+
 
     .detail-badge {
         background-color: var(--md-sys-color-error);
@@ -365,23 +405,23 @@
         margin-left: 10px;
     }
 
-    /*.hidden-project.leader {*/
-    /*    opacity: 0.5;*/
-    /*}*/
+    .hidden-project.leader {
+        opacity: 0.5;
+    }
 
-    /*.hidden-project.staff {*/
-    /*    display: none;*/
-    /*}*/
+    .hidden-project.staff {
+        display: none;
+    }
 
-    /*.hidden-project {*/
-    /*    opacity: 0.4;*/
-    /*    transition: opacity 0.3s ease;*/
-    /*    color: #7f8c8d;*/
-    /*}*/
+    .hidden-project {
+        opacity: 0.4;
+        transition: opacity 0.3s ease;
+        color: #7f8c8d;
+    }
 
-    /*.employee .hidden-project {*/
-    /*    display: none;*/
-    /*}*/
+    .employee .hidden-project {
+        display: none;
+    }
 
 
     /*.manager .hidden-project {*/
@@ -937,7 +977,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" onclick="createProject()">생성하기</button>
+                        <button type="submit" class="btn btn-primary" onclick="createProject(e)">생성하기</button>
                     </div>
 
                 </form>
@@ -971,7 +1011,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">프로젝트 인원</label>
-                            <button type="button" class="btn btn-outline-primary" onclick="updateOpenMemberSearch()">
+                            <button type="button" id="updateClear" class="btn btn-outline-primary" onclick="updateOpenMemberSearch()">
                                 인원 수정
                             </button>
 
@@ -986,7 +1026,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                 onclick="closeupdateModal() ">Close
                         </button>
-                        <button type="submit" class="btn btn-primary" onclick="updateSuccess()">수정완료</button>
+                        <button type="submit"  class="btn btn-primary" onclick="updateSuccess()">수정완료</button>
                     </div>
                 </form>
             </div>
@@ -1022,7 +1062,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="closeBtn" data-bs-dismiss="modal">닫기</button>
-                    <button type="button" class=inputMemberBtn" onclick="updateConfirmSelectedMembers()">확인</button>
+                    <button type="button" class="inputMemberBtn" onclick="updateConfirmSelectedMembers()">확인</button>
                 </div>
             </div>
         </div>
@@ -1071,7 +1111,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="closeBtn" data-bs-dismiss="modal">닫기</button>
-                    <button type="button" class=inputMemberBtn" onclick="confirmSelectedMembers()">확인</button>
+                    <button type="button" class="inputMemberBtn" onclick="confirmSelectedMembers()">확인</button>
                 </div>
             </div>
         </div>
@@ -1096,8 +1136,8 @@
     const departmentName = '${employee.departmentName}';
 
     function handleProjectClick(projectId) {
-        if (departmentName !== '연구팀') {
-            alert('연구팀만 입장이 가능합니다.');
+        if (departmentName !== '연구팀' && '사장') {
+            alert('연구팀과 대표이사만 입장이 가능합니다.');
             return;
         } else {
             window.location.href = '/project/detail/' + projectId;
@@ -1131,7 +1171,7 @@
                         $('#updateSelectedMembersList').append(`
                         <div class="updateSelected-user" data-id="` + member.id + `">
                             <span>` + member.name + `</span>
-                            <button class="remove-user" onclick="$(this).parent().remove()">삭제</button>
+                            <button class="remove-user" onclick="$(this).parent().remove()">x</button>
                             <input type="hidden" name="employeeId" value="` + member.id + `">
                         </div>
                     `);
@@ -1183,7 +1223,7 @@
                         $('#updateSelectedMembersList').append(
                             $('<div>').addClass('selected-user').attr('data-id', userId)
                                 .append($('<span>').html(userName))
-                                .append($('<button>').addClass("remove-user").html('삭제').click(function () {
+                                .append($('<button>').addClass("remove-user").html('x').click(function () {
                                     $(this).parent().remove();
                                 }))
                                 .append($('<input>').attr('type', 'hidden').attr('name', 'employeeId').val(userId))
@@ -1231,7 +1271,7 @@
                         $('#selectedMembersList').append(
                             $('<div>').addClass('selected-user').attr('data-id', userId)
                                 .append($('<span>').html(userName))
-                                .append($('<button>').addClass("remove-user").html('삭제').click(function () {
+                                .append($('<button>').addClass("remove-user").html('x').click(function () {
                                         $(this).parent().remove();
                                     })
                                 )
@@ -1310,6 +1350,26 @@
     }
 
     function createProject(e) {
+        e.preventDefault();
+
+        const title = $('input[name="title"]').val().trim();
+        const deadline = $('input[name="deadLine"]').val().trim();
+        const selectedMembers = $('#selectedMembers .selected-user input');
+
+        if (title === "") {
+            alert("프로젝트 제목을 입력해주세요.");
+            return;
+        }
+
+        if (deadline === "") {
+            alert("프로젝트 마감일을 선택해주세요.");
+            return;
+        }
+
+        if (selectedMembers.length === 0) {
+            alert("최소 1명의 프로젝트 멤버를 추가해주세요.");
+            return;
+        }
         $('#projectForm').submit();
     }
 

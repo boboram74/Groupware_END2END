@@ -191,7 +191,7 @@
                     <span class="material-icons">star</span>
                     <span>Works 메인</span>
                 </li>
-<%--
+
             </ul>
             <button class="detail-modal-close">
                 <span class="material-icons">close</span>
@@ -237,8 +237,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="deadLine">마감일</label>
-                            <input type="date" name="deadLine" id="deadLine">
+
+                            <input type="hidden" name="deadLine" id="deadLine" value="${dto.deadLine}">
                         </div>
                     </div>
 
@@ -305,7 +305,7 @@
         const deadLine = $('#deadLine').val();
         const content = $('#contents').val().trim();
 
-        if (!title || !deadLine || !content) {
+        if (!title || !deadLine ) {
             alert("모든 필드를 입력해 주세요! 마감일과 제목을 설정해야 합니다.");
             event.preventDefault();
         }

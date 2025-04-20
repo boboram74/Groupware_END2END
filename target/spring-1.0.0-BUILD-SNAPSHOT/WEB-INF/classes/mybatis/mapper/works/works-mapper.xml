@@ -137,7 +137,7 @@
         AND state = #{state}
     </select>
 
-    <select id="countByType" resultType="int">
+    <select id="countByType" resultType="int" parameterType="java.util.Map">
         SELECT COUNT(*)
         FROM project_work
         WHERE projectId = #{selectedId}

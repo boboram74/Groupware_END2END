@@ -4,8 +4,7 @@
 <head>
     <title>Title</title>
     <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-    <%--    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>--%>
-
+    <link rel="stylesheet" href="/css/template/exam.css"/>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -35,10 +34,9 @@
 <%--></script>--%>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<%--<link rel="stylesheet" href="/css/works/worksmain.css">--%>
 <link rel="stylesheet" href="/css/color/newColor.css"/>
 <style>
-    /* ===== 변수 정의 ===== */
+
     :root {
         --primary-color: #4A90E2;
         --primary-dark: #357ABD;
@@ -67,29 +65,19 @@
         font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     }
 
-    /* ===== 페이지 헤더 ===== */
-    .pageName {
+
+    .leftControls {
         display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--gray-900);
-        margin-bottom: 24px;
-        padding: 20px 0;
+        gap: 10px;
     }
 
-    .pageName svg {
-        color: var(--primary-color);
-    }
-
-    /* ===== 버튼 스타일 ===== */
     .btnBox {
-        margin-bottom: 24px;
+
+        text-align: right;
     }
 
     .projectBtn {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        background: #666666;
         color: white;
         border: none;
         padding: 12px 24px;
@@ -105,8 +93,15 @@
         box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
     }
 
+    .selectBox {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
     .selectBtn {
-        background-color: var(--secondary-color);
+        background-color: #333e4e;
         color: white;
         border: none;
         padding: 8px 20px;
@@ -116,10 +111,16 @@
     }
 
     .selectBtn:hover {
-        background-color: #3EADAD;
+        background-color: #333e4e;
     }
 
-    /* ===== 선택 박스 ===== */
+    .mainContent {
+
+        justify-content: space-between;
+        padding: 20px;
+        margin-left: 170px;
+    }
+
     .selectBox {
         display: flex;
         gap: 12px;
@@ -143,65 +144,43 @@
         box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
     }
 
-    /* ===== 차트 컨테이너 ===== */
-    .boxContents {
+
+    .contents {
+
         background-color: white;
-        border-radius: 12px;
+        border-radius: 2px;
         padding: 24px;
         box-shadow: var(--box-shadow);
         margin-bottom: 32px;
     }
 
-    .boxContents > div {
+    contents > div {
         padding: 16px;
     }
 
     canvas {
         background-color: white;
-        border-radius: 8px;
+        border-radius: 2px;
     }
 
-    /* ===== 테이블 스타일 ===== */
+    .mainContainer {
+        width: calc(100% - 200px);
+        margin-left: 200px;
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        transition: none;
+    }
+
     .projectList {
         background-color: white;
-        border-radius: 12px;
+        border-radius: 2px;
         padding: 24px;
-        box-shadow: var(--box-shadow);
+
     }
 
-    .table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
 
-    .table thead th {
-        background-color: var(--gray-100);
-        color: var(--gray-700);
-        font-weight: 600;
-        padding: 16px;
-        border-bottom: 2px solid var(--gray-200);
-        text-align: left;
-        font-size: 14px;
-    }
-
-    .table tbody td {
-        padding: 16px;
-        border-bottom: 1px solid var(--gray-200);
-        vertical-align: middle;
-        font-size: 14px;
-    }
-
-    .table tbody tr {
-        transition: var(--transition);
-    }
-
-    .table tbody tr:hover {
-        background-color: #F7FAFF;
-        transform: translateX(4px);
-    }
-
-    /* ===== 프로필 이미지 ===== */
     .member-profiles {
         display: flex;
         align-items: center;
@@ -222,74 +201,11 @@
         z-index: 2;
     }
 
-    /* ===== 배지 스타일 ===== */
-    .detail-badge {
-        background-color: var(--error-color);
-        color: white;
-        padding: 4px 12px;
-        border-radius: 16px;
-        font-size: 12px;
-        font-weight: 600;
-        margin-left: 8px;
-        animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-        0% {
-            box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
-        }
-        70% {
-            box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
-        }
-        100% {
-            box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
-        }
-    }
-
-    .detail-badgeStatus {
-        display: inline-block;
-        padding: 6px 12px;
-        border-radius: 16px;
-        font-size: 12px;
-        font-weight: 500;
-        text-transform: capitalize;
-    }
-
-    .detail-badgeStatus[content="ready"] {
-        background-color: #FFE8D6;
-        color: #B44D12;
-    }
-
-    .detail-badgeStatus[content="ongoing"] {
-        background-color: #D4EFDF;
-        color: #186A3B;
-    }
-
-    .detail-badgeStatus[content="finish"] {
-        background-color: #D6E4FF;
-        color: #1E429F;
-    }
-
-    /* ===== 스위치 버튼 ===== */
-    .form-check-input {
-        width: 44px;
-        height: 22px;
-        background-color: var(--gray-300);
-        border: none;
-        transition: var(--transition);
-        cursor: pointer;
-    }
-
-    .form-check-input:checked {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-    }
 
     .form-check-input:focus {
         box-shadow: none;
     }
 
-    /* ===== 수정 버튼 ===== */
     .updateProjectBtn {
         background-color: var(--gray-100);
         color: var(--gray-700);
@@ -302,35 +218,11 @@
     }
 
     .updateProjectBtn:hover {
-        background-color: var(--primary-color);
+        background-color: #333e4e;
         color: white;
-        border-color: var(--primary-color);
+        border-color: #333e4e;
     }
 
-    /* ===== 숨김 프로젝트 스타일 ===== */
-    .hidden-project.leader {
-        opacity: 0.6;
-        position: relative;
-    }
-
-    .hidden-project.leader::after {
-        content: '숨김';
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: var(--gray-500);
-        color: white;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 11px;
-    }
-
-    .hidden-project.staff {
-        display: none;
-    }
-
-    /* ===== 툴팁 스타일 ===== */
     .tip {
         position: relative;
         display: inline-flex;
@@ -386,7 +278,6 @@
         visibility: visible;
     }
 
-    /* ===== 모달 스타일 ===== */
     .modal-content {
         border: none;
         border-radius: 12px;
@@ -412,7 +303,7 @@
         padding: 16px 24px;
     }
 
-    /* ===== 폼 요소 스타일 ===== */
+
     .form-label {
         font-weight: 500;
         color: var(--gray-700);
@@ -432,7 +323,6 @@
         box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
     }
 
-    /* ===== 반응형 디자인 ===== */
     @media (max-width: 768px) {
         .pageName {
             font-size: 20px;
@@ -447,9 +337,6 @@
             width: 100%;
         }
 
-        .boxContents {
-            padding: 16px;
-        }
 
         .table thead th,
         .table tbody td {
@@ -457,9 +344,9 @@
         }
     }
 
-    /*tbody tr:hover {*/
-    /*    background-color: #f0f8ff;*/
-    /*}*/
+    tbody tr:hover {
+        background-color: #f0f8ff;
+    }
 
     /*.profile {*/
     /*    width: 35px;*/
@@ -467,16 +354,16 @@
     /*    margin-right: -20px;*/
     /*}*/
 
-    /*.detail-badge {*/
-    /*    background-color: var(--md-sys-color-error);*/
-    /*    color: var(--md-sys-color-on-error);*/
-    /*    padding: 2px 8px;*/
-    /*    border-radius: 12px;*/
-    /*    font-size: 12px;*/
-    /*    min-width: 20px;*/
-    /*    text-align: center;*/
-    /*    margin-left: 10px;*/
-    /*}*/
+    .detail-badge {
+        background-color: var(--md-sys-color-error);
+        color: var(--md-sys-color-on-error);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        min-width: 20px;
+        text-align: center;
+        margin-left: 10px;
+    }
 
     /*.hidden-project.leader {*/
     /*    opacity: 0.5;*/
@@ -516,293 +403,112 @@
     /*}*/
 
 
-    /*.tip {*/
-    /*    position: absolute;*/
-    /*    top: 8px;*/
-    /*    left: 55px;*/
-
-    /*    font-size: 14px;*/
-    /*    line-height: 26px;*/
-    /*    text-align: center;*/
-
-    /*    background-color: #b3dfe6;*/
-    /*    border-radius: 50%;*/
-    /*    width: 24px;*/
-    /*    height: 24px;*/
-    /*    cursor: default;*/
-    /*}*/
-
-    /*.tip:before {*/
-    /*    content: '?';*/
-    /*    font-weight: bold;*/
-    /*    color: #fff;*/
-    /*}*/
-
-    /*.tip:hover p {*/
-    /*    visibility: visible;*/
-    /*    opacity: 1;*/
-    /*}*/
-
-    /*.tip p {*/
-    /*    opacity: 0;*/
-    /*    visibility: hidden;*/
-
-    /*    color: #fff;*/
-    /*    font-size: 13px;*/
-    /*    line-height: 1.4;*/
-    /*    text-align: left;*/
-
-    /*    background-color: #0064b7;*/
-    /*    width: 400px;*/
-    /*    padding: 20px;*/
-    /*    border-radius: 3px;*/
-    /*    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2), -1px -1px 3px rgba(0, 0, 0, 0.2);*/
-
-    /*    position: absolute;*/
-    /*    right: -370px;*/
-
-    /*    transition: visibility 0s, opacity 0.5s linear;*/
-    /*}*/
-
-    /*.tip p:before {*/
-    /*    position: absolute;*/
-    /*    content: '';*/
-    /*    width: 0;*/
-    /*    height: 0;*/
-    /*    border: 6px solid transparent;*/
-    /*    border-bottom-color: #0064b7;*/
-    /*    left: 10px;*/
-    /*    top: -12px;*/
-    /*}*/
-
-
 </style>
 
-<div class="pageName">
-    <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="35"
-            height="35"
-            fill="currentColor"
-            class="bi bi-bar-chart-fill"
-            viewBox="0 0 16 16"
-    >
-        <path
-                d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"
-        />
-    </svg
-    >
-    업무 통계
+<div class="mainHeader surface-bright">
+    <div class="detail-menu-header">
+        <div class="detail-menu-title">
+            <span class="material-icons">mail</span>
+            <span>Works</span>
+        </div>
+        <button class="detail-menu-toggle-btn">
+            <span class="material-icons">menu</span>
+        </button>
+    </div>
+    <div class="detail-menu-modal">
+        <ul class="detail-menu-list">
+            <li class="detail-menu-item" onclick="location.href='/project/main'">
+                <span class="material-icons">star</span>
+                <span>Works 메인</span>
+            </li>
+
+
+        </ul>
+        <button class="detail-modal-close">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
 </div>
-<c:if test="${isTeamLeader}">
-<div class="btnBox">
+<div class="mainContent">
 
-    <button class="projectBtn" onclick="openProjectModal()"
-    >프로젝트 생성
-    </button>
 
-</div>
-</c:if>
+    <div class="selectBox">
+        <div class="leftControll">
+            <select id="projectSelect">
+                <c:forEach var="project" items="${projects}">
+                    <option value="${project.id}" }>프로젝트이름
+                        :${project.name}</option>
+                </c:forEach>
+            </select>
+            <button class="selectBtn" onclick="applyProject()">적용하기</button>
+        </div>
+        <div>
+            <c:if test="${isTeamLeader}">
+                <div class="btnBox">
+                    <button class="projectBtn" onclick="openProjectModal()"
+                    >프로젝트 생성
+                    </button>
 
-<div class="selectBox">
-    <select id="projectSelect">
-        <c:forEach var="project" items="${projects}">
-            <option value="${project.id}" }>프로젝트이름
-                :${project.name}</option>
-        </c:forEach>
-    </select>
-    <button class="selectBtn" onclick="applyProject()">적용하기</button>
-</div>
-
-<div class="row boxContents">
-    <div class="col-12 col-sm-4 order-sm-12">
-        <canvas id="myChart" style="height: 50vh"></canvas>
+                </div>
+            </c:if>
+        </div>
     </div>
 
 
-    <script>
+    <div class="row contents">
+        <div class="col-12 col-sm-4 order-sm-12">
+            <canvas id="myChart" style="height: 50vh"></canvas>
+        </div>
 
-        let myChartInstance = null;
-        let myChart2Instance = null;
-        let myChart3Instance = null;
+
+        <script>
+
+            let myChartInstance = null;
+            let myChart2Instance = null;
+            let myChart3Instance = null;
 
 
-        $(document).ready(function () {
-            $.ajax({
-                url: '/project/latestProjectId',
-                type: 'GET',
-                success: function (latestId) {
-                    $("#projectSelect").val(latestId);
-                    applyProjectById(latestId);
-                },
-                error: function () {
-                    alert("최신 프로젝트 정보를 가져오지 못했습니다.");
-                }
-            });
-        });
-
-        function applyProject() {
-            const selectedId = $("#projectSelect").val();
-            applyProjectById(selectedId);
-        }
-
-        function applyProjectById(projectId) {
-
-            // 진행률 차트
-            $.ajax({
-                url: '/work/chartData/' + projectId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    const progress = data.progress;
-                    const notProgress = 100 - progress;
-                    const ctx = document.getElementById('myChart').getContext('2d');
-
-                    if (myChartInstance) myChartInstance.destroy();
-                    myChartInstance = new Chart(ctx, {
-
-                        type: 'doughnut',
-                        data: {
-                            labels: ['진행률', '미진행률'],
-                            datasets: [{
-                                data: [progress, notProgress],
-                                backgroundColor: ['#4bc0c0', '#edf2f0'],
-                                borderColor: ['#4bc0c0', '#4bc0c0'],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            cutout: '60%',
-                            rotation: -90,
-                            circumference: 180,
-                            // rotation: 1 * Math.PI,
-                            // circumference: 1 * Math.PI,
-                            animation: {
-                                duration: 1000
-                            },
-                            plugins: {
-                                legend: {display: true}
-                            }
-                        }
-                    });
-                }
+            $(document).ready(function () {
+                $.ajax({
+                    url: '/project/latestProjectId',
+                    type: 'GET',
+                    success: function (latestId) {
+                        $("#projectSelect").val(latestId);
+                        applyProjectById(latestId);
+                    },
+                    error: function () {
+                        alert("최신 프로젝트 정보를 가져오지 못했습니다.");
+                    }
+                });
             });
 
-            // 상태 차트
-            $.ajax({
-                url: '/work/statusChartData/' + projectId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    const ctx2 = document.getElementById('myChart2').getContext('2d');
-                    if (myChart2Instance) myChart2Instance.destroy();
-                    myChart2Instance = new Chart(ctx2, {
-                        type: 'pie',
-                        data: {
-                            labels: ['READY', 'ONGOING', 'FINISH'],
-                            datasets: [{
-                                data: [data.READY, data.ONGOING, data.FINISH],
-                                backgroundColor: ['rgba(255, 99, 132, 0.5)',   // 진행전
-                                    'rgba(54, 162, 235, 0.5)',   // 진행중
-                                    'rgba(75, 192, 192, 0.5)'    // 완료
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(75, 192, 192, 1)'],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {legend: {position: 'bottom'}}
-                        }
-                    });
-                }
-            });
+            function applyProject() {
+                const selectedId = $("#projectSelect").val();
+                applyProjectById(selectedId);
+            }
 
-            // 타입 차트
-            $.ajax({
-                url: '/work/typeChartData/' + projectId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    const ctx3 = document.getElementById('myChart3').getContext('2d');
-                    if (myChart3Instance) myChart3Instance.destroy();
-                    myChart3Instance = new Chart(ctx3, {
-                        type: 'line',
-                        data: {
-                            labels: ['DOCUMENT', 'REPORT', 'WBS', 'MEETING_FOLDER', 'SPECIFICATION'],
-                            datasets: [{
-                                label: '업무 유형별 개수',
-                                data: [
-                                    data.DOCUMENT,
-                                    data.REPORT,
-                                    data.WBS,
-                                    data.MEETING_FOLDER,
-                                    data.SPECIFICATION
-                                ],
-                                backgroundColor: [
-                                    "rgba(255, 99, 132, 0.2)",
-                                    "rgba(54, 162, 235, 0.2)",
-                                    "rgba(255, 206, 86, 0.2)",
-                                    "rgba(75, 192, 192, 0.2)",
-                                    "rgba(153, 102, 255, 0.2)",
+            function applyProjectById(projectId) {
 
-                                ],
-                                borderColor: [
-                                    "rgba(255, 99, 132, 1)",
-                                    "rgba(54, 162, 235, 1)",
-                                    "rgba(255, 206, 86, 1)",
-                                    "rgba(75, 192, 192, 1)",
-                                    "rgba(153, 102, 255, 1)"],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {beginAtZero: true}
-                            }
-                        }
-                    });
-                }
-            });
-        }
-
-        //선택하면 적용되는 차트 스트립트코드
-
-        function applyProject() {
-            const selectedId = $("#projectSelect").val();
-
-            $.ajax({
-
-                    url: '/work/chartData/' + selectedId,
+                // 진행률 차트
+                $.ajax({
+                    url: '/work/chartData/' + projectId,
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {
-                        const chartData = data.progress;
-
-                        const data2 = 100 - chartData;
-
+                        const progress = data.progress;
+                        const notProgress = 100 - progress;
                         const ctx = document.getElementById('myChart').getContext('2d');
 
-                        if (myChartInstance) {
-                            myChartInstance.destroy();
-                        }
-
+                        if (myChartInstance) myChartInstance.destroy();
                         myChartInstance = new Chart(ctx, {
+
                             type: 'doughnut',
                             data: {
                                 labels: ['진행률', '미진행률'],
                                 datasets: [{
-                                    label: '진행률',
-                                    data: [chartData, data2],
-                                    backgroundColor: ['rgba(75, 192, 192, 0.2)', '#edf2f0'],
-                                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 1)'],
+                                    data: [progress, notProgress],
+                                    backgroundColor: ['#4bc0c0', '#edf2f0'],
+                                    borderColor: ['#4bc0c0', '#4bc0c0'],
                                     borderWidth: 1
                                 }]
                             },
@@ -812,7 +518,8 @@
                                 cutout: '60%',
                                 rotation: -90,
                                 circumference: 180,
-
+                                // rotation: 1 * Math.PI,
+                                // circumference: 1 * Math.PI,
                                 animation: {
                                     duration: 1000
                                 },
@@ -820,94 +527,64 @@
                                     legend: {display: true}
                                 }
                             }
-
                         });
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('AJAX 오류:', error);
                     }
-                }
-            )
-            ;
+                });
 
-
-            $.ajax({
-                url: '/work/statusChartData/' + selectedId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    const chartData = data;
-                    const labels = ["READY", "ONGOING", "FINISH"];
-                    const values = [chartData.READY, chartData.ONGOING, chartData.FINISH];
-
-                    const ctx2 = document.getElementById('myChart2').getContext('2d');
-
-                    if (myChart2Instance) {
-                        myChart2Instance.destroy();
-                    }
-
-
-                    myChart2Instance = new Chart(ctx2, {
-                        type: "pie",
-                        data: {
-                            labels: labels,
-                            datasets: [
-                                {
-                                    label: "업무 상태 비율",
-                                    data: values,
-                                    // 각각의 상태별 비율이 들어가야됨
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 0.5)',   // 진행전
+                // 상태 차트
+                $.ajax({
+                    url: '/work/statusChartData/' + projectId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        const ctx2 = document.getElementById('myChart2').getContext('2d');
+                        if (myChart2Instance) myChart2Instance.destroy();
+                        myChart2Instance = new Chart(ctx2, {
+                            type: 'pie',
+                            data: {
+                                labels: ['READY', 'ONGOING', 'FINISH'],
+                                datasets: [{
+                                    data: [data.READY, data.ONGOING, data.FINISH],
+                                    backgroundColor: ['rgba(255, 99, 132, 0.5)',   // 진행전
                                         'rgba(54, 162, 235, 0.5)',   // 진행중
                                         'rgba(75, 192, 192, 0.5)'    // 완료
                                     ],
                                     borderColor: [
                                         'rgba(255, 99, 132, 1)',
                                         'rgba(54, 162, 235, 1)',
-                                        'rgba(75, 192, 192, 1)'
-                                    ],
-                                    borderWidth: 1,
-                                },
-                            ],
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom'
-                                },
+                                        'rgba(75, 192, 192, 1)'],
+                                    borderWidth: 1
+                                }]
                             },
-                        },
-                    });
-                }
-            });
-            $.ajax({
-                url: '/work/typeChartData/' + selectedId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    const labels = ["DOCUMENT", "REPORT", "WBS", "MEETING_FOLDER", "SPECIFICATION"];
-                    const values = [
-                        data.DOCUMENT,
-                        data.REPORT,
-                        data.WBS,
-                        data.MEETING_FOLDER,
-                        data.SPECIFICATION
-                    ];
-
-                    if (myChart3Instance) {
-                        myChart3Instance.destroy();
+                            options: {
+                                responsive: true,
+                                plugins: {legend: {position: 'bottom'}}
+                            }
+                        });
                     }
+                });
 
-                    const ctx3 = document.getElementById("myChart3").getContext("2d");
-                    myChart3Instance = new Chart(ctx3, {
-                        type: "line",
-                        data: {
-                            labels: labels,
-                            datasets: [
-                                {
-                                    label: "업무 유형별 개수",
-                                    data: values,
+                // 타입 차트
+                $.ajax({
+                    url: '/work/typeChartData/' + projectId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        const ctx3 = document.getElementById('myChart3').getContext('2d');
+                        if (myChart3Instance) myChart3Instance.destroy();
+                        myChart3Instance = new Chart(ctx3, {
+                            type: 'line',
+                            data: {
+                                labels: ['DOCUMENT', 'REPORT', 'WBS', 'MEETING_FOLDER', 'SPECIFICATION'],
+                                datasets: [{
+                                    label: '업무 유형별 개수',
+                                    data: [
+                                        data.DOCUMENT,
+                                        data.REPORT,
+                                        data.WBS,
+                                        data.MEETING_FOLDER,
+                                        data.SPECIFICATION
+                                    ],
                                     backgroundColor: [
                                         "rgba(255, 99, 132, 0.2)",
                                         "rgba(54, 162, 235, 0.2)",
@@ -921,333 +598,499 @@
                                         "rgba(54, 162, 235, 1)",
                                         "rgba(255, 206, 86, 1)",
                                         "rgba(75, 192, 192, 1)",
-                                        "rgba(153, 102, 255, 1)",
+                                        "rgba(153, 102, 255, 1)"],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    y: {beginAtZero: true}
+                                }
+                            }
+                        });
+                    }
+                });
+            }
 
-                                    ],
-                                    borderWidth: 1,
+            //선택하면 적용되는 차트 스트립트코드
+
+            function applyProject() {
+                const selectedId = $("#projectSelect").val();
+
+                $.ajax({
+
+                        url: '/work/chartData/' + selectedId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            const chartData = data.progress;
+
+                            const data2 = 100 - chartData;
+
+                            const ctx = document.getElementById('myChart').getContext('2d');
+
+                            if (myChartInstance) {
+                                myChartInstance.destroy();
+                            }
+
+                            myChartInstance = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: ['진행률', '미진행률'],
+                                    datasets: [{
+                                        label: '진행률',
+                                        data: [chartData, data2],
+                                        backgroundColor: ['rgba(75, 192, 192, 0.2)', '#edf2f0'],
+                                        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 1)'],
+                                        borderWidth: 1
+                                    }]
                                 },
-                            ],
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    cutout: '60%',
+                                    rotation: -90,
+                                    circumference: 180,
+
+                                    animation: {
+                                        duration: 1000
+                                    },
+                                    plugins: {
+                                        legend: {display: true}
+                                    }
+                                }
+
+                            });
                         },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
-                            scales: {
-                                yAxes: [
+                        error: function (xhr, status, error) {
+                            console.error('AJAX 오류:', error);
+                        }
+                    }
+                )
+                ;
+
+
+                $.ajax({
+                    url: '/work/statusChartData/' + selectedId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        const chartData = data;
+                        const labels = ["READY", "ONGOING", "FINISH"];
+                        const values = [chartData.READY, chartData.ONGOING, chartData.FINISH];
+
+                        const ctx2 = document.getElementById('myChart2').getContext('2d');
+
+                        if (myChart2Instance) {
+                            myChart2Instance.destroy();
+                        }
+
+
+                        myChart2Instance = new Chart(ctx2, {
+                            type: "pie",
+                            data: {
+                                labels: labels,
+                                datasets: [
                                     {
-                                        ticks: {
-                                            beginAtZero: true,
-                                        },
+                                        label: "업무 상태 비율",
+                                        data: values,
+                                        // 각각의 상태별 비율이 들어가야됨
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 0.5)',   // 진행전
+                                            'rgba(54, 162, 235, 0.5)',   // 진행중
+                                            'rgba(75, 192, 192, 0.5)'    // 완료
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(75, 192, 192, 1)'
+                                        ],
+                                        borderWidth: 1,
                                     },
                                 ],
                             },
-                        },
-                    });
-                }
-            });
-        }
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom'
+                                    },
+                                },
+                            },
+                        });
+                    }
+                });
+                $.ajax({
+                    url: '/work/typeChartData/' + selectedId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        const labels = ["DOCUMENT", "REPORT", "WBS", "MEETING_FOLDER", "SPECIFICATION"];
+                        const values = [
+                            data.DOCUMENT,
+                            data.REPORT,
+                            data.WBS,
+                            data.MEETING_FOLDER,
+                            data.SPECIFICATION
+                        ];
 
-    </script>
-    <div class="col-12 col-sm-4 order-sm-12">
-        <canvas id="myChart2" style="height: 50vh"></canvas>
+                        if (myChart3Instance) {
+                            myChart3Instance.destroy();
+                        }
+
+                        const ctx3 = document.getElementById("myChart3").getContext("2d");
+                        myChart3Instance = new Chart(ctx3, {
+                            type: "line",
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: "업무 유형별 개수",
+                                        data: values,
+                                        backgroundColor: [
+                                            "rgba(255, 99, 132, 0.2)",
+                                            "rgba(54, 162, 235, 0.2)",
+                                            "rgba(255, 206, 86, 0.2)",
+                                            "rgba(75, 192, 192, 0.2)",
+                                            "rgba(153, 102, 255, 0.2)",
+
+                                        ],
+                                        borderColor: [
+                                            "rgba(255, 99, 132, 1)",
+                                            "rgba(54, 162, 235, 1)",
+                                            "rgba(255, 206, 86, 1)",
+                                            "rgba(75, 192, 192, 1)",
+                                            "rgba(153, 102, 255, 1)",
+
+                                        ],
+                                        borderWidth: 1,
+                                    },
+                                ],
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false, //div 크기에 따라 조절가능하게 만듦
+                                scales: {
+                                    yAxes: [
+                                        {
+                                            ticks: {
+                                                beginAtZero: true,
+                                            },
+                                        },
+                                    ],
+                                },
+                            },
+                        });
+                    }
+                });
+            }
+
+        </script>
+        <div class="col-12 col-sm-4 order-sm-12">
+            <canvas id="myChart2" style="height: 50vh"></canvas>
+        </div>
+
+        <div class="col-12 col-sm-4 order-sm-12">
+            <canvas id="myChart3" style="height: 50vh"></canvas>
+        </div>
+
     </div>
-
-    <div class="col-12 col-sm-4 order-sm-12">
-        <canvas id="myChart3" style="height: 50vh"></canvas>
-    </div>
-
-</div>
-<div class="projectList">
-    <div class="tableBox">
-        <table class="table">
-            <thead>
-            <tr class="${list.hideYn == 'Y'
+    <div class="projectList">
+        <div class="tableBox">
+            <table class="table">
+                <thead>
+                <tr class="${list.hideYn == 'Y'
             ? (isTeamLeader ? 'hidden-project leader' : 'hidden-project staff')
             : ''}">
 
-                <th>제목</th>
-                <th>등록일자</th>
-                <th>프로젝트 기간</th>
-                <th>참여 인원</th>
-                <th>상태</th>
-                <c:if test="${isTeamLeader}">
-                    <th>수정</th>
-
-                    <th>숨김</th>
-                </c:if>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${projects}" var="list">
-
-                <tr id="changeRow-${list.id}"
-                    class="${list.hideYn == 'Y'
-            ? (isTeamLeader ? 'hidden-project leader' : 'hidden-project staff')
-            : ''}">
-
-
-                    <td onclick="handleProjectClick(${list.id})">${list.name}
-                        <c:if test="${list.nearDeadline == 'Y'&& list.status.equals('ongoing')}"><span
-                                class="detail-badge">긴급
-                    </span></c:if></td>
-                    <td onclick="handleProjectClick(${list.id})">${list.regDate}</td>
-                    <td onclick="handleProjectClick(${list.id})"> ${list.deadLine}</td>
-
-                    <td>
-                        <div class="member-profiles">
-                            <!-- 프로필 이미지 리스트 -->
-                            <c:if test="${not empty list.profileImg}">
-                                <c:forEach items="${list.profileImg}" var="img">
-                                    <c:choose>
-                                        <c:when test="${img == null}">
-                                            <img class="profile" src="/image/defaultImg.jpg">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <img class="profile" src="${img}">
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-                            </c:if>
-                        </div>
-                    </td>
-                    <td>
-    <span class="detail-badgeStatus">
-            ${list.status}
-    </span>
-                    </td>
+                    <th>제목</th>
+                    <th>등록일자</th>
+                    <th>프로젝트 기간</th>
+                    <th>참여 인원</th>
+                    <th>상태</th>
                     <c:if test="${isTeamLeader}">
-                        <td>
-                            <button class="updateProjectBtn" onclick="openUpdateModal(${list.id})">수정</button>
-                        </td>
-                    </c:if>
-                    <c:if test="${isTeamLeader}">
-                        <td>
-                            <c:if test="${list.status == 'finish'}">
-                                <div class="form-check form-switch">
-                                        <%--                                    <input class="form-check-input"--%>
-                                        <%--                                           type="checkbox"--%>
-                                        <%--                                           id="hideSwitch-${list.id}"--%>
-                                        <%--                                           onchange="handleHide(${list.id})"--%>
-                                        <%--                                        ${list.hideYn.equals("Y") ? 'checked' : ''}>--%>
-                                    <input class="form-check-input hideSwitch"
-                                           type="checkbox"
-                                           id="hideSwitch-23"
-                                        ${list.hideYn == 'Y' ? 'checked' : ''}
-                                           data-is-team-leader="${isTeamLeader}"
-                                           status="${list.status}"
-                                           hideYn="${list.hideYn}"
-                                           data-project-id="${list.id}">
+                        <th>수정</th>
 
-                                    <label class="form-check-label" for="hideSwitch-${list.id}"></label>
-                                </div>
-                            </c:if>
-                        </td>
+                        <th>숨김</th>
                     </c:if>
-
                 </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${projects}" var="list">
+
+                    <tr id="changeRow-${list.id}"
+                        class="${list.hideYn == 'Y' ? (isTeamLeader ? 'hidden-project leader' : 'hidden-project staff') : ''}">
+                        <!-- ... 나머지 tr 내용 ... -->
+                    </tr>
 
 
-            </c:forEach>
+                        <td onclick="handleProjectClick(${list.id})">${list.name}
+                            <c:if test="${list.nearDeadline == 'Y'&& list.status.equals('ongoing')}"><span
+                                    class="detail-badge">긴급
+                    </span></c:if></td>
+                        <td onclick="handleProjectClick(${list.id})">${list.regDate}</td>
+                        <td onclick="handleProjectClick(${list.id})"> ${list.deadLine}</td>
 
-            </tbody>
-        </table>
+                        <td>
+                            <div class="member-profiles">
+                                <!-- 프로필 이미지 리스트 -->
+                                <c:if test="${not empty list.profileImg}">
+                                    <c:forEach items="${list.profileImg}" var="img">
+                                        <c:choose>
+                                            <c:when test="${img == null}">
+                                                <img class="profile" src="/image/defaultImg.jpg">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img class="profile" src="${img}">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </c:if>
+                            </div>
+                        </td>
+                        <td>
+                       <span class="detail-badgeStatus">
+                  ${list.status}
+                       </span>
+                        </td>
+                        <c:if test="${isTeamLeader}">
+                            <td>
+                                <button class="updateProjectBtn" onclick="openUpdateModal(${list.id})">수정</button>
+                            </td>
+                        </c:if>
+                        <c:if test="${isTeamLeader}">
+                            <td>
+                                <c:if test="${list.status == 'finish'}">
+                                    <div class="form-check form-switch">
+                                            <%--                                    <input class="form-check-input"--%>
+                                            <%--                                           type="checkbox"--%>
+                                            <%--                                           id="hideSwitch-${list.id}"--%>
+                                            <%--                                           onchange="handleHide(${list.id})"--%>
+                                            <%--                                        ${list.hideYn.equals("Y") ? 'checked' : ''}>--%>
+                                        <input class="form-check-input hideSwitch"
+                                               type="checkbox"
+                                               id="hideSwitch-23"
+                                            ${list.hideYn == 'Y' ? 'checked' : ''}
+                                               data-is-team-leader="${isTeamLeader}"
+                                               status="${list.status}"
+                                               hideYn="${list.hideYn}"
+                                               data-project-id="${list.id}">
+
+                                        <label class="form-check-label" for="hideSwitch-${list.id}"></label>
+                                    </div>
+                                </c:if>
+                            </td>
+                        </c:if>
+
+                    </tr>
+
+
+                </c:forEach>
+
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<%--프로젝트 생성모달 --%>
-<div class="modal fade" id="projectModal" tabindex="-1">
-    <div class="modal-dialog">
+    <%--프로젝트 생성모달 --%>
+    <div class="modal fade" id="projectModal" tabindex="-1">
+        <div class="modal-dialog">
 
-        <div class="modal-content">
-            <c:if test="${employee.role='TEAM_LEADER'}">
-                <div class="modal-header">
-                    <h5 class="modal-title">프로젝트 생성</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-            </c:if>
-            <form id="projectForm" action="/project/insert" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-
-                    <div class="mb-3">
-                        <label class="form-label">프로젝트 제목</label>
-                        <input type="text" class="form-control" name="title" required>
+            <div class="modal-content">
+                <c:if test="${employee.role='TEAM_LEADER'}">
+                    <div class="modal-header">
+                        <h5 class="modal-title">프로젝트 생성</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
+                </c:if>
+                <form id="projectForm" action="/project/insert" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
 
-                    <div class="mb-3">
-                        <!-- 프로젝트 기간 설정 버튼 -->
-                        프로젝트 기간 설정
-                        <input type="date" name="deadLine"/>
-                    </div>
-                    <%--                <div class="mb-3">--%>
-                    <%--                    <label class="form-label">프로젝트 진행에 필요한 works</label>--%>
-                    <%--                 <input type="number" value="6" min="6" step="1"/>--%>
+                        <div class="mb-3">
+                            <label class="form-label">프로젝트 제목</label>
+                            <input type="text" class="form-control" name="title" required>
+                        </div>
 
-                    <%--                </div>--%>
-                    <div class="mb-3">
-                        <label class="form-label">프로젝트 인원</label>
-                        <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">
-                            인원 추가
-                        </button>
-                        <div id="selectedMembers" class="mt-2">
-                            <div class="selectedUser" data-id="">
-                                <div>선택된 멤버가 없습니다</div>
+                        <div class="mb-3">
+                            <!-- 프로젝트 기간 설정 버튼 -->
+                            프로젝트 기간 설정
+                            <input type="date" name="deadLine"/>
+                        </div>
+                        <%--                <div class="mb-3">--%>
+                        <%--                    <label class="form-label">프로젝트 진행에 필요한 works</label>--%>
+                        <%--                 <input type="number" value="6" min="6" step="1"/>--%>
+
+                        <%--                </div>--%>
+                        <div class="mb-3">
+                            <label class="form-label">프로젝트 인원</label>
+                            <button type="button" class="btn btn-outline-primary" onclick="openMemberSearch()">
+                                인원 추가
+                            </button>
+                            <div id="selectedMembers" class="mt-2">
+                                <div class="selectedUser" data-id="">
+                                    <div>선택된 멤버가 없습니다</div>
+                                </div>
                             </div>
                         </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" onclick="createProject()">생성하기</button>
                     </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" onclick="createProject()">생성하기</button>
-                </div>
+                </form>
 
-            </form>
+            </div>
 
         </div>
-
     </div>
-</div>
 
 
-<div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="updateform" action="/project/update" method="post">
-                <div class="modal-body">
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="updateform" action="/project/update" method="post">
+                    <div class="modal-body">
 
-                    <input type="hidden" name="projectId" value="${project.id}"/>
+                        <input type="hidden" name="projectId" value="${project.id}"/>
 
-                    <h5>프로젝트 title</h5>
-                    <div class="mb-3">
-                        <input type="text" id="title" name="title" value="${project.name}">
-                    </div>
-                    <%--projectinsertDTO 가져와야됨--%>
-                    <div class="mb-3">
-                        <!-- 프로젝트 기간 설정 버튼 -->
-                        프로젝트 기간 설정
-                        <input type="date" name="deadLine" value="${project.deadLine}"/>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">프로젝트 인원</label>
-                        <button type="button" class="btn btn-outline-primary" onclick="updateOpenMemberSearch()">
-                            인원 수정
-                        </button>
+                        <h5>프로젝트 title</h5>
+                        <div class="mb-3">
+                            <input type="text" id="title" name="title" value="${project.name}">
+                        </div>
+                        <%--projectinsertDTO 가져와야됨--%>
+                        <div class="mb-3">
+                            <!-- 프로젝트 기간 설정 버튼 -->
+                            프로젝트 기간 설정
+                            <input type="date" name="deadLine" value="${project.deadLine}"/>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">프로젝트 인원</label>
+                            <button type="button" class="btn btn-outline-primary" onclick="updateOpenMemberSearch()">
+                                인원 수정
+                            </button>
 
-                        <div id="updateMembers" name=class="mt-2">
+                            <div id="updateMembers" name=class="mt-2">
+
+                            </div>
 
                         </div>
 
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                onclick="closeupdateModal() ">Close
+                        </button>
+                        <button type="submit" class="btn btn-primary" onclick="updateSuccess()">수정완료</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+
+    <%--수정 인원변경모달라인--%>
+    <div class="modal fade" id="updateMemberSearchModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">멤버 검색</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 멤버이름 검색 -->
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="updateMemberSearchInput" placeholder="멤버 이름 검색"
+                               onkeyup="UpdateSearchMembers()">
+                    </div>
+                    <!-- 검색 결과 리스트 -->
+                    <div id="updateMemberSearchResults" class="mb-3">
+                        <p>검색 결과가 표시됩니다.</p>
+                    </div>
+                    <!-- 선택된 멤버 리스트 -->
+                    <div>
+                        <h6 class="mt-3">선택된 멤버</h6>
+                        <div id="updateSelectedMembersList" class="d-flex flex-wrap">
+
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            onclick="closeupdateModal() ">Close
-                    </button>
-                    <button type="submit" class="btn btn-primary" onclick="updateSuccess()">수정완료</button>
+                    <button type="button" class="closeBtn" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class=inputMemberBtn" onclick="updateConfirmSelectedMembers()">확인</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
 
-
-<%--수정 인원변경모달라인--%>
-<div class="modal fade" id="updateMemberSearchModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">멤버 검색</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <%--프로젝트 기간 선택--%>
+    <div class="modal" id="deadlineModal">
+        <div class="modalContent">
+            <span class="close">&times;</span>
+            <h3>마감일자 선택</h3>
+            <div class="dateSelectWrapper">
+                <input type="datetime-local" id="updateDeadlineDate" class="dateInput">
+                <div class="buttonWrapper">
+                    <button type="button" id="updateCancelDate" class="modalBtn cancelBtn">취소</button>
+                    <button type="button" id="updateConfirmDate" class="modalBtn confirmBtn">확인</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <!-- 멤버이름 검색 -->
-                <div class="mb-3">
-                    <input type="text" class="form-control" id="updateMemberSearchInput" placeholder="멤버 이름 검색"
-                           onkeyup="UpdateSearchMembers()">
-                </div>
-                <!-- 검색 결과 리스트 -->
-                <div id="updateMemberSearchResults" class="mb-3">
-                    <p>검색 결과가 표시됩니다.</p>
-                </div>
-                <!-- 선택된 멤버 리스트 -->
-                <div>
-                    <h6 class="mt-3">선택된 멤버</h6>
-                    <div id="updateSelectedMembersList" class="d-flex flex-wrap">
+        </div>
+    </div>
 
+    <%--프로젝트 멤버추가 라인--%>
+    <div class="modal fade" id="memberSearchModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">멤버 검색</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 멤버이름 검색 -->
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="memberSearchInput" placeholder="멤버 이름 검색"
+                               onkeyup="searchMembers()">
+                    </div>
+                    <!-- 검색 결과 리스트 -->
+                    <div id="memberSearchResults" class="mb-3">
+                        <p>검색 결과가 표시됩니다.</p>
+                    </div>
+                    <!-- 선택된 멤버 리스트 -->
+                    <div>
+                        <h6 class="mt-3">선택된 멤버</h6>
+                        <div id="selectedMembersList" class="d-flex flex-wrap">
+
+                        </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="closeBtn" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class=inputMemberBtn" onclick="confirmSelectedMembers()">확인</button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="closeBtn" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class=inputMemberBtn" onclick="updateConfirmSelectedMembers()">확인</button>
+        </div>
+    </div>
+    <%--프로젝트 기간 선택--%>
+    <div class="modal" id="deadlineModal">
+        <div class="modalContent">
+            <span class="close">&times;</span>
+            <h3>마감일자 선택</h3>
+            <div class="dateSelectWrapper">
+                <input type="datetime-local" id="deadlineDate" class="dateInput">
+                <div class="buttonWrapper">
+                    <button type="button" id="cancelDate" class="modalBtn cancelBtn">취소</button>
+                    <button type="button" id="confirmDate" class="modalBtn confirmBtn">확인</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<%--프로젝트 기간 선택--%>
-<div class="modal" id="deadlineModal">
-    <div class="modalContent">
-        <span class="close">&times;</span>
-        <h3>마감일자 선택</h3>
-        <div class="dateSelectWrapper">
-            <input type="datetime-local" id="updateDeadlineDate" class="dateInput">
-            <div class="buttonWrapper">
-                <button type="button" id="updateCancelDate" class="modalBtn cancelBtn">취소</button>
-                <button type="button" id="updateConfirmDate" class="modalBtn confirmBtn">확인</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<%--프로젝트 멤버추가 라인--%>
-<div class="modal fade" id="memberSearchModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">멤버 검색</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- 멤버이름 검색 -->
-                <div class="mb-3">
-                    <input type="text" class="form-control" id="memberSearchInput" placeholder="멤버 이름 검색"
-                           onkeyup="searchMembers()">
-                </div>
-                <!-- 검색 결과 리스트 -->
-                <div id="memberSearchResults" class="mb-3">
-                    <p>검색 결과가 표시됩니다.</p>
-                </div>
-                <!-- 선택된 멤버 리스트 -->
-                <div>
-                    <h6 class="mt-3">선택된 멤버</h6>
-                    <div id="selectedMembersList" class="d-flex flex-wrap">
-
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="closeBtn" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class=inputMemberBtn" onclick="confirmSelectedMembers()">확인</button>
-            </div>
-        </div>
-    </div>
-</div>
-<%--프로젝트 기간 선택--%>
-<div class="modal" id="deadlineModal">
-    <div class="modalContent">
-        <span class="close">&times;</span>
-        <h3>마감일자 선택</h3>
-        <div class="dateSelectWrapper">
-            <input type="datetime-local" id="deadlineDate" class="dateInput">
-            <div class="buttonWrapper">
-                <button type="button" id="cancelDate" class="modalBtn cancelBtn">취소</button>
-                <button type="button" id="confirmDate" class="modalBtn confirmBtn">확인</button>
-            </div>
-        </div>
-    </div>
 </div>
 <script>
     const departmentName = '${employee.departmentName}';

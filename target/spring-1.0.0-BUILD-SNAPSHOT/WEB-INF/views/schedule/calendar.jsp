@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/template/exam.css"/>
@@ -160,7 +161,7 @@
                     <div class="form-group">
                         <label>시작 일시</label>
                         <div class="datetime-wrapper">
-                            <input type="date" id="insert-startDate" class="form-input" required>
+                            <input type="date" min="<fmt:formatDate value='<%= new java.util.Date() %>' pattern='yyyy-MM-dd'/>" id="insert-startDate" class="form-input" required>
                             <select required id="insert-startTime">
                                 <c:forEach begin="9" end="18" var="i">
                                     <option value=" ${i < 10 ? '0'.concat(i) : i}:00:00">${i < 10 ? '0'.concat(i) : i}:00</option>
@@ -174,7 +175,7 @@
                     <div class="form-group">
                         <label>종료 일시</label>
                         <div class="datetime-wrapper">
-                            <input type="date" id="insert-endDate" class="form-input" required>
+                            <input type="date" min="<fmt:formatDate value='<%= new java.util.Date() %>' pattern='yyyy-MM-dd'/>" id="insert-endDate" class="form-input" required>
                             <select required id="insert-endTime">
                                 <c:forEach begin="9" end="18" var="i">
                                     <option value=" ${i < 10 ? "0" + i : i}:00:00">${i < 10 ? "0" + i : i}:00</option>
@@ -580,12 +581,15 @@
                 $('#schedule input').val();
                 $('#schedule textarea').val('');
 
+                if($('#schedule-update-complete-btn').is(':visible')) {
+                    $('#eventDetailModal').fadeIn(300);
+                }
+
                 $('#schedule-update-complete-btn').hide();
                 $('#schedule-delete-btn').hide();
                 $('#schedule-input-btn').show();
 
                 $('#scheduleWriteModal').fadeOut(300);
-                $('#eventDetailModal').fadeIn(300);
             })
 
             // 모달 열기

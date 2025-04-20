@@ -36,4 +36,8 @@ public interface ProjectService {
     void updateProject(ProjectInsertDTO dto);
 
     ProjectDTO selectProjectDeadLine(int id);
+    void endworks(int projectId);
+
+
+//    List<ProjectSelectDTO> selectAllProject(int page);
 }

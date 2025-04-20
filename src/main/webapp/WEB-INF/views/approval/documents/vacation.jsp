@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <link rel="stylesheet" href="/css/color/newColor.css" />
-<input type="hidden" name="approvalFormId" value="3" />
+<input type="hidden" name="approvalFormId" value="2" />
 <div class="approval-document surface-bright">
     <div class="document-header">
         <h1 class="document-title">휴 가 계</h1>

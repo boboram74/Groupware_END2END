@@ -10,10 +10,11 @@
 
 
     <select id="selectById" resultType="map">
-        SELECT a.* , e.*, j.name AS jobName, f.name AS formName
+        SELECT a.* , e.*, j.name AS jobName, d.name AS departmentName, f.name AS formName
         FROM approval a
             join employee e on a.employeeid = e.id
             JOIN job j ON e.jobid = j.id
+            JOIN department d ON e.departmentId = d.id
             JOIN approval_form f ON a.approvalformid = f.id
         WHERE a.id = #{id}
     </select>

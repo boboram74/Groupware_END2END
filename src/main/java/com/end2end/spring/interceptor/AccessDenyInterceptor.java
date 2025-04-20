@@ -9,17 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Component
-public class AuthenticationInterceptor implements HandlerInterceptor {
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+public class AccessDenyInterceptor implements HandlerInterceptor {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession(false);
-        if (session != null) {
+
+        if(session != null) {
             EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-            if (employee != null) {
+            if(employee.getRole().equals("ADMIN")) {
                 return true;
             }
+
+            response.sendRedirect(request.getContextPath() + "/error");
+            return false;
         }
-        response.sendRedirect(request.getContextPath() + "/error");
         return false;
     }
 }

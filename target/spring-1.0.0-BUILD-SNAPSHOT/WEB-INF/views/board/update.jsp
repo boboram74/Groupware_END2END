@@ -11,7 +11,8 @@
     <table class="form-table">
         <tr>
             <th class="label">등록일<span class="required"></span></th>
-            <td><span class="date-field"></span>
+            <td>
+                <span class="date-field"></span>
                 <div class="date">${board.regDate}</div>
             </td>
             <c:if test="${action != null}">

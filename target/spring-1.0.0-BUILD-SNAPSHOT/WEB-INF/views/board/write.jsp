@@ -5,8 +5,6 @@
 <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="/js/summernote/summernote-lite.css">
 <link rel="stylesheet" href="/css/board/write.css" />
-<div class="content">
-</div>
 <form action="${action == null ?  '/board/insert' : action}" method="post" enctype="multipart/form-data">
 <table>
     <tr>
@@ -17,7 +15,7 @@
     </tr>
     <c:if test="${not empty action}">
         <tr>
-            <th>종류</th>
+            <th class="label">종류</th>
             <td colspan="3">
                 <div class="checkboxArea">
                     <select id="searchOption" name="noticeCtId" required>

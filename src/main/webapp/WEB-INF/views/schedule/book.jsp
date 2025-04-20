@@ -37,7 +37,6 @@
     <div class="mainBody">
         <div class="button-container">
             <button class="primary insert-schedule open-write-schedule">예약 하기</button>
-            <button class="secondary open-list-calendar">사용 완료</button>
         </div>
         <div class="calender-container">
             <div id="calendar"></div>
@@ -414,21 +413,10 @@
                 $('#scheduleWriteModal').fadeOut(300);
             })
 
-            // 모달 열기
-            $('.open-list-calendar').click(function() {
-                $('#listCalendarModal').show();
-            });
-
             // 모달 닫기
             $('#listCalendarModal .close-modal').click(function() {
                 $('#listCalendarModal').hide();
             });
-
-            $('#calendar-delete-btn').on('click', function() {
-                if(confirm("정말 삭제하시겠습니까?")) {
-                    location.href = '/calendar/delete/' + $('#calendarWriteForm input[name=id]').val();
-                }
-            })
 
             $(document).on('click', '.open-write-schedule', function() {
                 $('#scheduleWriteModal').fadeIn(300);

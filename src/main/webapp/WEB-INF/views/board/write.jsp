@@ -112,6 +112,21 @@
             <div class="date"></div>
         </td>
     </tr>
+    <c:if test="${not empty action}">
+        <tr>
+            <th>종류</th>
+            <td colspan="3">
+                <div class="checkboxArea">
+                    <select id="searchOption" name="noticeCtId" required>
+                        <option value="">선택하십시오</option>
+                        <c:forEach items="${noticeCategoryList}" var="noticeCt">
+                            <option value="${noticeCt.id}">${noticeCt.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </c:if>
     <tr>
         <th>제목 <span class="required">*</span></th>
         <td colspan="3">
@@ -119,9 +134,16 @@
         </td>
     </tr>
     <tr>
-        <th>이름 <span class="required"></span></th>
+        <th>이름 <span class="required">*</span></th>
         <td colspan="3">
-           <div class="name">${action == null ? employee.name : '관리자'}</div>
+            <c:choose>
+                <c:when test="${action != null}">
+                    <input type="text" readonly value="관리자" disabled/>
+                </c:when>
+                <c:otherwise>
+                    <input type="text" value="${employee.name}" disabled/>
+                </c:otherwise>
+            </c:choose>
         </td>
     </tr>
     <tr>

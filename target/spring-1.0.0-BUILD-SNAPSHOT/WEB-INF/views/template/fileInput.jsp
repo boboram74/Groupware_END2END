@@ -65,7 +65,7 @@
 
   .delete-file {
     cursor: pointer;
-    color: var(--md-sys-color-error);
+    color: var(--md-sys-color-surface);
     padding: 2px 8px;
   }
 </style>
@@ -80,7 +80,8 @@
       </div>
     </div>
     <div class="file-list-form">
-      <ul id="file-list"></ul>
+      <ul id="file-list">
+      </ul>
     </div>
   </div>
 </div>

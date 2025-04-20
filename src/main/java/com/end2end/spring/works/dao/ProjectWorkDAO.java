@@ -102,7 +102,10 @@ public int countTotalWorksByProjectId(int projectId) {
     }
 
     public int countByType(int selectedId, String type) {
-        return 0;
+Map<String, Object> params = new HashMap<>();
+params.put("type", type);
+params.put("selectedId", selectedId);
+        return mybatis.selectOne("works.countByType", params);
     }
 public int countTotalWorks(int selectedId) {
         return mybatis.selectOne("works.countTotalWorks", selectedId);

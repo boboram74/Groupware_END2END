@@ -145,8 +145,11 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectDao.hideById(projectId, convertedHideYn);
     }
-
-
+    @Override
+    public ProjectDTO selectProjectDeadLine(int id)
+    {
+      return projectDao.selectProjectDeadLine(id);
+    }
     @Override
     public void updateProjectUser(int projectId, List<String> employeeId) {
         // 기존 멤버 목록 조회

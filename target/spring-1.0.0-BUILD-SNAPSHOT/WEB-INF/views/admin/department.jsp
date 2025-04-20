@@ -146,7 +146,6 @@
         $.ajax({
             url: '/admin/api/departmentList',
         }).done(function (resp) {
-            console.log(resp);
             var $tbody = $('.custom-mail-table tbody').empty();
             resp.forEach(function (item) {
                 var $tr = $(

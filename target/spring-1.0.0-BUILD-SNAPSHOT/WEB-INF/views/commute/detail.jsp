@@ -443,8 +443,6 @@
         function parseDate(dates) {
             const month = String(dates.getMonth() + 1).padStart(2, '0');
             const date = String(dates.getDate()).padStart(2, '0');
-
-            console.log(month + '-' + date);
             return dates.getFullYear() + '-' + month + '-' + date;
         }
 
@@ -462,7 +460,6 @@
             }).done(function(data) {
                 calendar.removeAllEvents();
                 const events = data.map(function(event) {
-                    console.log(event);
                     if (event.eventName === 'period') {
                         return {
                             title: event.title,
@@ -479,7 +476,6 @@
                         display: 'block',
                     }
                 })
-                console.log(events);
                 successCallback(events);
             })
         }

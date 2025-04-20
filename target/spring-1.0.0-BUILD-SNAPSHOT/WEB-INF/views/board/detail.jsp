@@ -214,7 +214,8 @@
             </c:otherwise>
         </c:choose>
     </tr>
-    <tr class="board-content">
+    <tr>
+         <td class="label"> 내용
         <td colspan="4">${board.content}</td>
     </tr>
     <c:forEach var="file" items="${fileList}">
@@ -322,11 +323,6 @@
             const replyId = $(this).data("id");
             const employeeId = String($('#loginUserId').val());
             const replyEmployeeId = String($(this).data("employeeId"));
-
-            console.log("전송할 댓글 ID:", replyId);
-            console.log("로그인된 사용자 employeeId:", employeeId);
-            console.log("댓글 작성자 employeeId:", replyEmployeeId);
-
             if (employeeId !== replyEmployeeId) {
                 alert("다른 게시물은 삭제 할 수 없습니다.");
             }
@@ -337,7 +333,6 @@
                     url: "/reply/delete/" + replyId,
                     success: function (response) {
                         response = JSON.parse(response)
-                        console.log("댓글삭제", response);
 
                         if (response) {
                             loadReplies(); // 댓글 다시 불러오기
@@ -369,7 +364,6 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    console.log("작성성공");
                     loadReplies();
                     document.getElementById("content").value = ""; // 입력창 초기화
 
@@ -387,18 +381,13 @@
 
         const loadReplies = () => {
             const boardId = '${board.id}';
-            console.log(boardId);
-
             $.ajax({
                 type: "get",
                 url: "/reply/list",
                 data: {boardId: boardId},
                 success: function (replyList) {
                     $(".replyListContainer").empty();
-                    console.log(replyList);
-
                     replyList.forEach(reply => {
-                        console.log(reply.regDate);
                         const $replyDiv = $('<div class="replyList">')
                             .append(
                                 $('<div class="profile" style="background-image: url(' + reply.profileImg + ')">'))

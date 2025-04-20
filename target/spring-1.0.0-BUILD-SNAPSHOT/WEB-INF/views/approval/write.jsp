@@ -207,19 +207,16 @@
 
                 const vacationType = formData.get('vacationType');
 
-                console.log(vacationType);
-
                 if (vacationType === 'ANNUAL') {
                     formData.append('startDate', date + " 00:00:00");
                 } else {
-                    console.log(date, time);
                     formData.append('startDate', date + " " + time);
                     $('input [name="vacationDate"]').val(0.5);
                 }
             }
 
             for (const key of formData.keys()) {
-                console.log(key +": " + formData.get(key));
+
             }
 
             $.ajax({
@@ -235,7 +232,6 @@
 
                 }
             }).done(function(resp) {
-                console.log('전송됨');
                 if (window.opener) {
                     window.opener.location.reload();
                     window.close();

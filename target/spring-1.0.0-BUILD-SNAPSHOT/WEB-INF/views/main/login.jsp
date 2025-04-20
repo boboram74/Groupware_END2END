@@ -6,6 +6,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/resources/image/favicon.ico">
   <link rel="stylesheet" href="/css/main/login.css" />
   <title>Login</title>
   <style>
@@ -34,8 +35,8 @@
       <img src="/image/로그인로고.PNG" />
     </div>
     <form action="/employee/login" method="post" class="loginForm">
-      <input type="text" name="loginId" id="id" placeholder="아이디 입력" />
-      <input type="password" name="password" id="pw" placeholder="패스워드 입력" />
+      <input type="text" name="loginId" id="id" placeholder="아이디 입력" autocomplete="loginId"/>
+      <input type="password" name="password" id="pw" placeholder="패스워드 입력" autocomplete="password"/>
       <div class="remember">
         <input type="checkbox" id="rememberId" />
         <label for="rememberId">아이디 저장하기</label>

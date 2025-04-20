@@ -124,14 +124,17 @@
 <div class="content">
 </div>
 <div class="form-container">
-    <form action="/board/update" method="post" enctype="multipart/form-data">
+    <form action="${action == null ? '/board/update' : '/notice/update'}" method="post" enctype="multipart/form-data">
     <table class="form-table">
         <tr>
             <th>등록일<span class="required"></span></th>
             <td><span class="date-field"></span>
                 <div class="date">${board.regDate}</div>
             </td>
-
+            <c:if test="${action != null}">
+                <th>분류</th>
+                <td>${board.noticeCtName}</td>
+            </c:if>
         </tr>
         <tr>
             <th>제목<span class="required"></span></th>
@@ -142,7 +145,14 @@
         <tr>
             <th>이름<span class="required"></span></th>
             <td colspan="3">
-               ${board.employeeName}
+                <c:choose>
+                    <c:when test="${action == null}">
+                        ${board.employeeName}
+                    </c:when>
+                    <c:otherwise>
+                        관리자
+                    </c:otherwise>
+                </c:choose>
             </td>
         </tr>
         <tr>
@@ -168,15 +178,16 @@
     </table>
     <div class="button-container">
         <button class="btn btn-primary">수정</button>
-        <button type="button" class="btn btn-secondary" onclick="location.href = '/board/detail/${board.id}'">취소</button>
+        <button type="button" class="btn btn-secondary" onclick="location.href = ${actaion == null ?'/board/detail/' : '/notice/detail/'}${board.id};">취소</button>
 
     </div>
     </form>
 </div>
 <script type="text/javascript" src="/js/template/summernote.js"></script>
 <script>
-    $('#content').summernote(summernoteSetting($('#content')));
-    $('#content').summernote('code', '${board.content}');
+    $('#content')
+        .summernote(summernoteSetting($('#content')))
+        .summernote('code', '${board.content}');
 
     $('form').on('submit', function(e) {
         $('input [name="content"]').val($('#content').summernote('code'));

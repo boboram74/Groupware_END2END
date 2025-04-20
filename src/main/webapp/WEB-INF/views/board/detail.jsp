@@ -245,7 +245,7 @@
         </c:when>
         <c:otherwise>
             <c:if test="${employee.role eq 'ADMIN'}">
-                <button type="button" class="editBtn">수정</button>
+                <button type="button" class="editBtn" onclick="location.href='/notice/write/update/${board.id}'">수정</button>
                 <button type="submit" class="deleteBtn" onclick="location.href='/notice/delete/${board.id}'">삭제</button>
             </c:if>
         </c:otherwise>

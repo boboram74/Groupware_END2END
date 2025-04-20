@@ -9,6 +9,7 @@ import com.end2end.spring.board.service.BoardCategoryService;
 import com.end2end.spring.board.service.BoardService;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.util.Statics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,14 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDTO> selectAll() {
         return boardDAO.selectAll();
         // TODO: 모든 게시글 조회 완료
+    }
+
+    @Override
+    public List<BoardDTO> selectAll(int page) {
+        int start = (page - 1) * Statics.recordCountPerPage;
+        int end = Math.min(page * Statics.recordCountPerPage, boardDAO.selectAll().size());
+
+        return boardDAO.selectAllFromTo(start, end);
     }
 
     @Override

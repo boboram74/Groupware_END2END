@@ -18,6 +18,13 @@ public class BoardDAO {
         return mybatis.selectList("board.toList");
     }
 
+    public List<BoardDTO> selectAllFromTo(int start, int end) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("start", start);
+        map.put("end", end);
+        return mybatis.selectList("board.selectAllFromTo", map);
+    }
+
     public int deleteById(int id) {
         return mybatis.delete("board.deleteById", id);
     }

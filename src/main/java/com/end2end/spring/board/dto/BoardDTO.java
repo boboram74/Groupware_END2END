@@ -23,7 +23,6 @@ public class BoardDTO {
     private String employeeName;
     private String profileImg;
     private int replyCount;
-    private String importantYn;
 
     public void setFilePath(String s) {
     }

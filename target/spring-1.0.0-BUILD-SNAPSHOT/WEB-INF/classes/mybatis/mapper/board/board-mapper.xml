@@ -13,6 +13,26 @@
         ORDER BY B.ID DESC
     </select>
 
+    <select id="selectAllFromTo" resultType="com.end2end.spring.board.dto.BoardDTO">
+        SELECT *
+        FROM (
+            SELECT
+                BOARD.*, E.name AS employeeName, E.profileImg AS profileImg, NVL(R.replyCount, 0) AS replyCount,
+                ROW_NUMBER() over (ORDER BY BOARD.id DESC) AS rnum
+            FROM
+                BOARD
+            JOIN
+                EMPLOYEE E
+            ON BOARD.employeeId = E.id
+            LEFT JOIN (
+                SELECT COUNT(*) AS replyCount, boardId AS boardId
+                FROM REPLY
+                GROUP BY boardId) R
+            ON BOARD.id = R.boardId
+            ) A
+        WHERE rnum BETWEEN ${start} AND ${end}
+    </select>
+
     <select id="selectByCategoryId" resultType="com.end2end.spring.board.dto.BoardDTO">
         SELECT
             B.*,
@@ -22,22 +42,6 @@
         WHERE B.BOARDCTID = #{categoryId}
         ORDER BY B.ID DESC
     </select>
-
-
-<!--    <select id="search" parameterType="map" resultType="com.end2end.spring.board.dto.BoardDTO">-->
-<!--        SELECT * FROM board-->
-<!--        <where>-->
-<!--            <choose>-->
-<!--                <when test="option.equals('title')">-->
-<!--                    title LIKE CONCAT('%', #{keyword}, '%')-->
-<!--                </when>-->
-<!--                <when test="option.equals('writer')">-->
-<!--                    writer LIKE CONCAT('%', #{keyword}, '%')-->
-<!--                </when>-->
-<!--            </choose>-->
-<!--        </where>-->
-<!--        ORDER BY created_at DESC-->
-<!--    </select>-->
 
     <select id="search" parameterType="map" resultType="com.end2end.spring.board.dto.BoardDTO">
         SELECT e.name as employeeName , b.*

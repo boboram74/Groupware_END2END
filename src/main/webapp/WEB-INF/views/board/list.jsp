@@ -140,5 +140,23 @@
     <!-- 추가 행 -->
     </tbody>
 </table>
+<div class="pageNavi">
+    <c:if test="${pageNavi.hasPrev}">
+        <span class="material-icons paging" onclick="location.href='/board/list?page=${pageNavi.start - 1}'">chevron_left</span>
+    </c:if>
+    <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
+        <c:choose>
+            <c:when test="${item == pageNavi.page}">
+                <span class="paging active" onClick="location.href='/board/list?page=${item}'">${item}</span>
+            </c:when>
+            <c:otherwise>
+                <span class="paging" onClick="location.href='/board/list?page=${item}'">${item}</span>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+    <c:if test="${pageNavi.hasNext}">
+        <span class="material-icons paging" onclick="location.href='/board/list?page=${pageNavi.end + 1}'">chevron_right</span>
+    </c:if>
+</div>
 
 <jsp:include page="/WEB-INF/views/board/board-footer.jsp"/>

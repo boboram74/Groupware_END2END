@@ -9,6 +9,7 @@ import com.end2end.spring.board.service.BoardService;
 import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
+import com.end2end.spring.util.PageNaviUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,13 +27,11 @@ public class BoardController {
     @Autowired private FileService fileService;
 
     @RequestMapping("/list")
-    public String list(Model model) {
-        List<BoardDTO> boardList = boardService.selectAll();
-        List<BoardCategoryDTO> boardCategoryList = boardCategoryService.selectAll();
-        System.out.println(boardList);
-        System.out.println(boardCategoryList);
-        model.addAttribute("boardList", boardList);
-        model.addAttribute("boardCategoryList",boardCategoryList);
+    public String list(Model model, @RequestParam(defaultValue = "1") int page) {
+        model.addAttribute("boardList", boardService.selectAll(page));
+        PageNaviUtil.PageNavi pageNavi =
+                new PageNaviUtil(page, boardService.selectAll().size()).generate();
+        model.addAttribute("pageNavi", pageNavi);
 
         return "/board/list";
     }

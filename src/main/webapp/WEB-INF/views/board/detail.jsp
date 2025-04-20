@@ -259,7 +259,6 @@
 <hr>
 <c:if test="${empty active}">
     <input type="hidden" id="loginUserId" value="${employee.id}"/>
-
     <form id="replyForm" enctype="multipart/form-data">
         <div class="replyContainer">
             <div class="addReply">

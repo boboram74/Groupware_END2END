@@ -39,6 +39,16 @@
                 </c:choose>
             </td>
         </tr>
+        <c:forEach var="file" items="${fileList}">
+            <tr>
+                <td class="label">첨부파일</td>
+                <td colspan="3">
+                    <c:forEach var="file" items="${fileList}">
+                        <a href="/file/download?path=${file.path}">${file.originFileName}</a>
+                    </c:forEach>
+                </td>
+            </tr>
+        </c:forEach>
         <tr>
             <th class="label">첨부파일</th>
             <td colspan="3"  style="margin-right: 10px;>

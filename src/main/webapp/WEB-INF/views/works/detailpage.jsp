@@ -6,7 +6,7 @@
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<link rel="stylesheet" href="/css/template/exam.css" />
+<link rel="stylesheet" href="/css/template/exam.css"/>
 <!-- Date Range Picker CSS & JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -41,7 +41,7 @@
 
     .mainContainer {
         width: calc(100% - 200px); /* boxContents 전체 너비에서 mainHeader(200px)만큼 뺌 */
-        margin-left: 200px; /* mainHeader 너비만큼 왼쪽 마진 */
+        margin-left: 200px;
         min-height: 100vh;
         background-color: #fff;
         padding: 20px;
@@ -255,7 +255,6 @@
     }
 
 
-
     .search select,
     .search input {
 
@@ -291,6 +290,7 @@
     .search button:hover {
         background-color: #2b3b5b;
     }
+
     #writeBtn {
         background-color: #1f2a44;
         color: white;
@@ -312,6 +312,7 @@
     .finishBtnDiv {
         margin-top: 15px;
     }
+
     .content {
         width: 100%;
         display: flex;
@@ -372,6 +373,7 @@
         font-size: 24px;
         color: #666;
     }
+
     #finishProjectBtn {
         background-color: #1f2a44;
         color: white;
@@ -382,7 +384,7 @@
         font-size: 16px;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.2s ease;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     #finishProjectBtn:hover {
@@ -508,9 +510,11 @@
             <a href="/work/write/${project.id}">
                 <button id="writeBtn" }>작성하기</button>
             </a>
-            <div id="finishBtnDiv" class="finishBtnDiv">
+            <c:if test="${list.projectUserId}">
+                <div id="finishBtnDiv" class="finishBtnDiv">
 
-            </div>
+                </div>
+            </c:if>
         </div>
 
         <!-- 칸반보드 -->
@@ -620,8 +624,8 @@
                         <div id="workPriority"><h2>중요도</h2></div>
                         <h5>진행도</h5>
                         <div id="workState"><h2>진행도</h2></div>
-                        <h5>기간</h5>
-                        <div id="workDate"><h2>기간</h2></div>
+<%--                        <h5>기간</h5>--%>
+<%--                        <div id="workDate"><h2>기간</h2></div>--%>
                         <h5>내용</h5>
                         <div id="workContent"></div>
                         <h5>파일 리스트</h5>
@@ -664,8 +668,8 @@
                             <div id="updatePriority"></div>
                             <h5>진행도</h5>
                             <div id="updateState"></div>
-                            <h5>기간</h5>
-                            <div id="updateDate"></div>
+<%--                            <h5>기간</h5>--%>
+<%--                            <div id="updateDate"></div>--%>
                             <h5>내용</h5>
                             <div id="updateContet"></div>
                             <h5>파일 리스트</h5>
@@ -686,6 +690,7 @@
         <script>
 
             const employeeRole = "${employee.role}";
+
             function submitSearchData(projectId) {
                 $.ajax({
                     url: '/work/search/' + projectId,
@@ -903,12 +908,12 @@
                             files.forEach(file => {
                                 fileList +=
                                     '<li>'
-                                    +    '<a href="/file/download?path=' + file.path +
+                                    + '<a href="/file/download?path=' + file.path +
                                     '" class="text-decoration-none">' +
                                     file.originFileName
                                     + '</a>'
                                     + '<input type="hidden" name="fileId" value="' + file.id + '">'
-                                    + '<button type="button" onClick="$(this).parent().remove();">삭제</button>' +'</li>';
+                                    + '<button type="button" onClick="$(this).parent().remove();">삭제</button>' + '</li>';
                             });
                         } else {
                             fileList = '<li>첨부된 파일이 없습니다.</li>';
@@ -983,9 +988,10 @@
                 $('.work-item').on('drag', function (e) {
 
                 });
-                $(document).on('click', '#finishProjectBtn', function() {
+                $(document).on('click', '#finishProjectBtn', function () {
                     const projectId = ${projectId};
                     finishWork(projectId);
+                    disableProjectFeatures();
                 });
 
 
@@ -994,11 +1000,11 @@
                         $.ajax({
                             url: '/work/finish',
                             type: 'POST',
-                            data: { projectId: projectId },
+                            data: {projectId: projectId},
                             success: function (response) {
                                 alert("프로젝트가 마감되었습니다.");
                                 disableProjectFeatures();
-                                location.href= '/project/main';
+
                             },
                             error: function (error) {
                                 console.error("마감 실패:", error);
@@ -1007,16 +1013,15 @@
                         });
                     }
                 }
+
                 function disableProjectFeatures() {
 
                     $('#writeBtn, #deleteBtn, #updateBtn').prop('disabled', true).css('cursor', 'not-allowed');
-                    $('.btn-close').prop('disabled', true);
-
-
                     $('.work-item').removeAttr('draggable').css('cursor', 'not-allowed');
                     $('.movingBoardColumn').off('dragover drop');
                     $('.work-item').off('dragstart dragend');
                 }
+
                 // function disableProjectFeatures() {
                 //
                 //     $('#writeBtn,#deleteBtn, #updateBtn').prop('disabled', true);
@@ -1056,8 +1061,8 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            console.log(response);
                             if (response == 0) {
+
                                 $('#finishProjectBtn').remove();
                                 $(`.finishBtnDiv`).append(`
                                      <button id="finishProjectBtn" class="btn btn-primary">
@@ -1080,8 +1085,6 @@
                 $('.movingBoardColumn').on('dragover', function (e) {
                     e.preventDefault();
                 })
-
-
             })
 
         </script>

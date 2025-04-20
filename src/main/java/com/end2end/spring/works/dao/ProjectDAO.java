@@ -68,7 +68,11 @@ public void endworks(int projectId){
         Map<String, Object> params = new HashMap<>();
         params.put("projectId", projectId);
         params.put("hideYn",  convertedHideYn);
-        System.out.println("dao"+params);
+//        System.out.println("dao"+params);
     return mybatis.update("project.hideById",params);
+    }
+
+    public ProjectDTO selectProjectDeadLine(int id) {
+        return mybatis.selectOne("project.selectProjectDeadLine",id);
     }
 }

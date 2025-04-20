@@ -178,7 +178,6 @@ public class MailDAO {
     }
 
     public int updateEmailSignature(Map<String, String> body) {
-        System.out.println(body.get("signature"));
         return mybatis.update("mail.updateEmailSignature", body);
     }
 }

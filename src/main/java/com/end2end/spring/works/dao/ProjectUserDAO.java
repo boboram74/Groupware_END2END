@@ -23,9 +23,9 @@ public class ProjectUserDAO {
         Map<String, Object> params = new HashMap<>();
         params.put("projectId", projectId);
         params.put("employeeId",employee);
-        System.out.println(params);
-        System.out.println("아이디! 프젝"+projectId);
-        System.out.println("아이디! 임플로이"+employee);
+//        System.out.println(params);
+//        System.out.println("아이디! 프젝"+projectId);
+//        System.out.println("아이디! 임플로이"+employee);
         //여기서 값을 못받는중
         mybatis.insert("project.insertProjectUser", params);
     }

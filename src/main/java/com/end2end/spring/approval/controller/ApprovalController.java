@@ -87,7 +87,7 @@ public class ApprovalController {
         for (List<Map<String, Object>> approvalList : approvalByState.values()) {
             totalSize += approvalList.size();
         }
-        System.out.println("totalSize: " + totalSize);
+//        System.out.println("totalSize: " + totalSize);
         String userRole = employee.getDepartmentName();
         boolean isAdmin = "경영팀".equals(userRole);
         String departmentName = approvalService.getDepartmentNameByEmployeeId(employeeId);
@@ -379,7 +379,7 @@ public class ApprovalController {
 
         List<Map<String, Object>> importantList = approvalService.importantlist(employeeId);
         Map<String, List<Map<String, Object>>> approvalByState = approvalService.allApprovals();
-        System.out.println("approvalByState.size :"+approvalByState.size());
+//        System.out.println("approvalByState.size :"+approvalByState.size());
         List<Map<String, Object>> waitingList = new ArrayList<>();
         List<Map<String, Object>> goingList = new ArrayList<>();
         List<Map<String, Object>> completedList = new ArrayList<>();

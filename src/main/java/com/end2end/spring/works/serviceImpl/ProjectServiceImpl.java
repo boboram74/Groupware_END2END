@@ -3,6 +3,7 @@ package com.end2end.spring.works.serviceImpl;
 import com.end2end.spring.alarm.AlarmService;
 import com.end2end.spring.alarm.AlarmType;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.util.Statics;
 import com.end2end.spring.works.dao.ProjectDAO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
 import com.end2end.spring.works.dto.*;
@@ -115,7 +116,12 @@ public class ProjectServiceImpl implements ProjectService {
 
         return result;
     }
-
+//    public List<ProjectSelectDTO> selectAllProject(int page) {
+//        int start = (page - 1) * Statics.recordCountPerPage;
+//        int end = Math.min(page * Statics.recordCountPerPage, projectDao.selectAll().size());
+//
+//        return projectDao.selectAllFromTo(start, end);
+//    }
 
     @Override
     public ProjectDTO selectById(int id) {
@@ -144,6 +150,11 @@ public class ProjectServiceImpl implements ProjectService {
 //        System.out.println("after hideYn: " + convertedHideYn);
 
         return projectDao.hideById(projectId, convertedHideYn);
+    }
+    @Override
+    public void endworks(int projectId){
+
+        projectDao.endworks(projectId);
     }
     @Override
     public ProjectDTO selectProjectDeadLine(int id)

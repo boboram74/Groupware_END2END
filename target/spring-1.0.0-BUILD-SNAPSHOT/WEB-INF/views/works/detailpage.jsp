@@ -40,7 +40,7 @@
     }
 
     .mainContainer {
-        width: calc(100% - 200px); /* boxContents 전체 너비에서 mainHeader(200px)만큼 뺌 */
+        width: calc(100% - 200px);
         margin-left: 200px;
         min-height: 100vh;
         background-color: #fff;
@@ -500,7 +500,6 @@
             </div>
         </div>
 
-
         <div class="projectHeader">
             <h2>프로젝트 : ${project.name}</h2>
             <div class="projectTime">
@@ -510,11 +509,11 @@
             <a href="/work/write/${project.id}">
                 <button id="writeBtn" }>작성하기</button>
             </a>
-            <c:if test="${list.projectUserId}">
+
                 <div id="finishBtnDiv" class="finishBtnDiv">
 
                 </div>
-            </c:if>
+
         </div>
 
         <!-- 칸반보드 -->
@@ -635,7 +634,6 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
-                        <!-- 수정하기 버튼 -->
 
                         <button type="button" class="btn btn-primary" id="updateBtn"
                                 onclick="openupdateModal(currentWorkId)">
@@ -688,6 +686,9 @@
         </div>
 
         <script>
+            window.addEventListener('DOMContentLoaded', function () {
+                setTimeout(disableProjectFeatures, 100);
+            });
 
             const employeeRole = "${employee.role}";
 
@@ -748,7 +749,7 @@
             }
 
             let currentWorkId = null;
-            const loggedInEmployeeId = ${employee.id}; // 모델로 넘어온 세션 유저 ID
+            const loggedInEmployeeId = ${employee.id};
             function openWorkModal(workId, employeeId) {
                 currentWorkId = workId;
                 $.ajax({

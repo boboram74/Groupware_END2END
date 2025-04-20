@@ -22,13 +22,38 @@
     </select>
     <!-- 프로젝트 모아보기-->
 
+
+    <!--    <select id="selectAllFromTo" resultType="com.end2end.spring.works.dto.ProjectSelectDTO">-->
+    <!--        SELECT *-->
+    <!--        FROM (-->
+    <!--        SELECT-->
+    <!--        p.*,-->
+    <!--        CASE-->
+    <!--        WHEN p.DEADLINE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE + 5) THEN 'Y'-->
+    <!--        ELSE 'N'-->
+    <!--        END AS nearDeadline,-->
+    <!--        ROWNUM AS rnum-->
+    <!--        FROM (-->
+    <!--        SELECT *-->
+    <!--        FROM project p-->
+    <!--        ORDER BY-->
+    <!--        CASE-->
+    <!--        WHEN p.DEADLINE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE + 5) THEN 1-->
+    <!--        ELSE 2-->
+    <!--        END,-->
+    <!--        p.id DESC-->
+    <!--        )-->
+    <!--        WHERE rnum BETWEEN #{start} AND #{end}-->
+    <!--    </select>-->
+
+
     <select id="selectProjectDeadLine" resultType="com.end2end.spring.works.dto.ProjectDTO" parameterType="int">
         SELECT id, deadLine
         FROM project
         WHERE id = #{id}
 
 
-</select>
+    </select>
 
     <select id="selectByprojectId" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
 
@@ -41,14 +66,12 @@
     <!-- 프로젝트 멤버 프로필 가져오기-->
 
 
-
     <update id="updateStatusByProjectId">
 
         UPDATE project SET status = 'finish' WHERE id = #{projectId}
 
     </update>
-<!-- 프젝 상태 변환쿼리   -->
-
+    <!-- 프젝 상태 변환쿼리   -->
 
 
     <delete id="deleteMemberById">
@@ -107,9 +130,9 @@
         WHERE id = #{id}
     </select>
 
-<update id="hideById">
-    UPDATE project set hideYn = #{hideYn} WHERE id = ${projectId}
-</update>
+    <update id="hideById">
+        UPDATE project set hideYn = #{hideYn} WHERE id = ${projectId}
+    </update>
 
     <!--제일 최근 등록된 프로젝트 찾기 -->
     <select id="findLatestProject" resultType="com.end2end.spring.works.dto.ProjectDTO">

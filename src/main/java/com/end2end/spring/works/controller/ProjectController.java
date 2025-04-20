@@ -1,7 +1,9 @@
 package com.end2end.spring.works.controller;
 
+import com.end2end.spring.board.service.NoticeService;
 import com.end2end.spring.employee.dto.DepartmentDTO;
 import com.end2end.spring.employee.dto.EmployeeDTO;
+import com.end2end.spring.util.PageNaviUtil;
 import com.end2end.spring.works.dto.*;
 
 import com.end2end.spring.works.service.ProjectService;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,19 +34,35 @@ public class ProjectController {
 
     @RequestMapping("/main")
     public String main(HttpSession session, Model model) throws Exception {
+//       페이징하다가 에러나서  매개변수 int page 일단뺌
         EmployeeDTO EmployeeDTO = (EmployeeDTO) session.getAttribute("employee");
+
+//        PageNaviUtil.PageNavi pageNavi =
+//                new PageNaviUtil(page,projectService.selectAllProject().size()).generate();
+//        model.addAttribute("pageNavi", pageNavi);
+//        model.addAttribute("projectList",projectService.selectAllProject(page));
+
 
         List<ProjectSelectDTO> projects = projectService.selectAllProject();
 
-            for (ProjectSelectDTO dto : projects) {
-                int id = dto.getId();
-                List<ProjectWorkDTO> list = wserv.selectAll(id);
+        for (ProjectSelectDTO dto : projects) {
+            int id = dto.getId();
 
-//                System.out.println("nearDeadline: " + dto.getNearDeadline());
-
-                model.addAttribute("nearDeadline", dto.getNearDeadline());
+            LocalDate deadline = dto.getDeadLine().toLocalDate();
+            LocalDate today = LocalDate.now();
+            System.out.println(deadline);
+            System.out.println(today);
+            if (deadline.isBefore(today)) {
+                projectService.endworks(id);
 
             }
+
+            List<ProjectWorkDTO> list = wserv.selectAll(id);
+            model.addAttribute("now", new java.sql.Date(System.currentTimeMillis()));
+
+            model.addAttribute("nearDeadline", dto.getNearDeadline());
+
+        }
 
 
         model.addAttribute("isTeamLeader",
@@ -52,16 +72,23 @@ public class ProjectController {
 
         return "works/worksmain";
     }
-@ResponseBody
-@RequestMapping("/hide")
-public String hide(int projectId,String hideYn) {
+
+    //    @GetMapping("/project/refresh")
+//    public String refreshProjectStatus() {
+//        projectService.checkAndUpdateDeadlineStates();
+//        return "redirect:/project/main";
+//    }
+    @ResponseBody
+    @RequestMapping("/hide")
+    public String hide(int projectId, String hideYn) {
 //        System.out.println("프젝아이디"+projectId+hideYn);
-    projectService.hideById(projectId,hideYn);
-    return "SUCCESS";
-}
+        projectService.hideById(projectId, hideYn);
+        return "SUCCESS";
+    }
+
     @RequestMapping("/insert")
     public String insert(@ModelAttribute ProjectInsertDTO dto) {
-            projectService.insert(dto);
+        projectService.insert(dto);
 
         // TODO: 프로젝트 생성
         return "redirect:/project/main";
@@ -78,7 +105,7 @@ public String hide(int projectId,String hideYn) {
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
         ProjectDTO project = projectService.selectById(id);
         List<ProjectWorkDTO> list = wserv.selectAll(id);
-model.addAttribute("employee", employeeDTO);
+        model.addAttribute("employee", employeeDTO);
         model.addAttribute("project", project);
         model.addAttribute("projectId", id);
         model.addAttribute("works", list);

@@ -305,28 +305,7 @@
         margin-bottom: 8px;
     }
 
-    .hidden-project.leader {
-        opacity: 0.5;
-    }
 
-    .hidden-project.staff {
-        display: none;
-    }
-
-    .hidden-project {
-        opacity: 0.4;
-        transition: opacity 0.3s ease;
-        color: #7f8c8d;
-    }
-
-    .employee .hidden-project {
-        display: none;
-    }
-
-
-    .manager .hidden-project {
-        opacity: 0.3;
-    }
 
     .form-control {
         border: 1px solid var(--gray-300);
@@ -401,8 +380,8 @@
     }
 
     .detail-badgeStatus {
-        background-color: #e0e0e0; /* 연한 회색 */
-        color: #333333;            /* 진한 글자색 */
+        background-color: #e0e0e0;
+        color: #333333;
         font-weight: 500;
         padding: 4px 10px;
         border-radius: 12px;
@@ -416,6 +395,21 @@
 
 
 
+    .hidden-project {
+        opacity: 0.4;
+        transition: opacity 0.3s ease;
+        color: #7f8c8d;
+    }
+
+
+    /*.hidden-project.leader {*/
+    /*    opacity: 0.5;*/
+    /*}*/
+
+    /*.hidden-project.staff {*/
+    /*    display: none;*/
+    /*}*/
+
 
     .detail-badge {
         background-color: var(--md-sys-color-error);
@@ -428,50 +422,13 @@
         margin-left: 10px;
     }
 
-    .hidden-project.leader {
-        opacity: 0.5;
-    }
-
-    .hidden-project.staff {
-        display: none;
-    }
-
-    .hidden-project {
-        opacity: 0.4;
-        transition: opacity 0.3s ease;
-        color: #7f8c8d;
-    }
-
-    .employee .hidden-project {
-        display: none;
-    }
-
-
-    /*.manager .hidden-project {*/
-    /*    opacity: 0.3;*/
-    /*}*/
-
-    /*.ongoing-status {*/
-    /*    background-color: green;*/
-    /*    color: white;*/
-    /*    padding: 2px 5px;*/
-    /*    border-radius: 5px;*/
-    /*}*/
-
-    /*.finish-status {*/
-    /*    background-color: gray;*/
-    /*    color: white;*/
-    /*    padding: 2px 5px;*/
-    /*    border-radius: 5px;*/
-    /*}*/
-
 
 </style>
 
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
-            <span class="material-icons">mail</span>
+            <i class="material-icons">description</i>
             <span>Works</span>
         </div>
         <button class="detail-menu-toggle-btn">
@@ -1186,7 +1143,7 @@
     const departmentName = '${employee.departmentName}';
     const jobName = '${employee.jobName}'
     function handleProjectClick(projectId) {
-        if (departmentName !== '연구팀' && jobNamev!== '대표이사') {
+        if (departmentName !== '연구팀' && jobName!== '대표이사') {
             alert('연구팀과 대표이사만 입장이 가능합니다.');
             return;
         } else {

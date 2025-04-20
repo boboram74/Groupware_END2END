@@ -45,6 +45,20 @@
 			<exclude-mapping path="/views/main/error"/>
 			<beans:bean class="com.end2end.spring.interceptor.AuthenticationInterceptor"/>
 		</interceptor>
+
+		<interceptor>
+			<mapping path="/admin/**"/>
+			
+			<mapping path="/notice/write/**" />
+			<mapping path="/notice/update"/>
+			<mapping path="/notice/delete/**"/>
+			<beans:bean class="com.end2end.spring.interceptor.AuthenticationAdminInterceptor"/>
+		</interceptor>
+
+		<interceptor>
+			<mapping path="/hr/**" />
+			<beans:bean class="com.end2end.spring.interceptor.AuthenticationHrInterceptor" />
+		</interceptor>
 	</interceptors>
 	
 	<context:component-scan base-package="com.end2end.spring" />

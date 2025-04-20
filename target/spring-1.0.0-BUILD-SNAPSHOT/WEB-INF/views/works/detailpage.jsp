@@ -585,7 +585,7 @@
                                  data-employee-id="${work.employeeId}"
                                  onclick="openWorkModal(${work.id}, ${work.employeeId})">
                                 <c:if test="${employee.role == 'TeamLeader'}">
-                               
+
                                     <div class="closeBtn">
                                         <button type="button" class="btn-close btn-sm"
                                                 onclick="event.stopPropagation(); deleteWork(${work.id});">
@@ -1007,19 +1007,29 @@
                         });
                     }
                 }
-
                 function disableProjectFeatures() {
 
-                    $('#writeBtn,#deleteBtn, #deleteBtn').prop('disabled', true);
+                    $('#writeBtn, #deleteBtn, #updateBtn').prop('disabled', true).css('cursor', 'not-allowed');
+                    $('.btn-close').prop('disabled', true);
 
-                    $('.work-item').removeAttr('draggable');
 
-                    // $('.work-item').attr('draggable', false);
-
+                    $('.work-item').removeAttr('draggable').css('cursor', 'not-allowed');
                     $('.movingBoardColumn').off('dragover drop');
                     $('.work-item').off('dragstart dragend');
-
                 }
+                // function disableProjectFeatures() {
+                //
+                //     $('#writeBtn,#deleteBtn, #updateBtn').prop('disabled', true);
+                //
+                //     $('.work-item').removeAttr('draggable');
+                //     $('.btn-close').prop('disabled', true);
+                //
+                //     // $('.work-item').attr('draggable', false);
+                //
+                //     $('.movingBoardColumn').off('dragover drop');
+                //     $('.work-item').off('dragstart dragend');
+                //
+                // }
 
                 $('.movingBoardColumn'
                 ).on('drop', function (e) {

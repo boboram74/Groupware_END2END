@@ -61,6 +61,7 @@ public class ScheduleController {
     @RequestMapping("/update")
     public void update(ScheduleInsertDTO dto) {
         ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                .id(dto.getId())
                 .calendarId(dto.getCalendarId())
                 .title(dto.getTitle())
                 .content(dto.getContent())

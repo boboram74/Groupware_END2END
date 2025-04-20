@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ScheduleInsertDTO {
+    private int id;
     private int calendarId;
     private String title;
     private String content;

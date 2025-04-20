@@ -412,7 +412,7 @@
                             $('#scheduleWriteForm input[name=id]').val(data.id);
                             $('#scheduleWriteForm select[name=calendarId]').val(data.calendarId);
 
-                            $('#scheduleWriteForm input[name=title]').val(data.id);
+                            $('#scheduleWriteForm input[name=title]').val(data.title);
                             $('#insert-startDate').val(startDate);
                             $('#insert-startTime option[value="' + startTime + '"]').prop('selected', true);
                             $('#scheduleWriteForm input[name=startDate]').val(startDate + startTime);
@@ -667,10 +667,6 @@
             $('#calendar-update-complete-btn').on('click', function() {
                 const formData = new FormData($('#calendarWriteForm')[0]);
 
-                for (const [key, value] of formData.entries()) {
-
-                }
-
                 $.ajax({
                     url: '/calendar/update',
                     type: 'POST',
@@ -718,13 +714,6 @@
             // 모달 닫기
             $('.modal-close, .close-modal').click(function() {
                 $('#scheduleWriteModal').fadeOut(300);
-            });
-
-            // 모달 외부 클릭 시 닫기
-            $(window).click(function(e) {
-                if ($(e.target).is('.detail-modal')) {
-                    $('#scheduleWriteModal').fadeOut(300);
-                }
             });
 
             $('#schedule-detail-close').on('click', function() {

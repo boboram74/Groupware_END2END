@@ -15,20 +15,6 @@
     <button id="writeBtn" class="primary" onclick="location.href='/notice/write'">글쓰기</button>
   </c:if>
 </div>
-<div class="search">
-  <div>
-    <select id="searchOption">
-      <option value="writer">작성자</option>
-      <option value="title">제목</option>
-    </select>
-  </div>
-  <div class="searchInput">
-    <input id="input" type="text" name="keyword" placeholder="검색어 입력">
-  </div>
-  <div>
-    <button id="searchBtn"><span class="material-icons">search</span> 검색</button>
-  </div>
-</div>
 <div class="box surface-bright">
   <div class="box-title">
     <c:choose>

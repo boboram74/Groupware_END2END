@@ -37,7 +37,7 @@ $("#sendMail").on("click", function () {
         return;
     }
     $.ajax({
-        url: "http://34.70.179.192/mail/send",
+        url: "https://mail.end2end.site/mail/send",
         type: "POST",
         data: formData,
         processData: false,

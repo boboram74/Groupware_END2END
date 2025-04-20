@@ -29,7 +29,15 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void insert(MultipartFile[] files, FileDTO dto) {
-        if (Arrays.stream(files).allMatch(MultipartFile::isEmpty)) {
+        boolean isEmpty = true;
+        for( MultipartFile file : files) {
+           if (!file.isEmpty()) {
+               isEmpty = false;
+               break;
+           }
+       }
+
+        if (isEmpty) {
             return;
         }
 

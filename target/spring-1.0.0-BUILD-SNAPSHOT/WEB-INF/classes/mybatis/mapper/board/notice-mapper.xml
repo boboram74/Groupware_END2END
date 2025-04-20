@@ -66,8 +66,7 @@
     </insert>
 
     <update id="update">
-        UPDATE NOTICE SET noticeCtId = ${noticeCtId}, title = #{title}, content = #{content}
-        WHERE id = ${id}
+        UPDATE NOTICE SET title = #{title}, content = #{content} WHERE id = ${id}
     </update>
 
     <delete id="deleteById">

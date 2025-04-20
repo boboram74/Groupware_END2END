@@ -223,7 +223,7 @@ public class ApprovalController {
 
     @ResponseBody
     @RequestMapping("/insert")
-    public void insert(MultipartFile[] files, ApprovalInsertDTO dto, HttpSession session, Model model) {
+    public void insert(MultipartFile[] files, ApprovalInsertDTO dto, HttpSession session, Model model) throws Exception {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
         dto.setEmployeeId(employee.getId());
 

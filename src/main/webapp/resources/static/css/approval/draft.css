@@ -1,166 +1,3 @@
-
-* {
-    box-sizing: border-box;
-}
-
-.container {
-    margin: auto;
-    width: 800px;
-    height: 800px;
-
-}
-
-table {
-    width: 100%;
-    text-align: center;
-}
-
-th {
-    display: table-cell;
-    vertical-align: middle;
-    font-size: 30px;
-    text-align: center;
-}
-
-.header {
-    width: 100%;
-    height: 30%;
-
-}
-
-
-.informBox {
-    float: left;
-    width: 25%;
-    height: 100%;
-}
-
-.employeeNameBox,
-.sysdateBox,
-.positionsBox {
-    width: 90%;
-    height: 30%;
-    margin: auto;
-    margin-top: 5px;
-
-}
-
-.employeeNameBox div,
-.sysdateBox div,
-.positionsBox div {
-    width: 50%;
-    height: 90%;
-    margin: auto;
-    margin-top: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    float: left;
-    border: 1px solid black;
-}
-
-.employee,
-.sysdate,
-.employeePosition {
-
-    background-color: rgb(202, 199, 199);
-}
-
-.approvalBox {
-    float: right;
-    width: 35%;
-    height: 100%;
-
-}
-
-
-
-.lineBox {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    padding: 10px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-}
-
-.line {
-    border: 1px solid #ccc;
-    padding: 5px;
-    margin: 5px;
-    cursor: move;
-
-}
-
-
-#linePositions {
-    float: left;
-    width: 100%;
-    height: 15%;
-}
-
-#lineEmployeeName {
-    float: left;
-    width: 100%;
-    height: 70%;
-}
-
-#signDate {
-    float: left;
-    width: 100%;
-    height: 15%;
-}
-
-.addBox {
-    float: left;
-    width: 100%;
-    height: 20%;
-}
-
-.addBox button {
-    float: right;
-}
-
-.body {
-    width: 100%;
-    height: 70%;
-    border: 1px solid black;
-}
-
-.vacationKind {
-    width: 100%;
-    height: 10%;
-}
-
-.titleBox {
-    width: 100%;
-    height: 20%;
-}
-
-#title {
-    width: 100%;
-    height: 100%;
-}
-
-.contentsBox {
-    width: 100%;
-    height: 70%;
-
-}
-
-.contentsBox textarea {
-    width: 100%;
-    height: 90%;
-    resize: none;
-}
-
-.signImform {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    padding: 10px;
-}
-
 #employees
 {
     width: 200px;
@@ -198,9 +35,6 @@ select {
     border-radius: 4px;
     user-select: none;
 }
-
-
-
 
 .modalContainer {
     display: none;
@@ -249,14 +83,14 @@ select {
     height: fit-content;
 }
 .approverCardContainer {
-     display: flex;
-     gap: 10px;
-     padding: 10px;
-     border: 1px solid #ccc;
-     border-radius: 8px;
-     background: #f9f9f9;
-     align-items: flex-end; /* 추가: 컨테이너 내 항목들을 오른쪽 정렬 */
- }
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+    align-items: flex-end; /* 추가: 컨테이너 내 항목들을 오른쪽 정렬 */
+}
 
 .approverCard {
     justify-content: space-between;
@@ -300,4 +134,135 @@ select {
 
 .approverStatus.done {
     color: #27ae60;
+}
+
+.approval-document {
+    width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    background: var(--md-sys-color-surface-bright);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.document-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.document-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.add-approval {
+    display: block;  /* 블록 레벨 요소로 변경 */
+    float: right;    /* 오른쪽 정렬 */
+    padding: 4px 8px;
+    font-size: 11px;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100px;
+}
+
+.approval-section {
+    margin-bottom: 20px;
+    float: right;
+    display: flex;
+    flex-direction: column;
+}
+
+.approval-table {
+    float: right;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.approval-table th {
+    width: 120px;  /* th 너비를 120px로 설정 */
+    border: 1px solid var(--md-sys-color-surface);
+    background-color: var(--md-sys-color-outline);
+    padding: 4px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.approval-table td {
+    border: 1px solid var(--md-sys-color-surface);
+    padding: 4px;
+    text-align: center;
+    font-size: 15px;
+    height: 80px;
+}
+
+.sign-cell {
+    min-width: 120px;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.info-table th {
+    background-color: var(--md-sys-color-outline);
+    width: 100px;
+}
+
+.info-table th, .info-table td {
+    border: 1px solid var(--md-sys-color-surface);
+    padding: 8px;
+}
+
+.doc-title {
+    width: 100%;
+    padding: 5px;
+    border: none;
+}
+
+.content-body {
+    min-height: 400px;
+    border: 1px solid var(--md-sys-color-surface);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.submit-btn, .cancel-btn {
+    padding: 8px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.attachment-section {
+    margin: 20px 0;
+    padding: 10px;
+}
+
+.position {
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+.name {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.add-approval {
+    padding: 5px 10px;
+    margin-top: 10px;
+    float: right;
+}
+
+.file-input-section {
+    color: var(--md-sys-color-surface);
+    background-color: var(--md-sys-color-surface-container);
 }

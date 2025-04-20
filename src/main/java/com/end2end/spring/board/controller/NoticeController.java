@@ -90,6 +90,7 @@ public class NoticeController {
     @RequestMapping("/write/update/{id}")
     public String toUpdate(@PathVariable int id, Model model) {
         model.addAttribute("board", noticeService.selectById(id));
+        model.addAttribute("noticeCategoryList", noticeCategoryService.selectAll());
         model.addAttribute("active", "notice");
         model.addAttribute("action", "/notice/update");
 

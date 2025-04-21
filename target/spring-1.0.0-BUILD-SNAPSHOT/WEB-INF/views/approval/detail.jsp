@@ -115,7 +115,8 @@
                                 <span class="approverStatus" id="approverStatus${approver['ID']} ${approver["SUBMITYN"] eq 'Y' ? 'done' : 'N'}">
                                     <c:choose>
                                         <c:when test="${approver['SUBMITYN'] eq 'Y'}">승인</c:when>
-                                        <c:otherwise>반려</c:otherwise>
+                                        <c:when test="${approver['SUBMITYN'] eq 'N'}">반려</c:when>
+                                        <c:otherwise>대기</c:otherwise>
                                     </c:choose>
                                 </span>
                                 </div>
@@ -243,7 +244,12 @@
                 </tr>
             </table>
         </div>
-
+        <c:if test="${approval.STATE eq 'REJECT'}">
+            <div class="reject-reason-box" style="border: 1px solid #e74c3c; padding: 15px; background-color: #f9e6e6; margin-top: 20px;">
+                <h4 style="color: #c0392b;">반려 사유</h4>
+                <p>${reject.reason}</p>
+            </div>
+        </c:if>
         <div class="document-footer">
             <div class="attachment-section file-input-section">
                 <h3>첨부파일</h3>

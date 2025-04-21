@@ -152,10 +152,10 @@ public class ApprovalController {
     @RequestMapping("/write/{id}")
     public String toWrite2(HttpSession session, @PathVariable int id, Model model) {
         EmployeeDTO employee = (EmployeeDTO) session.getAttribute("employee");
-
         model.addAttribute("dto", approvalFormService.selectByFormId(id));
         model.addAttribute("formId", id);
         model.addAttribute("employee", employee);
+        model.addAttribute("drafterJobId", employee.getJobId());
 
         double totalVacationDate = vacationService.sumTotalVacationDates(employee.getId());
         boolean isAbleHalf = totalVacationDate >= 0.5;

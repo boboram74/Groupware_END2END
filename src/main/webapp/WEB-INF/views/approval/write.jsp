@@ -50,6 +50,8 @@
     </div>
 
     <form action="/approval/insert" id="form">
+        <input type="hidden" id="drafterId" value="${employee.id}">
+        <input type="hidden" id="drafterJobId" value="${drafterJobId}">
      <jsp:include page="${dto.form}" />
     </form>
 <script type="text/javascript" src="/js/template/summernote.js"></script>
@@ -96,8 +98,19 @@
             event.preventDefault();
             let employee = JSON.parse(event.dataTransfer.getData("application/json"));
             const exists = approvalList.some(emp => emp.id === employee.id);
+            const drafterId = document.getElementById('drafterId').value;
+
+            if (employee.id === drafterId) {
+                alert("기안자는 결재선에 추가할 수 없습니다.");
+                return;
+            }
             if (exists) {
                 alert("이미 추가된 사원입니다.");
+                return;
+            }
+
+            if (employee.jobId > ${employee.jobId}) {
+                alert("자신보다 직급이 낮은 사원은 결재선에 추가할 수 없습니다.");
                 return;
             }
             if (employee) {

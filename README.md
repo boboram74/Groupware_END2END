@@ -52,6 +52,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 
 ### Infra
 - **OS : Rocky Linux 8**
+- **DB : Oracle 11g Xe**
 - **Google Cloud Platform (GCP)** – 웹 애플리케이션 및 메일 서버 배포
 - **Nginx** – Reverse Proxy HTTPS 트래픽 분기 및 Tomcat 연결
 - **Tomcat 9** – Spring 기반 WAS로 구동

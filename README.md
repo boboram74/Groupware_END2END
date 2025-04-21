@@ -33,7 +33,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 
 | 관리자 페이지1 | 관리자 페이지2 | 관리자 페이지3 |  관리자 페이지4 |
 | :---: | :---: | :---: | :---: |
-| ![Contacts](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d) | ![Contacts](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d) | ![Admin](https://github.com/user-attachments/assets/bedb3d2f-bc71-4d5d-b3d3-4d44d385a28f) | ![Admin](https://github.com/user-attachments/assets/f0342bc6-c8ab-43c2-84e7-da69818bba25) |
+| ![Contacts](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d) | ![Contacts](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d) | ![Admin](https://github.com/user-attachments/assets/bedb3d2f-bc71-4d5d-b3d3-4d44d385a28f) | ![Admin](https://github.com/user-attachments/assets/bd774264-6eec-4538-b94e-46699973eca0) |
 
 ---
 

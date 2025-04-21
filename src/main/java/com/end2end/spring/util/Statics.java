@@ -6,7 +6,7 @@ public class Statics {
     public static final int WORK_HOUR = 9;
 
     // 파일 입출력 경로
-    public static final String FILE_UPLOAD_PATH = "C:/files/";
+    public static final String FILE_UPLOAD_PATH = "/home/files/";
     public static final String MAPPED_FILE_UPLOAD_PATH = "/files/"; 
 
     //페이지 유틸

@@ -23,7 +23,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 
 ## 🎨 화면 구성
 
-| 메인 페이지 | 전자결재 페이지 | 메일함 페이지 | 직원 관리 페이지 | 채팅 페이지1 | 채팅 페이지2 |
+| 메인 페이지 | 전자결재 페이지 | 메일함 페이지 | 직원 관리 페이지 | 채팅1| 채팅2 |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | ![Main](https://github.com/user-attachments/assets/6cadd527-9803-4c01-9af7-7ab0f95ae3f5) | ![Approval](https://github.com/user-attachments/assets/b9f95421-b178-4c9c-adf4-c56bbbd1a271) | ![Mail](https://github.com/user-attachments/assets/e0d30093-e5cb-48d5-8d27-1c429e7da42c)  | ![Employee](https://github.com/user-attachments/assets/e5847a74-6283-4bcc-b392-e03e847b3746) | ![Chat](https://github.com/user-attachments/assets/dea80300-aab9-42d3-a1bb-f951fda9d3b6) | ![Chat2](https://github.com/user-attachments/assets/300aa550-325d-4dc5-9174-6a922b1af25b) |
 

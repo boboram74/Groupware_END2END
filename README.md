@@ -21,13 +21,6 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 
 ---
 
-![image](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d)
-
-https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d
-![image](https://github.com/user-attachments/assets/fed9c98c-cb91-4b0b-8181-0cc0cd9e3f53)
-
-
-
 ## 🎨 화면 구성
 
 | 메인 페이지 | 전자결재 페이지 | 메일함 페이지 | 직원 관리 페이지 | 채팅1| 채팅2 |
@@ -40,7 +33,7 @@ https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d
 
 | 관리자 페이지1 | 관리자 페이지2 | 관리자 페이지3 |  관리자 페이지4 |
 | :---: | :---: | :---: | :---: |
-| ![Contacts](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d) | ![Contacts](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d) | ![Admin](https://github.com/user-attachments/assets/fed9c98c-cb91-4b0b-8181-0cc0cd9e3f53) | ![Admin](https://github.com/user-attachments/assets/8a2c7811-93f9-46c3-8d1f-2e45f6259063) |
+| ![Contacts](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d) | ![Contacts](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d) | ![Admin](https://github.com/user-attachments/assets/bedb3d2f-bc71-4d5d-b3d3-4d44d385a28f) | ![Admin](https://github.com/user-attachments/assets/8a2c7811-93f9-46c3-8d1f-2e45f6259063) |
 
 ---
 
@@ -101,6 +94,9 @@ https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d
 [ERDCloud 링크](https://www.erdcloud.com/d/T4ZMac44Pooucd7WL)
 
 ---
+
+![image](https://github.com/user-attachments/assets/bedb3d2f-bc71-4d5d-b3d3-4d44d385a28f)
+
 
 ## 🤔 기술적 이슈와 해결 과정
 - **채팅방 중복 생성 문제**

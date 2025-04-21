@@ -1,9 +1,6 @@
 package com.end2end.spring.approval.dao;
 
-import com.end2end.spring.approval.dto.ApprovalDTO;
-import com.end2end.spring.approval.dto.ApprovalFormDTO;
-import com.end2end.spring.approval.dto.CheckImportantDTO;
-import com.end2end.spring.approval.dto.TempApprovalDTO;
+import com.end2end.spring.approval.dto.*;
 import com.end2end.spring.mail.dto.ImportYnDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,5 +113,9 @@ public class ApprovalDAO {
     }
     public void removeImportant(CheckImportantDTO dto) {
         mybatis.update("approval.removeImportant", dto);
+    }
+
+    public ApprovalRejectDTO rejectInfo(String approvalId) {
+        return mybatis.selectOne("approval.rejectInfo", approvalId);
     }
 }

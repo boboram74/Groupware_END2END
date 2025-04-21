@@ -211,49 +211,6 @@
         <div class="approval-list-wrapper">
             <div class="box surface-bright">
                 <div class="box-title">
-                    결재 대기 중
-                </div>
-                <div class="box-content">
-                    <table class="board-table">
-                        <thead>
-                        <tr>
-                            <th class="apColStar"></th>
-                            <th class="apColTitle">제목</th>
-                            <th class="apColStatus">결재 상태</th>
-                            <th class="apColWriter">기안자</th>
-                            <th class="apColDate">기안일</th>
-                            <th class="apColType">문서 종류</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <c:choose>
-                                <c:when test="${empty waitingList}">
-                                    <tr>
-                                        <td colspan="6" class="emptyMessage">대기 중인 문서가 없습니다.</td>
-                                    </tr>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:forEach var="i" items="${waitingList}">
-                                        <tr>
-                                            <td class="apColStar" onclick="saveImportant('${i.ID}')" style="cursor:pointer;">★</td>
-                                            <td class="apColTitle title" onClick="location.href='/approval/detail/${i.ID}'">${i.TITLE}</td>
-                                            <td class="apColStatus">결재 대기중</td>
-                                            <td class="apColWriter writer-info">
-                                                <div class="profile-img" style="background-image: url('${i.PROFILEIMG}')"></div>
-                                                <span>${i.DRAFTERNAME}</span>
-                                            </td>
-                                            <td class="apColDate">${i.REGDATE}</td>
-                                            <td class="apColType">${i.FORMNAME}</td>
-                                        </tr>
-                                    </c:forEach>
-                                </c:otherwise>
-                            </c:choose>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="box surface-bright">
-                <div class="box-title">
                     결재 진행 중
                 </div>
                 <div class="box-content">

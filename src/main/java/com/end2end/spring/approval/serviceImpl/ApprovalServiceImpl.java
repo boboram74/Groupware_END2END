@@ -255,4 +255,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         return approvalDAO.selectByStateFromTO(state, employeeId, start, end);
     }
+
+    @Override
+    public ApprovalRejectDTO rejectInfo(String approvalId) {
+        return  approvalDAO.rejectInfo(approvalId);
+    }
 }

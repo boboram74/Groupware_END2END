@@ -94,7 +94,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 프론트엔드에서 현재 열려 있는 채팅방과 무관하게 메시지를 단순 출력하던 로직 수정.
 각 메시지의 roomId를 기준으로 DOM에 동적으로 렌더링되도록 개선하였으며, roomId 불일치 시 메시지 미출력 로직을 적용하여 해결.
 - **include된 JSP에서 employeeList 중복 변수 에러**
-- 직원 목록을 출력하는 JSP에 상단 메뉴(JSP include)에서 동일한 변수명이 중복되어 incomplete_chunked_encoding 200 (ok) 에러 발생
+  - 직원 목록을 출력하는 JSP에 상단 메뉴(JSP include)에서 동일한 변수명이 중복되어 incomplete_chunked_encoding 200 (ok) 에러 발생
   - **해결** : 
 상단 메뉴 include 시 사용되던 employee라는 변수명이 내부 employeeList와 충돌
 → include에 사용하는 변수명을 employeeMenuList로 변경하여 해결

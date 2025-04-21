@@ -43,10 +43,10 @@ public class ProjectWorkController {
         model.addAttribute("projectId", id);
         model.addAttribute("dto", serv.selectProjectDeadLine(id));
         // TODO: 게시글 입력 폼으로 이동
-        if (isProjectUser == true) {
+        if (isProjectUser) {
             return "/works/write";
         }
-        return null;
+        return "redirect:/project/detail/"+id;
     }
 
 

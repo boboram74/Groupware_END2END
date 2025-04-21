@@ -512,6 +512,7 @@
                 </a>
 
             </c:if>
+            
             <div id="finishBtnDiv" class="finishBtnDiv">
 
             </div>

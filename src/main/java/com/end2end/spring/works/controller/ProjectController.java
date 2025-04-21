@@ -108,7 +108,7 @@ public class ProjectController {
 
        ProjectUserDTO udto = projectService.selectByProjectIdAndEmployeeId(id,employeeDTO.getId());
 //프로젝트에 해당하는 직원정보를 projectUser dto로 가져옴 employeeid   와 세션 아이디 비교
-            boolean isProjectUser = (udto.getEmployeeId().equals(employeeDTO.getId()));
+            boolean isProjectUser = (udto != null);
             model.addAttribute("isProjectUser", isProjectUser);
 
         model.addAttribute("employee", employeeDTO);

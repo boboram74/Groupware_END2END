@@ -35,34 +35,41 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 - 직원 관리 (신규 직원 등록, 조직도 관리)
 - 근태 및 휴가 관리 (출퇴근 기록 및 휴가 신청)
 - 업무 일정 및 캘린더 관리 (개인 및 팀 일정 관리)
+- Works 설정 (프로젝트 생성 및 프로젝트 대시보드 현황)
 - 실시간 채팅 (1:1 및 그룹 채팅, 파일 전송)
-- 보안 및 모니터링 (로그인 기록, 서버 상태 모니터링)
-
+- 보안 및 모니터링 (서버 상태 모니터링, 권한설정 및 메일 서명 설정)
 ---
 
 ## ⚙ 기술 스택
 
 ### Back-end
-![SpringBoot](your-image-url)
-![Java](your-image-url)
-![MyBatis](your-image-url)
-![Oracle](your-image-url)
+- **Spring Legacy (JSP + Servlet + MyBatis) – 메인 웹 애플리케이션 구축**
+- **Spring Boot (Mail API 서버) – 메일 송수신 전용 API 설계**
+- **Java 11**
+- **MyBatis – SQL 매핑 처리**
+- **Tomcat9 – 웹 애플리케이션 구동**
 
 ### Front-end
-![HTML/CSS](your-image-url)
-![JavaScript](your-image-url)
-![jQuery](your-image-url)
-![JSP](your-image-url)
+- **JSP / JSTL**
+- **HTML / CSS / JavaScript / jQuery**
+- **Ajax 기반 비동기 처리**
+- **Daum 주소 API – 주소 검색 기능**
+- **Chart.js – 근태현황 및 Works 통계 시각화**
 
 ### Infra
-![GoogleCloud](your-image-url)
-![Postfix](your-image-url)
+- **OS : Rocky Linux 8**
+- **Google Cloud Platform (GCP)** – 웹 애플리케이션 및 메일 서버 배포
+- **Nginx** – Reverse Proxy HTTPS 트래픽 분기 및 Tomcat 연결
+- **Tomcat 9** – Spring 기반 WAS로 구동
+- **Postfix** – 메일 송수신용 SMTP 서버
+- **도메인 연동 및 SSL 인증서 적용**
+- **공공데이터포털 API** – 공휴일 캘린더 연동
 
 ### Tools
-![IntelliJ](your-image-url)
-![Github](your-image-url)
-![Git](your-image-url)
-![Notion](your-image-url)
+- **IntelliJ IDEA** – 메인 개발 IDE
+- **Git / GitHub** – 형상 관리 및 협업
+- **Notion** – 일정 관리 및 문서화
+- **ERDCloud** – DB 설계 및 구조 시각화
 
 ---
 

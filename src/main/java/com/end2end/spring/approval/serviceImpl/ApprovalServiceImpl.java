@@ -38,31 +38,8 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public List<ApprovalDTO> selectAll() {
-        return null;
-    }
-
-    @Override
-    public List<ApprovalDTO> selectAll(String state) {
-        return null;
-    }
-
-    @Override
-    public List<ApprovalDTO> selectByEmployeeId(String employeeId) {
-        // TODO: 해당 id의 직원의 결재 리스트 출력
-        return null;
-    }
-
-    @Override
     public List<Map<String, Object>> search(String state, String employeeId, String keyword) {
         return approvalDAO.search(state, employeeId, keyword);
-    }
-
-
-    @Override
-    public List<ApprovalDTO> search(String employeeId) {
-        // TODO: 해당 id의 사원이 볼 수 있는 검색 결과 내용의 결재 리스트 출력
-        return null;
     }
 
     @Override
@@ -171,7 +148,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
             ApprovalDTO approvalDTO = approvalDAO.selectDTOById(approvalId);
             if (approvalDAO.selectByFormId(approvalDTO.getApprovalFormId()).getName().contains("연장 근무")) {
-                ExtendedCommuteDTO extendedCommuteDTO = extendedCommuteDAO.selectByApprovalId(approverId);
+                ExtendedCommuteDTO extendedCommuteDTO = extendedCommuteDAO.selectByApprovalId(approvalId);
 
                 if (extendedCommuteDTO.getCommuteId() != 0) {
                     commuteService.update(extendedCommuteDTO);
@@ -199,21 +176,6 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public void update(ApprovalDTO dto) {
-        // TODO: 결재 수정
-    }
-
-    @Override
-    public void deleteById(String id) {
-        // TODO: 해당 id의 결재 삭제
-    }
-
-    @Override
-    public void submit(boolean isSubmit) {
-        // TODO: 들어온 값에 따라 결재 승인/반려
-    }
-
-    @Override
     public List<Map<String, Object>> selectApproversList(String approvalId) {
         return approverDAO.selectApproversList(approvalId);
     }
@@ -230,7 +192,6 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public Map<String, List<Map<String, Object>>> allApprovals() {
         List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
-//        System.out.println("allApprovals.size() = " + allApprovals.size());
         Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
 
         allApproval.put("SUBMIT", new ArrayList<>());
@@ -249,7 +210,6 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public Map<String, List<Map<String, Object>>> SearchallApprovals(String keyword) {
         List<Map<String, Object>> allApprovals = approvalDAO.allApprovals();
-//        System.out.println("allApprovals.size() = " + allApprovals.size());
         Map<String, List<Map<String, Object>>> allApproval = new HashMap<>();
 
         allApproval.put("SUBMIT", new ArrayList<>());
@@ -291,7 +251,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public List<Map<String, Object>> selectRecent(String state, String employeeId) {
         int start = 1;
-        int end = Math.min(10, approvalDAO.selectByState(state, employeeId).size());
+        int end = Math.min(8, approvalDAO.selectByState(state, employeeId).size());
 
         return approvalDAO.selectByStateFromTO(state, employeeId, start, end);
     }

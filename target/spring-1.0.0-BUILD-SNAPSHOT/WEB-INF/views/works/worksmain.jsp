@@ -200,6 +200,7 @@
         transform: scale(1.1);
         z-index: 2;
     }
+
     .inputMemberBtn {
         background-color: #888888;
         color: #ffffff;
@@ -249,6 +250,7 @@
         background-color: #d9363e;
         transform: scale(1.1);
     }
+
     .form-check-input:focus {
         box-shadow: none;
     }
@@ -302,27 +304,8 @@
         color: var(--gray-700);
         margin-bottom: 8px;
     }
-    .hidden-project.leader {
-        opacity: 0.5;
-    }
-
-    .hidden-project.staff {
-        display: none;
-    }
-    .hidden-project {
-        opacity: 0.4;
-        transition: opacity 0.3s ease;
-        color: #7f8c8d;
-    }
-
-    .employee .hidden-project {
-        display: none;
-    }
 
 
-    .manager .hidden-project {
-        opacity: 0.3;
-    }
 
     .form-control {
         border: 1px solid var(--gray-300);
@@ -362,36 +345,70 @@
         background-color: #f0f8ff;
     }
 
-    .btn-outline-primary{    background-color: var(--gray-100);
+    .btn-outline-primary {
+        background-color: var(--gray-100);
         color: var(--gray-700);
         border: 1px solid var(--gray-300);
         padding: 6px 16px;
         border-radius: var(--border-radius);
         font-size: 13px;
         font-weight: 500;
-        transition: var(--transition);}
+        transition: var(--transition);
+    }
+
     .btn-outline-primary:hover {
         background-color: #333e4e;
         color: white;
         border-color: #333e4e;
     }
 
-   .btn-primary{
-    background-color: var(--gray-100);
-    color: var(--gray-700);
-    border: 1px solid var(--gray-300);
-    padding: 6px 16px;
-    border-radius: var(--border-radius);
-    font-size: 13px;
-    font-weight: 500;
-    transition: var(--transition);
-}
+    .btn-primary {
+        background-color: var(--gray-100);
+        color: var(--gray-700);
+        border: 1px solid var(--gray-300);
+        padding: 6px 16px;
+        border-radius: var(--border-radius);
+        font-size: 13px;
+        font-weight: 500;
+        transition: var(--transition);
+    }
 
-   .btn-primary:hover {
+    .btn-primary:hover {
         background-color: #333e4e;
         color: white;
         border-color: #333e4e;
     }
+
+    .detail-badgeStatus {
+        background-color: #e0e0e0;
+        color: #333333;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid #c2c2c2; /* 테두리 추가 */
+        margin-left: 10px;
+    }
+
+
+
+    .hidden-project {
+        opacity: 0.4;
+        transition: opacity 0.3s ease;
+        color: #7f8c8d;
+    }
+
+
+    /*.hidden-project.leader {*/
+    /*    opacity: 0.5;*/
+    /*}*/
+
+    /*.hidden-project.staff {*/
+    /*    display: none;*/
+    /*}*/
 
 
     .detail-badge {
@@ -405,50 +422,13 @@
         margin-left: 10px;
     }
 
-    .hidden-project.leader {
-        opacity: 0.5;
-    }
-
-    .hidden-project.staff {
-        display: none;
-    }
-
-    .hidden-project {
-        opacity: 0.4;
-        transition: opacity 0.3s ease;
-        color: #7f8c8d;
-    }
-
-    .employee .hidden-project {
-        display: none;
-    }
-
-
-    /*.manager .hidden-project {*/
-    /*    opacity: 0.3;*/
-    /*}*/
-
-    /*.ongoing-status {*/
-    /*    background-color: green;*/
-    /*    color: white;*/
-    /*    padding: 2px 5px;*/
-    /*    border-radius: 5px;*/
-    /*}*/
-
-    /*.finish-status {*/
-    /*    background-color: gray;*/
-    /*    color: white;*/
-    /*    padding: 2px 5px;*/
-    /*    border-radius: 5px;*/
-    /*}*/
-
 
 </style>
 
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
-            <span class="material-icons">mail</span>
+            <i class="material-icons">description</i>
             <span>Works</span>
         </div>
         <button class="detail-menu-toggle-btn">
@@ -476,7 +456,7 @@
         <div class="leftControll">
             <select id="projectSelect">
                 <c:forEach var="project" items="${projects}">
-                    <option value="${project.id}" }>프로젝트이름
+                    <option value="${project.id}">프로젝트이름
                         :${project.name}</option>
                 </c:forEach>
             </select>
@@ -502,6 +482,13 @@
 
 
         <script>
+
+            $(document).ready(function () {
+                $.get("/project/refresh", function () {
+                    console.log("프로젝트 상태 갱신 완료");
+                });
+            });
+
 
             let myChartInstance = null;
             let myChart2Instance = null;
@@ -866,63 +853,64 @@
                     </tr>
 
 
-                        <td onclick="handleProjectClick(${list.id})">${list.name}
-                            <c:if test="${list.nearDeadline == 'Y'&& list.status.equals('ongoing')}"><span
-                                    class="detail-badge">긴급
+                    <td onclick="handleProjectClick(${list.id})">${list.name}
+                        <c:if test="${list.nearDeadline == 'Y'&& list.status != 'finish'}"><span
+                                class="detail-badge">긴급
                     </span></c:if></td>
-                        <td onclick="handleProjectClick(${list.id})">${list.regDate}</td>
-                        <td onclick="handleProjectClick(${list.id})"> ${list.deadLine}</td>
+                    <td onclick="handleProjectClick(${list.id})">${list.regDate}</td>
+                    <td onclick="handleProjectClick(${list.id})"> ${list.deadLine}</td>
 
-                        <td>
-                            <div class="member-profiles">
-                                <!-- 프로필 이미지 리스트 -->
-                                <c:if test="${not empty list.profileImg}">
-                                    <c:forEach items="${list.profileImg}" var="img">
-                                        <c:choose>
-                                            <c:when test="${img == null}">
-                                                <img class="profile" src="/image/defaultImg.jpg">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <img class="profile" src="${img}">
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:forEach>
-                                </c:if>
-                            </div>
-                        </td>
-                        <td>
+                    <td>
+                        <div class="member-profiles">
+                            <!-- 프로필 이미지 리스트 -->
+                            <c:if test="${not empty list.profileImg}">
+                                <c:forEach items="${list.profileImg}" var="img">
+                                    <c:choose>
+                                        <c:when test="${img == null}">
+                                            <img class="profile" src="/image/defaultImg.jpg">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img class="profile" src="${img}">
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                            </c:if>
+                        </div>
+                    </td>
+                    <td><c:if test="${list.status.equals('finish') && list.deadLine lt now}">
                        <span class="detail-badgeStatus">
-                  ${list.status}
+                               마감
                        </span>
-                        </td>
-                        <c:if test="${isTeamLeader}">
-                            <td>
-                                <button class="updateProjectBtn" onclick="openUpdateModal(${list.id})">수정</button>
-                            </td>
-                        </c:if>
-                        <c:if test="${isTeamLeader}">
-                            <td>
-                                <c:if test="${list.status == 'finish'}">
-                                    <div class="form-check form-switch">
-                                            <%--                                    <input class="form-check-input"--%>
-                                            <%--                                           type="checkbox"--%>
-                                            <%--                                           id="hideSwitch-${list.id}"--%>
-                                            <%--                                           onchange="handleHide(${list.id})"--%>
-                                            <%--                                        ${list.hideYn.equals("Y") ? 'checked' : ''}>--%>
-                                        <input class="form-check-input hideSwitch"
-                                               type="checkbox"
-                                               id="hideSwitch-23"
-                                            ${list.hideYn == 'Y' ? 'checked' : ''}
-                                               data-is-team-leader="${isTeamLeader}"
-                                               status="${list.status}"
-                                               hideYn="${list.hideYn}"
-                                               data-project-id="${list.id}">
 
-                                        <label class="form-check-label" for="hideSwitch-${list.id}"></label>
-                                    </div>
-                                </c:if>
-                            </td>
-                        </c:if>
+                    </td> </c:if>
+                    <c:if test="${isTeamLeader}">
+                        <td>
+                            <button class="updateProjectBtn" onclick="openUpdateModal(${list.id})">수정</button>
+                        </td>
+                    </c:if>
+                    <c:if test="${isTeamLeader}">
+                        <td>
+                            <c:if test="${list.status == 'finish'}">
+                                <div class="form-check form-switch">
+                                        <%--                                    <input class="form-check-input"--%>
+                                        <%--                                           type="checkbox"--%>
+                                        <%--                                           id="hideSwitch-${list.id}"--%>
+                                        <%--                                           onchange="handleHide(${list.id})"--%>
+                                        <%--                                        ${list.hideYn.equals("Y") ? 'checked' : ''}>--%>
+                                    <input class="form-check-input hideSwitch"
+                                           type="checkbox"
+                                           id="hideSwitch-23"
+                                        ${list.hideYn == 'Y' ? 'checked' : ''}
+                                           data-is-team-leader="${isTeamLeader}"
+                                           status="${list.status}"
+                                           hideYn="${list.hideYn}"
+                                           data-project-id="${list.id}">
+
+                                    <label class="form-check-label" for="hideSwitch-${list.id}"></label>
+                                </div>
+                            </c:if>
+                        </td>
+                    </c:if>
 
                     </tr>
 
@@ -933,6 +921,24 @@
             </table>
         </div>
     </div>
+<%--    <div class="pageNavi">--%>
+<%--        <c:if test="${pageNavi.hasPrev}">--%>
+<%--            <span class="material-icons paging" onclick="location.href='/project/main?page=${pageNavi.start - 1}'">chevron_left</span>--%>
+<%--        </c:if>--%>
+<%--        <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">--%>
+<%--            <c:choose>--%>
+<%--                <c:when test="${item == pageNavi.page}">--%>
+<%--                    <span class="paging active" onClick="location.href='/project/main?page=${item}'">${item}</span>--%>
+<%--                </c:when>--%>
+<%--                <c:otherwise>--%>
+<%--                    <span class="paging" onClick="location.href='/project/main?page=${item}'">${item}</span>--%>
+<%--                </c:otherwise>--%>
+<%--            </c:choose>--%>
+<%--        </c:forEach>--%>
+<%--        <c:if test="${pageNavi.hasNext}">--%>
+<%--            <span class="material-icons paging" onclick="location.href='/project/main?page=${pageNavi.end + 1}'">chevron_right</span>--%>
+<%--        </c:if>--%>
+<%--    </div>--%>
 
     <%--프로젝트 생성모달 --%>
     <div class="modal fade" id="projectModal" tabindex="-1">
@@ -1011,7 +1017,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">프로젝트 인원</label>
-                            <button type="button" id="updateClear" class="btn btn-outline-primary" onclick="updateOpenMemberSearch()">
+                            <button type="button" id="updateClear" class="btn btn-outline-primary"
+                                    onclick="updateOpenMemberSearch()">
                                 인원 수정
                             </button>
 
@@ -1026,7 +1033,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                 onclick="closeupdateModal() ">Close
                         </button>
-                        <button type="submit"  class="btn btn-primary" onclick="updateSuccess()">수정완료</button>
+                        <button type="submit" class="btn btn-primary" onclick="updateSuccess()">수정완료</button>
                     </div>
                 </form>
             </div>
@@ -1134,9 +1141,9 @@
 </div>
 <script>
     const departmentName = '${employee.departmentName}';
-
+    const jobName = '${employee.jobName}'
     function handleProjectClick(projectId) {
-        if (departmentName !== '연구팀' && '사장') {
+        if (departmentName !== '연구팀' && jobName!== '대표이사') {
             alert('연구팀과 대표이사만 입장이 가능합니다.');
             return;
         } else {

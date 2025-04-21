@@ -13,6 +13,7 @@ public interface BoardService {
     List<BoardDTO> selectByCategoryId(int categoryId, String employeeId);
     List<BoardDTO> selectImportant(String employeeId);
     List<BoardDTO> search(String option, String keyword);
+    List<BoardDTO> search(String option, String keyword, int page);
     BoardDTO selectById(int id);
     void insert(MultipartFile[] files, BoardDTO dto) throws Exception;
     void update(MultipartFile[] files, BoardUpdateDTO dto);

@@ -1,370 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <link rel="stylesheet" href="/css/template/exam.css"/>
+<link rel="stylesheet" href="/css/schedule/book.css"/>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.17/index.global.min.js'></script>
-<style>
-    .calender-container {
-        color: var(--md-sys-color-surface);
-    }
 
-    .detail-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    /* box, box-content 스타일을 활용하면서 모달 특성에 맞게 일부 수정 */
-    .detail-modal .modal-container {
-        width: 500px;  /* 모달 너비 조정 */
-        margin: 0;     /* box 클래스의 기본 마진 제거 */
-    }
-
-    .detail-modal .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .detail-modal .modal-header h2 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    .detail-modal .modal-close {
-        border: none;
-        cursor: pointer;
-        padding: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .detail-modal .modal-body {
-        max-height: 70vh;
-        overflow-y: auto;
-    }
-
-    .detail-modal .form-group {
-        margin-bottom: 15px;
-    }
-
-    .detail-modal .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-        color: var(--md-sys-color-surface);
-    }
-
-    .detail-modal .form-group input,
-    .detail-modal .form-group textarea {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 14px;
-    }
-
-    .detail-modal .form-group input,
-    .detail-modal .form-group textarea {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid var(--md-sys-color-outline-variant);
-        border-radius: 4px;
-        background-color: var(--md-sys-color-surface-bright);
-        color: var(--md-sys-color-surface);
-    }
-
-
-    .detail-modal .modal-footer {
-        margin-top: 24px;
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-    }
-
-    .detail-modal .modal-footer button {
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-weight: 500;
-        cursor: pointer;
-    }
-
-    .detail-modal .modal-footer button:hover {
-        opacity: 0.9;
-    }
-
-
-    .color-options {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 8px;
-    }
-
-    .color-radio {
-        position: relative;
-        cursor: pointer;
-    }
-
-    .color-radio input {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .color-circle {
-        display: block;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        border: 2px solid transparent;
-        transition: all 0.2s ease;
-    }
-
-    /* 선택되지 않은 상태의 호버 효과 */
-    .color-radio:hover .color-circle {
-        transform: scale(1.1);
-    }
-
-    /* 선택된 상태 스타일 */
-    .color-radio input:checked + .color-circle {
-        border-color: var(--md-sys-color-primary);
-        transform: scale(1.1);
-    }
-
-    /* 선택된 상태의 호버 효과 */
-    .color-radio input:checked:hover + .color-circle {
-        transform: scale(1.2);
-    }
-
-    /* 포커스 상태 스타일 */
-    .color-radio input:focus + .color-circle {
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .employee-selector {
-        border: 1px solid var(--md-sys-color-outline);
-        border-radius: 4px;
-        background-color: var(--md-sys-color-surface-bright);
-        margin-top: 8px;
-    }
-
-    .selected-employees {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        min-height: 32px;
-        padding: 8px;
-        border-bottom: 1px solid var(--md-sys-color-outline);
-    }
-
-    .selected-employee-tag {
-        display: inline-flex;
-        align-items: center;
-        background-color: var(--md-sys-color-surface-container);
-        padding: 4px 12px;
-        border-radius: 16px;
-        font-size: 14px;
-        gap: 4px;
-    }
-
-    .selected-employee-tag .material-icons {
-        font-size: 18px;
-        cursor: pointer;
-    }
-
-    .employee-list {
-        max-height: 200px;
-        overflow-y: auto;
-    }
-
-    .calendar-employee-item {
-        padding: 12px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        transition: background-color 0.2s;
-    }
-
-    .calendar-employee-item:hover {
-        background-color: var(--md-sys-color-surface-container);
-    }
-
-    .calendar-employee-item.selected {
-        background-color: var(--md-sys-color-surface-container);
-    }
-
-    .calendar-employee-item .material-icons {
-        color: var(--md-sys-color-outline);
-        font-size: 24px;
-    }
-
-    .employee-info {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
-
-    .employee-name {
-        font-weight: 500;
-        color: var(--md-sys-color-surface);
-    }
-
-    .employee-dept {
-        font-size: 12px;
-        color: var(--md-sys-color-surface-variant);
-    }
-
-</style>
-<style>
-    .form-select {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid var(--md-sys-color-outline-variant);
-        border-radius: 4px;
-        background-color: var(--md-sys-color-surface-bright);
-        color: var(--md-sys-color-surface);
-        font-size: 14px;
-    }
-
-    .form-input {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid var(--md-sys-color-outline-variant);
-        border-radius: 4px;
-        background-color: var(--md-sys-color-surface-bright);
-        color: var(--md-sys-color-surface);
-        font-size: 14px;
-    }
-
-    /* date input과 select를 감싸는 컨테이너 */
-    .datetime-wrapper {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-
-    /* date input 스타일 */
-    .datetime-wrapper input[type="date"] {
-        flex: 2;  /* 날짜 입력이 더 넓게 */
-        min-width: 150px;
-        padding: 8px 12px;
-        border: 1px solid var(--md-sys-color-outline-variant);
-        border-radius: 4px;
-        background-color: var(--md-sys-color-surface-bright);
-        color: var(--md-sys-color-surface);
-    }
-
-    /* select 스타일 */
-    .datetime-wrapper select {
-        flex: 1;  /* 시간 선택은 더 좁게 */
-        min-width: 100px;
-        padding: 8px 12px;
-        border: 1px solid var(--md-sys-color-outline-variant);
-        border-radius: 4px;
-        background-color: var(--md-sys-color-surface-bright);
-        color: var(--md-sys-color-surface);
-    }
-</style>
-<style>
-    /* 이벤트 전체 너비 설정 */
-    .full-width-event {
-        width: 100% !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        padding: 0 2px !important;
-        left: 0 !important;
-        right: 0 !important;
-    }
-
-    /* 타임그리드 셀 설정 */
-    .fc-timegrid-event-harness {
-        width: 100% !important;
-        left: 0 !important;
-        right: 0 !important;
-    }
-
-    /* 이벤트 컨테이너 설정 */
-    .fc-timegrid-event {
-        margin: 0 !important;
-        border-radius: 0 !important; /* 선택사항: 모서리를 직각으로 */
-        border-left: none !important;
-        border-right: none !important;
-    }
-
-    /* 시간 표시 영역 */
-    .fc-timegrid-slot-lane {
-        height: 100% !important;
-    }
-
-    /* 리소스 열 설정 */
-    .fc-timegrid-col {
-        width: 100% !important;
-    }
-
-    /* 이벤트 내부 패딩 */
-    .fc-event-main {
-        padding: 4px 8px !important;
-    }
-
-    /* 이벤트 타이틀 스타일링 */
-    .fc-event-title {
-        font-weight: bold;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    /* 시간 표시 스타일링 */
-    .fc-event-time {
-        font-size: 0.9em;
-        opacity: 0.8;
-    }
-
-    select option:disabled {
-        color: #999;
-        background-color: #f5f5f5;
-    }
-
-    select option.reserved {
-        text-decoration: line-through;
-        background-color: #ffe3e3;
-    }
-
-    .reservation-form {
-        display: flex;
-        gap: 15px;
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 8px;
-    }
-
-    input[type="date"],
-    select {
-        padding: 8px 12px;
-        border: 1px solid var(--md-sys-color-outline-variant);
-        border-radius: 4px;
-        font-size: 14px;
-    }
-
-    input[type="date"]:focus,
-    select:focus {
-        outline: none;
-        border-color: var(--md-sys-color-primary);
-    }
-</style>
 <div class="mainHeader surface-bright">
     <div class="detail-menu-header">
         <div class="detail-menu-title">
@@ -396,7 +37,6 @@
     <div class="mainBody">
         <div class="button-container">
             <button class="primary insert-schedule open-write-schedule">예약 하기</button>
-            <button class="secondary open-list-calendar">사용 완료</button>
         </div>
         <div class="calender-container">
             <div id="calendar"></div>
@@ -432,7 +72,7 @@
                     </div>
                     <div class="form-group">
                         <label>예약 상세</label>
-                        <select name="targetId" class="form-select" id="sub-select" onChange="showImg()">
+                        <select name="targetId" class="form-select" id="sub-select">
                             <option value="" disabled selected>먼저 분류를 선택해주세요</option>
                             <c:forEach items="${bookTargetList}" var="item">
                                 <option value="${item.id}" data-type="${item.targetType}" style="display: none;">
@@ -444,7 +84,7 @@
                     <div class="form-group">
                         <label>시작 일시</label>
                         <div class="datetime-wrapper">
-                            <input type="date" id="insert-startDate" class="form-input" required>
+                            <input type="date" min="<fmt:formatDate value='<%= new java.util.Date() %>' pattern='yyyy-MM-dd'/>"  id="insert-startDate" class="form-input" required>
                             <select required id="insert-startTime">
                                 <option value="">선택하십시오</option>
                                 <c:forEach begin="9" end="18" var="i">
@@ -459,7 +99,7 @@
                     <div class="form-group">
                         <label>종료 일시</label>
                         <div class="datetime-wrapper">
-                            <input type="date" id="insert-endDate" class="form-input" required>
+                            <input type="date" min="<fmt:formatDate value='<%= new java.util.Date() %>' pattern='yyyy-MM-dd'/>"  id="insert-endDate" class="form-input" required>
                             <select required id="insert-endTime">
                                 <option value="">선택하십시오</option>
                                 <c:forEach begin="9" end="18" var="i">
@@ -773,21 +413,10 @@
                 $('#scheduleWriteModal').fadeOut(300);
             })
 
-            // 모달 열기
-            $('.open-list-calendar').click(function() {
-                $('#listCalendarModal').show();
-            });
-
             // 모달 닫기
             $('#listCalendarModal .close-modal').click(function() {
                 $('#listCalendarModal').hide();
             });
-
-            $('#calendar-delete-btn').on('click', function() {
-                if(confirm("정말 삭제하시겠습니까?")) {
-                    location.href = '/calendar/delete/' + $('#calendarWriteForm input[name=id]').val();
-                }
-            })
 
             $(document).on('click', '.open-write-schedule', function() {
                 $('#scheduleWriteModal').fadeIn(300);

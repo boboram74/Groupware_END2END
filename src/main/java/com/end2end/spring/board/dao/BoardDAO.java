@@ -36,6 +36,15 @@ public class BoardDAO {
         return mybatis.selectList("board.search", map);
     }
 
+    public List<BoardDTO> searchFromTo(String option, String keyword, int start, int end) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("option", option);
+        map.put("keyword", keyword);
+        map.put("start", start);
+        map.put("end", end);
+        return mybatis.selectList("board.searchFromTo", map);
+    }
+
     public List<BoardDTO> selectByCategoryId(int id, String employeeId) {
         Map<String, Object> map = new HashMap<>();
         map.put("categoryId", id);

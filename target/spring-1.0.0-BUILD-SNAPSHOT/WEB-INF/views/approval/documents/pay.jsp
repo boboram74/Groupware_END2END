@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="/css/color/newColor.css" />
-<input type="hidden" name="approvalFormId" value="2" />
+<input type="hidden" name="approvalFormId" value="3" />
 <div class="approval-document surface-bright">
     <div class="document-header">
         <h1 class="document-title">지출 결의서</h1>
@@ -58,7 +58,7 @@
 
         <div class="button-group">
             <button type="submit" id="signOk" class="submit-btn primary">상신하기</button>
-            <button type="button" onclick="location.href='/approval/list'" class="cancel-btn secondary">취소</button>
+            <button type="button" onclick="window.close();" class="cancel-btn secondary">취소</button>
         </div>
     </div>
 </div>

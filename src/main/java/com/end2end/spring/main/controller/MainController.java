@@ -85,7 +85,7 @@ public class MainController {
 	}
 
 	@RequestMapping("/contact")
-	public String selectContactList(Model model, int page) {
+	public String selectContactList(Model model, @RequestParam(defaultValue = "1") int page) {
 		List<EmployeeDTO> contactList = employeeService.selectAll();
 
 		PageNaviUtil.PageNavi pageNavi = new PageNaviUtil(page, contactList.size()).generate();
@@ -93,18 +93,23 @@ public class MainController {
 
 		model.addAttribute("contactList", employeeDTOList);
 		model.addAttribute("pageNavi", pageNavi);
+		model.addAttribute("url", "/contact?page=");
 
 		return "main/contact";
 	}
 
 	@RequestMapping("/contact/search")
-	public String searchContactList(Model model, String searchOption, String keyword) {
+	public String searchContactList(@RequestParam(defaultValue = "1") int page, Model model, String searchOption, String keyword) {
 		if (keyword == null || keyword.trim().isEmpty()) {
 			return "redirect:/contact?page=1";
 		}
 
 		List<EmployeeDTO> contactList = employeeService.searchContactList(searchOption, keyword);
-		model.addAttribute("contactList", contactList);
+		PageNaviUtil.PageNavi pageNavi = new PageNaviUtil(page, contactList.size()).generate();
+		model.addAttribute("pageNavi", pageNavi);
+		model.addAttribute("url", "/contact/search?option=" + searchOption + "&keyword=" + keyword + "page?=");
+
+		model.addAttribute("contactList", employeeService.searchContactList(searchOption, keyword, page));
 		return "main/contact";
 	}
 

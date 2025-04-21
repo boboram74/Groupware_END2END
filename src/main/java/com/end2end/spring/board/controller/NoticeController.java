@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +28,7 @@ public class NoticeController {
     @Autowired private FileService fileService;
 
     @RequestMapping("/list")
-    public String toList(Model model, int page) {
+    public String toList(Model model, @RequestParam(defaultValue = "1") int page) {
         model.addAttribute("boardList", noticeService.selectAll(page));
         model.addAttribute("noticeCategoryList", noticeCategoryService.selectAll());
 
@@ -41,7 +42,7 @@ public class NoticeController {
     }
 
     @RequestMapping("/list/{categoryId}")
-    public String toList(@PathVariable int categoryId, int page, Model model) {
+    public String toList(@PathVariable int categoryId, @RequestParam(defaultValue = "1") int page, Model model) {
         if (categoryId == 0) {
             return "redirect:/notice/list?page=1";
         }

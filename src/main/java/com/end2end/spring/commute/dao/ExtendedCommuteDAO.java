@@ -15,11 +15,11 @@ public class ExtendedCommuteDAO {
         mybatis.insert("extendedCommute.insert", dto);
     }
 
-    public ExtendedCommuteDTO selectByApprovalId(int approvalId) {
-        return mybatis.selectOne("extendedCommute.selectById", approvalId);
-    }
-
     public List<ExtendedCommuteDTO> selectTodayByEmployeeId(String employeeId) {
         return mybatis.selectList("extendedCommute.selectTodayByEmployeeId", employeeId);
+    }
+
+    public ExtendedCommuteDTO selectByApprovalId(String approvalId) {
+        return mybatis.selectOne("extendedCommute.selectByApprovalId", approvalId);
     }
 }

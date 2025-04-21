@@ -1,8 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <link rel="stylesheet" href="/css/color/newColor.css" />
-<input type="hidden" name="approvalFormId" value="3" />
+<input type="hidden" name="approvalFormId" value="2" />
 <div class="approval-document surface-bright">
     <div class="document-header">
         <h1 class="document-title">휴 가 계</h1>
@@ -59,7 +60,7 @@
                             <label>조퇴</label>
                         </div>
                         <div class="select-item">
-                            <input type="date" name="startDate" class="form-control">
+                            <input type="date" min="<fmt:formatDate value='<%= new java.util.Date() %>' pattern='yyyy-MM-dd'/>" name="startDate" class="form-control">
                         </div>
                         <div class="select-item">
                             <select id="annual" class="time" style="display: none;" required>
@@ -94,7 +95,7 @@
 
         <div class="button-group">
             <button type="submit" id="signOk" class="submit-btn primary">상신하기</button>
-            <button type="button" onclick="location.href='/approval/list'" class="cancel-btn secondary">취소</button>
+            <button type="button" onclick="window.close();" class="cancel-btn secondary">취소</button>
         </div>
     </div>
 </div>

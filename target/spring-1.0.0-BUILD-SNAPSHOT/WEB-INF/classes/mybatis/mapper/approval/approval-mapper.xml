@@ -10,10 +10,11 @@
 
 
     <select id="selectById" resultType="map">
-        SELECT a.* , e.*, j.name AS jobName, f.name AS formName
+        SELECT a.* , e.*, j.name AS jobName, d.name AS departmentName, f.name AS formName
         FROM approval a
             join employee e on a.employeeid = e.id
             JOIN job j ON e.jobid = j.id
+            JOIN department d ON e.departmentId = d.id
             JOIN approval_form f ON a.approvalformid = f.id
         WHERE a.id = #{id}
     </select>
@@ -32,10 +33,11 @@
                  JOIN approval_form af ON a.approvalformid = af.id
         WHERE ap.employeeid = #{employeeId}
           AND a.state = #{state}
+        ORDER BY a.id DESC
     </select>
 
     <select id="selectByStateFromTo" resultType="map">
-    SELECT *
+    SELECT aa.*
     FROM (
     SELECT a.id AS ID,
                a.title AS TITLE,
@@ -44,14 +46,14 @@
                e.profileImg AS profileImg,
                e.name AS DRAFTERNAME,
                af.name AS FORMNAME,
-               ROW_NUMBER OVER(ORDER BY e.ID DESC) AS RNUM
+               ROW_NUMBER() OVER(ORDER BY a.regDate DESC) AS RNUM
         FROM approval a
                  JOIN approver ap ON a.id = ap.approvalid
                  JOIN employee e ON a.employeeid = e.id
                  JOIN approval_form af ON a.approvalformid = af.id
         WHERE ap.employeeid = #{employeeId}
-          AND a.state = #{state})
-    WHERE RUN BETWEEN ${start} AND ${end}
+          AND a.state = #{state}) aa
+    WHERE RNUM BETWEEN ${start} AND ${end}
     </select>
 
     <insert id="insert">
@@ -97,6 +99,7 @@
           AND (a.title LIKE '%' || #{keyword} || '%'
             OR e.name LIKE '%' || #{keyword} || '%'
             OR af.name LIKE '%' || #{keyword} || '%')
+        ORDER BY a.id DESC
     </select>
 
     <select id="selectDTOById" resultType="com.end2end.spring.approval.dto.ApprovalDTO">

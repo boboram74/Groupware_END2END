@@ -33,6 +33,7 @@ public interface EmployeeService {
     List<Map<String, Object>> getAttendanceStats();
     List<EmployeeDTO> selectAll(int page);
     List<EmployeeDTO> searchContactList(String searchOption, String keyword);
+    List<EmployeeDTO> searchContactList(String searchOption, String keyword, int page);
     List<EmployeeDTO> searchEmployeeList(String searchOption, String keyword);
 
     List<DepartmentDTO> selectByDepartmentList();

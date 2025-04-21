@@ -340,7 +340,7 @@
                         <label>보낸 사람</label>
                         <input type="hidden" id="sender" value=${employee.email}>
                         <input type="text" id="receiveMail" name="sender" value="${list.sender}" readonly>
-                        <button class="addressBtn">주소록</button>
+                        <button type="button" class="addressBtn">주소록</button>
                     </div>
                     <div class="formGroup">
                         <label>제목</label>
@@ -416,7 +416,9 @@
             $("#allMailBox").text(resp.allMailBox);
             $("#receiveMailBox").text(resp.receiveMailBox);
         });
-
+        $(".addressBtn").on("click",function () {
+            alert("미 구현된 기능입니다.");
+        });
     });
 </script>
 <script src="/js/mail/detail.js" type="text/javascript"></script>

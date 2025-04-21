@@ -38,10 +38,13 @@ public class AlarmService {
 
     public void sendMailAlarm(int emailId) {
         List<MailURLDTO> mailURLDTO = mailDAO.selectMailURLById(emailId);
+        System.out.println(mailURLDTO + "mailURLDTO");
+        System.out.println(emailId + "emailId");
 
         for(MailURLDTO dto : mailURLDTO) {
             String url = String.format("/mail/%d/%d", dto.getId(), dto.getEmailStateId());
             send(AlarmDTO.of(AlarmType.GET_EMAIL, dto.getEmployeeId(), url), dto.getEmployeeId());
+            System.out.println("알람전송됨!");
         }
     }
 
@@ -165,6 +168,7 @@ public class AlarmService {
         try {
             AlarmEndPoint.sendMessage(dto, employeeId);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

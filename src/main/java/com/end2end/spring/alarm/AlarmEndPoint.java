@@ -46,7 +46,6 @@ public class AlarmEndPoint {
     public static void sendMessage(AlarmDTO dto, String employeeId) throws IOException{
         EvictingQueue<AlarmDTO> queue = getOrCreateQueue(employeeId);
         queue.add(dto);
-
         try {
             clients.get(employeeId).getBasicRemote().sendText(g.toJson(queue));
         } catch (NullPointerException ignored) {} // 로그인 하지 않은 사원은 무시

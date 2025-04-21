@@ -479,7 +479,7 @@
                                 <input type="text" id="receiveMail" placeholder="받는 사람을 입력해주십시오">
                             </c:otherwise>
                         </c:choose>
-                        <button class="addressBtn">주소록</button>
+                        <button type="button" class="addressBtn">주소록</button>
                     </div>
                     <div class="formGroup">
                         <label>제목</label>
@@ -570,6 +570,10 @@ ${content}
             $("#importantMailBox").text(resp.importantMailBox);
             $("#allMailBox").text(resp.allMailBox);
             $("#receiveMailBox").text(resp.receiveMailBox);
+        });
+
+        $(".addressBtn").on("click",function () {
+            alert("미 구현된 기능입니다.");
         });
 
     });

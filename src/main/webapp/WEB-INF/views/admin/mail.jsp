@@ -104,7 +104,6 @@
 
 <script>
     $(document).ready(function () {
-        loadServerCapacity();
         loadEmailAliseList();
         loadEmailSignature();
 
@@ -156,25 +155,6 @@
             });
         });
     });
-    function loadServerCapacity() {
-        $.ajax({
-            url: 'http://34.70.179.192/mail/storage',
-            method: 'GET',
-            dataType: 'json'
-        }).done(function (resp) {
-            const totalGb = parseInt(resp.size, 10);
-            const pct = parseInt(resp.usePercent, 10);
-            const usedGb = Math.round(totalGb * pct / 100);
-            $('.usage-bar .used').css('width', '0%');
-            setTimeout(function () {
-                $('.usage-bar .used').css('width', pct + '%');
-            }, 100);
-            $('.server-capacity p').text(
-                usedGb + 'GB / ' + totalGb + 'GB (' + pct + '% 사용 중)'
-            );
-        })
-    }
-
     function loadEmailAliseList() {
         $.ajax({
             url: '/admin/api/alies-mapping',

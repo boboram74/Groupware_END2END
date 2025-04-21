@@ -1,6 +1,6 @@
 <!-- logo -->
 
-# [Spring Boot] GROUPWARE Project
+# GROUPWARE Project
 
 [![readme.md](https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white)]() [![release](https://img.shields.io/badge/release-v3.5.2-yellow?style=flat&logo=google-chrome&logoColor=white)]()  
 [![프로젝트 기간](https://img.shields.io/badge/프로젝트_기간-2025.03.27~2025.04.18-green?style=flat)]()

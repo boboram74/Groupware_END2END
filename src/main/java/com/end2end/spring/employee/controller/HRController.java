@@ -123,6 +123,7 @@ public class HRController {
         employeeService.update(dto,file);
         String employeeId = dto.getId();
         session.setAttribute("employee", employeeService.selectById(employeeId));
+        System.out.println(employeeService.selectById(employeeId));
         return "redirect:/mypage/" + employeeId;
     }
 

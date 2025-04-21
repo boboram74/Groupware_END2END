@@ -38,6 +38,7 @@
 			<exclude-mapping path="/hr/insert" />
 			<exclude-mapping path="/resources/**"/>
 			<exclude-mapping path="/mail/alarm"/>
+			<exclude-mapping path="/hr/update"/>
 
 			<exclude-mapping path="/css/**"/>
 			<exclude-mapping path="/js/**"/>
@@ -55,11 +56,6 @@
 			<mapping path="/notice/update"/>
 			<mapping path="/notice/delete/**"/>
 			<beans:bean class="com.end2end.spring.interceptor.AuthenticationAdminInterceptor"/>
-		</interceptor>
-
-		<interceptor>
-			<mapping path="/hr/**" />
-			<beans:bean class="com.end2end.spring.interceptor.AuthenticationHrInterceptor" />
 		</interceptor>
 	</interceptors>
 	

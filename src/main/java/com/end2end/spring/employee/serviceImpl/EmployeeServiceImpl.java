@@ -30,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO selectById(String id) {
-        return null;
+        return employeeDAO.mypageUpdate(id);
     }
 
     @Override

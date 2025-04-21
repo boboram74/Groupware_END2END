@@ -99,6 +99,19 @@
         AND RESIGNDATE IS NULL
     </select>
 
+    <select id="mypageUpdate" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT EMPLOYEE.*, JOB.NAME AS jobName, DEPARTMENT.NAME AS departmentName
+        FROM EMPLOYEE_DETAIL
+                 JOIN EMPLOYEE
+                      ON EMPLOYEE_DETAIL.ID = EMPLOYEE.ID
+                 JOIN JOB
+                      ON EMPLOYEE.jobId = JOB.id
+                 JOIN DEPARTMENT
+                      ON EMPLOYEE.departmentId = DEPARTMENT.id
+        WHERE EMPLOYEE.ID = #{value}
+          AND RESIGNDATE IS NULL
+    </select>
+
     <select id="selectDetailById" resultType="com.end2end.spring.employee.dto.EmployeeDetailDTO">
         SELECT
         e.id AS id,

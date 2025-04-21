@@ -200,7 +200,6 @@ public class MailController {
     @ResponseBody
     @RequestMapping("/alarm")
     public ResponseEntity<Void> sendAlarm(int mailId) {
-        System.out.println("수신한 메일 ID : " + mailId);
        mailService.sendMailAlarm(mailId);
        return ResponseEntity.ok().build();
     }

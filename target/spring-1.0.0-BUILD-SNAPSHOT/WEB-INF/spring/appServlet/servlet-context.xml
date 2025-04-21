@@ -38,6 +38,7 @@
 			<exclude-mapping path="/hr/insert" />
 			<exclude-mapping path="/resources/**"/>
 			<exclude-mapping path="/mail/alarm"/>
+			<exclude-mapping path="/hr/update"/>
 
 			<exclude-mapping path="/css/**"/>
 			<exclude-mapping path="/js/**"/>

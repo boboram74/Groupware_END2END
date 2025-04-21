@@ -33,6 +33,7 @@
 			<mapping path="/**"/>
 			<exclude-mapping path="/"/>
 			<exclude-mapping path="/employee/login" />
+			<exclude-mapping path="/employee/logout" />
 			<exclude-mapping path="/hr/write" />
 			<exclude-mapping path="/hr/insert" />
 			<exclude-mapping path="/resources/**"/>

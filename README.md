@@ -53,9 +53,9 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 - **JSP / JSTL**
 - **HTML / CSS / JavaScript / jQuery**
 - **Ajax 기반 비동기 처리**
-- **Daum 주소 API – 주소 검색 기능**
-- **Chart.js – 근태현황 및 Works 통계 시각화**
-- **FullCalendar.js – 일정 관리 및 프로젝트 캘린더 구현**
+- **Daum 주소 API** – 주소 검색 기능
+- **Chart.js** – 근태현황 및 Works 통계 시각화
+- **FullCalendar.js** – 일정 관리 및 프로젝트 캘린더 구현
 - **공공데이터포털 API** – 공휴일 캘린더 연동
 
 ### Infra

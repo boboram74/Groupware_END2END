@@ -24,4 +24,3 @@ public class EmployeeDTO {
     private String contact;
     private Date birthday;
 }
-

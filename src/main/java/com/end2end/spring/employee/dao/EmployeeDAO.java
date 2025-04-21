@@ -1,7 +1,6 @@
 package com.end2end.spring.employee.dao;
 
 import com.end2end.spring.employee.dto.*;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -197,5 +196,9 @@ public class EmployeeDAO {
         param.put("employeeId", employeeId);
         param.put("role", role);
         mybatis.update("employee.updateRole", param);
+    }
+
+    public EmployeeDTO mypageUpdate(String employeeId) {
+        return mybatis.selectOne("employee.mypageUpdate", employeeId);
     }
 }

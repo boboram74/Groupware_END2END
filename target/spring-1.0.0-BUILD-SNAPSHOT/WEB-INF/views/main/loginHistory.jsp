@@ -19,7 +19,7 @@
                 <span class="material-icons">person</span>
                 <span>사원 정보</span>
             </li>
-            <li class="detail-menu-item active" onclick="location.href='/login/history/1'">
+            <li class="detail-menu-item active" onclick="location.href='/login/history?page=1'">
                 <span class="material-icons">login</span>
                 <span>로그인 기록</span>
             </li>

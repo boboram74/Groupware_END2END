@@ -6,6 +6,7 @@ import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.service.FileService;
 import com.end2end.spring.works.dao.ProjectDAO;
 import com.end2end.spring.works.dao.ProjectWorkDAO;
+import com.end2end.spring.works.dto.ProjectUserDTO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     }
 
     @Override
-    public String selectByProjectIdAndEmployeeId(int projectId, String employeeId) {
+    public ProjectUserDTO selectByProjectIdAndEmployeeId(int projectId, String employeeId) {
         //게시물 등록
 
        return dao.selectByProjectIdAndEmployeeId(projectId,employeeId);
@@ -63,9 +64,9 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     }
     @Override
     public ProjectWorkDTO update(ProjectWorkDTO dto) {
-//        System.out.println("여기 서비스 수정확인1");
+
         dao.update(dto);
-//        System.out.println("여기 서비스 수정확인2");
+
         alarmService.sendProjectAlarm(
                 AlarmType.PROJECT_WORK_UPDATE, "/project/detail/" + dto.getProjectId(), dto.getProjectId());
 

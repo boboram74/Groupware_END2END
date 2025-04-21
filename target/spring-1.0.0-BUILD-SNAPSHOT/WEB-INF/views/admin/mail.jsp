@@ -156,11 +156,9 @@
         });
     });
     function loadEmailAliseList() {
-        console.log("호출확인!");
         $.ajax({
             url: '/admin/api/alies-mapping',
         }).done(function (resp) {
-            console.log(resp);
             var $tbody = $('.custom-mail-table tbody').empty();
             resp.forEach(function (item) {
                 var $tr = $(

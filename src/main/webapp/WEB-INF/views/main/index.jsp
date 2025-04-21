@@ -357,9 +357,7 @@
                 url: '/schedule/list?startDate=' + startDate + '&endDate=' + endDate,
                 type: 'GET',
                 success: function (data) {
-                    // console.log(data);
                     const events = data.map(function(event) {
-                        // console.log(event);
                         if (event.eventName === 'period') {
                             return {
                                 id: event.id,

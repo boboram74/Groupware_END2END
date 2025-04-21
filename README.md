@@ -27,7 +27,13 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 | :---: | :---: | :---: | :---: | :---: |
 | ![Main](https://github.com/user-attachments/assets/6cadd527-9803-4c01-9af7-7ab0f95ae3f5) | ![Approval](your-image-url) | ![Mail](your-image-url) | ![Employee](your-image-url) | ![Chat](your-image-url) |
 
+| 일정 관리 페이지 | 공지사항 페이지 | 근태 관리 페이지 | 게시판 페이지 | 주소록 페이지 |
+| :---: | :---: | :---: | :---: | :---: |
+| ![Schedule](your-image-url) | ![Notice](your-image-url) | ![Attendance](your-image-url) | ![Report](your-image-url) | ![FileBox](your-image-url) |
 
+| 관리자 페이지1 | 관리자 페이지2 | 관리자 페이지3 |
+| :---: | :---: | :---: |
+| ![Contacts](your-image-url) | ![Admin](your-image-url) | ![Admin](your-image-url) |
 
 ---
 

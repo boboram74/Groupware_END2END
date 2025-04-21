@@ -21,15 +21,27 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 
 ---
 
+![image](https://github.com/user-attachments/assets/a1fba279-21da-43b0-bad7-4e4ca3774a6a)
+![image](https://github.com/user-attachments/assets/d4db2538-46ad-4fb9-b18d-4b1554272ea1)
+![image](https://github.com/user-attachments/assets/64f12a56-9485-4b0a-b725-dded7b704aae)
+![image](https://github.com/user-attachments/assets/727854b3-07c8-4912-9756-0296e61d74c7)
+![image](https://github.com/user-attachments/assets/d033a9b3-baa4-407d-91fd-e87bcbeca73d)
+
+
+
+
+
+
+
 ## 🎨 화면 구성
 
 | 메인 페이지 | 전자결재 페이지 | 메일함 페이지 | 직원 관리 페이지 | 채팅1| 채팅2 |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | ![Main](https://github.com/user-attachments/assets/6cadd527-9803-4c01-9af7-7ab0f95ae3f5) | ![Approval](https://github.com/user-attachments/assets/b9f95421-b178-4c9c-adf4-c56bbbd1a271) | ![Mail](https://github.com/user-attachments/assets/e0d30093-e5cb-48d5-8d27-1c429e7da42c)  | ![Employee](https://github.com/user-attachments/assets/e5847a74-6283-4bcc-b392-e03e847b3746) | ![Chat](https://github.com/user-attachments/assets/dea80300-aab9-42d3-a1bb-f951fda9d3b6) | ![Chat2](https://github.com/user-attachments/assets/300aa550-325d-4dc5-9174-6a922b1af25b) |
 
-| 일정 관리 페이지 | 공지사항 페이지 | 근태 관리 페이지 | 게시판 페이지 | 주소록 페이지 |
+| 일정 관리 페이지 | 예약 관리 페이지 | 근태 관리 페이지 | 게시판 페이지 | 주소록 페이지 |
 | :---: | :---: | :---: | :---: | :---: |
-| ![Schedule](your-image-url) | ![Notice](your-image-url) | ![Attendance](your-image-url) | ![Report](your-image-url) | ![FileBox](your-image-url) |
+| ![Schedule](https://github.com/user-attachments/assets/a1fba279-21da-43b0-bad7-4e4ca3774a6a) | ![Notice](https://github.com/user-attachments/assets/d4db2538-46ad-4fb9-b18d-4b1554272ea1) | ![Attendance](https://github.com/user-attachments/assets/64f12a56-9485-4b0a-b725-dded7b704aae) | ![Board](https://github.com/user-attachments/assets/727854b3-07c8-4912-9756-0296e61d74c7) | ![Address](https://github.com/user-attachments/assets/d033a9b3-baa4-407d-91fd-e87bcbeca73d) |
 
 | 관리자 페이지1 | 관리자 페이지2 | 관리자 페이지3 |
 | :---: | :---: | :---: |

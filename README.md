@@ -64,6 +64,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 - **Java 11**
 - **Tomcat9**
 - **MyBatis – SQL 매핑 처리**
+- **Websocket - 실시간 채팅**
 
 ### Front-end
 - **JSP / JSTL**

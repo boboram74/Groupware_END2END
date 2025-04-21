@@ -274,7 +274,7 @@
     </tr>
 </table>
 <div class="btnGroup">
-    <button class="backBtn secondary" onclick="window.history.back()">목록</button>
+    <button class="backBtn secondary" onclick=location.href='/notice/list'>목록</button>
     <c:choose>
         <c:when test="${empty active}">
             <c:if test="${not empty employee and employee.id eq board.employeeId}">

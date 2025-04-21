@@ -397,7 +397,7 @@
         transition: opacity 0.3s ease;
         color: #7f8c8d;
     }
-    
+
 
     .hidden-project.staff {
         display: none;
@@ -843,7 +843,6 @@
                     <tr id="changeRow-${list.id}"
                         class="${list.hideYn == 'Y' ? (isTeamLeader ? 'hidden-project' : 'hidden-project staff') : ''}">
                         <!-- ... 나머지 tr 내용 ... -->
-                    </tr>
 
 
                     <td onclick="handleProjectClick(${list.id})">${list.name}
@@ -1311,8 +1310,11 @@
                 data: {
                     projectId: projectId,
                     hideYn: isChecked ? 'true' : 'false'
+                },error: function (e) {
+                    console.log(e);
                 },
                 success: function () {
+                    console.log("success");
                     if (isChecked) {
                         alert("숨김 처리되었습니다");
                         location.reload();

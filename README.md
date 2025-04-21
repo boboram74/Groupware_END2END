@@ -88,12 +88,32 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 ---
 
 ## 🤔 기술적 이슈와 해결 과정
-- **웹소켓을 통한 채팅방 중복 생성 문제**
-  - 채팅 메시지 전송 시 기존 채팅방이 아닌 신규 채팅방이 생성되는 이슈 해결을 위해 사용자 ID 기반의 채팅방 식별자 논리 개선
-- **메일 수신 API를 통한 DB 저장 이슈**
-  - 메일 수신 시 Spring Boot API를 통해 메일 데이터를 파싱하고 정확히 DB에 저장하는 로직 추가
-- **톰캣 서버 성능 최적화**
-  - JVM 메모리 옵션을 조정하여 배포 서버의 성능 및 안정성을 향상
+- **채팅방 중복 생성 문제**
+  - 문제 확인
+A와 B의 채팅방에서 B가 C와 채팅 중일 때, A가 B와 채팅을 시도하면 C와의 대화창에 A의 메시지가 노출되는 문제 발생
+  - 문제 해결
+프론트엔드에서 현재 열려 있는 채팅방과 무관하게 메시지를 단순 출력하던 로직 수정.
+각 메시지의 roomId를 기준으로 DOM에 동적으로 렌더링되도록 개선하였으며, roomId 불일치 시 메시지 미출력 로직을 적용하여 해결.
+- **include된 JSP에서 employeeList 중복 변수 에러**
+  - 문제 확인
+직원 목록을 출력하는 JSP에 상단 메뉴(JSP include)에서 동일한 변수명이 중복되어 incomplete_chunked_encoding 200 (ok) 에러 발생
+  - 문제 해결
+상단 메뉴 include 시 사용되던 employee라는 변수명이 내부 employeeList와 충돌
+→ include에 사용하는 변수명을 employeeMenuList로 변경하여 해결
+- **HTTPS 적용 후 메일서버와 통신 실패 (Mixed Content)**
+  - 문제 확인
+도메인에 SSL을 적용하고 HTTPS로 전환한 후, 브라우저의 보안정책으로 인해 Spring Boot Mail API와의 HTTP 통신이 차단됨
+  - 문제 해결
+Spring Boot는 내장 Tomcat으로만 구성되어 있었으나,
+Nginx 웹서버를 도입하여 외부 HTTPS 요청을 내부 HTTP로 포워딩하는 reverse proxy 구조로 재설계
+→ Mixed Content 이슈 해결 및 안정적인 메일 송수신 구현
+- **날짜 전송 시 Timestamp → LocalDate 변환 오류**
+  - 문제 확인
+form에서 input type="date" 사용 시 브라우저에서는 "yyyy-MM-dd" 형식으로 전송되지만,
+서버에서는 Timestamp 타입으로 받으며 시간까지 포함되지 않아 400 에러 발생
+  - 문제 해결
+DTO 및 DB 필드를 Timestamp → Date 타입으로 변경
+또는 DTO에서 직접 @DateTimeFormat을 지정하여 에러 회피
 
 ---
 

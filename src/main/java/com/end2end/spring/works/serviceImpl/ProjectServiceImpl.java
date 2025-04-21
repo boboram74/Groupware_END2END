@@ -6,6 +6,7 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.util.Statics;
 import com.end2end.spring.works.dao.ProjectDAO;
 import com.end2end.spring.works.dao.ProjectUserDAO;
+import com.end2end.spring.works.dao.ProjectWorkDAO;
 import com.end2end.spring.works.dto.*;
 import com.end2end.spring.works.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,8 @@ import java.util.*;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
-
+    @Autowired
+    private ProjectWorkDAO dao;
     @Autowired
     private ProjectDAO projectDao;
     @Autowired
@@ -83,7 +85,10 @@ public class ProjectServiceImpl implements ProjectService {
     public List<EmployeeDTO> getMembersByProjectId(int projectId) {
         return projectDao.getMembersByProjectId(projectId);
     }
-
+@Override
+public ProjectUserDTO selectByProjectIdAndEmployeeId(int projectId,String employeeId){
+        return dao.selectByProjectIdAndEmployeeId(projectId,employeeId);
+    }
     @Override
     public List<ProjectSelectDTO> selectAllProject() {
         List<ProjectDTO> projectDTO = projectDao.selectAll();

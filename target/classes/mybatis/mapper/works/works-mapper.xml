@@ -145,7 +145,7 @@
     </select>
 
     <select id="selectByProjectIdAndEmployeeId" parameterType="java.util.Map"
-            resultType="String">
+            resultType="com.end2end.spring.works.dto.ProjectUserDTO">
         SELECT *
         FROM PROJECT_USER
         WHERE

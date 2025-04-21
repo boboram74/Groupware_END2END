@@ -20,7 +20,9 @@ public interface ProjectService {
     void deleteById(int id);
 
     List<ProjectDTO> selectByName(String name);//프로젝트 찾는 메서드
-    int hideById(int projectId,String hideYn);
+
+    int hideById(int projectId, String hideYn);
+
     List<EmployeeDTO> selectByUser(String name);
 
     List<EmployeeDTO> getMembersByProjectId(int projectId);
@@ -35,7 +37,10 @@ public interface ProjectService {
 
     void updateProject(ProjectInsertDTO dto);
 
+    ProjectUserDTO selectByProjectIdAndEmployeeId(int projectId, String employeeId);
+
     ProjectDTO selectProjectDeadLine(int id);
+
     void endworks(int projectId);
 
 

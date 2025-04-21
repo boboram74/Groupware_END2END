@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class ProjectWorkDTO {
     private int id;
     private int projectId;
-    private String projectUserId;
+    private int projectUserId;
     private String employeeName;
     private String departmentName;
     private String jobName;

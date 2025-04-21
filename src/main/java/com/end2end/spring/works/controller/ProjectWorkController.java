@@ -5,9 +5,7 @@ import com.end2end.spring.employee.dto.EmployeeDTO;
 import com.end2end.spring.file.dto.FileDTO;
 import com.end2end.spring.file.dto.FileDetailDTO;
 import com.end2end.spring.file.service.FileService;
-import com.end2end.spring.works.dto.ProjectWorkDTO;
-import com.end2end.spring.works.dto.ProjectWorkUpdateDTO;
-import com.end2end.spring.works.dto.WorkUpdateDTO;
+import com.end2end.spring.works.dto.*;
 import com.end2end.spring.works.service.ProjectService;
 import com.end2end.spring.works.service.ProjectWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +32,21 @@ public class ProjectWorkController {
     ProjectWorkService wserv;
 
     @RequestMapping("/write/{id}")
-    public String toWrite(@PathVariable int id, Model model) {
+    public String toWrite(@PathVariable int id, Model model, HttpSession session) {
+
+        EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
+
+        ProjectUserDTO udto = serv.selectByProjectIdAndEmployeeId(id, employeeDTO.getId());
+
+        boolean isProjectUser = (udto.getEmployeeId().equals(employeeDTO.getId()));
+        model.addAttribute("isProjectUser", isProjectUser);
         model.addAttribute("projectId", id);
-        model.addAttribute("dto",  serv.selectProjectDeadLine(id));
+        model.addAttribute("dto", serv.selectProjectDeadLine(id));
         // TODO: 게시글 입력 폼으로 이동
-        return "/works/write";
+        if (isProjectUser == true) {
+            return "/works/write";
+        }
+        return null;
     }
 
 
@@ -60,26 +68,20 @@ public class ProjectWorkController {
         return response;
     }
 
-//    @ResponseBody
-//    @RequestMapping("/searchName")
-//    public List<ProjectWorkDTO> selectByName(@RequestParam String name) {}
-//
-//    @RequestMapping("/searchWriter")
-//    public List<ProjectWorkDTO> selectByWorksId(int worksId) {}
-@ResponseBody
-@RequestMapping("/search/{projectId}")
-public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable int projectId, String searchOption) {
+    @ResponseBody
+    @RequestMapping("/search/{projectId}")
+    public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable int projectId, String searchOption) {
 //       System.out.println(keyword+projectId);
-        return wserv.searchBynameAndTitle(keyword,projectId,searchOption);
-}
+        return wserv.searchBynameAndTitle(keyword, projectId, searchOption);
+    }
 
 
     @RequestMapping("/insert")
     public String insert(int projectId, HttpSession session, ProjectWorkDTO wdto, @RequestParam("files") MultipartFile[] files) throws Exception {
 
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
-        String projectUserId = wserv.selectByProjectIdAndEmployeeId(wdto.getProjectId(), employeeDTO.getId());
-        wdto.setProjectUserId(projectUserId);
+        ProjectUserDTO udto = wserv.selectByProjectIdAndEmployeeId(wdto.getProjectId(), employeeDTO.getId());
+        wdto.setProjectUserId(udto.getId());
 //        System.out.println(projectUserId);
 
         wserv.insert(files, wdto);
@@ -126,7 +128,7 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
 
     @ResponseBody
     @RequestMapping("/updateState")
-    public int updateState(int workItemId, String state,int projectId) {
+    public int updateState(int workItemId, String state, int projectId) {
 
         // 클라이언트로부터 데이터 수신
 //    int workItemId = (int) data.get("workItemId");
@@ -134,7 +136,7 @@ public List<ProjectWorkDTO> searchBynameAndTitle(String keyword, @PathVariable i
 //        System.out.println("아이디값" + workItemId);
 //        System.out.println("상태값" + state);
 //        System.out.println("프젝아이디값" + projectId);
-        return  wserv.updateState(state, workItemId,projectId);
+        return wserv.updateState(state, workItemId, projectId);
     }
 
     @ResponseBody

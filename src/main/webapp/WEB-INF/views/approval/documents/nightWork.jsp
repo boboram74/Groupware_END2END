@@ -1,3 +1,4 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="/css/color/newColor.css" />
 <input type="hidden" name="approvalFormId" value="4" />
@@ -49,20 +50,7 @@
                         <div class="timeSelection">
                             <div class="timeGroup">
                                 <label for="workDate">근무 날짜</label>
-                                <input type="date" id="workDate" name="workDate">
-                            </div>
-                            <div class="timeGroup">
-                                <label for="startTime">시작 시간</label>
-                                <select id="startTime" name="startTime">
-                                    <option value="">선택</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="18:30">18:30</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="19:30">19:30</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="20:30">20:30</option>
-                                    <option value="21:00">21:00</option>
-                                </select>
+                                <input type="date" min="<fmt:formatDate value='<%= new java.util.Date() %>' pattern='yyyy-MM-dd'/>" id="workDate" name="workDate">
                             </div>
                             <div class="timeGroup">
                                 <label for="endTime">종료 시간</label>
@@ -101,7 +89,7 @@
 
         <div class="button-group">
             <button type="submit" id="signOk" class="submit-btn primary">상신하기</button>
-            <button type="button" onclick="location.href='/approval/list'" class="cancel-btn secondary">취소</button>
+            <button type="button" onclick="window.close();" class="cancel-btn secondary">취소</button>
         </div>
     </div>
 </div>
@@ -109,7 +97,7 @@
     $(document).ready(function () {
 
         function calculateHours() {
-            const startTime = $('#startTime').val();
+            const startTime = "18:00";
             const endTime = $('#endTime').val();
             if (startTime && endTime) {
                 const start = Date.parse('2000-01-01T' + startTime + ':00');

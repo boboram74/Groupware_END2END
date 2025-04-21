@@ -90,14 +90,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         emailAddressUserDTO.setEmailAddress(departmentDTO.getEmail());
         // email_address_user 팀 이메일 사용 가능하게 사원 추가
         mailDAO.insertEmailAddressUser(emailAddressUserDTO);
-
-        // 6. 전사 게시판 접근 권한 부여
-        BoardCategoryDTO boardCategoryDTO = boardDAO.selectCategoryByName("전사 게시판");
-        BoardCtUserDTO boardCtUserDTO = BoardCtUserDTO.builder()
-                .employeeId(employeeId)
-                .boardCtId(boardCategoryDTO.getId())
-                .build();
-        boardDAO.insertBoardCtUser(boardCtUserDTO);
     }
 
     @Override
@@ -228,6 +220,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> searchContactList(String searchOption, String keyword) {
         return employeeDAO.searchContactList(searchOption, keyword);
+    }
+
+    @Override
+    public List<EmployeeDTO> searchContactList(String searchOption, String keyword, int page) {
+        int start = (page - 1) * Statics.recordCountPerPage;
+        int end = Math.min(page * Statics.recordCountPerPage, employeeDAO.searchContactList(searchOption, keyword).size());
+
+        return employeeDAO.searchContactListFromTo(searchOption, keyword, start, end);
     }
 
     @Override

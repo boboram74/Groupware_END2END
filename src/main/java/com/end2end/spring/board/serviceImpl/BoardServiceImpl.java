@@ -63,6 +63,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public List<BoardDTO> search(String option, String keyword, int page) {
+        int start = (page - 1) * Statics.recordCountPerPage;
+        int end = Math.min(page * Statics.recordCountPerPage, boardDAO.search(option,keyword).size());
+
+        return boardDAO.searchFromTo(option,keyword,start,end);
+    }
+
+    @Override
     public BoardDTO selectById(int id) {
         boardDAO.increaseViewCount(id);
         return boardDAO.selectById(id);

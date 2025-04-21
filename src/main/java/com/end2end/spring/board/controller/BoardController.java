@@ -32,6 +32,7 @@ public class BoardController {
         PageNaviUtil.PageNavi pageNavi =
                 new PageNaviUtil(page, boardService.selectAll().size()).generate();
         model.addAttribute("pageNavi", pageNavi);
+        model.addAttribute("url", "/board/list?page=");
 
         return "/board/list";
     }
@@ -69,22 +70,14 @@ public class BoardController {
         return "/board/list";
     }
 
-    @RequestMapping("/list/search")
-    public String toSearch(Model model) {
-        // TODO: 검색 태그를 통해 나온 결과를 list.jsp에 표시
-        return "/board/list";
-    }
-
-    @RequestMapping("/list/important/{employeeId}")
-    public String toImportant(@PathVariable String employeeId, Model model) {
-        // TODO: 내가 선택한 모든 중요 게시글을 list.jsp에 표시
-        return "/board/list";
-    }
-
     @RequestMapping("/search")
-    public String toSearch(Model model,String option,String keyword) {
-        List<BoardDTO> result = boardService.search(option,keyword);
-        model.addAttribute("boardList", result);
+    public String toSearch(@RequestParam(defaultValue = "1") int page, Model model,String option,String keyword) {
+        model.addAttribute("boardList", boardService.search(option,keyword, page));
+        PageNaviUtil.PageNavi pageNavi =
+                new PageNaviUtil(page, boardService.search(option,keyword).size()).generate();
+        model.addAttribute("pageNavi", pageNavi);
+        model.addAttribute("url", "/board/search?option="+option+"&keyword="+keyword+"&page=");
+
         return "/board/list";
     }
 
@@ -131,12 +124,6 @@ public class BoardController {
         return "board/detail";
     }
 
-    @RequestMapping("/category")
-    public String toCategory(Model model) {
-        // TODO: 게시판 추가 폼으로 이동
-        return "/board/category";
-    }
-
     @RequestMapping("/insert")
     public String insert(HttpSession session, BoardDTO dto, MultipartFile[] files)throws Exception {
         System.out.println("insert 메서드 호출");
@@ -159,36 +146,9 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-
-    @PostMapping("/category/insert")
-    public String insertCategory(@ModelAttribute BoardCategoryDTO dto) {
-
-        System.out.println("Category Name: " + dto.getName());
-        System.out.println("Category Description: " + dto.getCategory());
-        System.out.println(dto.getId()+dto.getName()+dto.getCategory()+dto.getRegDate());
-        boardCategoryService.insertCategory(dto);
-        return "redirect:/board/list";
-        // TODO: 카테고리 입력을 받음
-    }
-
     @ResponseBody
     @RequestMapping("/recent")
     public List<BoardDTO> recent() {
         return boardService.selectRecent();
-    }
-
-    @RequestMapping("/category/update")
-    public void updateCategory(BoardCategoryDTO dto) {
-        // TODO: 카테고리 수정을 받음
-    }
-
-    @RequestMapping("/category/delete/{id}")
-    public void deleteCategoryById(@PathVariable int id) {
-        // TODO: 카테고리 번호로 삭제
-    }
-
-    @RequestMapping("/complaint/insert")
-    public void complaint(ComplaintDTO dto) {
-        // TODO: 신고를 받음
     }
 }

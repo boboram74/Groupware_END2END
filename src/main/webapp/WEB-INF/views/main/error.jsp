@@ -189,8 +189,7 @@
         ${message}
     </h1>
     <p class="error-description">
-        요청하신 페이지가 삭제되었거나 일시적으로 사용할 수 없습니다.<br>
-        입력하신 주소가 정확한지 다시 한 번 확인해 주세요.
+        ${description}
     </p>
     <a href="/" class="button">메인으로 돌아가기</a>
 </div>

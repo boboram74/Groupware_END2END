@@ -113,22 +113,14 @@ public class EventDTO {
     }
 
     public static EventDTO convertFromSchedule(ScheduleDTO dto, LocalDate startDate, LocalDate endDate) {
-        LocalDate srateDateToLocalDate = dto.getStartDate().toLocalDateTime().toLocalDate();
-        LocalDate endDateToLocalDate = dto.getEndDate().toLocalDateTime().toLocalDate();
-
-        String startDateStr = (!srateDateToLocalDate.isBefore(startDate)) ?
-                dto.getStartDate().toInstant().toString() : startDate.toString();
-        String endDateStr = (!endDateToLocalDate.isAfter(endDate)) ?
-                dto.getEndDate().toInstant().toString() : endDate.toString();
-
         String title = String.format("%s: 기간 (%s ~ %s)", dto.getTitle(),
                 parseDateTime(dto.getStartDate()), parseDateTime(dto.getEndDate()));
 
         return EventDTO.builder()
                 .id(dto.getId())
                 .title(title)
-                .startDate(startDateStr)
-                .endDate(endDateStr)
+                .startDate(dto.getStartDate().toInstant().toString())
+                .endDate(dto.getEndDate().toInstant().toString())
                 .display("block")
                 .eventName("period")
                 .backgroundColor(dto.getColor())

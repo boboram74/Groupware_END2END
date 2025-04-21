@@ -199,6 +199,29 @@
         ORDER BY e.name ASC
     </select>
 
+    <select id="searchContactListFromTo" parameterType="map" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
+        SELECT A.*
+        FROM (
+            SELECT
+                e.id, e.name, e.departmentId, d.name AS departmentName, e.jobId, j.name AS jobName, e.profileImg AS profileImg, e.contact,
+                ROW_NUMBER() over (ORDER BY e.name) AS rnum
+            FROM EMPLOYEE e
+            JOIN DEPARTMENT d ON e.departmentId = d.id
+            JOIN JOB        j ON e.jobId        = j.id
+            <where>
+                AND e.resignDate IS NULL
+                <choose>
+                    <when test="searchOption eq '이름'">
+                        AND e.name    LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <when test="searchOption eq '연락처'">
+                        AND e.contact LIKE '%' || #{keyword} || '%'
+                    </when>
+                </choose>
+            </where>) A
+        WHERE rnum BETWEEN ${start} AND ${end}
+    </select>
+
     <select id="searchEmployeeList" parameterType="map" resultType="com.end2end.spring.employee.dto.EmployeeDTO">
         SELECT
         e.id,

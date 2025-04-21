@@ -26,30 +26,11 @@ public class CalendarController {
 
     @RequestMapping("/list")
     public String toCalendar(HttpSession session, Model model) {
-        // TODO: 해당 사원의 달력 페이지로 이동
         EmployeeDTO employeeDTO = (EmployeeDTO) session.getAttribute("employee");
         model.addAttribute("calendarList", calendarService.selectByEmployeeId(employeeDTO.getId()));
         model.addAttribute("employeeList", employeeService.selectAll());
 
         return "schedule/calendar";
-    }
-
-    @RequestMapping("/list/search")
-    public String toCalenderSearch(Model model) {
-        // TODO: 해당 검색 기록 결과를 calender.jsp에 출력
-        return "schedule/calendar";
-    }
-
-    @RequestMapping("/book")
-    public String toBook() {
-        // TODO: 예약 페이지로 이동
-        return "schedule/book";
-    }
-
-    @RequestMapping("/book/search")
-    public String toBookSearch(Model model) {
-        // TODO: 해당 검색 기록 결과의 예약을 book.jsp에 출력
-        return "schedule/book";
     }
 
     @ResponseBody
@@ -86,25 +67,5 @@ public class CalendarController {
         }
 
         return "redirect:/calendar/list";
-    }
-
-    @RequestMapping("/book/{id}")
-    public void selectBook(@PathVariable int id) {
-        // TODO: 해당 id의 예약을 확인
-    }
-
-    @RequestMapping("/book/insert")
-    public void insert(BookDTO dto) {
-        // TODO: 예약을 추가
-    }
-
-    @RequestMapping("/book/update")
-    public void update(BookDTO dto) {
-        // TODO: 예약을 수정
-    }
-
-    @RequestMapping("/book/delete/{id}")
-    public void deleteBookById(@PathVariable int id) {
-        // TODO: 해당 id의 예약을 삭제
     }
 }

@@ -23,7 +23,6 @@
                     <span>부서 관리</span>
                 </li>
             </a>
-
             <a href="/admin/mail-setting">
                 <li class="detail-menu-item">
                     <span class="material-icons">mail</span>
@@ -110,8 +109,6 @@
                 $row.remove();
             });
         });
-
-
 
         $("#updateDepartment").on("submit",function () {
         });

@@ -8,52 +8,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 <link rel="stylesheet" href="/css/template/exam.css"/>
 <link rel="stylesheet" href="/css/approval/draft.css"/>
-<div class="mainHeader surface-bright">
-    <div class="detail-menu-header">
-        <div class="detail-menu-title">
-            <span class="material-icons">mail</span>
-            <span>메일함</span>
-        </div>
-        <button class="detail-menu-toggle-btn">
-            <span class="material-icons">menu</span>
-        </button>
-    </div>
-    <div class="detail-menu-modal">
-        <ul class="detail-menu-list">
-            <li class="detail-menu-item">
-                <span class="material-icons">star</span>
-                <span>중요 메일함</span>
-                <span class="detail-badge">5</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">all_inbox</span>
-                <span>전체 메일함</span>
-                <span class="detail-badge">32</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">send</span>
-                <span>보낸 메일함</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">move_to_inbox</span>
-                <span class="detail-menu-disc">받은 메일함</span>
-                <span class="detail-badge">12</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">drafts</span>
-                <span>임시 저장함</span>
-                <span class="detail-badge">2</span>
-            </li>
-            <li class="detail-menu-item">
-                <span class="material-icons">delete</span>
-                <span>휴지통</span>
-            </li>
-        </ul>
-        <button class="detail-modal-close">
-            <span class="material-icons">close</span>
-        </button>
-    </div>
-</div>
 <link rel="stylesheet" href="/css/approval/list.css">
 <style>
     .modal {
@@ -99,11 +53,46 @@
     }
 
     .approval-content {
-        min-height: 500px;
+        height: 500px;
+        overflow: auto;
         vertical-align: top;
         padding: 15px;
     }
 </style>
+<div class="mainHeader surface-bright">
+    <div class="detail-menu-header">
+        <div class="detail-menu-title">
+            <span class="material-icons">description</span>
+            <span>전자 결재</span>
+        </div>
+        <button class="detail-menu-toggle-btn">
+            <span class="material-icons">menu</span>
+        </button>
+    </div>
+    <div class="detail-menu-modal">
+        <ul class="detail-menu-list">
+            <li class="detail-menu-item" onclick="location.href='/approval/list'">
+                <span class="material-icons">person</span>
+                <span>나의 전자결재</span>
+            </li>
+            <li class="detail-menu-item" onclick="location.href='/approval/important'">
+                <span class="material-icons">star</span>
+                <span>중요 문서함</span>
+                <span class="detail-badge"><span>${importantSize != null ? importantSize : 0}</span></span>
+            </li>
+            <c:if test="${team}">
+                <li class="detail-menu-item" onclick="location.href='/approval/all'">
+                    <span class="material-icons">description</span>
+                    <span class="detail-menu-disc">모든 전자 결재함</span>
+                    <span class="detail-badge"><span>${totalSize != null ? totalSize : 0}</span></span>
+                </li>
+            </c:if>
+        </ul>
+        <button class="detail-modal-close">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
+</div>
 <div class="container">
     <div class="approval-document surface-bright">
         <div class="document-header">
@@ -126,7 +115,8 @@
                                 <span class="approverStatus" id="approverStatus${approver['ID']} ${approver["SUBMITYN"] eq 'Y' ? 'done' : 'N'}">
                                     <c:choose>
                                         <c:when test="${approver['SUBMITYN'] eq 'Y'}">승인</c:when>
-                                        <c:otherwise>반려</c:otherwise>
+                                        <c:when test="${approver['SUBMITYN'] eq 'N'}">반려</c:when>
+                                        <c:otherwise>대기</c:otherwise>
                                     </c:choose>
                                 </span>
                                 </div>
@@ -189,23 +179,46 @@
                             <table class="vacationTable">
                                 <tr>
                                     <th>휴가 유형</th>
-                                    <td>${vacationDTO.type}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${vacationDTO.type eq 'ANNUAL'}">
+                                                연차
+                                            </c:when>
+                                            <c:otherwise>
+                                                반차
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>시작일</th>
-                                    <td><fmt:formatDate value="${vacationDTO.startDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${vacationDTO.type eq 'ANNUAL'}">
+                                                <fmt:formatDate value="${vacationDTO.startDate}" pattern="yyyy/MM/dd"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatDate value="${vacationDTO.startDate}" pattern="yyyy/MM/dd HH:mm:ss"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>종료일</th>
-                                    <td><fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${vacationDTO.type eq 'ANNUAL'}">
+                                                <fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd HH:mm:ss"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>총 휴가 일수</th>
                                     <td>${vacationDTO.vacationDate}일</td>
-                                </tr>
-                                <tr>
-                                    <th>사유</th>
-                                    <td>${vacationDTO.reason}</td>
                                 </tr>
                             </table>
                         </td>
@@ -215,12 +228,12 @@
                         <td colspan="3">
                             <table class="vacationTable">
                                 <tr>
-                                    <th>추가 근무</th>
-                                    <td>${vacationDTO.type}</td>
+                                    <th>신청일</th>
+                                    <td><fmt:formatDate value="${extendedCommuteDTO.workOffTime}" pattern="yyyy/MM/dd"/></td>
                                 </tr>
                                 <tr>
                                     <th>종료일</th>
-                                    <td><fmt:formatDate value="${vacationDTO.endDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+                                    <td><fmt:formatDate value="${extendedCommuteDTO.workOffTime}" pattern="HH:mm:ss"/></td>
                                 </tr>
                             </table>
                         </td>
@@ -231,7 +244,12 @@
                 </tr>
             </table>
         </div>
-
+        <c:if test="${approval.STATE eq 'REJECT'}">
+            <div class="reject-reason-box" style="border: 1px solid #e74c3c; padding: 15px; background-color: #f9e6e6; margin-top: 20px;">
+                <h4 style="color: #c0392b;">반려 사유</h4>
+                <p>${reject.reason}</p>
+            </div>
+        </c:if>
         <div class="document-footer">
             <div class="attachment-section file-input-section">
                 <h3>첨부파일</h3>

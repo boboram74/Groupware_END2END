@@ -15,7 +15,7 @@
     <select id="selectByApprovalId" resultType="com.end2end.spring.commute.dto.ExtendedCommuteDTO">
         SELECT *
         FROM EXTENDED_COMMUTE
-        WHERE approvalId = ${approvalId}
+        WHERE approvalId = #{approvalId}
     </select>
 
     <select id="selectTodayByEmployeeId" resultType="com.end2end.spring.commute.dto.ExtendedCommuteDTO">

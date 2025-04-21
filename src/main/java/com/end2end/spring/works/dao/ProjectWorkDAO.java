@@ -1,5 +1,6 @@
 package com.end2end.spring.works.dao;
 
+import com.end2end.spring.works.dto.ProjectUserDTO;
 import com.end2end.spring.works.dto.ProjectWorkDTO;
 import com.end2end.spring.works.dto.ProjectWorkReplyDTO;
 import com.end2end.spring.works.dto.WorkUpdateDTO;
@@ -32,7 +33,7 @@ public class ProjectWorkDAO {
         return mybatis.selectOne("works.getProjectId");
     }
 
-    public String selectByProjectIdAndEmployeeId(int projectId, String employeeId) {
+    public ProjectUserDTO selectByProjectIdAndEmployeeId(int projectId, String employeeId) {
         Map<String, Object> params = new HashMap<>();
         params.put("projectId", projectId);
         params.put("employeeId", employeeId);

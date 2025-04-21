@@ -16,7 +16,7 @@ public interface ProjectWorkService {
 
     void toggleState(int id);
 
-    String selectByProjectIdAndEmployeeId(int projectId, String employeeId);
+   ProjectUserDTO selectByProjectIdAndEmployeeId(int projectId, String employeeId);
 
     int updateState(String state, int workItemId, int projectId);
 

@@ -183,6 +183,8 @@ public class ApprovalController {
                     .build();
             model.addAttribute("fileList", fileService.selectByParentsId(fileDTO));
 
+            ApprovalRejectDTO rejectInfo = approvalService.rejectInfo(id);
+
             if (employee == null) {
                 return "redirect:/login";
             }
@@ -209,16 +211,16 @@ public class ApprovalController {
                 model.addAttribute("approvers", approvers);
                 model.addAttribute("employee", employee);
                 model.addAttribute("approvalFormDTO", approvalFormDTO);
-
+                model.addAttribute("reject", rejectInfo);
                 return "approval/detail";
             }
-
 
             model.addAttribute("approval", approval);
             model.addAttribute("nextId", nextId);
             model.addAttribute("approvers", approvers);
             model.addAttribute("employee", employee);
             model.addAttribute("approvalFormDTO", approvalFormDTO);
+            model.addAttribute("rejectInfo", rejectInfo);
             return "approval/detail";
         } catch (Exception e) {
             e.printStackTrace();

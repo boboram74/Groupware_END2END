@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
+
     <title>Title</title>
     <jsp:include page="/WEB-INF/views/template/header.jsp"/>
     <link rel="stylesheet" href="/css/template/exam.css"/>
@@ -14,8 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-</head>
-<body>
+
+
 <%--<script--%>
 <%--        src="https://code.jquery.com/jquery-3.3.1.min.js"--%>
 <%--        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="--%>
@@ -306,7 +305,6 @@
     }
 
 
-
     .form-control {
         border: 1px solid var(--gray-300);
         border-radius: var(--border-radius);
@@ -389,10 +387,9 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        border: 1px solid #c2c2c2; /* 테두리 추가 */
+        border: 1px solid #c2c2c2;
         margin-left: 10px;
     }
-
 
 
     .hidden-project {
@@ -400,15 +397,11 @@
         transition: opacity 0.3s ease;
         color: #7f8c8d;
     }
+    
 
-
-    /*.hidden-project.leader {*/
-    /*    opacity: 0.5;*/
-    /*}*/
-
-    /*.hidden-project.staff {*/
-    /*    display: none;*/
-    /*}*/
+    .hidden-project.staff {
+        display: none;
+    }
 
 
     .detail-badge {
@@ -848,7 +841,7 @@
                 <c:forEach items="${projects}" var="list">
 
                     <tr id="changeRow-${list.id}"
-                        class="${list.hideYn == 'Y' ? (isTeamLeader ? 'hidden-project leader' : 'hidden-project staff') : ''}">
+                        class="${list.hideYn == 'Y' ? (isTeamLeader ? 'hidden-project' : 'hidden-project staff') : ''}">
                         <!-- ... 나머지 tr 내용 ... -->
                     </tr>
 
@@ -921,24 +914,24 @@
             </table>
         </div>
     </div>
-<%--    <div class="pageNavi">--%>
-<%--        <c:if test="${pageNavi.hasPrev}">--%>
-<%--            <span class="material-icons paging" onclick="location.href='/project/main?page=${pageNavi.start - 1}'">chevron_left</span>--%>
-<%--        </c:if>--%>
-<%--        <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">--%>
-<%--            <c:choose>--%>
-<%--                <c:when test="${item == pageNavi.page}">--%>
-<%--                    <span class="paging active" onClick="location.href='/project/main?page=${item}'">${item}</span>--%>
-<%--                </c:when>--%>
-<%--                <c:otherwise>--%>
-<%--                    <span class="paging" onClick="location.href='/project/main?page=${item}'">${item}</span>--%>
-<%--                </c:otherwise>--%>
-<%--            </c:choose>--%>
-<%--        </c:forEach>--%>
-<%--        <c:if test="${pageNavi.hasNext}">--%>
-<%--            <span class="material-icons paging" onclick="location.href='/project/main?page=${pageNavi.end + 1}'">chevron_right</span>--%>
-<%--        </c:if>--%>
-<%--    </div>--%>
+    <%--    <div class="pageNavi">--%>
+    <%--        <c:if test="${pageNavi.hasPrev}">--%>
+    <%--            <span class="material-icons paging" onclick="location.href='/project/main?page=${pageNavi.start - 1}'">chevron_left</span>--%>
+    <%--        </c:if>--%>
+    <%--        <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">--%>
+    <%--            <c:choose>--%>
+    <%--                <c:when test="${item == pageNavi.page}">--%>
+    <%--                    <span class="paging active" onClick="location.href='/project/main?page=${item}'">${item}</span>--%>
+    <%--                </c:when>--%>
+    <%--                <c:otherwise>--%>
+    <%--                    <span class="paging" onClick="location.href='/project/main?page=${item}'">${item}</span>--%>
+    <%--                </c:otherwise>--%>
+    <%--            </c:choose>--%>
+    <%--        </c:forEach>--%>
+    <%--        <c:if test="${pageNavi.hasNext}">--%>
+    <%--            <span class="material-icons paging" onclick="location.href='/project/main?page=${pageNavi.end + 1}'">chevron_right</span>--%>
+    <%--        </c:if>--%>
+    <%--    </div>--%>
 
     <%--프로젝트 생성모달 --%>
     <div class="modal fade" id="projectModal" tabindex="-1">
@@ -1142,8 +1135,9 @@
 <script>
     const departmentName = '${employee.departmentName}';
     const jobName = '${employee.jobName}'
+
     function handleProjectClick(projectId) {
-        if (departmentName !== '연구팀' && jobName!== '대표이사') {
+        if (departmentName !== '연구팀' && jobName !== '대표이사') {
             alert('연구팀과 대표이사만 입장이 가능합니다.');
             return;
         } else {
@@ -1304,7 +1298,7 @@
 
             if (isChecked) {
                 if (isTeamLeader === true || isTeamLeader === "true") {
-                    row.css('opacity', '0.5').addClass("hidden-project");
+                    row.addClass("hidden-project").css('opacity', '0.4');
                 } else {
                     row.hide();
                 }
@@ -1330,20 +1324,10 @@
                 error: function () {
                     alert("숨김 상태 변경 실패");
                     // 실패 시 UI 복원
-                    if (isChecked) {
-                        row.css("opacity", "1").show();
-                        target.prop('checked', false); // 체크 해제
+                    target.prop('checked', !isChecked);
+                    row.toggleClass("hidden-project", !isChecked).css('opacity', !isChecked ? "0.4" : "1").show();
 
-                    } else {
-                        if (isTeamLeader === true || isTeamLeader === "true") {
-                            row.css('opacity', '0.5');
-                            target.prop('checked', true);
 
-                        } else {
-                            row.hide();
-                            target.prop('checked', true);
-                        }
-                    }
                 }
             })
         })

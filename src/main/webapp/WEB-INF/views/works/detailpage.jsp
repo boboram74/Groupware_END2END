@@ -506,13 +506,16 @@
                 <span>기간: ${project.deadLine}</span>
                 <input type="hidden" id="projectStatus" value="${project.status}">
             </div>
-            <a href="/work/write/${project.id}">
-                <button id="writeBtn" }>작성하기</button>
-            </a>
+            <c:if test="${isProjectUser}">
+                <a href="/work/write/${project.id}">
+                    <button id="writeBtn" }>작성하기</button>
+                </a>
 
-                <div id="finishBtnDiv" class="finishBtnDiv">
+            </c:if>
+            
+            <div id="finishBtnDiv" class="finishBtnDiv">
 
-                </div>
+            </div>
 
         </div>
 
@@ -623,8 +626,8 @@
                         <div id="workPriority"><h2>중요도</h2></div>
                         <h5>진행도</h5>
                         <div id="workState"><h2>진행도</h2></div>
-<%--                        <h5>기간</h5>--%>
-<%--                        <div id="workDate"><h2>기간</h2></div>--%>
+                        <%--                        <h5>기간</h5>--%>
+                        <%--                        <div id="workDate"><h2>기간</h2></div>--%>
                         <h5>내용</h5>
                         <div id="workContent"></div>
                         <h5>파일 리스트</h5>
@@ -666,8 +669,8 @@
                             <div id="updatePriority"></div>
                             <h5>진행도</h5>
                             <div id="updateState"></div>
-<%--                            <h5>기간</h5>--%>
-<%--                            <div id="updateDate"></div>--%>
+                            <%--                            <h5>기간</h5>--%>
+                            <%--                            <div id="updateDate"></div>--%>
                             <h5>내용</h5>
                             <div id="updateContet"></div>
                             <h5>파일 리스트</h5>
@@ -750,6 +753,7 @@
 
             let currentWorkId = null;
             const loggedInEmployeeId = ${employee.id};
+
             function openWorkModal(workId, employeeId) {
                 currentWorkId = workId;
                 $.ajax({
@@ -1023,6 +1027,7 @@
                     $('.movingBoardColumn').off('dragover drop');
                     $('.work-item').off('dragstart dragend');
                 }
+
                 $(document).ready(function () {
                     const status = $('#projectStatus').val();
                     if (status === "finish") {

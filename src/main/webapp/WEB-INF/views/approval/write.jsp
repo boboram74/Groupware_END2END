@@ -109,8 +109,8 @@
                 return;
             }
 
-            if (employee.jobId > ${employee.jobId}) {
-                alert("자신보다 직급이 낮은 사원은 결재선에 추가할 수 없습니다.");
+            if (employee.jobId >= ${employee.jobId}) {
+                alert("자신보다 직급이 낮거나 같은 사원은 결재선에 추가할 수 없습니다.");
                 return;
             }
             if (employee) {

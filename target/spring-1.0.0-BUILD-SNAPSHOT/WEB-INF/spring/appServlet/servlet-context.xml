@@ -39,6 +39,8 @@
 			<exclude-mapping path="/resources/**"/>
 			<exclude-mapping path="/mail/alarm"/>
 			<exclude-mapping path="/hr/update"/>
+			<exclude-mapping path="/hr/idCheck"/>
+			<exclude-mapping path="/hr/roleUpdate/**"/>
 
 			<exclude-mapping path="/css/**"/>
 			<exclude-mapping path="/js/**"/>

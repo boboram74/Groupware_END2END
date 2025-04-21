@@ -102,13 +102,16 @@ public class HRController {
     public String roleUpdate(@PathVariable("id") String id) {
         employeeService.roleUpdate(id);
         String loginId = employeeService.findByLoginId(id);
-
-        RestTemplate restTemplate = new RestTemplate();
-        String mailUrl = "http://34.70.179.192/mail/employee";
-        Map<String, String> body = new HashMap<>();
-        body.put("name", loginId);
-        body.put("password", loginId);
-        restTemplate.postForObject(mailUrl, body, String.class);
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String mailUrl = "https://mail.end2end.site/mail/employee";
+            Map<String, String> body = new HashMap<>();
+            body.put("name", loginId);
+            body.put("password", loginId);
+            restTemplate.postForObject(mailUrl, body, String.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "redirect:/hr/list";
     }
 

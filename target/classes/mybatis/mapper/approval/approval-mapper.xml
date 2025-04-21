@@ -189,4 +189,11 @@
         update important_approval set leaderCheckYn = 'N'
         WHERE approvalid = #{approvalId} AND employeeid = #{employeeId}
     </update>
+
+    <select id="rejectInfo" resultType="com.end2end.spring.approval.dto.ApprovalRejectDTO">
+        SELECT *
+        FROM approval_reject
+        WHERE approvalid = #{approvalId}
+    </select>
+
 </mapper>

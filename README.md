@@ -42,6 +42,14 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 
 ## ⚙ 기술 스택
 
+### Infra
+- **OS : Rocky Linux 8**
+- **Google Cloud Platform (GCP)** – 웹 애플리케이션 및 메일 서버 배포
+- **Nginx** – Reverse Proxy HTTPS 트래픽 분기 및 Tomcat 연결
+- **Tomcat 9** – Spring 기반 WAS로 구동
+- **Postfix** – 메일 송수신용 SMTP 서버
+- **도메인 연동 및 SSL 인증서 적용**
+
 ### Back-end
 - **Spring Legacy (JSP + Servlet + MyBatis) – 메인 웹 애플리케이션 구축**
 - **Spring Boot (Mail API 서버) – 메일 송수신 전용 API 설계**
@@ -57,14 +65,6 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 - **Chart.js** – 근태현황 및 Works 통계 시각화
 - **FullCalendar.js** – 일정 관리 및 프로젝트 캘린더 구현
 - **공공데이터포털 API** – 공휴일 캘린더 연동
-
-### Infra
-- **OS : Rocky Linux 8**
-- **Google Cloud Platform (GCP)** – 웹 애플리케이션 및 메일 서버 배포
-- **Nginx** – Reverse Proxy HTTPS 트래픽 분기 및 Tomcat 연결
-- **Tomcat 9** – Spring 기반 WAS로 구동
-- **Postfix** – 메일 송수신용 SMTP 서버
-- **도메인 연동 및 SSL 인증서 적용**
 
 ### Tools
 - **IntelliJ IDEA** – 메인 개발 IDE

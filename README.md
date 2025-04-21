@@ -21,6 +21,11 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 
 ---
 
+![image](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d)
+
+https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d
+
+
 ## 🎨 화면 구성
 
 | 메인 페이지 | 전자결재 페이지 | 메일함 페이지 | 직원 관리 페이지 | 채팅1| 채팅2 |
@@ -33,7 +38,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 
 | 관리자 페이지1 | 관리자 페이지2 | 관리자 페이지3 |
 | :---: | :---: | :---: |
-| ![Contacts](https://github.com/user-attachments/assets/97c01a50-de80-43cb-b0b0-b739bea36a89) | ![Admin](https://github.com/user-attachments/assets/b77efb48-e966-40b4-87e7-98e2da1f2147) | ![Admin](https://github.com/user-attachments/assets/8a2c7811-93f9-46c3-8d1f-2e45f6259063) |
+| ![Contacts](https://github.com/user-attachments/assets/c34b8a80-5b86-4ed5-b055-0cd65f6e8a7d) | ![Admin](https://github.com/user-attachments/assets/b77efb48-e966-40b4-87e7-98e2da1f2147) | ![Admin](https://github.com/user-attachments/assets/8a2c7811-93f9-46c3-8d1f-2e45f6259063) |
 
 ---
 

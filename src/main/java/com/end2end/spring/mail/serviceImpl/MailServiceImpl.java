@@ -317,7 +317,7 @@ public class MailServiceImpl implements MailService {
                         ? alias.substring(0, alias.indexOf("@"))
                         : alias;
                 RestTemplate rt = new RestTemplate();
-                String url = "http://34.70.179.192/mail/employee";
+                String url = "https://mail.end2end.site/mail/employee";
                 Map<String,String> body = Map.of("name", localPart, "password", localPart);
                 rt.postForObject(url, body, String.class);
                 mailDAO.insertAlias(alias, aliasNm);
@@ -348,7 +348,7 @@ public class MailServiceImpl implements MailService {
                     ? alias.substring(0, alias.indexOf("@"))
                     : alias;
             RestTemplate rt = new RestTemplate();
-            String url = "http://34.70.179.192/mail/employee?employee=" + localPart;
+            String url = "https://mail.end2end.site/mail/employee?employee=" + localPart;
             rt.delete(url);
             mailDAO.deleteAlias(alias);
         }

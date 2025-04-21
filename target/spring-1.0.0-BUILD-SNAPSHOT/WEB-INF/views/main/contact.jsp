@@ -75,15 +75,15 @@
             <c:forEach begin="${pageNavi.start}" end="${pageNavi.end}" var="item">
                 <c:choose>
                     <c:when test="${item == pageNavi.page}">
-                        <span class="paging active" onClick="location.href='${url}$${item}'">${item}</span>
+                        <span class="paging active" onClick="location.href='${url}${item}'">${item}</span>
                     </c:when>
                     <c:otherwise>
-                        <span class="paging" onClick="location.href='${url}$${item}'">${item}</span>
+                        <span class="paging" onClick="location.href='${url}${item}'">${item}</span>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
             <c:if test="${pageNavi.hasNext}">
-                <span class="material-icons paging" onclick="location.href='${url}$${pageNavi.end + 1}'">chevron_right</span>
+                <span class="material-icons paging" onclick="location.href='${url}${pageNavi.end + 1}'">chevron_right</span>
             </c:if>
         </div>
     </div>

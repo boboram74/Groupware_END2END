@@ -103,4 +103,7 @@ END2END 팀이 진행한 [Spring Legacy] + [Spring Boot] 기반의 GROUPWARE Pro
 ---
 
 ## 💁‍♂️ 프로젝트 팀원
-![팀원 이미지](your-team-image-url)
+![팀원 이미지](https://github.com/user-attachments/assets/c7ecdbb5-1d9e-4a56-b4ed-3ef84271ad57)
+![팀원 이미지](https://github.com/user-attachments/assets/6181a8db-76b5-4682-bbc5-16041f32993f)
+
+

@@ -137,8 +137,8 @@ DTO 및 DB 필드를 Timestamp → Date 타입으로 변경
 ---
 
 ## 💁‍♂️ 프로젝트 팀원
-![팀원 이미지](https://github.com/user-attachments/assets/c7ecdbb5-1d9e-4a56-b4ed-3ef84271ad57)
-![팀원 이미지](https://github.com/user-attachments/assets/6181a8db-76b5-4682-bbc5-16041f32993f)
+![팀원 이미지](https://github.com/user-attachments/assets/95571c57-b71c-4d27-a630-80e1af00a5e0)
+![팀원 이미지](https://github.com/user-attachments/assets/e9bd2655-2a48-4eb5-a9f6-bb2032f43547)
 
 ---
 

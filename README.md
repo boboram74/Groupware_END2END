@@ -140,4 +140,16 @@ DTO 및 DB 필드를 Timestamp → Date 타입으로 변경
 ![팀원 이미지](https://github.com/user-attachments/assets/c7ecdbb5-1d9e-4a56-b4ed-3ef84271ad57)
 ![팀원 이미지](https://github.com/user-attachments/assets/6181a8db-76b5-4682-bbc5-16041f32993f)
 
+---
+
+## 🚀 프로젝트 접속 URL
+
+[![Visit Site](https://img.shields.io/badge/🔗-Go%20to%20Demo-blue)](https://end2end.site/)
+
+| 구분       | 내용              |
+|-----------|------------------|
+| **👤 ID**  | `employee1`      |
+| **🔑 PASS**| `employee1`      |
+
+
 

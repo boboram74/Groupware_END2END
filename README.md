@@ -144,7 +144,7 @@ DTO 및 DB 필드를 Timestamp → Date 타입으로 변경
 
 ## 🚀 프로젝트 접속 URL
 
-[![Visit Site](https://img.shields.io/badge/🔗-Go%20to%20Demo-blue)](https://end2end.site/)
+[![사이트 접속하기](https://img.shields.io/badge/🔗-사이트%20접속하기-blue)](https://end2end.site/)
 
 | 구분       | 내용              |
 |-----------|------------------|

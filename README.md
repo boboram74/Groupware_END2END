@@ -62,7 +62,7 @@ END2END 팀이 진행한 Spring Legacy + Spring Boot 기반의 GROUPWARE Project
 ### Back-end
 - **Spring Legacy (JSP + Servlet + MyBatis) – 메인 웹 애플리케이션 구축**
 - **Spring Boot (Mail API 서버) – RESTful 메일API 서버**
-- **Java 11**
+- **Java 11, Java 17**
 - **Tomcat9**
 - **MyBatis – SQL 매핑 처리**
 - **WebSocket - 실시간 채팅**
